@@ -2,11 +2,9 @@
 {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
 {-# LANGUAGE PatternGuards, ViewPatterns #-}
 module XMonad.Layout.FlexibleRead (
-    FlexibleRead,
     flexibleRead,
-    ModifiedLayout,
     flexibleReadsPrec,
-    thInstance
+    flexibleReadInstance
     ) where
 
 import XMonad (Window, LayoutClass(..))
@@ -22,6 +20,7 @@ import Language.Haskell.TH
 import Debug.Trace
 
 
+-- | The "flexible read" layout modifier.
 data FlexibleRead l a = FlexibleRead (l a)
 
 instance (LayoutClass l a , ReadShowTree l a) => LayoutClass (FlexibleRead l) a where
@@ -47,11 +46,19 @@ flexibleReadsPrec (FlexibleRead l) i s =
             where s'' = fmap unFst $ matchTrees (fmap Fst (showTree l)) (fmap Fst s')
         _          -> trace "fail" $ []
 
-thInstance :: Name -> Q [Dec] -> Q [Dec]
-thInstance lay decr = do
-    decr' <- decr
+flexibleReadInstance :: Name -> Q [Dec]
+flexibleReadInstance lay = do
     (VarI _ typ _ _) <- reify lay
-    return [ InstanceD [] (AppT (ConT (mkName "Read")) typ) decr' ]
+    return
+        [ InstanceD []
+            (AppT (ConT (mkName "Read")) typ)
+            [ ValD (VarP (mkName "readsPrec"))
+                (NormalB (AppE
+                    (VarE (mkName "XMonad.Layout.FlexibleRead.flexibleReadsPrec"))
+                    (VarE lay)))
+                []
+            ]
+        ]
 
 
 newtype Fst = Fst (String, String)

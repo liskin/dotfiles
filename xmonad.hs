@@ -1,8 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
--- {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
-{-# LANGUAGE FlexibleInstances, FlexibleContexts, OverlappingInstances #-}
--- {-# LANGUAGE NoMonomorphismRestriction #-}
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE FlexibleInstances, TemplateHaskell #-}
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
@@ -140,25 +137,7 @@ myLayout = flexibleRead $ dir $
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled", "mtiled", "tab", "float", "full" ]
 
-$( thInstance 'myLayout
-   [d| readsPrec = flexibleReadsPrec myLayout |] 
- )
-
-{-
-$( thInstance 'myLayout
-   [d| readsPrec = flexibleReadsPrec myLayout |] 
-   [d| show = show . showTree |] )
--}
-
-{-
-instance (ReadShowTree l Window) => Show (l Window) where
-    show = show . showTree
--}
-{-
-instance (ReadShowTree l Window, LayoutModifier FlexibleRead Window) =>
-         Show (ModifiedLayout FlexibleRead l Window) where
-    show = show . showTree
--}
+$( flexibleReadInstance 'myLayout )
 
 
 -- Managehook.
