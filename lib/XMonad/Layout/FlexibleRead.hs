@@ -55,7 +55,7 @@ flexibleReadsPrec _ _ _ = []
 -- default for non-readable parts of the input.
 --
 -- Usage:
--- > {-# LANGUAGE TemplateHaskell #-}
+-- > {-# LANGUAGE FlexibleInstances, TemplateHaskell #-}
 -- > $( flexibleReadInstance 'myLayout )
 flexibleReadInstance :: Name -> Q [Dec]
 flexibleReadInstance lay = do

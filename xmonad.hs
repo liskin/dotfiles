@@ -1,4 +1,3 @@
-{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE FlexibleInstances, TemplateHaskell #-}
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
