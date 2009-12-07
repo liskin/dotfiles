@@ -36,12 +36,15 @@ prop_matchTrees_order t1 t2 t3 = ((==) `on` (fmap unFst)) tn' (matchTrees tn to)
         to = fmap (\a -> Fst (a, a + 5)) tOld
         tn' = fmap (\a -> Fst (a, a + 5)) tNew
 
+-- If the modifier in the root is changed, we retain all other data.
+-- This one is falsifiable if the new or the old modifier is somewhere deeper
+-- in the tree as well.
 prop_matchTrees_mod t1 t2 t3 = (treeDebugEq `on` (fmap unFst)) tn' (matchTrees tn to)
     where
         sub = map (fmap (\a -> Fst (a, a))) [ t1, t2, t3 ]
-        tn = Node (Fst (1, 0)) sub
-        to = Node (Fst (5, 0)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) sub
-        tn' = Node (Fst (1, 0)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) sub
+        tn = Node (Fst (123456789, 0)) sub
+        to = Node (Fst (1234567890, 0)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) sub
+        tn' = Node (Fst (123456789, 0)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) sub
 
 {- Does not hold, since intersect [1,1] [1] = [1,1].
 prop_intersect' xs ys = intersect' xs' ys' == intersect xs' ys'

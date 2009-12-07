@@ -53,6 +53,10 @@ matchTrees :: (Eq a, Ord a) => Tree a -> Tree a -> Tree a
 matchTrees tn to = unpaths tn (map snd ps)
     where ps = matchPaths (paths tn) (paths to)
 
+-- | Shorthand for 'matchTrees' with structure in the first element of a pair.
+matchTreesFst :: (Ord a) => Tree (a, b) -> Tree (a, b) -> Tree (a, b)
+matchTreesFst tn to = fmap unFst $ (matchTrees `on` fmap Fst) tn to
+
 
 -- | 'intersect' optimized for ordered lists.
 intersect' :: Ord a => [a] -> [a] -> [a]

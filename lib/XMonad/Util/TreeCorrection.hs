@@ -1,5 +1,6 @@
 module XMonad.Util.TreeCorrection (
     matchTrees,
+    matchTreesFst,
     Fst(..),
     unFst
     ) where

@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleInstances, UndecidableInstances, OverlappingInstances #-}
 {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
-{-# LANGUAGE PatternGuards, ViewPatterns #-}
+{-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE TemplateHaskell #-}
 module XMonad.Layout.FlexibleRead (
     flexibleRead,
@@ -13,12 +13,9 @@ import XMonad.StackSet (Workspace(..))
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LayoutCombinators
 import XMonad.Util.TreeCorrection
-import Data.Typeable
 import Data.Tree
 import Data.Maybe
-import Data.Function
 import Language.Haskell.TH
--- import Debug.Trace
 
 
 -- | The "flexible read" layout modifier.
@@ -40,13 +37,9 @@ flexibleRead = FlexibleRead
 
 flexibleReadsPrec :: (ReadShowTree l a) =>
     FlexibleRead l a -> Int -> String -> [(FlexibleRead l a, [Char])]
-flexibleReadsPrec (FlexibleRead l) i s =
-    -- trace "\n\nflexread" $
-    case readsPrec i s of
-        [(s', "")] -> -- trace (drawTree (fmap show s') ++ "\n\n" ++ drawTree (fmap show s'')) $
-                [(FlexibleRead $ readTreeDef l s'', "")]
-            where s'' = fmap unFst $ matchTrees (fmap Fst (showTree l)) (fmap Fst s')
-        _          -> [] -- trace "fail" $ []
+flexibleReadsPrec (FlexibleRead l) i s | [(s', "")] <- readsPrec i s =
+    [(FlexibleRead $ readTreeDef l $ matchTreesFst (showTree l) s', "")]
+flexibleReadsPrec _ _ _ = []
 
 flexibleReadInstance :: Name -> Q [Dec]
 flexibleReadInstance lay = do
@@ -55,15 +48,15 @@ flexibleReadInstance lay = do
     return [ InstanceD [] (AppT (ConT (mkName "Read")) typ) inst ]
 
 
-class (Read (l a), LayoutClass l a) => ReadShowTree l a where
+class ReadShowTree l a where
     readTreeDef :: l a -> Tree (String, String) -> l a
+    showTree :: l a -> Tree (String, String)
+
+instance (Read (l a), LayoutClass l a) => ReadShowTree l a where
     readTreeDef def (Node (_, val) []) = fromMaybe def $ maybeRead val
     readTreeDef def _ = def
 
-    showTree :: l a -> Tree (String, String)
     showTree a = Node (description a, show a) []
-
-instance (Read (l a), LayoutClass l a) => ReadShowTree l a
 
 instance (Read (m a), Show (m a), ReadShowTree l a, LayoutModifier m a) =>
         ReadShowTree (ModifiedLayout m l) a where
@@ -87,7 +80,8 @@ instance (ReadShowTree l1 a, ReadShowTree l2 a) => ReadShowTree (NewSelect l1 l2
               sel2 n = n
 
     readTreeDef ~(NewSelect _ l1 l2) (Node ("NewSelect", "") sf@(child : sfs@(child2:sfs2)))
-        | (Node ("NewSelectBool", read -> childb) [childchild]) <- child,
+        | (Node ("NewSelectBool", childb') [childchild]) <- child,
+          childb <- read childb',
           (Node ("NewSelectBool", _             ) [child2child]) <- child2 =
             let sel2 n@(Node ("NewSelectBool", _) x) | childb = Node ("NewSelectBool", "True") x
                 sel2 n = n
