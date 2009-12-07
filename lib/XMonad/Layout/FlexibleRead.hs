@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances, UndecidableInstances, OverlappingInstances #-}
 {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
 {-# LANGUAGE PatternGuards, ViewPatterns #-}
+{-# LANGUAGE TemplateHaskell #-}
 module XMonad.Layout.FlexibleRead (
     flexibleRead,
     flexibleReadsPrec,
@@ -17,7 +18,7 @@ import Data.Tree
 import Data.Maybe
 import Data.Function
 import Language.Haskell.TH
-import Debug.Trace
+-- import Debug.Trace
 
 
 -- | The "flexible read" layout modifier.
@@ -40,28 +41,21 @@ flexibleRead = FlexibleRead
 flexibleReadsPrec :: (ReadShowTree l a) =>
     FlexibleRead l a -> Int -> String -> [(FlexibleRead l a, [Char])]
 flexibleReadsPrec (FlexibleRead l) i s =
-    trace "\n\nflexread" $ case readsPrec i s of
-        [(s', "")] -> trace (drawTree (fmap show s') ++ "\n\n" ++ drawTree (fmap show s'')) $
+    -- trace "\n\nflexread" $
+    case readsPrec i s of
+        [(s', "")] -> -- trace (drawTree (fmap show s') ++ "\n\n" ++ drawTree (fmap show s'')) $
                 [(FlexibleRead $ readTreeDef l s'', "")]
             where s'' = fmap unFst $ matchTrees (fmap Fst (showTree l)) (fmap Fst s')
-        _          -> trace "fail" $ []
+        _          -> [] -- trace "fail" $ []
 
 flexibleReadInstance :: Name -> Q [Dec]
 flexibleReadInstance lay = do
     (VarI _ typ _ _) <- reify lay
-    return
-        [ InstanceD []
-            (AppT (ConT (mkName "Read")) typ)
-            [ ValD (VarP (mkName "readsPrec"))
-                (NormalB (AppE
-                    (VarE (mkName "XMonad.Layout.FlexibleRead.flexibleReadsPrec"))
-                    (VarE lay)))
-                []
-            ]
-        ]
+    inst <- [d| readsPrec = flexibleReadsPrec $(varE lay) |]
+    return [ InstanceD [] (AppT (ConT (mkName "Read")) typ) inst ]
 
 
-newtype Fst = Fst (String, String)
+newtype Fst = Fst (String, String) deriving (Show, Read)
 
 unFst (Fst x) = x
 

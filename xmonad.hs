@@ -222,8 +222,6 @@ myStartupHook = do
 
 -- Main.
 main = do
-    -- print $ Layout myLayout
-    -- print $ myLayout
     restartxmobar
 
     threadDelay 100000

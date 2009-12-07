@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable, ViewPatterns #-}
-{-# OPTIONS_GHC -fno-warn-overlapping-patterns #-}
+{-# OPTIONS_GHC -fno-warn-overlapping-patterns #-} -- a need with ViewPatterns
 module XMonad.Util.TreeCorrection (
     matchTrees
     ) where
@@ -18,20 +18,20 @@ paths (Node a sf)
     | otherwise = map (a :) $ concatMap paths sf
 
 unpaths :: Eq a => Tree a -> [[a]] -> Tree a
-unpaths t ps = let ([], t') = f ps t in t'
+unpaths t ps = let ([], t') = f id ps t in t'
     where
-        f ps (Node a sf) = (ps', Node (find' a $ head ps) sf')
+        f g ps (Node a sf) = (ps', Node (find' a $ g $ head ps) sf')
             where
                 (ps', sf') = if null sf
                                 then (tail ps, [])
-                                else mapAccumL f (map (\\ [a]) ps) sf
+                                else mapAccumL (f ((\\ [a]) . g)) ps sf
 
         find' a s = fromMaybe a $ find (a ==) s
 
 
 matchPath :: (Eq a, Ord a) => [a] -> [[a]] -> [a]
 matchPath _ [] = []
-matchPath (sort -> p) s = fst $ maximumBy (comparing snd) $ map f s
+matchPath (sort -> p) s = fst $ maximumBy' (comparing snd) $ map f s
     where
         f x = (x, (length $ intersect' p x', negate $ length $ (p \\ x) ++ (x \\ p)))
             where x' = sort x
@@ -61,6 +61,14 @@ intersect' s@(x:xs) t@(y:ys) =
         LT -> intersect' xs t
         GT -> intersect' s ys
 intersect' _ _ = []
+
+maximumBy'               :: (a -> a -> Ordering) -> [a] -> a
+maximumBy' _ []          =  error "maximumBy': empty list"
+maximumBy' cmp xs        =  foldl1 maxBy xs
+                         where
+                            maxBy x y = case cmp x y of
+                                        LT -> y
+                                        _  -> x
 
 {- Does not hold, since intersect [1,1] [1] = [1,1].
 prop_intersect' xs ys = intersect' xs' ys' == intersect xs' ys'
@@ -102,3 +110,7 @@ tree2 =
 
 tree3 =
     Node 1 []
+
+tree4 = Node {rootLabel = ("WorkspaceDir","WorkspaceDir \"~\""), subForest = [Node {rootLabel = ("NewSelect",""), subForest = [Node {rootLabel = ("NewSelectBool","True"), subForest = [Node {rootLabel = ("Named","Named \"tiled\""), subForest = [Node {rootLabel = ("AvoidStruts","AvoidStruts (fromList [U,D,R,L])"), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.5,0.5)"), subForest = [Node {rootLabel = ("ConfigurableBorder","ConfigurableBorder Never []"), subForest = [Node {rootLabel = ("MouseResizableTile","MRT {nmaster = 1, masterFrac = 1 % 2, leftFracs = [], rightFracs = [], draggers = [], focusPos = 0, numWindows = 0, isMirrored = False}"), subForest = []}]}]}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"mtiled\""), subForest = [Node {rootLabel = ("AvoidStruts","AvoidStruts (fromList [U,D,R,L])"), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.5,0.5)"), subForest = [Node {rootLabel = ("ConfigurableBorder","ConfigurableBorder Never []"), subForest = [Node {rootLabel = ("MouseResizableTile","MRT {nmaster = 1, masterFrac = 1 % 2, leftFracs = [], rightFracs = [], draggers = [], focusPos = 0, numWindows = 0, isMirrored = True}"), subForest = []}]}]}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"tab\""), subForest = [Node {rootLabel = ("AvoidStruts","AvoidStruts (fromList [U,D,R,L])"), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.5,0.5)"), subForest = [Node {rootLabel = ("ConfigurableBorder","ConfigurableBorder Never []"), subForest = [Node {rootLabel = ("Decoration","Decoration   (Theme {activeColor = \"#999999\", inactiveColor = \"#666666\", urgentColor = \"#FFFF00\", activeBorderColor = \"#FFFFFF\", inactiveBorderColor = \"#BBBBBB\", urgentBorderColor = \"##00FF00\", activeTextColor = \"#FFFFFF\", inactiveTextColor = \"#BFBFBF\", urgentTextColor = \"#FF0000\", fontName = \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\", decoWidth = 200, decoHeight = 20, windowTitleAddons = []}) (Tabbed Top WhenPlural)"), subForest = [Node {rootLabel = ("Simplest","Simplest"), subForest = []}]}]}]}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"float\""), subForest = [Node {rootLabel = ("WA","WA True True []"), subForest = [Node {rootLabel = ("SimplestFloat","SF"), subForest = []}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"full\""), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.0,0.0)"), subForest = [Node {rootLabel = ("WithBorder","WithBorder 0 []"), subForest = [Node {rootLabel = ("Full","Full"), subForest = []}]}]}]}]}]}]}
+
+tree5 = Node {rootLabel = ("WorkspaceDir","WorkspaceDir \"~\""), subForest = [Node {rootLabel = ("NewSelect",""), subForest = [Node {rootLabel = ("NewSelectBool","True"), subForest = [Node {rootLabel = ("Named","Named \"tab\""), subForest = [Node {rootLabel = ("AvoidStruts","AvoidStruts (fromList [U,D,R,L])"), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.5,0.5)"), subForest = [Node {rootLabel = ("ConfigurableBorder","ConfigurableBorder Never []"), subForest = [Node {rootLabel = ("Decoration","Decoration   (Theme {activeColor = \"#999999\", inactiveColor = \"#666666\", urgentColor = \"#FFFF00\", activeBorderColor = \"#FFFFFF\", inactiveBorderColor = \"#BBBBBB\", urgentBorderColor = \"##00FF00\", activeTextColor = \"#FFFFFF\", inactiveTextColor = \"#BFBFBF\", urgentTextColor = \"#FF0000\", fontName = \"-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*\", decoWidth = 200, decoHeight = 20, windowTitleAddons = []}) (Tabbed Top WhenPlural)"), subForest = [Node {rootLabel = ("Simplest","Simplest"), subForest = []}]}]}]}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"tiled\""), subForest = [Node {rootLabel = ("AvoidStruts","AvoidStruts (fromList [U,D,R,L])"), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.5,0.5)"), subForest = [Node {rootLabel = ("ConfigurableBorder","ConfigurableBorder Never []"), subForest = [Node {rootLabel = ("MouseResizableTile","MRT {nmaster = 1, masterFrac = 1 % 2, leftFracs = [], rightFracs = [], draggers = [], focusPos = 0, numWindows = 0, isMirrored = False}"), subForest = []}]}]}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"mtiled\""), subForest = [Node {rootLabel = ("AvoidStruts","AvoidStruts (fromList [U,D,R,L])"), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.5,0.5)"), subForest = [Node {rootLabel = ("ConfigurableBorder","ConfigurableBorder Never []"), subForest = [Node {rootLabel = ("MouseResizableTile","MRT {nmaster = 1, masterFrac = 1 % 2, leftFracs = [], rightFracs = [], draggers = [], focusPos = 0, numWindows = 0, isMirrored = True}"), subForest = []}]}]}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"float\""), subForest = [Node {rootLabel = ("WA","WA True True []"), subForest = [Node {rootLabel = ("SimplestFloat","SF"), subForest = []}]}]}]},Node {rootLabel = ("NewSelectBool","False"), subForest = [Node {rootLabel = ("Named","Named \"full\""), subForest = [Node {rootLabel = ("LayoutHints","LayoutHints (0.0,0.0)"), subForest = [Node {rootLabel = ("WithBorder","WithBorder 0 []"), subForest = [Node {rootLabel = ("Full","Full"), subForest = []}]}]}]}]}]}]}
