@@ -46,6 +46,15 @@ prop_matchTrees_mod t1 t2 t3 = (treeDebugEq `on` (fmap unFst)) tn' (matchTrees t
         to = Node (Fst (1234567890, 0)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) sub
         tn' = Node (Fst (123456789, 0)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) sub
 
+-- If a layout is added to the end, we retain all old data.
+prop_matchTrees_add t1 t2 t3 t4 = ((==) `on` (fmap unFst)) tn' (matchTrees tn to)
+    where
+        subO = map (fmap (\a -> Fst (a, a))) [ t1, t2, t3 ]
+        subN = map (fmap (\a -> Fst (a, a))) [ t4 ]
+        tn = Node (Fst (0, 0)) $ subO ++ subN
+        to = Node (Fst (0, 5)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) subO
+        tn' = Node (Fst (0, 5)) $ map (fmap (\(Fst (a, b)) -> Fst (a, b + 5))) subO ++ subN
+
 {- Does not hold, since intersect [1,1] [1] = [1,1].
 prop_intersect' xs ys = intersect' xs' ys' == intersect xs' ys'
     where types = (xs :: [Int], ys :: [Int])
