@@ -55,17 +55,6 @@ flexibleReadInstance lay = do
     return [ InstanceD [] (AppT (ConT (mkName "Read")) typ) inst ]
 
 
-newtype Fst = Fst (String, String) deriving (Show, Read)
-
-unFst (Fst x) = x
-
-instance Eq Fst where
-    (==) = (==) `on` fst . unFst
-
-instance Ord Fst where
-    compare = compare `on` fst . unFst
-
-
 class (Read (l a), LayoutClass l a) => ReadShowTree l a where
     readTreeDef :: l a -> Tree (String, String) -> l a
     readTreeDef def (Node (_, val) []) = fromMaybe def $ maybeRead val
