@@ -90,8 +90,10 @@ instance (Read (m a), Show (m a), ReadShowTree (l a), LayoutModifier m a) =>
         ModifiedLayout (fromMaybe mod $ maybeRead val) (readTreeDef lay child)
     readTreeDef def _ = def
 
-    showTree (ModifiedLayout a b) = Node (head $ words a', a') [ showTree b ]
+    showTree (ModifiedLayout a b) = Node (safeHead $ words a', a') [ showTree b ]
         where a' = show a
+              safeHead (a:_) = a
+              safeHead _ = ""
 
 -- | The 'ReadShowTree' instance for the 'NewSelect' combinator. This shows
 -- into a node with as many children as layout choices in this select.

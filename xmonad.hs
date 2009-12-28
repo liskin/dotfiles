@@ -8,6 +8,7 @@ import Data.IORef
 import Data.List
 import qualified Data.Map as M
 import Data.Monoid
+import Data.Tree
 import Graphics.X11.ExtraTypes.XF86
 import Graphics.X11.Xinerama
 import System.Directory ( getCurrentDirectory )
@@ -47,7 +48,6 @@ import XMonad.Layout.FlexibleRead
 myTerminal      = "urxvt"
 myBorderWidth   = 2
 myModMask       = mod4Mask
-myNumlockMask   = mod2Mask
 myWorkspaces    = map show [1..12]
 myNormalBorderColor  = "#dddddd"
 myFocusedBorderColor = "#ff0000"
@@ -69,7 +69,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0, xF86XK_AudioMute), spawn "if amixer get Master | grep \"\\[off\\]\" ; then amixer set Master on; else amixer set Master off; fi")
 
     , ((modMask,               xK_Escape), kill)
-    -- , ((modMask,               xK_space ), sendMessage NextLayout)
+    , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
     , ((modMask,               xK_space ), runSelectedAction defaultGSConfig laySels)
     , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
     , ((controlMask,           xK_space ), refresh)
@@ -126,12 +126,13 @@ myLayout = flexibleRead $ dir $
     named "tiled" (fixl mouseResizableTile) |||
     named "mtiled" (fixl mouseResizableTileMirrored) |||
     named "tab" (fixl $ simpleTabbed) |||
-    named "float" simplestFloat |||
+    named "float" floating |||
     named "full" (layoutHints $ noBorders Full)
   where
      dir = workspaceDir "~"
      fixl x  = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
+     floating = avoidStruts . layoutHints . smartBorders $ floatSimpleDefault
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled", "mtiled", "tab", "float", "full" ]
@@ -221,15 +222,15 @@ myStartupHook = do
 
 -- Main.
 main = do
+    -- putStr $ drawTree $ fmap show $ (read $ show myLayout :: Tree (String, String))
     restartxmobar
 
-    threadDelay 100000
+    -- threadDelay 100000
     let defaults = defaultConfig {
             terminal           = myTerminal,
             focusFollowsMouse  = myFocusFollowsMouse,
             borderWidth        = myBorderWidth,
             modMask            = myModMask,
-            numlockMask        = myNumlockMask,
             workspaces         = myWorkspaces,
             normalBorderColor  = myNormalBorderColor,
             focusedBorderColor = myFocusedBorderColor,
