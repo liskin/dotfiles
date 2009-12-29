@@ -20,6 +20,7 @@ import System.IO.Unsafe
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FocusNth
 import XMonad.Actions.GridSelect
+import XMonad.Actions.MouseResize
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
@@ -28,14 +29,16 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
+import XMonad.Layout.Decoration
 import XMonad.Layout.DecorationMadness
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
-import XMonad.Layout.SimplestFloat
+import XMonad.Layout.SimpleFloat
 import XMonad.Layout.Tabbed
+import XMonad.Layout.WindowArranger
 import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
 import XMonad.Util.Run
@@ -132,7 +135,9 @@ myLayout = flexibleRead $ dir $
      dir = workspaceDir "~"
      fixl x  = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
-     floating = avoidStruts . layoutHints . smartBorders $ floatSimpleDefault
+     floating = avoidStruts . decoration shrinkText decoTheme (Simple False) .
+         mouseResize . layoutHints . smartBorders . windowArrangeAll $ SF 20
+     decoTheme = defaultTheme { decoWidth = 2000 }
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled", "mtiled", "tab", "float", "full" ]
