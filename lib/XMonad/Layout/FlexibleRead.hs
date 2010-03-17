@@ -25,7 +25,7 @@ data FlexibleRead l a = FlexibleRead (l a)
 -- as a normal modifier in 'ModifiedLayout' since the 'Show' and 'Read'
 -- instances of 'ModifiedLayout' can not be overlapped.
 instance (LayoutClass l a, ReadShowTree (l a)) => LayoutClass (FlexibleRead l) a where
-    runLayout (Workspace i (FlexibleRead l) ms) r =
+    runLayout (Workspace i (FlexibleRead l) ms) r = do
         fmap (fmap FlexibleRead) `fmap` runLayout (Workspace i l ms) r
     doLayout (FlexibleRead l) r s  = fmap (fmap FlexibleRead) `fmap` doLayout l r s
     emptyLayout (FlexibleRead l) r = fmap (fmap FlexibleRead) `fmap` emptyLayout l r

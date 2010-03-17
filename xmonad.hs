@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances, TemplateHaskell #-}
+{-# LANGUAGE FlexibleInstances, TemplateHaskell, ParallelListComp #-}
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
@@ -16,6 +16,7 @@ import System.Environment
 import System.Exit
 import System.IO
 import System.IO.Unsafe
+import System.Posix.Process
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FocusNth
@@ -42,6 +43,7 @@ import XMonad.Layout.WindowArranger
 import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
 import XMonad.Util.Run
+import XMonad.Util.NamedWindows
 import XMonad.Util.SpawnOnce
 
 import XMonad.Layout.FlexibleRead
@@ -100,6 +102,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     , ((modMask              , xK_q     ), restart "xmonad" True)
+    , ((mod1Mask .|. controlMask, xK_q  ), dumpLayouts)
     ]
     ++
 
@@ -111,7 +114,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_Right ), swapTo Next)
     ]
     ++
-    [ ((modMask, k), focusNth i) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]) ]
+    [ ((modMask .|. m, k), focusNth i >> a) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]),
+        (m, a) <- [ (0, return ()), (shiftMask, windows W.swapMaster) ] ]
+    -- [ ((modMask, k), focusNth i) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]) ]
     ++
 
     [ ((modMask,               xK_Tab   ), nextScreen)
@@ -125,7 +130,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 
 -- Layouts.
-myLayout = flexibleRead $ dir $
+myLayout = {-flexibleRead $ -} dir $
     named "tiled" (fixl mouseResizableTile) |||
     named "mtiled" (fixl mouseResizableTileMirrored) |||
     named "tab" (fixl $ simpleTabbed) |||
@@ -142,7 +147,7 @@ myLayout = flexibleRead $ dir $
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled", "mtiled", "tab", "float", "full" ]
 
-$( flexibleReadInstance 'myLayout )
+-- $( flexibleReadInstance 'myLayout )
 
 
 -- Managehook.
@@ -179,6 +184,7 @@ myLogHook = do
             , ppSep = " | "
             }
     dynamicLogString myPP >>= xmonadPropLog
+    xmobarWindowLists
     updatePointer (Relative 0.5 0.5)
 
 
@@ -199,14 +205,59 @@ shortenL n xs | length xs < n = xs
 
 -- Restart xmobar on RAndR.
 myEventHook (ConfigureEvent {ev_window = w}) = do
-    whenX (isRoot w) (io restartxmobar)
+    whenX (isRoot w) restartxmobar
     return $ All True
 myEventHook _ = mempty
 
+restartxmobar :: X ()
 restartxmobar = do
     disp <- io $ getEnv "DISPLAY"
     when (disp /= ":1") $ do
-        spawn "killall xmobar; exec xmobar -x 1"
+        pid <- spawnPID "killall xmobar"
+        io $ catch (getProcessStatus True False pid) (const $ return undefined)
+        spawn "xmobar -x 1"
+        xmobarScreens
+
+xmobarScreens :: X ()
+xmobarScreens = do
+    ws <- gets windowset
+    forM_ (W.screens ws) $ \scr -> do
+        let S num = W.screen scr
+            n = show num
+            prop = "_XMONAD_LOG_SCREEN_" ++ show num
+        spawn $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%' -f '-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*'"
+
+xmobarWindowLists :: X ()
+xmobarWindowLists = do
+    ws <- gets windowset
+    let S current = W.screen $ W.current ws
+    forM_ (W.screens ws) $ \scr -> do
+        (l,c,r) <- screenWins scr
+        let S num = W.screen scr
+            prop = "_XMONAD_LOG_SCREEN_" ++ show num
+
+            active = xmobarColor "#ffff00" "" . shorten 30
+            inactive = xmobarColor "#808000" "" . shorten 30
+
+            act = if current == num then active else inactive
+            l1 = zip (repeat inactive) l ++ zip (repeat act) c ++ zip (repeat inactive) r
+            finPP = myPP [ f (show n ++ " " ++ show t) | (f,t) <- l1 | n <- [1..] ]
+        dynamicLogString finPP >>= xmonadPropLog' prop
+
+    where
+        myPP l = xmobarPP
+            { ppSep = "  "
+            , ppOrder = \(_:_:_:l) -> l
+            , ppExtras = map (return . Just) l
+            }
+
+screenWins scr = case W.stack . W.workspace $ scr of
+    Nothing -> return ([],[],[])
+    Just (W.Stack x l r) -> do
+        l' <- mapM getName (reverse l)
+        x' <- getName x
+        r' <- mapM getName r
+        return (l', [x'], r')
 
 
 -- Startuphook.
@@ -223,12 +274,15 @@ myStartupHook = do
         , "wmix"
         , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
         ]
+    restartxmobar
 
+dumpLayouts = do
+    lay <- gets windowset
+    io $ appendFile "/tmp/xmonad_layout_log" ("\n\n-----\n" ++ show lay)
 
 -- Main.
 main = do
     -- putStr $ drawTree $ fmap show $ (read $ show myLayout :: Tree (String, String))
-    restartxmobar
 
     -- threadDelay 100000
     let defaults = defaultConfig {
