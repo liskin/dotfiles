@@ -133,19 +133,20 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 myLayout = {-flexibleRead $ -} dir $
     named "tiled" (fixl mouseResizableTile) |||
     named "mtiled" (fixl mouseResizableTileMirrored) |||
-    named "tab" (fixl $ simpleTabbed) |||
-    named "float" floating |||
+    -- named "tab" (fixl $ simpleTabbed) |||
+    named "tab" (fixl Full) |||
+    -- named "float" floating |||
     named "full" (layoutHints $ noBorders Full)
   where
      dir = workspaceDir "~"
      fixl x  = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
-     floating = avoidStruts . decoration shrinkText decoTheme (Simple False) .
+     {-floating = avoidStruts . decoration shrinkText decoTheme (Simple False) .
          mouseResize . layoutHints . smartBorders . windowArrangeAll $ SF 20
-     decoTheme = defaultTheme { decoWidth = 2000 }
+     decoTheme = defaultTheme { decoWidth = 2000 }-}
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
-    where l = [ "tiled", "mtiled", "tab", "float", "full" ]
+    where l = [ "tiled", "mtiled", "tab", {-"float",-} "full" ]
 
 -- $( flexibleReadInstance 'myLayout )
 
@@ -225,30 +226,35 @@ xmobarScreens = do
         let S num = W.screen scr
             n = show num
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
-        spawn $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%' -f '-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*'"
+        -- spawn $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%' -f '-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*'"
+        spawn $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%'"
 
 xmobarWindowLists :: X ()
 xmobarWindowLists = do
+    name <- getWorkspaceNames
     ws <- gets windowset
     let S current = W.screen $ W.current ws
     forM_ (W.screens ws) $ \scr -> do
         (l,c,r) <- screenWins scr
         let S num = W.screen scr
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
+            tag = W.tag . W.workspace $ scr
 
             active = xmobarColor "#ffff00" "" . shorten 30
             inactive = xmobarColor "#808000" "" . shorten 30
-
             act = if current == num then active else inactive
+            tagprint = if current == num then ppCurrent finPP else ppVisible finPP
+
             l1 = zip (repeat inactive) l ++ zip (repeat act) c ++ zip (repeat inactive) r
-            finPP = myPP [ f (show n ++ " " ++ show t) | (f,t) <- l1 | n <- [1..] ]
+            finPP = myPP $ tagprint (name tag) : [ f (show n ++ " " ++ show t) | (f,t) <- l1 | n <- [1..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
     where
         myPP l = xmobarPP
-            { ppSep = "  "
+            { ppSep = "   "
             , ppOrder = \(_:_:_:l) -> l
             , ppExtras = map (return . Just) l
+            , ppVisible = xmobarColor "green" "" . ppVisible xmobarPP
             }
 
 screenWins scr = case W.stack . W.workspace $ scr of
