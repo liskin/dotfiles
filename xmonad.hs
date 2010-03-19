@@ -49,15 +49,6 @@ import XMonad.Util.SpawnOnce
 import XMonad.Layout.FlexibleRead
 
 
--- Defaults.
-myTerminal      = "urxvt"
-myBorderWidth   = 2
-myModMask       = mod4Mask
-myWorkspaces    = map show [1..12]
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
-
-
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ XMonad.terminal conf)
@@ -133,17 +124,12 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 myLayout = {-flexibleRead $ -} dir $
     named "tiled" (fixl mouseResizableTile) |||
     named "mtiled" (fixl mouseResizableTileMirrored) |||
-    -- named "tab" (fixl $ simpleTabbed) |||
     named "tab" (fixl Full) |||
-    -- named "float" floating |||
     named "full" (layoutHints $ noBorders Full)
   where
      dir = workspaceDir "~"
      fixl x  = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
-     {-floating = avoidStruts . decoration shrinkText decoTheme (Simple False) .
-         mouseResize . layoutHints . smartBorders . windowArrangeAll $ SF 20
-     decoTheme = defaultTheme { decoWidth = 2000 }-}
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled", "mtiled", "tab", {-"float",-} "full" ]
@@ -155,7 +141,6 @@ laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
 myManageHook = composeAll
     [ floatNextHook
     , className =? "MPlayer"        --> doFloat
-    --, className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "wmix"           --> doHideIgnore
@@ -165,11 +150,6 @@ myManageHook = composeAll
     , manageDocks
     ]
     -- > xprop | grep WM_CLASS
-
-
--- Mousefocus.
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
 
 
 -- Loghook.
@@ -230,7 +210,6 @@ xmobarScreens = do
         let S num = W.screen scr
             n = show num
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
-        -- spawn $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%' -f '-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*'"
         spawn $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%'"
 
 xmobarWindowLists :: X ()
@@ -296,13 +275,13 @@ main = do
 
     -- threadDelay 100000
     let defaults = defaultConfig {
-            terminal           = myTerminal,
-            focusFollowsMouse  = myFocusFollowsMouse,
-            borderWidth        = myBorderWidth,
-            modMask            = myModMask,
-            workspaces         = myWorkspaces,
-            normalBorderColor  = myNormalBorderColor,
-            focusedBorderColor = myFocusedBorderColor,
+            terminal           = "urxvt",
+            focusFollowsMouse  = True,
+            borderWidth        = 2,
+            modMask            = mod4Mask,
+            workspaces         = map show [1..12],
+            normalBorderColor  = "#dddddd",
+            focusedBorderColor = "#ff0000",
 
             keys               = myKeys,
             mouseBindings      = myMouseBindings,
