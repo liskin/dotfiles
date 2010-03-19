@@ -183,6 +183,7 @@ myLogHook = do
                 ]
             , ppVisible = xmobarColor "green" "" . ppVisible namesPP
             , ppSep = " | "
+            , ppOrder = \(w:l:_:s) -> w:l:s
             }
     dynamicLogString myPP >>= xmonadPropLog
     xmobarWindowLists
@@ -207,6 +208,9 @@ shortenL n xs | length xs < n = xs
 -- Restart xmobar on RAndR.
 myEventHook (ConfigureEvent {ev_window = w}) = do
     whenX (isRoot w) restartxmobar
+    return $ All True
+myEventHook (MapNotifyEvent {ev_window = w}) = do
+    whenX ((not `fmap` (isClient w)) <&&> runQuery checkDock w) refresh
     return $ All True
 myEventHook _ = mempty
 
