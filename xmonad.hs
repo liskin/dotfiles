@@ -216,6 +216,7 @@ xmobarWindowLists :: X ()
 xmobarWindowLists = do
     name <- getWorkspaceNames
     ws <- gets windowset
+    urgents <- readUrgents
     let S current = W.screen $ W.current ws
     forM_ (W.screens ws) $ \scr -> do
         (l,c,r) <- screenWins scr
@@ -223,13 +224,15 @@ xmobarWindowLists = do
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
             tag = W.tag . W.workspace $ scr
 
-            active = xmobarColor "#ffff00" "" . shorten 30
-            inactive = xmobarColor "#808000" "" . shorten 30
-            act = if current == num then active else inactive
+            active _ = xmobarColor "#ffff00" "" . shorten 30
+            inactive w = if w `elem` urgents
+                then xmobarColor "#ff0000" "#ffff00" . shorten 30
+                else xmobarColor "#808000" "" . shorten 30
+            act = if num == current then active else inactive
             tagprint = if current == num then ppCurrent finPP else ppVisible finPP
 
             l1 = zip (repeat inactive) l ++ zip (repeat act) c ++ zip (repeat inactive) r
-            finPP = myPP $ tagprint (name tag) : [ f (show n ++ " " ++ show t) | (f,t) <- l1 | n <- [1..] ]
+            finPP = myPP $ tagprint (name tag) : [ f w (show n ++ " " ++ show t) | (f,(w,t)) <- l1 | n <- [1..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
     where
@@ -246,7 +249,7 @@ screenWins scr = case W.stack . W.workspace $ scr of
         l' <- mapM getName (reverse l)
         x' <- getName x
         r' <- mapM getName r
-        return (l', [x'], r')
+        return (zip l l', [(x, x')], zip r r')
 
 
 -- Startuphook.
