@@ -2,6 +2,7 @@
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
+import Control.Applicative
 import Control.Concurrent (threadDelay)
 import Control.Monad
 import Data.IORef
@@ -45,6 +46,7 @@ import XMonad.Prompt
 import XMonad.Util.Run
 import XMonad.Util.NamedWindows
 import XMonad.Util.SpawnOnce
+import XMonad.Util.Stack
 
 import XMonad.Layout.FlexibleRead
 
@@ -219,20 +221,23 @@ xmobarWindowLists = do
     urgents <- readUrgents
     let S current = W.screen $ W.current ws
     forM_ (W.screens ws) $ \scr -> do
-        (l,c,r) <- screenWins scr
+        wins <- screenWins scr
         let S num = W.screen scr
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
             tag = W.tag . W.workspace $ scr
 
-            active _ = xmobarColor "#ffff00" "" . shorten 30
-            inactive w = if w `elem` urgents
-                then xmobarColor "#ff0000" "#ffff00" . shorten 30
-                else xmobarColor "#808000" "" . shorten 30
-            act = if num == current then active else inactive
-            tagprint = if current == num then ppCurrent finPP else ppVisible finPP
+            fmt (True, _, n) | num == current =
+                     xmobarColor "#ffff00" ""        . shorten 30 $ n
+            fmt (_,    w, n) = if w `elem` urgents
+                then xmobarColor "#ff0000" "#ffff00" . shorten 30 $ n
+                else xmobarColor "#808000" ""        . shorten 30 $ n
 
-            l1 = zip (repeat inactive) l ++ zip (repeat act) c ++ zip (repeat inactive) r
-            finPP = myPP $ tagprint (name tag) : [ f w (show n ++ " " ++ show t) | (f,(w,t)) <- l1 | n <- [1..] ]
+            tagprint = if current == num
+                then ppCurrent finPP
+                else ppVisible finPP
+
+            finPP = myPP $ tagprint (name tag) :
+                [ fmt (b, w, show n ++ " " ++ show t) | (b,w,t) <- wins | n <- [1..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
     where
@@ -243,13 +248,10 @@ xmobarWindowLists = do
             , ppVisible = xmobarColor "green" "" . ppVisible xmobarPP
             }
 
-screenWins scr = case W.stack . W.workspace $ scr of
-    Nothing -> return ([],[],[])
-    Just (W.Stack x (reverse -> l) r) -> do
-        l' <- mapM getName l
-        x' <- getName x
-        r' <- mapM getName r
-        return (zip l l', [(x, x')], zip r r')
+screenWins scr = forM stack $ either (name False) (name True)
+    where
+        stack = toTags . W.stack . W.workspace $ scr
+        name b = \w -> (,,) <$> pure b <*> pure w <*> getName w
 
 
 -- Startuphook.
