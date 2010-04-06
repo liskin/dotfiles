@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances, TemplateHaskell, ParallelListComp #-}
+{-# LANGUAGE FlexibleInstances, TemplateHaskell, ParallelListComp, ViewPatterns #-}
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
@@ -245,8 +245,8 @@ xmobarWindowLists = do
 
 screenWins scr = case W.stack . W.workspace $ scr of
     Nothing -> return ([],[],[])
-    Just (W.Stack x l r) -> do
-        l' <- mapM getName (reverse l)
+    Just (W.Stack x (reverse -> l) r) -> do
+        l' <- mapM getName l
         x' <- getName x
         r' <- mapM getName r
         return (zip l l', [(x, x')], zip r r')
