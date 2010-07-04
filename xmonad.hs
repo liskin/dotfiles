@@ -26,6 +26,7 @@ import XMonad.Actions.MouseResize
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
@@ -117,18 +118,20 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
-    , ((mod1Mask, button2), (\w -> focus w >> {-windows W.swapMaster >>-} windows W.shiftMaster))
+    , ((mod1Mask, button2), windows . (W.swapMaster .) . W.focusWindow)
     , ((mod1Mask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
     ]
 
 
 -- Layouts.
 myLayout = {-flexibleRead $ -} dir $
-    named "tiled" (fixl mouseResizableTile) |||
-    named "mtiled" (fixl mouseResizableTileMirrored) |||
+    named "tiled" (fixl mrt) |||
+    named "mtiled" (fixl mrt') |||
     named "tab" (fixl Full) |||
     named "full" (layoutHints $ noBorders Full)
   where
+     mrt = mouseResizableTile          { draggerType = BordersDragger }
+     mrt' = mouseResizableTileMirrored { draggerType = BordersDragger }
      dir = workspaceDir "~"
      fixl x  = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
@@ -142,7 +145,7 @@ laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
 -- Managehook.
 myManageHook = composeAll
     [ floatNextHook
-    , className =? "MPlayer"        --> doFloat
+    -- , className =? "MPlayer"        --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "wmix"           --> doHideIgnore
@@ -194,6 +197,10 @@ myEventHook (ConfigureEvent {ev_window = w}) = do
 myEventHook (MapNotifyEvent {ev_window = w}) = do
     whenX ((not `fmap` (isClient w)) <&&> runQuery checkDock w) refresh
     return $ All True
+myEventHook (PropertyEvent { ev_event_type = t, ev_atom = a })
+    | t == propertyNotify && a == wM_NORMAL_HINTS = do
+        refresh
+        return $ All True
 myEventHook _ = mempty
 
 restartxmobar :: X ()
@@ -298,5 +305,6 @@ main = do
             handleEventHook    = myEventHook
             }
     xmonad $
+        ewmh $
         withUrgencyHook NoUrgencyHook $
         defaults
