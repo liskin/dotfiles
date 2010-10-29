@@ -41,6 +41,7 @@ import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
 import XMonad.Layout.SimpleFloat
 import XMonad.Layout.Tabbed
+import XMonad.Layout.TrackFloating
 import XMonad.Layout.WindowArranger
 import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
@@ -55,6 +56,7 @@ import XMonad.Layout.FlexibleRead
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ XMonad.terminal conf)
+    , ((mod1Mask .|. controlMask, xK_f  ), spawn "urxvt -e ssh tjanousek.brno.nic.cz")
     , ((mod1Mask .|. controlMask, xK_t  ), spawn "LANG=cs_CZ rxvt")
     , ((mod1Mask .|. controlMask, xK_h  ), spawn "LANG=cs_CZ rxvt -e /home/tomi/bin/hnb")
     , ((modMask,            xK_semicolon), spawn "xlock")
@@ -133,7 +135,7 @@ myLayout = {-flexibleRead $ -} dir $
      mrt = mouseResizableTile          { draggerType = BordersDragger }
      mrt' = mouseResizableTileMirrored { draggerType = BordersDragger }
      dir = workspaceDir "~"
-     fixl x  = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
+     fixl x  = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
@@ -184,24 +186,28 @@ shortenDir s = case myHome `isPrefixOf` s of
     True -> '~' : drop (length myHome) s
 
 shortenL :: Int -> String -> String
-shortenL n xs | length xs < n = xs
-              | otherwise     = end ++ (take (n - length end) xs)
+shortenL n xs | l < n     = xs
+              | otherwise = end ++ (drop (l - n + length end) xs)
  where
     end = "..."
+    l = length xs
 
 
 -- Restart xmobar on RAndR.
-myEventHook (ConfigureEvent {ev_window = w}) = do
+myEvHook (ConfigureEvent {ev_window = w}) = do
     whenX (isRoot w) restartxmobar
     return $ All True
-myEventHook (MapNotifyEvent {ev_window = w}) = do
-    whenX ((not `fmap` (isClient w)) <&&> runQuery checkDock w) refresh
-    return $ All True
-myEventHook (PropertyEvent { ev_event_type = t, ev_atom = a })
-    | t == propertyNotify && a == wM_NORMAL_HINTS = do
-        refresh
-        return $ All True
-myEventHook _ = mempty
+myEvHook _ = mempty
+
+myEventHook = myhintsEventHook <+> docksEventHook <+> myEvHook
+
+myhintsEventHook :: Event -> X All
+myhintsEventHook (PropertyEvent { ev_event_type = t, ev_atom = a, ev_window = w })
+    | t == propertyNotify && a == wM_NORMAL_HINTS
+    = do
+        whenX (runQuery (className =? "MPlayer") w) $ refresh
+        return (All True)
+myhintsEventHook _ = return (All True)
 
 restartxmobar :: X ()
 restartxmobar = do
@@ -263,7 +269,6 @@ screenWins scr = forM stack $ either (name False) (name True)
 
 -- Startuphook.
 myStartupHook = do
-    setWMName "LG3D"
     disp <- io $ getEnv "DISPLAY"
     when (disp /= ":1") $ mapM_ spawnOnce
         [ "xset r rate 200 25"
@@ -276,6 +281,8 @@ myStartupHook = do
         , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
         ]
     restartxmobar
+
+javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
 
 dumpLayouts = do
     lay <- gets windowset
@@ -305,6 +312,7 @@ main = do
             handleEventHook    = myEventHook
             }
     xmonad $
+        javaHack $
         ewmh $
         withUrgencyHook NoUrgencyHook $
         defaults
