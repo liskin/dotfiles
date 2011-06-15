@@ -275,7 +275,7 @@ myStartupHook = do
         , "xset s off"
         , "xset dpms 300 300 300"
         , "bsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
-        , "killall halevt; halevt"
+        , "killall udisks-automounter; udisks-automounter"
         , "kwalletd"
         , "wmix"
         , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
