@@ -53,6 +53,8 @@ import XMonad.Util.Stack
 import XMonad.Layout.FlexibleRead
 
 
+up = updatePointer (Relative 0.5 0.5)
+
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ XMonad.terminal conf)
@@ -61,7 +63,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((mod1Mask .|. controlMask, xK_h  ), spawn "LANG=cs_CZ rxvt -e /home/tomi/bin/hnb")
     , ((modMask,            xK_semicolon), spawn "xlock")
     , ((0,                     xK_Menu  ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
-    , ((modMask,               xK_Menu  ), goToSelected defaultGSConfig)
+    , ((modMask,               xK_Menu  ), goToSelected defaultGSConfig >> up)
     , ((modMask,               xK_c     ), changeDir defaultXPConfig)
     , ((modMask,               xK_v     ), renameWorkspace defaultXPConfig)
 
@@ -75,19 +77,19 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
     , ((controlMask,           xK_space ), refresh)
 
-    , ((mod1Mask,              xK_Tab   ), windows W.focusDown)
-    , ((modMask,               xK_j     ), windows W.focusDown)
-    , ((modMask,               xK_k     ), windows W.focusUp  )
-    , ((modMask,               xK_m     ), windows W.focusMaster  )
-    , ((modMask,               xK_Return), windows W.swapMaster)
-    , ((modMask .|. shiftMask, xK_j     ), windows W.swapDown  )
-    , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp    )
+    , ((mod1Mask,              xK_Tab   ), windows W.focusDown   >> up)
+    , ((modMask,               xK_j     ), windows W.focusDown   >> up)
+    , ((modMask,               xK_k     ), windows W.focusUp     >> up)
+    , ((modMask,               xK_m     ), windows W.focusMaster >> up)
+    , ((modMask,               xK_Return), windows W.swapMaster  >> up)
+    , ((modMask .|. shiftMask, xK_j     ), windows W.swapDown    >> up)
+    , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp      >> up)
 
     , ((modMask,               xK_h     ), sendMessage Shrink)
     , ((modMask,               xK_l     ), sendMessage Expand)
 
     , ((modMask,               xK_w     ), withFocused $ \w -> windows $ W.float w (W.RationalRect 0 0 1 1))
-    , ((modMask,               xK_t     ), withFocused $ windows . W.sink)
+    , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
     , ((modMask,               xK_f     ), toggleFloatNext >> runLogHook)
     , ((modMask .|. shiftMask, xK_f     ), toggleFloatAllNew >> runLogHook)
 
@@ -102,21 +104,21 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
     ++
 
-    [((m, k), windows f)
+    [((m, k), windows f >> up)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
         , (f, m) <- [(W.view i, mod1Mask), (W.view i . W.shift i, controlMask)]] ++
-    [ ((modMask,               xK_n     ), toggleWS)
-    , ((modMask .|. shiftMask, xK_Left  ), swapTo Prev)
-    , ((modMask .|. shiftMask, xK_Right ), swapTo Next)
+    [ ((modMask,               xK_n     ), toggleWS >> up)
+    , ((modMask .|. shiftMask, xK_Left  ), swapTo Prev >> up)
+    , ((modMask .|. shiftMask, xK_Right ), swapTo Next >> up)
     ]
     ++
-    [ ((modMask .|. m, k), focusNth i >> a) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]),
+    [ ((modMask .|. m, k), focusNth i >> a >> up) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]),
         (m, a) <- [ (0, return ()), (shiftMask, windows W.swapMaster) ] ]
     -- [ ((modMask, k), focusNth i) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]) ]
     ++
 
-    [ ((modMask,               xK_Tab   ), nextScreen)
-    , ((modMask .|. shiftMask, xK_Tab   ), swapNextScreen) ]
+    [ ((modMask,               xK_Tab   ), nextScreen     >> up)
+    , ((modMask .|. shiftMask, xK_Tab   ), swapNextScreen >> up) ]
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
@@ -174,7 +176,6 @@ myLogHook = do
             }
     dynamicLogString myPP >>= xmonadPropLog
     xmobarWindowLists
-    updatePointer (Relative 0.5 0.5)
 
 
 -- Current directory printer.
