@@ -1,0 +1,6 @@
+*.o
+*.p_o
+*.hi
+*.p_hi
+*.orig
+*.zal*
