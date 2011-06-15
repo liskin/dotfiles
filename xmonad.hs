@@ -200,15 +200,7 @@ myEvHook (ConfigureEvent {ev_window = w}) = do
     return $ All True
 myEvHook _ = mempty
 
-myEventHook = myhintsEventHook <+> docksEventHook <+> myEvHook
-
-myhintsEventHook :: Event -> X All
-myhintsEventHook (PropertyEvent { ev_event_type = t, ev_atom = a, ev_window = w })
-    | t == propertyNotify && a == wM_NORMAL_HINTS
-    = do
-        whenX (runQuery (className =? "MPlayer") w) $ refresh
-        return (All True)
-myhintsEventHook _ = return (All True)
+myEventHook = hintsEventHook <+> docksEventHook <+> myEvHook
 
 restartxmobar :: X ()
 restartxmobar = do
