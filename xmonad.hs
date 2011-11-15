@@ -28,6 +28,7 @@ import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
+import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
@@ -55,12 +56,17 @@ import XMonad.Layout.FlexibleRead
 
 up = updatePointer (Relative 0.5 0.5)
 
+xF86XK_TouchpadToggle = 269025193
+
+xcompmgr = "xcompmgr -F"
+
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ XMonad.terminal conf)
     , ((mod1Mask .|. controlMask, xK_f  ), spawn "urxvt -e ssh tjanousek.brno.nic.cz")
     , ((mod1Mask .|. controlMask, xK_t  ), spawn "LANG=cs_CZ rxvt")
     , ((mod1Mask .|. controlMask, xK_h  ), spawn "LANG=cs_CZ rxvt -e /home/tomi/bin/hnb")
+--    , ((modMask,            xK_semicolon), spawn $ "killall xcompmgr; xlock; exec " ++ xcompmgr)
     , ((modMask,            xK_semicolon), spawn "xlock")
     , ((0,                     xK_Menu  ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
     , ((modMask,               xK_Menu  ), goToSelected defaultGSConfig >> up)
@@ -69,7 +75,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
     , ((0, xF86XK_AudioRaiseVolume), spawn "killall -USR1 wmix")
-    , ((0, xF86XK_AudioMute), spawn "if amixer get Master | grep \"\\[off\\]\" ; then amixer set Master on; else amixer set Master off; fi")
+    , ((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
+    , ((0, xF86XK_AudioRecord), spawn "amixer set Capture toggle")
+    , ((0, xF86XK_AudioPlay), spawn "echo pause > ~/mplayer_pipe")
+    , ((0, xF86XK_AudioPrev), spawn "echo pt_step -1 > ~/mplayer_pipe")
+    , ((0, xF86XK_AudioNext), spawn "echo pt_step  1 > ~/mplayer_pipe")
+    , ((0, xF86XK_TouchpadToggle), spawn "touchpad_toggle")
+    , ((mod1Mask, xK_space),       spawn "touchpad_toggle")
 
     , ((modMask,               xK_Escape), kill)
     , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
@@ -87,6 +99,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((modMask,               xK_h     ), sendMessage Shrink)
     , ((modMask,               xK_l     ), sendMessage Expand)
+    , ((modMask,               xK_u     ), sendMessage ShrinkSlave)
+    , ((modMask,               xK_i     ), sendMessage ExpandSlave)
 
     , ((modMask,               xK_w     ), withFocused $ \w -> windows $ W.float w (W.RationalRect 0 0 1 1))
     , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
@@ -176,6 +190,7 @@ myLogHook = do
             }
     dynamicLogString myPP >>= xmonadPropLog
     xmobarWindowLists
+    --fadeInactiveLogHook 0.87
 
 
 -- Current directory printer.
@@ -208,7 +223,7 @@ restartxmobar = do
     when (disp /= ":1") $ do
         pid <- spawnPID "killall xmobar"
         io $ catch (getProcessStatus True False pid) (const $ return undefined)
-        spawn "xmobar -x 1"
+        spawn "xmobar -x 0"
         xmobarScreens
 
 xmobarScreens :: X ()
@@ -267,11 +282,14 @@ myStartupHook = do
         [ "xset r rate 200 25"
         , "xset s off"
         , "xset dpms 300 300 300"
+        , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2"
+        , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1"
         , "bsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
         , "killall udisks-automounter; udisks-automounter"
         , "kwalletd"
         , "wmix"
         , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
+--        , xcompmgr
         ]
     restartxmobar
 
