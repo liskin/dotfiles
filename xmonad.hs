@@ -8,6 +8,7 @@ import Control.Monad
 import Data.IORef
 import Data.List
 import qualified Data.Map as M
+import Data.Maybe
 import Data.Monoid
 import Data.Tree
 import Graphics.X11.ExtraTypes.XF86
@@ -17,7 +18,8 @@ import System.Environment
 import System.Exit
 import System.IO
 import System.IO.Unsafe
-import System.Posix.Process
+import System.Posix.Signals
+import System.Posix.Types
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FocusNth
@@ -220,20 +222,18 @@ myEventHook = hintsEventHook <+> docksEventHook <+> myEvHook
 restartxmobar :: X ()
 restartxmobar = do
     disp <- io $ getEnv "DISPLAY"
-    when (disp /= ":1") $ do
-        pid <- spawnPID "killall xmobar"
-        io $ catch (getProcessStatus True False pid) (const $ return undefined)
-        spawn "xmobar -x 0"
-        xmobarScreens
+    io . mapM_ (signalProcess sigTERM) =<< xmobarGetPids
+    let mainxmobar = if disp == ":0" then [fmap (:[]) $ spawnPID "xmobar -x 0"] else []
+    xmobarSavePids . concat =<< sequence ([xmobarScreens] ++ mainxmobar)
 
-xmobarScreens :: X ()
+xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
     ws <- gets windowset
-    forM_ (W.screens ws) $ \scr -> do
+    forM (W.screens ws) $ \scr -> do
         let S num = W.screen scr
             n = show num
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
-        spawn $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%'"
+        spawnPID $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%'"
 
 xmobarWindowLists :: X ()
 xmobarWindowLists = do
@@ -274,22 +274,38 @@ screenWins scr = forM stack $ either (name False) (name True)
         stack = toTags . W.stack . W.workspace $ scr
         name b = \w -> (,,) <$> pure b <*> pure w <*> getName w
 
+xmobarSavePids :: [ ProcessID ] -> X ()
+xmobarSavePids pids = do
+    d <- asks display
+    r <- asks theRoot
+    prop <- getAtom $ "_XMONAD_XMOBARS"
+    typ <- getAtom "PID"
+    io $ changeProperty32 d r prop typ propModeReplace $ map fromIntegral pids
+
+xmobarGetPids :: X [ ProcessID ]
+xmobarGetPids = do
+    d <- asks display
+    r <- asks theRoot
+    prop <- getAtom $ "_XMONAD_XMOBARS"
+    fmap (map fromIntegral . fromMaybe []) $ io $ getWindowProperty32 d prop r
+
 
 -- Startuphook.
 myStartupHook = do
     disp <- io $ getEnv "DISPLAY"
-    when (disp /= ":1") $ mapM_ spawnOnce
+    mapM_ spawnOnce
         [ "xset r rate 200 25"
         , "xset s off"
         , "xset dpms 300 300 300"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1"
         , "bsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
-        , "killall udisks-automounter; udisks-automounter"
+        ]
+    when (disp == ":0") $ mapM_ spawnOnce
+        [ "killall udisks-automounter; udisks-automounter"
         , "kwalletd"
         , "wmix"
         , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
---        , xcompmgr
         ]
     restartxmobar
 
