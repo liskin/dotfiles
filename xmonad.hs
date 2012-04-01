@@ -1,4 +1,7 @@
-{-# LANGUAGE FlexibleInstances, TemplateHaskell, ParallelListComp, ViewPatterns #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ParallelListComp #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE ViewPatterns #-}
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
@@ -72,13 +75,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,            xK_semicolon), spawn "xlock")
     , ((0,                     xK_Menu  ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
     , ((modMask,               xK_Menu  ), goToSelected defaultGSConfig >> up)
-    , ((modMask,               xK_c     ), changeDir defaultXPConfig)
+    , ((modMask,               xK_d     ), changeDir defaultXPConfig)
     , ((modMask,               xK_v     ), renameWorkspace defaultXPConfig)
 
     , ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
     , ((0, xF86XK_AudioRaiseVolume), spawn "killall -USR1 wmix")
     , ((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
-    , ((0, xF86XK_AudioRecord), spawn "amixer set Capture toggle")
+    -- , ((0, xF86XK_AudioRecord), spawn "amixer set Min toggle; amixer set 'Internal Mic' toggle")
     , ((0, xF86XK_AudioPlay), spawn "echo pause > ~/mplayer_pipe")
     , ((0, xF86XK_AudioPrev), spawn "echo pt_step -1 > ~/mplayer_pipe")
     , ((0, xF86XK_AudioNext), spawn "echo pt_step  1 > ~/mplayer_pipe")
@@ -115,15 +118,21 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask              , xK_s     ), sendMessage ToggleStruts)
 
     , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
-    , ((modMask              , xK_q     ), restart "xmonad" True)
+    , ((modMask              , xK_q     ), restart (myHome ++ "/.xmonad/xmonad-i386-linux") True)
     , ((mod1Mask .|. controlMask, xK_q  ), dumpLayouts)
     ]
     ++
 
     [((m, k), windows f >> up)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(W.view i, mod1Mask), (W.view i . W.shift i, controlMask)]] ++
-    [ ((modMask,               xK_n     ), toggleWS >> up)
+        , (f, m) <- [(W.view i, mod1Mask), (W.view i . W.shift i, controlMask)]]
+    ++
+    [((modMask, k), windows f >> up)
+        | (f, k) <- zip [ W.view i | i <- drop 12 $ XMonad.workspaces conf ] [xK_F1 .. xK_F12] ]
+    ++
+    [ ((modMask,               xK_n     ), toggleWS    >> up)
+    , ((modMask,               xK_Left  ), prevWS      >> up)
+    , ((modMask,               xK_Right ), nextWS      >> up)
     , ((modMask .|. shiftMask, xK_Left  ), swapTo Prev >> up)
     , ((modMask .|. shiftMask, xK_Right ), swapTo Next >> up)
     ]
@@ -132,9 +141,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
         (m, a) <- [ (0, return ()), (shiftMask, windows W.swapMaster) ] ]
     -- [ ((modMask, k), focusNth i) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]) ]
     ++
-
     [ ((modMask,               xK_Tab   ), nextScreen     >> up)
     , ((modMask .|. shiftMask, xK_Tab   ), swapNextScreen >> up) ]
+    ++
+    [ ((modMask .|. m, k), screenWorkspace sc >>= flip whenJust (windows . f) >> up)
+    | (k, sc) <- zip [xK_z, xK_x, xK_c] [0..]
+    , (f, m) <- [(W.view, 0), (W.greedyView, shiftMask)] ]
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
@@ -325,7 +337,7 @@ main = do
             focusFollowsMouse  = True,
             borderWidth        = 2,
             modMask            = mod4Mask,
-            workspaces         = map show [1..12],
+            workspaces         = map show [1..24],
             normalBorderColor  = "#dddddd",
             focusedBorderColor = "#ff0000",
 
