@@ -2,11 +2,13 @@
 {-# LANGUAGE ParallelListComp #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
 import Control.Applicative
 import Control.Concurrent (threadDelay)
+import Control.Exception ( try, SomeException )
 import Control.Monad
 import Data.IORef
 import Data.List
@@ -33,7 +35,6 @@ import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
-import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
@@ -51,7 +52,6 @@ import XMonad.Layout.TrackFloating
 import XMonad.Layout.WindowArranger
 import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
-import XMonad.Util.Run
 import XMonad.Util.NamedWindows
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
@@ -62,8 +62,6 @@ import XMonad.Layout.FlexibleRead
 up = updatePointer (Relative 0.5 0.5)
 
 xF86XK_TouchpadToggle = 269025193
-
-xcompmgr = "xcompmgr -F"
 
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
@@ -164,7 +162,7 @@ myLayout = {-flexibleRead $ -} dir $
   where
      mrt = mouseResizableTile          { draggerType = BordersDragger }
      mrt' = mouseResizableTileMirrored { draggerType = BordersDragger }
-     dir = workspaceDir "~"
+     dir = workspaceDir myHome
      fixl x  = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
@@ -234,9 +232,10 @@ myEventHook = hintsEventHook <+> docksEventHook <+> myEvHook
 restartxmobar :: X ()
 restartxmobar = do
     disp <- io $ getEnv "DISPLAY"
-    io . mapM_ (signalProcess sigTERM) =<< xmobarGetPids
+    _ :: Either SomeException () <- io . try . mapM_ (signalProcess sigTERM) =<< xmobarGetPids
     let mainxmobar = if disp == ":0" then [fmap (:[]) $ spawnPID "xmobar -x 0"] else []
     xmobarSavePids . concat =<< sequence ([xmobarScreens] ++ mainxmobar)
+    io $ threadDelay 100000
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
