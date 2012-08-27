@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $# -lt 1 ]]; then
-    echo 'Usage: git-reviewed-by "Pepa z Depa <pepa.z.depa@gmail.com> [<rev-list options>...]"'
+    echo 'Usage: git reviewed-by "Pepa z Depa <pepa.z.depa@gmail.com> [<rev-list options>...]"'
     exit 1
 fi
 
