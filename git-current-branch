@@ -1,3 +1,4 @@
 #!/bin/bash
-git name-rev --name-only --always HEAD 2>/dev/null
-#git symbolic-ref HEAD 2>/dev/null | sed -e 's|^refs/heads/||'
+# name-rev sometimes shows a different branch if their tips are the same
+#git name-rev --name-only --always HEAD 2>/dev/null
+git symbolic-ref HEAD 2>/dev/null | sed -e 's|^refs/heads/||'
