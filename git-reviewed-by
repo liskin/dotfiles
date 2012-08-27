@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [[ $# -lt 1 ]]; then
+    echo 'Usage: git-reviewed-by "Pepa z Depa <pepa.z.depa@gmail.com> [<rev-list options>...]"'
+    exit 1
+fi
+
+export REVIEWER=$1; shift
+
+# No parameter given, rewrite HEAD commit.
+if [[ $# = 0 ]]; then
+    set -- HEAD
+fi
+
+# Single commit (no ..), rewrite only this commit, not all up to it.
+if [[ $# = 1 && ! "$1" =~ ".." ]]; then
+    set -- $1^..$1
+fi
+
+git filter-branch -f --msg-filter 'tac | formail -f -I "Reviewed-by: $REVIEWER" | tac' "$@"
