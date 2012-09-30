@@ -1,0 +1,3 @@
+#!/bin/bash
+cd `git rev-parse --git-dir 2>/dev/null`/..
+basename `pwd`
