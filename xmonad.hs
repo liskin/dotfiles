@@ -30,6 +30,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.FocusNth
 import XMonad.Actions.GridSelect
 import XMonad.Actions.MouseResize
+import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
@@ -56,8 +57,6 @@ import XMonad.Util.NamedWindows
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
 
-import XMonad.Layout.FlexibleRead
-
 
 up = updatePointer (Relative 0.5 0.5)
 
@@ -73,7 +72,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,            xK_semicolon), spawn "xlock")
     , ((0,                     xK_Menu  ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
     , ((modMask,               xK_Menu  ), goToSelected defaultGSConfig >> up)
-    , ((modMask,               xK_d     ), changeDir defaultXPConfig)
+    , ((modMask,               xK_c     ), changeDir defaultXPConfig)
     , ((modMask,               xK_v     ), renameWorkspace defaultXPConfig)
 
     , ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
@@ -113,7 +112,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask              , xK_comma ), sendMessage (IncMasterN 1))
     , ((modMask              , xK_period), sendMessage (IncMasterN (-1)))
 
-    , ((modMask              , xK_s     ), sendMessage ToggleStruts)
+    , ((modMask              , xK_x     ), sendMessage ToggleStruts)
 
     , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     , ((modMask              , xK_q     ), restart (myHome ++ "/.xmonad/xmonad-i386-linux") True)
@@ -142,8 +141,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((modMask,               xK_Tab   ), nextScreen     >> up)
     , ((modMask .|. shiftMask, xK_Tab   ), swapNextScreen >> up) ]
     ++
-    [ ((modMask .|. m, k), screenWorkspace sc >>= flip whenJust (windows . f) >> up)
-    | (k, sc) <- zip [xK_z, xK_x, xK_c] [0..]
+    [ ((modMask .|. m, k), do { Just sc <- getScreen psc; Just w <- screenWorkspace sc; windows (f w); up })
+    | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
     , (f, m) <- [(W.view, 0), (W.greedyView, shiftMask)] ]
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
@@ -235,7 +234,6 @@ restartxmobar = do
     _ :: Either SomeException () <- io . try . mapM_ (signalProcess sigTERM) =<< xmobarGetPids
     let mainxmobar = if disp == ":0" then [fmap (:[]) $ spawnPID "xmobar -x 0"] else []
     xmobarSavePids . concat =<< sequence ([xmobarScreens] ++ mainxmobar)
-    io $ threadDelay 100000
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
@@ -330,7 +328,6 @@ dumpLayouts = do
 main = do
     -- putStr $ drawTree $ fmap show $ (read $ show myLayout :: Tree (String, String))
 
-    -- threadDelay 100000
     let defaults = defaultConfig {
             terminal           = "urxvt",
             focusFollowsMouse  = True,
@@ -352,5 +349,5 @@ main = do
     xmonad $
         javaHack $
         ewmh $
-        withUrgencyHook NoUrgencyHook $
+        withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
         defaults
