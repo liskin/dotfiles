@@ -10,6 +10,7 @@ import Control.Applicative
 import Control.Concurrent (threadDelay)
 import Control.Exception ( try, SomeException )
 import Control.Monad
+import Control.Monad.Fix
 import Data.IORef
 import Data.List
 import qualified Data.Map as M
@@ -58,22 +59,22 @@ import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
 
 
-up = updatePointer (Relative 0.5 0.5)
+up = updatePointer (0.5, 0.5) (0, 0)
 
 xF86XK_TouchpadToggle = 269025193
 
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ XMonad.terminal conf)
-    , ((mod1Mask .|. controlMask, xK_f  ), spawn "urxvt -e ssh tjanousek.brno.nic.cz")
+    , ((mod1Mask .|. controlMask, xK_f  ), spawn "urxvt-maxi +rv")
     , ((mod1Mask .|. controlMask, xK_t  ), spawn "LANG=cs_CZ rxvt")
     , ((mod1Mask .|. controlMask, xK_h  ), spawn "LANG=cs_CZ rxvt -e /home/tomi/bin/hnb")
 --    , ((modMask,            xK_semicolon), spawn $ "killall xcompmgr; xlock; exec " ++ xcompmgr)
     , ((modMask,            xK_semicolon), spawn "xlock")
     , ((0,                     xK_Menu  ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
-    , ((modMask,               xK_Menu  ), goToSelected defaultGSConfig >> up)
-    , ((modMask,               xK_c     ), changeDir defaultXPConfig)
-    , ((modMask,               xK_v     ), renameWorkspace defaultXPConfig)
+    , ((modMask,               xK_Menu  ), goToSelected def >> up)
+    , ((modMask,               xK_c     ), changeDir def)
+    , ((modMask,               xK_v     ), renameWorkspace def)
 
     , ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
     , ((0, xF86XK_AudioRaiseVolume), spawn "killall -USR1 wmix")
@@ -87,7 +88,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((modMask,               xK_Escape), kill)
     , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
-    , ((modMask,               xK_space ), runSelectedAction defaultGSConfig laySels)
+    , ((modMask,               xK_space ), runSelectedAction def laySels)
     , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
     , ((controlMask,           xK_space ), refresh)
 
@@ -222,18 +223,34 @@ shortenL n xs | l < n     = xs
 
 -- Restart xmobar on RAndR.
 myEvHook (ConfigureEvent {ev_window = w}) = do
-    whenX (isRoot w) restartxmobar
-    return $ All True
+    r <- asks theRoot
+    if w == r
+        then do
+            clearTypedWindowEvents w configureNotify
+            rescreen
+            restartxmobar
+            return $ All False
+        else
+            return $ All True
 myEvHook _ = mempty
 
 myEventHook = hintsEventHook <+> docksEventHook <+> myEvHook
+
+-- | clearEvents.  Remove all events of a given type from the event queue.
+clearTypedWindowEvents :: Window -> EventType -> X ()
+clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
+    sync d False
+    allocaXEvent $ \p -> fix $ \again -> do
+        more <- checkTypedWindowEvent d w t p
+        when more again -- beautiful
 
 restartxmobar :: X ()
 restartxmobar = do
     disp <- io $ getEnv "DISPLAY"
     _ :: Either SomeException () <- io . try . mapM_ (signalProcess sigTERM) =<< xmobarGetPids
-    let mainxmobar = if disp == ":0" then [fmap (:[]) $ spawnPID "xmobar -x 0"] else []
-    xmobarSavePids . concat =<< sequence ([xmobarScreens] ++ mainxmobar)
+    let mainxmobar = if disp == ":0" then fmap (:[]) $ spawnPID "xmobar -x 0" else return []
+    let trayer = fmap (:[]) $ spawnPID "trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary"
+    xmobarSavePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer ]
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
@@ -309,14 +326,17 @@ myStartupHook = do
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1"
         , "bsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
-        ]
-    when (disp == ":0") $ mapM_ spawnOnce
-        [ "killall udisks-automounter; udisks-automounter"
-        , "kwalletd"
-        , "wmix"
-        , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
+        , "xmodmap ~/.Xmodmap"
         ]
     restartxmobar
+    when (disp == ":0") $ mapM_ spawnOnce
+        [ "killall udisks-automounter; udisks-automounter"
+        , "wmix"
+        , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
+        , "/usr/lib/notify-osd/notify-osd"
+        , "nm-applet"
+        , "blueman-applet"
+        ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
 
@@ -328,7 +348,7 @@ dumpLayouts = do
 main = do
     -- putStr $ drawTree $ fmap show $ (read $ show myLayout :: Tree (String, String))
 
-    let defaults = defaultConfig {
+    let defaults = def {
             terminal           = "urxvt",
             focusFollowsMouse  = True,
             borderWidth        = 2,
