@@ -71,18 +71,20 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((mod1Mask .|. controlMask, xK_h  ), spawn "LANG=cs_CZ rxvt -e /home/tomi/bin/hnb")
 --    , ((modMask,            xK_semicolon), spawn $ "killall xcompmgr; xlock; exec " ++ xcompmgr)
     , ((modMask,            xK_semicolon), spawn "xlock")
-    , ((0,                     xK_Menu  ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
+    , ((0,            xF86XK_ScreenSaver), spawn "xlock")
+    , ((0,                     xK_Menu  ), spawn "dmenu_run -f")
     , ((modMask,               xK_Menu  ), goToSelected def >> up)
+    , ((modMask,               xK_grave ), goToSelected def >> up)
     , ((modMask,               xK_c     ), changeDir def)
     , ((modMask,               xK_v     ), renameWorkspace def)
 
-    , ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
-    , ((0, xF86XK_AudioRaiseVolume), spawn "killall -USR1 wmix")
-    , ((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
+    --, ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
+    --, ((0, xF86XK_AudioRaiseVolume), spawn "killall -USR1 wmix")
+    --, ((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
     -- , ((0, xF86XK_AudioRecord), spawn "amixer set Min toggle; amixer set 'Internal Mic' toggle")
-    , ((0, xF86XK_AudioPlay), spawn "echo pause > ~/mplayer_pipe")
-    , ((0, xF86XK_AudioPrev), spawn "echo pt_step -1 > ~/mplayer_pipe")
-    , ((0, xF86XK_AudioNext), spawn "echo pt_step  1 > ~/mplayer_pipe")
+    --, ((0, xF86XK_AudioPlay), spawn "echo pause > ~/mplayer_pipe")
+    --, ((0, xF86XK_AudioPrev), spawn "echo pt_step -1 > ~/mplayer_pipe")
+    --, ((0, xF86XK_AudioNext), spawn "echo pt_step  1 > ~/mplayer_pipe")
     , ((0, xF86XK_TouchpadToggle), spawn "touchpad_toggle")
     , ((mod1Mask, xK_space),       spawn "touchpad_toggle")
 
@@ -330,12 +332,13 @@ myStartupHook = do
         ]
     restartxmobar
     when (disp == ":0") $ mapM_ spawnOnce
-        [ "killall udisks-automounter; udisks-automounter"
-        , "wmix"
-        , "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
+        [ "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
         , "/usr/lib/notify-osd/notify-osd"
         , "nm-applet"
         , "blueman-applet"
+        , "start-pulseaudio-x11"
+        , "padevchooser"
+        , "pa-applet"
         ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
