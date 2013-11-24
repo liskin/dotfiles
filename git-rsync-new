@@ -1,8 +1,8 @@
 #!/bin/bash
-if [ "$#" != "1" ]; then
-    echo "Usage: git rsync-new xxx.getgooddata.com:/opt"
+if [ "$#" != "2" ]; then
+    echo "Usage: git rsync-new upstream-branch xxx.getgooddata.com:/opt"
     exit 1
 fi
 
 cd `git rev-parse --git-dir`/..
-rsync -avzR `git cherry origin/master | awk '{ print \$2 }' | xargs git-list-changed-files` $1
+rsync -avzR `git cherry $1 | awk '{ print \$2 }' | xargs git-list-changed-files` $2
