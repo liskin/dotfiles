@@ -177,6 +177,8 @@ laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
 
 -- $( flexibleReadInstance 'myLayout )
 
+myHome = unsafePerformIO $ getEnv "HOME"
+
 
 -- Managehook.
 myManageHook = composeAll
@@ -198,33 +200,16 @@ myLogHook = do
     namesPP <- workspaceNamesPP xmobarPP
     let myPP = namesPP
             { ppExtras =
-                [ (Just . shortenL 30 . shortenDir) `fmap` io getCurrentDirectory
-                , willFloatNextPP ("Float " ++)
+                [ willFloatNextPP ("Float " ++)
                 , willFloatAllNewPP ("Float " ++)
                 ]
             , ppVisible = xmobarColor "green" "" . ppVisible namesPP
             , ppSep = " | "
-            , ppOrder = \(w:l:_:s) -> w:l:s
+            , ppOrder = \(w:_:_:s) -> w:s
             }
     dynamicLogString myPP >>= xmonadPropLog
     xmobarWindowLists
     --fadeInactiveLogHook 0.87
-
-
--- Current directory printer.
-myHome = unsafePerformIO $ getEnv "HOME"
-
-shortenDir :: String -> String
-shortenDir s = case myHome `isPrefixOf` s of
-    False -> s
-    True -> '~' : drop (length myHome) s
-
-shortenL :: Int -> String -> String
-shortenL n xs | l < n     = xs
-              | otherwise = end ++ (drop (l - n + length end) xs)
- where
-    end = "..."
-    l = length xs
 
 
 -- Restart xmobar on RAndR.
@@ -277,7 +262,9 @@ xmobarWindowLists = do
         wins <- screenWins scr
         let S num = W.screen scr
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
-            tag = W.tag . W.workspace $ scr
+            wks = W.workspace scr
+            tag = W.tag wks
+            layout = description . W.layout $ wks
 
             fmt (True, _, n) | num == current =
                      xmobarColor "#ffff00" ""        . shorten 30 $ n
@@ -289,7 +276,7 @@ xmobarWindowLists = do
                 then ppCurrent finPP
                 else ppVisible finPP
 
-            finPP = myPP $ tagprint (name tag) :
+            finPP = myPP $ (tagprint (name tag) ++ " " ++ layout) :
                 [ fmt (b, w, show n ++ " " ++ show t) | (b,w,t) <- wins | n <- [1..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
