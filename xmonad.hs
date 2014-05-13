@@ -85,6 +85,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     --, ((0, xF86XK_AudioPlay), spawn "echo pause > ~/mplayer_pipe")
     --, ((0, xF86XK_AudioPrev), spawn "echo pt_step -1 > ~/mplayer_pipe")
     --, ((0, xF86XK_AudioNext), spawn "echo pt_step  1 > ~/mplayer_pipe")
+    , ((0, xF86XK_AudioPlay), spawn "clementine -t")
+    , ((0, xF86XK_AudioStop), spawn "clementine -s")
+    , ((0, xF86XK_AudioPrev), spawn "clementine -r")
+    , ((0, xF86XK_AudioNext), spawn "clementine -f")
     , ((0, xF86XK_TouchpadToggle), spawn "touchpad_toggle")
     , ((mod1Mask, xK_space),       spawn "touchpad_toggle")
 
