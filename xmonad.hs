@@ -13,6 +13,7 @@ import Control.Monad
 import Control.Monad.Fix
 import Data.IORef
 import Data.List
+import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
@@ -75,7 +76,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0,                     xK_Menu  ), spawn "dmenu_run -f")
     , ((modMask,               xK_Menu  ), goToSelected def >> up)
     , ((modMask,               xK_grave ), goToSelected def >> up)
-    , ((modMask,               xK_c     ), changeDir def)
+    , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
     , ((modMask,               xK_v     ), renameWorkspace def)
 
     --, ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
@@ -157,6 +158,10 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((mod1Mask, button2), windows . (W.swapMaster .) . W.focusWindow)
     , ((mod1Mask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
     ]
+
+curDirToWorkspacename = do
+    dir <- io getCurrentDirectory
+    setCurrentWorkspaceName $ last $ splitOneOf "/" dir
 
 
 -- Layouts.
