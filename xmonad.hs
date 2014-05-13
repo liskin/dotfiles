@@ -315,11 +315,13 @@ myStartupHook = do
     mapM_ spawnOnce
         [ "xset r rate 200 25"
         , "xset s off"
+        , "xset b off"
         , "xset dpms 300 300 300"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1"
         , "bsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
         , "xmodmap ~/.Xmodmap"
+        , "my-redshift"
         ]
     restartxmobar
     when (disp == ":0") $ mapM_ spawnOnce
