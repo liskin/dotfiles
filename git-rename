@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+use File::Basename 'dirname';
+use File::Path 'mkpath';
+
+BEGIN {
+	*CORE::GLOBAL::rename = sub {
+		my ($was, $new) = @_;
+		mkpath( dirname( $new ) );
+		not system "git", "mv", "--", $was, $new;
+	};
+}
+
+do '/usr/bin/rename';
