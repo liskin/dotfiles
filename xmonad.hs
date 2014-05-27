@@ -228,9 +228,19 @@ myEvHook (ConfigureEvent {ev_window = w}) = do
             return $ All False
         else
             return $ All True
+-- myEvHook x = io (print x) >> mempty
 myEvHook _ = mempty
 
 myEventHook = hintsEventHook <+> docksEventHook <+> myEvHook
+
+ignoreNetActiveWindowEventHook h e = do
+    a_aw <- getAtom "_NET_ACTIVE_WINDOW"
+    case e of
+        ClientMessageEvent {ev_message_type = mt} | mt == a_aw -> return $ All True
+        _ -> h e
+
+ignoreNetActiveWindow :: XConfig a -> XConfig a
+ignoreNetActiveWindow c = c { handleEventHook = ignoreNetActiveWindowEventHook (handleEventHook c) }
 
 -- | clearEvents.  Remove all events of a given type from the event queue.
 clearTypedWindowEvents :: Window -> EventType -> X ()
@@ -369,6 +379,7 @@ main = do
             }
     xmonad $
         javaHack $
+        ignoreNetActiveWindow $
         ewmh $
         withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
         defaults
