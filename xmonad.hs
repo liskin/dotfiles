@@ -233,14 +233,20 @@ myEvHook _ = mempty
 
 myEventHook = hintsEventHook <+> docksEventHook <+> myEvHook
 
-ignoreNetActiveWindowEventHook h e = do
+ignoreNetActiveWindowEventHook q h e = do
     a_aw <- getAtom "_NET_ACTIVE_WINDOW"
-    case e of
-        ClientMessageEvent {ev_message_type = mt} | mt == a_aw -> return $ All True
-        _ -> h e
+    Any ign <- case e of
+        ClientMessageEvent {ev_message_type = mt, ev_window = w}
+            | mt == a_aw -> runQuery q w
+        _ -> return $ Any False
+    if ign
+        then return $ All True
+        else h e
 
 ignoreNetActiveWindow :: XConfig a -> XConfig a
-ignoreNetActiveWindow c = c { handleEventHook = ignoreNetActiveWindowEventHook (handleEventHook c) }
+ignoreNetActiveWindow c = c { handleEventHook = ignoreNetActiveWindowEventHook q (handleEventHook c) }
+    where
+        q = Any <$> className =? "Google-chrome"
 
 -- | clearEvents.  Remove all events of a given type from the event queue.
 clearTypedWindowEvents :: Window -> EventType -> X ()
