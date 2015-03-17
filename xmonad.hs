@@ -91,12 +91,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0, xF86XK_AudioPrev), spawn "clementine -r")
     , ((0, xF86XK_AudioNext), spawn "clementine -f")
     , ((0, xF86XK_TouchpadToggle), spawn "touchpad_toggle")
+    , ((0, xF86XK_Display), spawn "xset s activate")
     , ((mod1Mask, xK_space),       spawn "touchpad_toggle")
 
     , ((modMask,               xK_Escape), kill)
     , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
     , ((modMask,               xK_space ), runSelectedAction def laySels)
-    , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
     , ((controlMask,           xK_space ), refresh)
 
     , ((mod1Mask,              xK_Tab   ), windows W.focusDown   >> up)
