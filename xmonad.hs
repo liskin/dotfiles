@@ -161,8 +161,10 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
 
 curDirToWorkspacename = do
-    dir <- io getCurrentDirectory
-    setCurrentWorkspaceName $ last $ splitOneOf "/" dir
+    name <- getCurrentWorkspaceName
+    when (isNothing name) $ do
+        dir <- io getCurrentDirectory
+        setCurrentWorkspaceName $ last $ splitOneOf "/" dir
 
 
 -- Layouts.
