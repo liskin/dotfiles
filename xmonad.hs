@@ -7,23 +7,17 @@ import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
 import Control.Applicative
-import Control.Concurrent (threadDelay)
 import Control.Exception ( try, SomeException )
 import Control.Monad
 import Control.Monad.Fix
-import Data.IORef
-import Data.List
 import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
-import Data.Tree
 import Graphics.X11.ExtraTypes.XF86
-import Graphics.X11.Xinerama
 import System.Directory ( getCurrentDirectory )
 import System.Environment
 import System.Exit
-import System.IO
 import System.IO.Unsafe
 import System.Posix.Signals
 import System.Posix.Types
@@ -31,7 +25,6 @@ import System.Posix.Types
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FocusNth
 import XMonad.Actions.GridSelect
-import XMonad.Actions.MouseResize
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
@@ -42,19 +35,14 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
-import XMonad.Layout.Decoration
-import XMonad.Layout.DecorationMadness
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
 import XMonad.Layout.SimpleFloat
-import XMonad.Layout.Tabbed
 import XMonad.Layout.TrackFloating
-import XMonad.Layout.WindowArranger
 import XMonad.Layout.WorkspaceDir
-import XMonad.Prompt
 import XMonad.Util.NamedWindows
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
