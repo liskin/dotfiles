@@ -35,12 +35,14 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
+import XMonad.Layout.Grid
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
 import XMonad.Layout.SimpleFloat
+import XMonad.Layout.Spiral
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
@@ -160,6 +162,8 @@ myLayout = {-flexibleRead $ -} dir $
     named "tiled" (fixl mrt) |||
     named "mtiled" (fixl mrt') |||
     named "tab" (fixl Full) |||
+    named "grid" (fixl (GridRatio $ 16/9)) |||
+    named "spiral" (fixl (spiral $ 0.618)) |||
     named "full" (layoutHints $ noBorders Full)
   where
      mrt = mouseResizableTile          { draggerType = BordersDragger }
@@ -169,7 +173,13 @@ myLayout = {-flexibleRead $ -} dir $
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
-    where l = [ "tiled", "mtiled", "tab", {-"float",-} "full" ]
+    where l = [ "tiled"
+              , "mtiled"
+              , "tab"
+              , "grid"
+              , "spiral"
+              --, "float"
+              , "full" ]
 
 -- $( flexibleReadInstance 'myLayout )
 
