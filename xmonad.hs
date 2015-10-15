@@ -193,6 +193,8 @@ myManageHook = composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "wmix"           --> doHideIgnore
+    , className =? "hl_linux"       --> doFloat
+    , className =? "duke3d"         --> doFloat
     , isFullscreen                  --> doFullFloat
     , isDialog                      --> doFloat
     , transience'
@@ -245,9 +247,9 @@ ignoreNetActiveWindowEventHook q h e = do
         else h e
 
 ignoreNetActiveWindow :: XConfig a -> XConfig a
-ignoreNetActiveWindow c = c { handleEventHook = ignoreNetActiveWindowEventHook q (handleEventHook c) }
+ignoreNetActiveWindow c = c { handleEventHook = ignoreNetActiveWindowEventHook (Any <$> q) (handleEventHook c) }
     where
-        q = Any <$> className =? "Google-chrome"
+        q = className =? "Google-chrome" <||> className =? "google-chrome"
 
 -- | clearEvents.  Remove all events of a given type from the event queue.
 clearTypedWindowEvents :: Window -> EventType -> X ()
