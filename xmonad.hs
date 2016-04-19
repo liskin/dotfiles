@@ -54,6 +54,7 @@ import XMonad.Util.Stack
 up = updatePointer (0.5, 0.5) (0, 0)
 
 xF86XK_TouchpadToggle = 269025193
+xF86XK_AudioMicMute = 0x1008FFB2
 
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
@@ -81,6 +82,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0, xF86XK_AudioStop), spawn "clementine -s")
     , ((0, xF86XK_AudioPrev), spawn "clementine -r")
     , ((0, xF86XK_AudioNext), spawn "clementine -f")
+    , ((0, xF86XK_AudioMicMute), spawn "pactl set-source-mute alsa_input.pci-0000_00_1b.0.analog-stereo toggle")
+    , ((0, xF86XK_WebCam), spawn "pa-switchport")
     , ((0, xF86XK_TouchpadToggle), spawn "touchpad_toggle")
     , ((0, xF86XK_Display), spawn "xset s activate")
     , ((mod1Mask, xK_space),       spawn "touchpad_toggle")
