@@ -1,0 +1,7 @@
+#!/bin/bash
+
+CONF=`vim -T dumb -u NONE -n -es -c ':verb echo findfile(".gitconfig", ".;")' -c ':q' 2>&1`
+if [ -n "$CONF" -a -f "$CONF" ]; then
+	echo "Adding include.path=$CONF"
+	git config --local --add include.path "$CONF"
+fi
