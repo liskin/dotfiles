@@ -162,18 +162,17 @@ curDirToWorkspacename = do
 
 
 -- Layouts.
-myLayout = {-flexibleRead $ -} dir $
+myLayout = {-flexibleRead $ -} dir $ avoidStruts $
     named "tiled" (fixl mrt) |||
     named "mtiled" (fixl mrt') |||
     named "tab" (fixl Full) |||
     named "grid" (fixl (GridRatio $ 16/9)) |||
-    named "spiral" (fixl (spiral $ 0.618)) |||
-    named "full" (layoutHints $ noBorders Full)
+    named "spiral" (fixl (spiral $ 0.618))
   where
      mrt = mouseResizableTile          { draggerType = BordersDragger }
      mrt' = mouseResizableTileMirrored { draggerType = BordersDragger }
      dir = workspaceDir myHome
-     fixl x  = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
+     fixl x  = trackFloating . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
@@ -339,6 +338,7 @@ xmobarGetPids = do
 
 -- Startuphook.
 myStartupHook = do
+    docksStartupHook
     disp <- io $ getEnv "DISPLAY"
     mapM_ spawnOnce
         [ "xset r rate 200 25"
