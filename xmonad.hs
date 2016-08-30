@@ -361,6 +361,8 @@ myStartupHook = do
         , "start-pulseaudio-x11"
         , "padevchooser"
         , "pa-applet"
+        , "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
+        , "firewall-applet"
         ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
