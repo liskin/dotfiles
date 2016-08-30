@@ -350,6 +350,7 @@ myStartupHook = do
         , "bsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
         , "xmodmap ~/.Xmodmap"
         , "redshift"
+        , "xprop -root -remove _NET_WORKAREA"
         ]
     restartxmobar
     when (disp == ":0") $ mapM_ spawnOnce
