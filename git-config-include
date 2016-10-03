@@ -2,6 +2,10 @@
 
 CONF=`vim -T dumb -u NONE -n -es -c ':verb echo findfile(".gitconfig", ".;")' -c ':q' 2>&1`
 if [ -n "$CONF" -a -f "$CONF" ]; then
-	echo "Adding include.path=$CONF"
-	git config --local --add include.path "$CONF"
+	if git config --local --get-all include.path | grep -qFxe "$CONF"; then
+		echo "Not adding include.path=$CONF twice"
+	else
+		echo "Adding include.path=$CONF"
+		git config --local --add include.path "$CONF"
+	fi
 fi
