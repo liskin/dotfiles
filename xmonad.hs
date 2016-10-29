@@ -127,8 +127,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
         | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
         , (f, m) <- [(W.view i, mod1Mask), (W.view i . W.shift i, controlMask)]]
     ++
-    [((modMask, k), windows f >> up)
-        | (f, k) <- zip [ W.view i | i <- drop 12 $ XMonad.workspaces conf ] [xK_F1 .. xK_F12] ]
+    [((m, k), windows f >> up)
+        | (i, k) <- zip (drop 12 $ XMonad.workspaces conf) [xK_F1 .. xK_F12]
+        , (f, m) <- [(W.view i, modMask), (W.view i . W.shift i, modMask .|. controlMask)]]
     ++
     [ ((modMask,               xK_n     ), toggleWS    >> up)
     , ((modMask,               xK_Left  ), prevWS      >> up)
