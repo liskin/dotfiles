@@ -91,7 +91,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_Escape), kill)
     , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
     , ((modMask,               xK_space ), runSelectedAction def laySels)
-    , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "" >> docksStartupHook)
+    , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
     , ((controlMask,           xK_space ), refresh)
 
     , ((mod1Mask,              xK_Tab   ), windows W.focusDown   >> up)
@@ -162,17 +162,18 @@ curDirToWorkspacename = do
 
 
 -- Layouts.
-myLayout = {-flexibleRead $ -} dir $ avoidStruts $
+myLayout = {-flexibleRead $ -} dir $
     named "tiled" (fixl mrt) |||
     named "mtiled" (fixl mrt') |||
     named "tab" (fixl Full) |||
     named "grid" (fixl (GridRatio $ 16/9)) |||
-    named "spiral" (fixl (spiral $ 0.618))
+    named "spiral" (fixl (spiral $ 0.618)) |||
+    named "full" (layoutHints $ noBorders Full)
   where
      mrt = mouseResizableTile          { draggerType = BordersDragger }
      mrt' = mouseResizableTileMirrored { draggerType = BordersDragger }
      dir = workspaceDir myHome
-     fixl x  = trackFloating . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
+     fixl x  = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
@@ -237,7 +238,7 @@ myEvHook (ConfigureEvent {ev_window = w}) = do
 -- myEvHook x = io (print x) >> mempty
 myEvHook _ = mempty
 
-myEventHook = hintsEventHook <+> docksEventHook <+> myEvHook
+myEventHook = hintsEventHook <+> myEvHook
 
 ignoreNetActiveWindowEventHook q h e = do
     a_aw <- getAtom "_NET_ACTIVE_WINDOW"
@@ -338,7 +339,6 @@ xmobarGetPids = do
 
 -- Startuphook.
 myStartupHook = do
-    docksStartupHook
     disp <- io $ getEnv "DISPLAY"
     mapM_ spawnOnce
         [ "xset r rate 200 25"
@@ -396,6 +396,7 @@ main = do
     xmonad $
         javaHack $
         ignoreNetActiveWindow $
+        docks $
         ewmh $
         withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
         defaults
