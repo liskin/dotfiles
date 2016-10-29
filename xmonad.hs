@@ -398,6 +398,7 @@ main = do
         javaHack $
         ignoreNetActiveWindow $
         docks $
+        ewmhFullscreen $
         ewmh $
         withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
         defaults
