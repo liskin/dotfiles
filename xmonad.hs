@@ -241,21 +241,6 @@ myEvHook _ = mempty
 
 myEventHook = hintsEventHook <+> myEvHook
 
-ignoreNetActiveWindowEventHook q h e = do
-    a_aw <- getAtom "_NET_ACTIVE_WINDOW"
-    Any ign <- case e of
-        ClientMessageEvent {ev_message_type = mt, ev_window = w}
-            | mt == a_aw -> runQuery q w
-        _ -> return $ Any False
-    if ign
-        then return $ All True
-        else h e
-
-ignoreNetActiveWindow :: XConfig a -> XConfig a
-ignoreNetActiveWindow c = c { handleEventHook = ignoreNetActiveWindowEventHook (Any <$> q) (handleEventHook c) }
-    where
-        q = className =? "Google-chrome" <||> className =? "google-chrome"
-
 -- | clearEvents.  Remove all events of a given type from the event queue.
 clearTypedWindowEvents :: Window -> EventType -> X ()
 clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
@@ -394,9 +379,10 @@ main = do
             startupHook        = myStartupHook,
             handleEventHook    = myEventHook
             }
+    let activationIgnore = className =? "Google-chrome" <||> className =? "google-chrome"
     xmonad $
         javaHack $
-        ignoreNetActiveWindow $
+        ignoreNetActiveWindow activationIgnore $
         docks $
         ewmhFullscreen $
         ewmh $
