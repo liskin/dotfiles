@@ -1,6 +1,11 @@
 *.o
+*.dyn_o
 *.p_o
 *.hi
+*.dyn_hi
 *.p_hi
 *.orig
 *.zal*
+
+history
+xmonad-i386-linux
