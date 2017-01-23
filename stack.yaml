@@ -15,5 +15,6 @@ flags:
     xmobar:
         with_xft: false
         with_utf8: true
+        with_threaded: true
     xmonad-contrib:
         use_xft: false
