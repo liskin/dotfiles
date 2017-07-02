@@ -347,7 +347,7 @@ myStartupHook = do
         , "start-pulseaudio-x11"
         , "padevchooser"
         , "pa-applet"
-        , "/usr/lib/polkit-gnome-authentication-agent-1"
+        , "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
         , "firewall-applet"
         ]
 
