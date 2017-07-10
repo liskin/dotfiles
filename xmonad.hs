@@ -118,7 +118,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask              , xK_x     ), sendMessage ToggleStruts)
 
     , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
-    , ((modMask              , xK_q     ), restart (myHome ++ "/.xmonad/xmonad-i386-linux") True)
+    , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
     , ((mod1Mask .|. controlMask, xK_q  ), dumpLayouts)
     ]
     ++
