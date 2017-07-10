@@ -65,7 +65,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 --    , ((modMask,            xK_semicolon), spawn $ "killall xcompmgr; xlock; exec " ++ xcompmgr)
     , ((modMask,            xK_semicolon), spawn "xlock")
     , ((0,            xF86XK_ScreenSaver), spawn "xlock")
-    , ((0,                     xK_Menu  ), spawn "dmenu_run -f")
+    , ((0,                     xK_Menu  ), spawn "dmenu_run -f -fn Fixed-10")
     , ((modMask,               xK_Menu  ), goToSelected def >> up)
     , ((modMask,               xK_grave ), goToSelected def >> up)
     , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
