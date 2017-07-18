@@ -5,7 +5,7 @@ use autodie;
 
 my $base_url;
 my $git_url = `git remote get-url origin`;
-if ($git_url =~ m|^git@([\w.]+):([\w.-/]+)\.git|) {
+if ($git_url =~ m|^git@([\w.]+):([\w.\-/]+)\.git$|) {
 	$base_url = "http://$1/$2";
 } else {
 	die "unrecognized url: $git_url";
