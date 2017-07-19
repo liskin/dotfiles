@@ -14,5 +14,5 @@ if ($git_url =~ m|^git@([\w.]+):([\w.\-/]+)\.git$|) {
 undef $/;
 my $input = <>;
 $input =~ s{^commit\s(\w+)$ (.*?\n) (?=\n^commit|\Z)}
-	{$base_url/commit/${1} :\n{noformat}${2}{noformat}\n}msxg;
+	{[$base_url/commit/${1}]:\n{noformat}${2}{noformat}\n}msxg;
 print $input;
