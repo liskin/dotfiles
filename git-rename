@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use FindBin;
 use File::Basename 'dirname';
 use File::Path 'mkpath';
 
@@ -11,4 +12,7 @@ BEGIN {
 	};
 }
 
-do '/usr/bin/rename';
+my ($bin, $lib) = ("$FindBin::RealBin/file-rename.pl", "$FindBin::RealBin/file-rename.pm");
+require $lib; $INC{'File/Rename.pm'} = $lib;
+$0 = $bin; do $0 or die($@ || $!);
+main();
