@@ -70,22 +70,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_grave ), goToSelected def >> up)
     , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
     , ((modMask,               xK_v     ), renameWorkspace def)
+    , ((modMask,               xK_g     ), sendMessage (Chdir (myHome ++ "/work/GoodData")))
 
-    --, ((0, xF86XK_AudioLowerVolume), spawn "killall -USR2 wmix")
-    --, ((0, xF86XK_AudioRaiseVolume), spawn "killall -USR1 wmix")
-    --, ((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
-    -- , ((0, xF86XK_AudioRecord), spawn "amixer set Min toggle; amixer set 'Internal Mic' toggle")
-    --, ((0, xF86XK_AudioPlay), spawn "echo pause > ~/mplayer_pipe")
-    --, ((0, xF86XK_AudioPrev), spawn "echo pt_step -1 > ~/mplayer_pipe")
-    --, ((0, xF86XK_AudioNext), spawn "echo pt_step  1 > ~/mplayer_pipe")
-    --, ((0, xF86XK_AudioPlay), spawn "clementine -t")
-    --, ((0, xF86XK_AudioStop), spawn "clementine -s")
-    --, ((0, xF86XK_AudioPrev), spawn "clementine -r")
-    --, ((0, xF86XK_AudioNext), spawn "clementine -f")
-    , ((0, xF86XK_AudioMicMute), spawn "pactl set-source-mute alsa_input.pci-0000_00_1b.0.analog-stereo toggle")
-    , ((0, xF86XK_WebCam), spawn "pa-switchport")
+    , ((0, xF86XK_AudioMicMute), spawn "pactl set-source-mute alsa_input.pci-0000_00_1f.3.analog-stereo toggle")
     , ((0, xF86XK_TouchpadToggle), spawn "touchpad_toggle")
-    , ((0, xF86XK_Display), spawn "xset s activate")
+    , ((0, xF86XK_WebCam), spawn "touchscreen_toggle")
+    , ((0, xF86XK_Display), spawn "layout-auto")
     , ((mod1Mask, xK_space),       spawn "touchpad_toggle")
 
     , ((modMask,               xK_Escape), kill)
@@ -142,8 +132,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
         (m, a) <- [ (0, return ()), (shiftMask, windows W.swapMaster) ] ]
     -- [ ((modMask, k), focusNth i) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]) ]
     ++
-    [ ((modMask,               xK_Tab   ), nextScreen     >> up)
-    , ((modMask .|. shiftMask, xK_Tab   ), swapNextScreen >> up) ]
+    [ ((modMask,               xK_Tab   ), nextScreen >> up)
+    , ((modMask .|. shiftMask, xK_Tab   ), prevScreen >> up) ]
     ++
     [ ((modMask .|. m, k), do { Just sc <- getScreen psc; Just w <- screenWorkspace sc; windows (f w); up })
     | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
@@ -167,7 +157,7 @@ myLayout = {-flexibleRead $ -} dir $
     named "tiled" (fixl mrt) |||
     named "mtiled" (fixl mrt') |||
     named "tab" (fixl Full) |||
-    named "grid" (fixl (GridRatio $ 16/9)) |||
+    named "grid" (fixl (GridRatio $ 4/3)) |||
     named "spiral" (fixl (spiral $ 0.618)) |||
     named "full" (layoutHints $ noBorders Full)
   where
@@ -333,7 +323,7 @@ myStartupHook = do
         , "xset dpms 300 300 300"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1"
-        , "bsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
+        , "fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
         , "xmodmap ~/.Xmodmap"
         , "redshift"
         , "xprop -root -remove _NET_WORKAREA"
@@ -341,6 +331,7 @@ myStartupHook = do
     restartxmobar
     when (disp == ":0") $ mapM_ spawnOnce
         [ "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
+        , "compton --backend glx --vsync opengl"
         , "/usr/lib/notify-osd/notify-osd"
         , "nm-applet"
         , "blueman-applet"

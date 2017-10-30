@@ -1,5 +1,6 @@
-resolver: lts-7.14
+resolver: lts-9.2
 extra-deps:
+    - X11-1.6.1.2
     - X11-xshape-0.1.1
     - getflag-1.0
 

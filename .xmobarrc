@@ -8,11 +8,12 @@ Config { font     = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
 		    , Run XPropertyLog "_XMONAD_LOG_IRSSI"
 		    , Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<icon=/home/tomi/.xmonad/icons/net-wired2.xbm/><rx>KB:<tx>KB "] 10
 		    , Run Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t","<icon=/home/tomi/.xmonad/icons/net-wifi.xbm/><rx>KB|<tx>KB "] 10
-		    , Run BatteryP ["BAT0"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","<acstatus><left>%|<watts>W","--","-O","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-i","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-o","<icon=/home/tomi/.xmonad/icons/power-bat.xbm/>"] 10
+		    , Run BatteryN ["BAT0"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","<acstatus><left>%|<watts>W","--","-O","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-i","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-o","<icon=/home/tomi/.xmonad/icons/power-bat.xbm/>"] 10 "battery0"
+		    , Run BatteryN ["BAT1"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","|<left>%|<watts>W","--","-O","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-i","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-o","<icon=/home/tomi/.xmonad/icons/power-bat.xbm/>"] 10 "battery1"
 			, Run CoreTemp ["-t","<icon=/home/tomi/.xmonad/icons/temp.xbm/><core0>C"] 10
 			, Run MultiCpu ["-H","95","--high","red","-t","<icon=/home/tomi/.xmonad/icons/cpu.xbm/>(<autovbar>)"] 10
 		    ]
        , sepChar  = "%"
        , alignSep = ""
-       , template = "%XMonadLog%  %_XMONAD_LOG_IRSSI% | %battery% %coretemp% %multicpu% | %eth0%%wlan1%| <fc=white>%theDate%</fc>"
+       , template = "%XMonadLog%  %_XMONAD_LOG_IRSSI% | %battery0%%battery1% %coretemp% %multicpu% | %eth0%%wlan1%| <fc=white>%theDate%</fc>"
        }
