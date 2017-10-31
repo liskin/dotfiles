@@ -223,7 +223,7 @@ myEvHook (ConfigureEvent {ev_window = w}) = do
         then do
             clearTypedWindowEvents w configureNotify
             rescreen
-            restartxmobar
+            rescreenHook
             return $ All False
         else
             return $ All True
@@ -240,14 +240,15 @@ clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
         more <- checkTypedWindowEvent d w t p
         when more again -- beautiful
 
-restartxmobar :: X ()
-restartxmobar = do
+rescreenHook :: X ()
+rescreenHook = do
     disp <- io $ getEnv "DISPLAY"
     let mainxmobar = sequence [ spawnPID "xmobar -x 0" | disp == ":0" ]
     let trayer = sequence [ spawnPID "trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary" ]
     let compton = sequence [ spawnPID "compton --backend glx --vsync opengl" ]
     killPids "_XMONAD_XMOBARS"
     savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
+    spawn "fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
@@ -337,12 +338,11 @@ myStartupHook = do
         , "xset dpms 300 300 300"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2"
         , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1"
-        , "fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
         , "xmodmap ~/.Xmodmap"
         , "redshift"
         , "xprop -root -remove _NET_WORKAREA"
         ]
-    restartxmobar
+    rescreenHook
     when (disp == ":0") $ mapM_ spawnOnce
         [ "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
         , "/usr/lib/notify-osd/notify-osd"
