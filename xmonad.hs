@@ -20,6 +20,7 @@ import System.Directory ( getCurrentDirectory )
 import System.Environment
 import System.Exit
 import System.IO.Unsafe
+import System.Posix.Process
 import System.Posix.Signals
 import System.Posix.Types
 
@@ -242,10 +243,11 @@ clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
 restartxmobar :: X ()
 restartxmobar = do
     disp <- io $ getEnv "DISPLAY"
-    _ :: Either SomeException () <- io . try . mapM_ (signalProcess sigTERM) =<< xmobarGetPids
-    let mainxmobar = if disp == ":0" then fmap (:[]) $ spawnPID "xmobar -x 0" else return []
-    let trayer = fmap (:[]) $ spawnPID "trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary"
-    xmobarSavePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer ]
+    let mainxmobar = sequence [ spawnPID "xmobar -x 0" | disp == ":0" ]
+    let trayer = sequence [ spawnPID "trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary" ]
+    let compton = sequence [ spawnPID "compton --backend glx --vsync opengl" ]
+    killPids "_XMONAD_XMOBARS"
+    savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
@@ -297,20 +299,32 @@ screenWins scr = forM stack $ either (name False) (name True)
         stack = toTags . W.stack . W.workspace $ scr
         name b = \w -> (,,) <$> pure b <*> pure w <*> getName w
 
-xmobarSavePids :: [ ProcessID ] -> X ()
-xmobarSavePids pids = do
+savePids :: String -> [ ProcessID ] -> X ()
+savePids prop pids = do
     d <- asks display
     r <- asks theRoot
-    prop <- getAtom $ "_XMONAD_XMOBARS"
+    prop <- getAtom prop
     typ <- getAtom "PID"
     io $ changeProperty32 d r prop typ propModeReplace $ map fromIntegral pids
 
-xmobarGetPids :: X [ ProcessID ]
-xmobarGetPids = do
+getPids :: String -> X [ ProcessID ]
+getPids prop = do
     d <- asks display
     r <- asks theRoot
-    prop <- getAtom $ "_XMONAD_XMOBARS"
+    prop <- getAtom prop
     fmap (map fromIntegral . fromMaybe []) $ io $ getWindowProperty32 d prop r
+
+killPids :: String -> X ()
+killPids prop = do
+    pids <- getPids prop
+    io $ mapM_ killPid pids
+
+killPid :: ProcessID -> IO ()
+killPid pid = do
+    _ :: Either SomeException () <- try $ do
+        signalProcess sigTERM pid
+        void $ getProcessStatus True False pid
+    return ()
 
 
 -- Startuphook.
@@ -331,7 +345,6 @@ myStartupHook = do
     restartxmobar
     when (disp == ":0") $ mapM_ spawnOnce
         [ "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
-        , "compton --backend glx --vsync opengl"
         , "/usr/lib/notify-osd/notify-osd"
         , "nm-applet"
         , "blueman-applet"
