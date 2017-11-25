@@ -63,7 +63,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((mod1Mask .|. controlMask, xK_f  ), spawn "urxvt-maxi +rv")
     , ((mod1Mask .|. controlMask, xK_t  ), spawn "LANG=cs_CZ rxvt")
     , ((mod1Mask .|. controlMask, xK_h  ), spawn "LANG=cs_CZ rxvt -e /home/tomi/bin/hnb")
---    , ((modMask,            xK_semicolon), spawn $ "killall xcompmgr; xlock; exec " ++ xcompmgr)
     , ((modMask,            xK_semicolon), spawn "xlock")
     , ((0,            xF86XK_ScreenSaver), spawn "xlock")
     , ((0,                     xK_Menu  ), spawn "dmenu_run -f -fn Fixed-10")
@@ -131,7 +130,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ++
     [ ((modMask .|. m, k), focusNth i >> a >> up) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]),
         (m, a) <- [ (0, return ()), (shiftMask, windows W.swapMaster) ] ]
-    -- [ ((modMask, k), focusNth i) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]) ]
     ++
     [ ((modMask,               xK_Tab   ), nextScreen >> up)
     , ((modMask .|. shiftMask, xK_Tab   ), prevScreen >> up) ]
@@ -336,8 +334,6 @@ myStartupHook = do
         , "xset s off"
         , "xset b off"
         , "xset dpms 300 300 300"
-        , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2"
-        , "xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1"
         , "xmodmap ~/.Xmodmap"
         , "redshift"
         , "xprop -root -remove _NET_WORKAREA"
