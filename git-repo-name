@@ -1,3 +1,8 @@
 #!/bin/bash
-cd "`git rev-parse --git-dir 2>/dev/null`"/..
-basename "`pwd`"
+
+gitdir="$(readlink -f "$(git rev-parse --git-dir 2>/dev/null)")"
+case "$gitdir" in
+	"") ;;
+	*/.git) basename "$(dirname "$gitdir")" ;;
+	*/.git/worktrees/*) basename "$gitdir" ;;
+esac
