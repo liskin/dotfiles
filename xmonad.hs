@@ -244,7 +244,7 @@ rescreenHook = do
     disp <- io $ getEnv "DISPLAY"
     let mainxmobar = sequence [ spawnPID "xmobar -x 0" | disp == ":0" ]
     let trayer = sequence [ spawnPID "trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary" ]
-    let compton = sequence [ spawnPID "compton --backend glx --vsync opengl" ]
+    let compton = sequence [ spawnPID "compton" ]
     killPids "_XMONAD_XMOBARS"
     savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
     spawn "fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
