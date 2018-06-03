@@ -350,6 +350,7 @@ myStartupHook = do
         , "pa-applet"
         , "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
         , "firewall-applet"
+        , "caffeine-indicator"
         ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
