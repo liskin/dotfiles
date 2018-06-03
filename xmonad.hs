@@ -60,9 +60,6 @@ xF86XK_AudioMicMute = 0x1008FFB2
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ XMonad.terminal conf)
-    , ((mod1Mask .|. controlMask, xK_f  ), spawn "urxvt-maxi +rv")
-    , ((mod1Mask .|. controlMask, xK_t  ), spawn "LANG=cs_CZ rxvt")
-    , ((mod1Mask .|. controlMask, xK_h  ), spawn "LANG=cs_CZ rxvt -e /home/tomi/bin/hnb")
     , ((modMask,            xK_semicolon), spawn "sleep 0.1; xscreensaver-command -lock")
     , ((0,            xF86XK_ScreenSaver), spawn "sleep 0.1; xscreensaver-command -lock")
     , ((0,                     xK_Menu  ), spawn "dmenu_run -f -fn Fixed-10")
