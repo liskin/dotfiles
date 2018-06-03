@@ -368,7 +368,7 @@ main = do
             focusFollowsMouse  = True,
             borderWidth        = 2,
             modMask            = mod4Mask,
-            workspaces         = map show [1..24],
+            workspaces         = map show [1..12] ++ map (('W' :) . show) [1..12],
             normalBorderColor  = "#dddddd",
             focusedBorderColor = "#ff0000",
 
