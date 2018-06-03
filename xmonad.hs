@@ -59,10 +59,10 @@ xF86XK_AudioMicMute = 0x1008FFB2
 
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
-    [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ XMonad.terminal conf)
+    [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ "exec " ++ XMonad.terminal conf)
     , ((modMask,            xK_semicolon), spawn "sleep 0.1; xscreensaver-command -lock")
     , ((0,            xF86XK_ScreenSaver), spawn "sleep 0.1; xscreensaver-command -lock")
-    , ((0,                     xK_Menu  ), spawn "dmenu_run -f -fn Fixed-10")
+    , ((0,                     xK_Menu  ), spawn "exec dmenu_run -f -fn Fixed-10")
     , ((modMask,               xK_Menu  ), goToSelected def >> up)
     , ((modMask,               xK_grave ), goToSelected def >> up)
     , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
@@ -239,12 +239,12 @@ clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
 rescreenHook :: X ()
 rescreenHook = do
     disp <- io $ getEnv "DISPLAY"
-    let mainxmobar = sequence [ spawnPID "xmobar -x 0" | disp == ":0" ]
-    let trayer = sequence [ spawnPID "trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary" ]
-    let compton = sequence [ spawnPID "compton" ]
+    let mainxmobar = sequence [ spawnPID "exec xmobar -x 0" ]
+    let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary" ]
+    let compton = sequence [ spawnPID "exec compton" ]
     killPids "_XMONAD_XMOBARS"
     savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
-    spawn "fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
+    spawn "exec fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
@@ -253,7 +253,7 @@ xmobarScreens = do
         let S num = W.screen scr
             n = show num
             prop = "_XMONAD_LOG_SCREEN_" ++ show num
-        spawnPID $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%'"
+        spawnPID $ "exec xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%'"
 
 xmobarWindowLists :: X ()
 xmobarWindowLists = do
@@ -333,21 +333,21 @@ myStartupHook = do
         , "xset b off"
         , "xset dpms 300 300 300"
         , "xmodmap ~/.Xmodmap"
-        , "redshift"
+        , "exec redshift"
         , "xprop -root -remove _NET_WORKAREA"
         ]
     rescreenHook
     when (disp == ":0") $ mapM_ spawnOnce
         [ "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
-        , "/usr/lib/notify-osd/notify-osd"
-        , "nm-applet"
-        , "blueman-applet"
+        , "exec /usr/lib/notify-osd/notify-osd"
+        , "exec nm-applet"
+        , "exec blueman-applet"
         , "start-pulseaudio-x11"
-        , "padevchooser"
-        , "pa-applet"
-        , "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
-        , "firewall-applet"
-        , "caffeine-indicator"
+        , "exec padevchooser"
+        , "exec pa-applet"
+        , "exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
+        , "exec firewall-applet"
+        , "exec caffeine-indicator"
         ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
