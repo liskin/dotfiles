@@ -1,0 +1,78 @@
+[gui]
+	fontdiff = -family \"DejaVu Sans Mono\" -size 11 -weight normal -slant roman -underline 0 -overstrike 0
+	spellingdictionary = en_GB
+[sendemail]
+	smtpserver = /usr/bin/msmtp
+[color "diff"]
+	new = cyan bold #17
+	old = red bold #52
+	meta = green bold
+	frag = yellow bold
+	commit = white bold
+	newMoved = 157 bold
+	newMovedAlternative = 49 bold
+	oldMoved = 166 bold
+	oldMovedAlternative = 163 bold
+[color "status"]
+	added = cyan bold
+	changed = red bold
+	untracked = yellow bold
+[color]
+	ui = true
+[user]
+	name = Tomas Janousek
+	email = tomi@nomi.cz
+	signingKey = 639DFD7BBFF09178
+[push]
+	#default = upstream
+	default = simple
+[rebase]
+	autosquash = true
+	autoStash = true
+[branch]
+	autosetuprebase = always
+#[rerere]
+#	enabled = true
+[alias]
+	lg = log --color --graph --decorate
+	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
+	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
+	wdiff = diff --word-diff=color -w
+	wshow = show --word-diff=color -w
+	puf = push --force-with-lease
+	dcommit = svn dcommit --rmdir --interactive
+	rev-sort-topo-reverse = rev-list --topo-order --no-walk --reverse
+[mergetool]
+	keepBackup = false
+[merge]
+	tool = kdiff3
+#[notes]
+#	rewriteRef = refs/notes/commits
+[diff]
+	algorithm = histogram
+	compactionHeuristic = true
+	indentHeuristic = true
+	colorMoved = default
+[pack]
+	windowMemory = 3G
+[stash]
+	showPatch = true
+[svn]
+	pushmergeinfo = true
+[commit]
+	verbose = 1
+	#cleanup = scissors
+[submodule]
+	fetchJobs = 0
+[tig]
+	tab-size = 4
+	blame-options = -C -C -C
+	mouse = true
+[tig "bind"]
+	generic = E !vim +%(lineno) fugitive://%(repo:git-dir)//%(commit)/%(file)
+[includeIf "gitdir:~/Private/SQLdep/"]
+	path = ~/Private/SQLdep/.gitconfig
+[includeIf "gitdir:~/Private/iXperta/"]
+	path = ~/Private/iXperta/.gitconfig
+[includeIf "gitdir:~/Private/GoodData/"]
+	path = ~/Private/GoodData/.gitconfig
