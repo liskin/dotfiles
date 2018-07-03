@@ -56,7 +56,10 @@ function read-owner-repo
 
 function add-remote
 {
-	o git remote get-url "$1" >&/dev/null || o git remote add "$1" "$2"
+	if ! o git remote get-url "$1" >&/dev/null; then
+		o git remote add "$1" "$2"
+		o git config remote."$1".skipDefaultUpdate true
+	fi
 }
 
 function check-git-repo
