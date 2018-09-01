@@ -5,4 +5,5 @@ case "$gitdir" in
 	"") ;;
 	*/.git) basename "$(dirname "$gitdir")" ;;
 	*/.git/worktrees/*) basename "$gitdir" ;;
+	*/.git/modules/*) basename "$gitdir" ;;
 esac
