@@ -45,9 +45,9 @@ function read-owner-repo
 {
 	local origin_url
 	o git remote get-url origin | IFS= read -r origin_url
-	if [[ "$origin_url" =~ ^git@github\.com:(.*)/(.*)\.git$ ]]; then
-		gh_owner="${BASH_REMATCH[1]}"
-		gh_repo="${BASH_REMATCH[2]}"
+	if [[ "$origin_url" =~ ^(git@)?github\.com:(.*)/(.*)\.git$ ]]; then
+		gh_owner="${BASH_REMATCH[2]}"
+		gh_repo="${BASH_REMATCH[3]}"
 		:
 	else
 		croak 1 Cannot parse: "$origin_url"
