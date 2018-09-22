@@ -11,4 +11,4 @@ function echo_bold_underline {
 	perl -M5.010 -e 'my $s = "##### " . shift; my $t1 = `tput bold; tput smul`; my $t2 = `tput sgr0`; my $c = `tput cols`; $s .= " " x ($c - length($s)); say($t1 . $s . $t2);' "$@"
 }
 
-find . -maxdepth 2 -name .git | while read f; do echo_bold_underline "$f"; git -C "${f%/.git}" "$@"; echo; done
+find . -maxdepth 2 -name .git | sort | while read f; do echo_bold_underline "$f"; git -C "${f%/.git}" "$@"; echo; done
