@@ -74,7 +74,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0,         xF86XK_WebCam        ), spawn "touchscreen_toggle")
     , ((0,         xF86XK_Display       ), spawn "layout-auto")
     , ((0,         xF86XK_Sleep         ), spawn "layout-normal")
-    , ((0,         xF86XK_Tools         ), spawn "pa-switchbluetooth")
     , ((mod1Mask,      xK_space         ), spawn "touchpad_toggle")
 
     , ((modMask,               xK_Escape), kill)
