@@ -53,6 +53,7 @@
 	compactionHeuristic = true
 	indentHeuristic = true
 	colorMoved = default
+	noprefix = true
 [pack]
 	windowMemory = 3G
 [stash]
@@ -70,9 +71,11 @@
 	mouse = true
 [tig "bind"]
 	generic = E !vim +%(lineno) fugitive://%(repo:git-dir)//%(commit)/%(file)
-[includeIf "gitdir:~/Private/SQLdep/"]
-	path = ~/Private/SQLdep/.gitconfig
-[includeIf "gitdir:~/Private/iXperta/"]
-	path = ~/Private/iXperta/.gitconfig
-[includeIf "gitdir:~/Private/GoodData/"]
-	path = ~/Private/GoodData/.gitconfig
+[includeIf "gitdir:~/work/SQLdep/"]
+	path = ~/work/SQLdep/.gitconfig
+[includeIf "gitdir:~/work/iXperta/"]
+	path = ~/work/iXperta/.gitconfig
+[includeIf "gitdir:~/work/GoodData/"]
+	path = ~/work/GoodData/.gitconfig
+[fetch]
+	prune = true
