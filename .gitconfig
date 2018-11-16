@@ -53,6 +53,7 @@
 	compactionHeuristic = true
 	indentHeuristic = true
 	colorMoved = default
+	colorMovedWS = allow-indentation-change
 	noprefix = true
 [pack]
 	windowMemory = 3G
