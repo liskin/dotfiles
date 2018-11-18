@@ -25,7 +25,7 @@ class Battery():
         try:
             self.capacity = int(self._read_attr('capacity'))
             self.present = bool(int(self._read_attr('present')))
-        except:
+        except Exception:
             self.capacity = 0
             self.present = False
 
@@ -36,12 +36,14 @@ class Main():
     notification: Any
 
     def __init__(self) -> None:
-        sys_paths = ['/sys/class/power_supply/BAT%d' % n
-            for n in range(self.num_batteries)]
-        self.batteries = [Battery(path = p) for p in sys_paths]
+        sys_paths = [
+            '/sys/class/power_supply/BAT%d' % n
+            for n in range(self.num_batteries)
+        ]
+        self.batteries = [Battery(path=p) for p in sys_paths]
 
         self.notification = notify2.Notification(
-            summary = 'Low battery', icon = 'battery-low')
+            summary='Low battery', icon='battery-low')
         self.notification.set_urgency(notify2.URGENCY_CRITICAL)
 
     def refresh(self) -> None:
