@@ -103,7 +103,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask              , xK_comma ), sendMessage (IncMasterN 1))
     , ((modMask              , xK_period), sendMessage (IncMasterN (-1)))
 
-    , ((modMask              , xK_x     ), sendMessage ToggleStruts)
+    , ((modMask              , xK_x     ), sendMessage (ToggleStrut D))
+    , ((modMask              , xK_z     ), sendMessage ToggleStruts)
 
     , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
