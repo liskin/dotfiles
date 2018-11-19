@@ -49,3 +49,7 @@ rxvt-unicode-256color|rxvt-unicode terminal with 256 colors (X Window System) + 
 	kUP=\E[a, kUP5=\EOa,
 	Se=\E[2 q, Ss=\E[%p1%d q,
 	use=xterm+sm+1006,
+
+tmux-256color|tmux with 256 colors + xterm+sm+1006,
+	use=xterm+sm+1006,
+	use=xterm+256setaf, use=tmux,
