@@ -339,8 +339,7 @@ myStartupHook = do
         ]
     rescreenHook
     when (disp == ":0") $ mapM_ spawnOnce
-        [ "pkill -f '^udprcv 12200'; udprcv 12200 | xmonadpropwrite _XMONAD_LOG_IRSSI"
-        , "exec /usr/lib/notify-osd/notify-osd"
+        [ "exec /usr/lib/notify-osd/notify-osd"
         , "exec nm-applet"
         , "exec blueman-applet"
         , "start-pulseaudio-x11"
