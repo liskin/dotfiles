@@ -11,6 +11,7 @@ import Control.Applicative
 import Control.Exception ( try, SomeException )
 import Control.Monad
 import Control.Monad.Fix
+import Data.List ( intercalate )
 import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
@@ -198,19 +199,30 @@ myManageHook = composeAll
 
 -- Loghook.
 myLogHook = do
-    namesPP <- workspaceNamesPP xmobarPP
-    let myPP = namesPP
+    let myPP = xmobarPP
             { ppExtras =
                 [ willFloatNextPP ("Float " ++)
                 , willFloatAllNewPP ("Float " ++)
+                , urgentsExtras
                 ]
-            , ppVisible = xmobarColor "green" "" . ppVisible namesPP
+            , ppVisible = xmobarColor "green" "" . ppVisible xmobarPP
+            , ppUrgent = ppUrgentC
             , ppSep = " | "
             , ppOrder = \(w:_:_:s) -> w:s
             }
-    dynamicLogString myPP >>= xmonadPropLog
+    workspaceNamesPP myPP >>= dynamicLogString >>= xmonadPropLog
     xmobarWindowLists
     --fadeInactiveLogHook 0.87
+    where
+        ppUrgentC = xmobarColor "#ffff00" "#800000"
+        ppUrgentWin w = do
+            nw <- getName w
+            pure $ ppUrgentC . shorten 30 $ show nw
+        urgentsExtras = do
+            urgents <- readUrgents
+            if null urgents
+                then pure Nothing
+                else (Just . intercalate " ") `fmap` mapM ppUrgentWin urgents
 
 
 -- Restart xmobar on RAndR.
