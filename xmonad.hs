@@ -253,7 +253,7 @@ rescreenHook :: X ()
 rescreenHook = do
     disp <- io $ getEnv "DISPLAY"
     let mainxmobar = sequence [ spawnPID "exec xmobar -x 0" ]
-    let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --tint 0x400000 --transparent true --monitor primary" ]
+    let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary" ]
     let compton = sequence [ spawnPID "exec compton" ]
     killPids "_XMONAD_XMOBARS"
     savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
