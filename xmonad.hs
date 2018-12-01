@@ -11,7 +11,7 @@ import Control.Applicative
 import Control.Exception ( try, SomeException )
 import Control.Monad
 import Control.Monad.Fix
-import Data.List ( intercalate, nub )
+import Data.List ( intercalate, isPrefixOf, nub )
 import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
@@ -216,10 +216,12 @@ myLogHook = do
     where
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
+        shortenUrgent t | isWeechatTitle t = t
+                        | otherwise = shorten 30 t
         ppUrgentExtra urgents w = do
             nw <- getName w
             let pp = if w `elem` urgents then ppUrgentC else ppNormalC
-            pure $ pp . shorten 30 $ show nw
+            pure $ pp . shortenUrgent $ show nw
         urgentsExtras = do
             weechat <- weechatWins
             urgents <- readUrgents
@@ -229,13 +231,14 @@ myLogHook = do
                 else do
                     items <- mapM (ppUrgentExtra urgents) ws
                     return $ Just (intercalate " " items)
+        weechatWins :: X [Window]
         weechatWins = do
             ws <- gets windowset
-            return . maybeToList $ do
-                    ircWks <- listToMaybe [ wks | wks <- W.workspaces ws
-                                          , W.tag wks == "1" ]
-                    ircWin <- getIZ 0 (W.stack ircWks)
-                    return ircWin
+            filterM isWeechat
+                [ w | wks <- W.workspaces ws, W.tag wks == "1"
+                , w <- fst (toIndex (W.stack wks)) ]
+        isWeechat w = (isWeechatTitle . show) `fmap` getName w
+        isWeechatTitle = ("t[N] " `isPrefixOf`)
 
 
 -- Restart xmobar on RAndR.
