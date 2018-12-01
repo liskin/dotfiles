@@ -11,7 +11,7 @@ import Control.Applicative
 import Control.Exception ( try, SomeException )
 import Control.Monad
 import Control.Monad.Fix
-import Data.List ( intercalate )
+import Data.List ( intercalate, nub )
 import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
@@ -214,15 +214,28 @@ myLogHook = do
     xmobarWindowLists
     --fadeInactiveLogHook 0.87
     where
+        ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
-        ppUrgentWin w = do
+        ppUrgentExtra urgents w = do
             nw <- getName w
-            pure $ ppUrgentC . shorten 30 $ show nw
+            let pp = if w `elem` urgents then ppUrgentC else ppNormalC
+            pure $ pp . shorten 30 $ show nw
         urgentsExtras = do
+            weechat <- weechatWins
             urgents <- readUrgents
-            if null urgents
+            let ws = nub $ weechat ++ urgents
+            if null ws
                 then pure Nothing
-                else (Just . intercalate " ") `fmap` mapM ppUrgentWin urgents
+                else do
+                    items <- mapM (ppUrgentExtra urgents) ws
+                    return $ Just (intercalate " " items)
+        weechatWins = do
+            ws <- gets windowset
+            return . maybeToList $ do
+                    ircWks <- listToMaybe [ wks | wks <- W.workspaces ws
+                                          , W.tag wks == "1" ]
+                    ircWin <- getIZ 0 (W.stack ircWks)
+                    return ircWin
 
 
 -- Restart xmobar on RAndR.
