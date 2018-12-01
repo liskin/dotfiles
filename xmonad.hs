@@ -217,7 +217,7 @@ myLogHook = do
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
         shortenUrgent t | isWeechatTitle t = t
-                        | otherwise = shorten 30 t
+                        | otherwise = shorten 30 (xmobarStrip t)
         ppUrgentExtra urgents w = do
             nw <- getName w
             let pp = if w `elem` urgents then ppUrgentC else ppNormalC
@@ -299,17 +299,18 @@ xmobarWindowLists = do
             layout = description . W.layout $ wks
 
             fmt (True, _, n) | num == current =
-                     xmobarColor "#ffff00" ""        . shorten 30 $ n
+                     xmobarColor "#ffff00" ""        $ n
             fmt (_,    w, n) = if w `elem` urgents
-                then xmobarColor "#ff0000" "#ffff00" . shorten 30 $ n
-                else xmobarColor "#808000" ""        . shorten 30 $ n
+                then xmobarColor "#ff0000" "#ffff00" $ n
+                else xmobarColor "#808000" ""        $ n
 
             tagprint = if current == num
                 then ppCurrent finPP
                 else ppVisible finPP
 
             finPP = myPP $ (tagprint (name tag) ++ " " ++ layout) :
-                [ fmt (b, w, show n ++ " " ++ show t) | (b,w,t) <- wins | n <- [1..] ]
+                [ fmt (b, w, show n ++ " " ++ shorten 30 (xmobarStrip (show t)))
+                | (b,w,t) <- wins | n <- [1..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
     where
