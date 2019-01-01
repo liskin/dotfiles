@@ -1,0 +1,7 @@
+#uinput XF86AudioPlay
+"xdotool key XF86AudioPlay"
+   m:0x0 + c:208
+
+#uinput XF86AudioPause
+"xdotool key XF86AudioPlay"
+   m:0x0 + c:209
