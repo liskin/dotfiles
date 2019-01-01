@@ -362,9 +362,11 @@ myStartupHook = do
         , "xset s off"
         , "xset b off"
         , "xset dpms 300 300 300"
+        , "xsetroot -cursor_name left_ptr"
         , "xmodmap ~/.Xmodmap"
         , "exec redshift"
         , "xprop -root -remove _NET_WORKAREA"
+        , "exec pa-applet"
         ]
     rescreenHook
     when (disp == ":0") $ mapM_ spawnOnce
@@ -372,7 +374,6 @@ myStartupHook = do
         , "exec nm-applet"
         , "exec blueman-applet"
         , "start-pulseaudio-x11"
-        , "exec pa-applet"
         , "exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
         , "exec firewall-applet"
         , "exec caffeine-indicator"
