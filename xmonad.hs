@@ -70,7 +70,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_v     ), renameWorkspace def)
     , ((modMask,               xK_g     ), sendMessage (Chdir (myHome ++ "/work/GoodData")))
 
-    , ((0,         xF86XK_AudioMicMute  ), spawn "pactl set-source-mute alsa_input.pci-0000_00_1f.3.analog-stereo toggle")
+    , ((0,         xF86XK_AudioMicMute    ), spawn "pactl set-source-mute @DEFAULT_SOURCE@ toggle")
+    , ((0,         xF86XK_AudioMute       ), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    , ((0,         xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -2%")
+    , ((0,         xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +2%")
+
     , ((0,         xF86XK_TouchpadToggle), spawn "touchpad_toggle")
     , ((0,         xF86XK_WebCam        ), spawn "touchscreen_toggle")
     , ((0,         xF86XK_Display       ), spawn "layout-auto")
@@ -368,7 +372,7 @@ myStartupHook = do
         , "exec xbindkeys -n"
         , "exec redshift"
         , "xprop -root -remove _NET_WORKAREA"
-        , "exec pa-applet"
+        , "exec pasystray --notify=all"
         ]
     rescreenHook
     when (disp == ":0") $ mapM_ spawnOnce
