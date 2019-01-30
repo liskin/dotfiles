@@ -120,7 +120,7 @@ programs:								      \
 				deluxe -root				    \n\
 -				demon -root				    \n\
   GL: 				extrusion -root				    \n\
--				loop -root				    \n\
+-				loop -root -delay 1000000 -cycles 8000	    \n\
 				penetrate -root				    \n\
 				petri -root				    \n\
 				phosphor -root				    \n\
