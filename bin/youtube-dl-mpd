@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+
+from mpd import MPDClient
+import json
+import os
+import subprocess
+import sys
+
+youtube = json.loads(subprocess.run(
+    ["youtube-dl", "-f", "bestaudio", "--dump-single-json", sys.argv[1]],
+    check=True, capture_output=True
+).stdout)
+
+client = MPDClient()
+client.connect(os.environ['MPD_HOST'])
+stream_id = client.addid(youtube['url'])
+client.addtagid(stream_id, "artist", youtube['artist'])
+client.addtagid(stream_id, "title", youtube['track'])
+client.close()
+client.disconnect()
