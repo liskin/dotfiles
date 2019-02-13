@@ -75,6 +75,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0,         xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -2%")
     , ((0,         xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +2%")
 
+    , ((0,         xF86XK_AudioPlay ), spawn "mpc toggle")
+    , ((0,         xF86XK_AudioPause), spawn "mpc toggle")
+    , ((0,         xF86XK_AudioStop ), spawn "mpc stop")
+    , ((0,         xF86XK_AudioNext ), spawn "mpc next")
+    , ((0,         xF86XK_AudioPrev ), spawn "mpc prev")
+
     , ((0,         xF86XK_TouchpadToggle), spawn "touchpad_toggle")
     , ((0,         xF86XK_WebCam        ), spawn "touchscreen_toggle")
     , ((0,         xF86XK_Display       ), spawn "layout-auto")
