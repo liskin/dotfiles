@@ -1,0 +1,21 @@
+resolver: lts-9.2
+extra-deps:
+    - X11-1.6.1.2
+    - X11-xshape-0.1.1
+    - getflag-1.0
+
+packages:
+    - dep/gsmenu
+    - dep/xmobar
+    - dep/xmonad
+    - dep/xmonad-contrib
+
+flags:
+    gsmenu:
+        use_xft: false
+    xmobar:
+        with_xft: false
+        with_utf8: true
+        with_threaded: true
+    xmonad-contrib:
+        use_xft: false
