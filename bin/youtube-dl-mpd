@@ -14,7 +14,10 @@ youtube = json.loads(subprocess.run(
 client = MPDClient()
 client.connect(os.environ['MPD_HOST'])
 stream_id = client.addid(youtube['url'])
-client.addtagid(stream_id, "artist", youtube['artist'])
-client.addtagid(stream_id, "title", youtube['track'])
+if youtube['artist'] and youtube['track']:
+    client.addtagid(stream_id, "artist", youtube['artist'])
+    client.addtagid(stream_id, "title", youtube['track'])
+else:
+    client.addtagid(stream_id, "title", youtube['title'])
 client.close()
 client.disconnect()
