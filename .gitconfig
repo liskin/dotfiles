@@ -31,8 +31,6 @@
 	autoStash = true
 [branch]
 	autosetuprebase = always
-#[rerere]
-#	enabled = true
 [alias]
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
@@ -46,8 +44,6 @@
 	keepBackup = false
 [merge]
 	tool = kdiff3
-#[notes]
-#	rewriteRef = refs/notes/commits
 [diff]
 	algorithm = histogram
 	compactionHeuristic = true
@@ -72,11 +68,5 @@
 	mouse = true
 [tig "bind"]
 	generic = E !vim +%(lineno) fugitive://%(repo:git-dir)//%(commit)/%(file)
-[includeIf "gitdir:~/work/SQLdep/"]
-	path = ~/work/SQLdep/.gitconfig
-[includeIf "gitdir:~/work/iXperta/"]
-	path = ~/work/iXperta/.gitconfig
-[includeIf "gitdir:~/work/GoodData/"]
-	path = ~/work/GoodData/.gitconfig
 [fetch]
 	prune = true
