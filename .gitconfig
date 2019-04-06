@@ -76,3 +76,5 @@
 	generic = E !vim +%(lineno) fugitive://%(repo:git-dir)//%(commit)/%(file)
 [fetch]
 	prune = true
+[includeIf "gitdir:~/work/altworx/"]
+	path = ~/work/altworx/.gitconfig
