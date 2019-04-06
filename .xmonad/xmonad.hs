@@ -92,7 +92,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
     , ((modMask,               xK_space ), runSelectedAction def laySels)
     , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
-    , ((controlMask,           xK_space ), refresh)
 
     , ((mod1Mask,              xK_Tab   ), windows W.focusDown   >> up)
     , ((modMask,               xK_j     ), windows W.focusDown   >> up)
