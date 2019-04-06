@@ -32,7 +32,14 @@ function player {
 	o cd "$my_cache_dir"
 
 	(( $# )) || { printf '%s\n' 'urls expected'; exit 1; }
-	o youtube-dl -f bestaudio --add-metadata --no-mtime --exec 'youtube-dl-mpd-helper {}' "$@"
+	o youtube-dl \
+		-f bestaudio \
+		--add-metadata \
+		--no-mtime \
+		--sleep-interval 10 \
+		--max-sleep-interval 30 \
+		--exec 'youtube-dl-mpd-helper {}' \
+		"$@"
 }
 
 if [[ "$(basename -- "$0")" == "youtube-dl-mpd-helper" ]]; then
