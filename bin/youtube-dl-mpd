@@ -1,23 +1,42 @@
-#!/usr/bin/env python3
+#!/usr/bin/env bash
 
-from mpd import MPDClient
-import json
-import os
-import subprocess
-import sys
+set -eu -o pipefail
 
-youtube = json.loads(subprocess.run(
-    ["youtube-dl", "-f", "bestaudio", "--dump-single-json", sys.argv[1]],
-    check=True, capture_output=True
-).stdout)
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
-client = MPDClient()
-client.connect(os.environ['MPD_HOST'])
-stream_id = client.addid(youtube['url'])
-if youtube['artist'] and youtube['track']:
-    client.addtagid(stream_id, "artist", youtube['artist'])
-    client.addtagid(stream_id, "title", youtube['track'])
-else:
-    client.addtagid(stream_id, "title", youtube['title'])
-client.close()
-client.disconnect()
+mpd_music_dir="$(echo config | nc -N -U "$MPD_HOST" | awk '$1 == "music_directory:" { print $2 }')"
+: "${mpd_music_dir:?}"
+cache_dir_name=youtube-dl-mpd
+my_cache_dir=~/.cache/"$cache_dir_name"
+
+function prepare-cache {
+	o mkdir -p "$my_cache_dir"
+	o ln -sfT "$my_cache_dir" "$mpd_music_dir/$cache_dir_name"
+	o find "$my_cache_dir"/ -type f -mtime +3 -print -delete
+	o mpc update --wait "$cache_dir_name/"
+}
+
+function helper {
+	o cd "$my_cache_dir"
+
+	(( $# == 1 )) || { printf '%s\n' '1 arg expected'; exit 1; }
+	file="$(basename -- "$1")"
+	[[ -f "$file" ]] || { printf '%s\n' "$file not in cache dir"; exit 1; }
+
+	o mpc update --wait "$cache_dir_name/$file"
+	o mpc add "$cache_dir_name/$file"
+}
+
+function player {
+	prepare-cache
+	o cd "$my_cache_dir"
+
+	(( $# )) || { printf '%s\n' 'urls expected'; exit 1; }
+	o youtube-dl -f bestaudio --add-metadata --no-mtime --exec 'youtube-dl-mpd-helper {}' "$@"
+}
+
+if [[ "$(basename -- "$0")" == "youtube-dl-mpd-helper" ]]; then
+	helper "$@"
+else
+	player "$@"
+fi
