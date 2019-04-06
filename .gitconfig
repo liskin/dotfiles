@@ -35,7 +35,7 @@
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
 	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
-	wdiff = diff --word-diff=color -w
+	wdiff = -c pager.diff=pager diff --word-diff=color -w
 	wshow = show --word-diff=color -w
 	puf = push --force-with-lease
 	dcommit = svn dcommit --rmdir --interactive
@@ -51,6 +51,11 @@
 	colorMoved = default
 	colorMovedWS = allow-indentation-change
 	noprefix = true
+[interactive]
+	diffFilter = diff-highlight
+[pager]
+	diff = diff-highlight | less
+	show = diff-highlight | less
 [pack]
 	windowMemory = 3G
 [stash]
@@ -66,6 +71,7 @@
 	tab-size = 4
 	blame-options = -C -C -C
 	mouse = true
+	wrap-lines = true
 [tig "bind"]
 	generic = E !vim +%(lineno) fugitive://%(repo:git-dir)//%(commit)/%(file)
 [fetch]
