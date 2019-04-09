@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+_cmd=$(command -p -v "$(basename "$0")")
+
+if [[ $# == 0 && -f .vimsession ]]; then
+	exec "$_cmd" -S .vimsession
+else
+	exec "$_cmd" "$@"
+fi

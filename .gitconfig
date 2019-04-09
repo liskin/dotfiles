@@ -67,6 +67,8 @@
 	#cleanup = scissors
 [submodule]
 	fetchJobs = 0
+[status]
+	submoduleSummary = true
 [tig]
 	tab-size = 4
 	blame-options = -C -C -C
