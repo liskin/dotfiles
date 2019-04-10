@@ -4,14 +4,16 @@ if &t_Co == 256 || has('gui_running')
 	hi Conceal ctermbg=242 guibg=#6c6c6c
 	hi Constant cterm=bold ctermfg=207 gui=bold guifg=#ff5fff
 	hi CursorLine guibg=NONE gui=underline
-	hi CursorLineNr cterm=bold
+	hi CursorLineNr cterm=bold ctermfg=250
 	hi DiffAdd ctermbg=4 gui=NONE guibg=#0000c0
 	hi DiffChange ctermbg=5 gui=NONE guibg=#c000c0
 	hi DiffDelete ctermbg=6 ctermfg=12 gui=NONE guibg=#00c0c0 guifg=#0000ff
 	hi Directory ctermfg=159 guifg=#afffff
 	hi EndOfBuffer ctermfg=238 guifg=#444444
 	hi ErrorMsg ctermbg=1 guibg=#c00000
+	hi Folded cterm=bold ctermfg=11 ctermbg=240
 	hi Identifier cterm=bold ctermfg=14 gui=bold guifg=#00ffff
+	hi LineNr ctermfg=246
 	hi MatchParen ctermbg=30 cterm=bold guibg=#008787 gui=bold
 	hi MoreMsg gui=NONE ctermfg=121 guifg=#87ffaf
 	hi NonText cterm=bold gui=NONE
@@ -22,7 +24,7 @@ if &t_Co == 256 || has('gui_running')
 	hi Search cterm=underline ctermbg=87 ctermfg=0 gui=underline guibg=#5fffff guifg=black
 	hi SignColumn ctermbg=233
 	hi Special cterm=bold ctermfg=208 gui=bold guifg=#ff8700
-	hi SpecialKey cterm=NONE ctermfg=239 gui=NONE guifg=#4e4e4e
+	hi SpecialKey cterm=bold ctermfg=239 gui=NONE guifg=#4e4e4e
 	hi SpellBad cterm=underline,bold ctermfg=9 ctermbg=NONE
 	hi SpellCap cterm=underline,bold ctermfg=87 ctermbg=NONE
 	hi SpellLocal cterm=underline,bold ctermfg=39 ctermbg=NONE
