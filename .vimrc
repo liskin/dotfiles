@@ -119,13 +119,15 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
 " other {{{2
 set backspace=indent,eol,start
-set completeopt=menu,menuone,longest
+set completeopt=menu,menuone,longest,preview
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
 set hidden
 set scrolloff=10
 set sessionoptions-=options
 set spelllang=en
+set splitbelow
+set splitright
 
 " plugins {{{1
 
@@ -240,6 +242,9 @@ syntax on
 " open quickfix windows automatically {{{2
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost l* nested lwindow
+
+" autoclose preview windows {{{2
+autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " when editing a file, always jump to the last cursor position {{{2
 " see :help last-position-jump
