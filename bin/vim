@@ -4,8 +4,8 @@ set -eu
 
 _cmd=$(command -p -v "$(basename "$0")")
 
-if [[ $# == 0 && -f .vimsession ]]; then
-	exec "$_cmd" -S .vimsession
+if [[ $# == 0 ]]; then
+	exec "$_cmd" +LoadSession
 else
 	exec "$_cmd" "$@"
 fi
