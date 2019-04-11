@@ -142,9 +142,39 @@ let g:netrw_http_cmd  = "curl"
 let g:netrw_http_xcmd = "-Ssf -o"
 let g:puppet_align_hashes = 0
 let g:scala_scaladoc_indent = 1
-let g:tagbar_autofocus=1
-let g:tagbar_left=1
 let g:tex_comment_nospell = 1
+
+" tagbar {{{3
+let g:tagbar_autofocus=1
+let g:tagbar_ctags_bin = "ctags"
+let g:tagbar_left=1
+let g:tagbar_type_elixir = {
+	\ 'ctagstype' : 'Elixir',
+	\ 'kinds' : [
+		\ 'p:protocols',
+		\ 'm:modules',
+		\ 'e:exceptions',
+		\ 'y:types',
+		\ 'd:delegates',
+		\ 'f:functions',
+		\ 'c:callbacks',
+		\ 'a:macros',
+		\ 't:tests',
+		\ 'i:implementations',
+		\ 'o:operators',
+		\ 'r:records'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 'p' : 'protocol',
+		\ 'm' : 'module'
+	\ },
+	\ 'scope2kind' : {
+		\ 'protocol' : 'p',
+		\ 'module' : 'm'
+	\ },
+	\ 'sort' : 0
+\ }
 
 " airline {{{3
 let g:airline_theme="dark"
