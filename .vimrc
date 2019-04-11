@@ -214,7 +214,7 @@ autocmd User AirlineAfterInit call AirlineInit()
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
 let g:ale_set_highlights = 1
-let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 0
 let g:ale_linters_explicit = 1
 let g:ale_linters = {}
 let g:ale_linter_aliases = {}
@@ -339,7 +339,8 @@ nmap <silent> <C-G> :CtrlPTag<CR>
 
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
-"imap <C-Space> <Plug>(ale_complete)
+imap <C-@> <C-Space>
+imap <C-Space> <Plug>(ale_complete)
 
 " prevent x from overriding what's in the clipboard. {{{2
 noremap x "_x
