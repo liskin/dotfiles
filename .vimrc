@@ -109,8 +109,9 @@ set dir=~/.vim/swap//
 set nofsync
 set swapsync=
 
-" tags {{{2
+" location of tags, includes {{{2
 set tags+=./tags;
+set path=.,,
 
 " filename completion {{{2
 set wildmode=list:longest
@@ -255,9 +256,9 @@ autocmd BufReadPost *
 
 " ft-specifics {{{2
 autocmd FileType alex setlocal tw=78 et
-autocmd FileType c setlocal tw=78
+autocmd FileType c setlocal tw=78 path=.,/usr/include,,
 autocmd FileType cabal setlocal tw=78 et
-autocmd FileType cpp setlocal tw=78
+autocmd FileType cpp setlocal tw=78 path=.,/usr/include,,
 autocmd FileType dot setlocal ai
 autocmd FileType elixir setlocal indentexpr= autoindent " vim-elixir's indent is too slow :-(
 autocmd FileType erlang setlocal formatoptions-=t formatoptions+=crql suffixesadd+=.erl path+=**
