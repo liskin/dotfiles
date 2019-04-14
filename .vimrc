@@ -261,6 +261,7 @@ autocmd FileType cabal setlocal tw=78 et
 autocmd FileType cpp setlocal tw=78 path=.,/usr/include,,
 autocmd FileType dot setlocal ai
 autocmd FileType elixir setlocal indentexpr= autoindent " vim-elixir's indent is too slow :-(
+autocmd FileType elixir setlocal path=.,lib,src,apps/*/lib,apps/*/src,deps/*/lib,deps/*/src,apps/**/lib,apps/**/src,deps/**/lib,deps/**/src,~/src-elixir/elixir/lib/*/lib,~/src-elixir/elixir/lib/*/src,,
 autocmd FileType erlang setlocal formatoptions-=t formatoptions+=crql suffixesadd+=.erl path+=**
 autocmd FileType gitcommit setlocal tw=72
 autocmd FileType happy setlocal tw=78 et
