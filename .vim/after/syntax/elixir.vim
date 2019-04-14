@@ -2,8 +2,7 @@ syn match elixirKeyword '\<\(do\|else\):'
 
 " sync on end
 syn sync match elixirSync grouphere elixirBlock "^\s*end\>"
-" but at least 100 lines to reduce likelihood of being confused by a lone end in a heredoc
-syn sync minlines=100
+syn sync minlines=0
 
 hi link elixirBlockDefinition            Keyword
 hi link elixirDefine                     Keyword
