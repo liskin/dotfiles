@@ -254,7 +254,7 @@ autocmd BufReadPost *
   \ | endif
 
 " ft-specifics {{{2
-autocmd FileType alex setlocal tw=78 et | syntax sync fromstart
+autocmd FileType alex setlocal tw=78 et
 autocmd FileType c setlocal tw=78
 autocmd FileType cabal setlocal tw=78 et
 autocmd FileType cpp setlocal tw=78
@@ -262,10 +262,10 @@ autocmd FileType dot setlocal ai
 autocmd FileType elixir setlocal indentexpr= autoindent " vim-elixir's indent is too slow :-(
 autocmd FileType erlang setlocal formatoptions-=t formatoptions+=crql suffixesadd+=.erl path+=**
 autocmd FileType gitcommit setlocal tw=72
-autocmd FileType happy setlocal tw=78 et | syntax sync fromstart
-autocmd FileType haskell setlocal tw=78 et | syntax sync fromstart
+autocmd FileType happy setlocal tw=78 et
+autocmd FileType haskell setlocal tw=78 et
 autocmd FileType html setlocal indentkeys&
-autocmd FileType lhaskell setlocal tw=78 ai et | syntax sync fromstart
+autocmd FileType lhaskell setlocal tw=78 ai et
 autocmd FileType mail setlocal tw=78 ts=8 ai et | let &fenc = &enc
 autocmd FileType make setlocal sw=8 nosta noet
 autocmd FileType markdown setlocal ai formatoptions=tcroqn2 comments=n:> tw=78 et
