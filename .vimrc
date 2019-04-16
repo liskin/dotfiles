@@ -231,8 +231,27 @@ let g:ale_linters['gitcommit'] = ['proselint']
 let g:ale_linter_aliases['gitcommit'] = ['mail']
 "let g:ale_linters['yaml'] = ['yamllint']
 
+" fzf {{{3
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_colors = {
+	\ 'fg':      ['fg', 'Normal'],
+	\ 'bg':      ['bg', 'Normal'],
+	\ 'hl':      ['fg', 'Special'],
+	\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+	\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+	\ 'hl+':     ['fg', 'Special'],
+	\ 'info':    ['fg', 'PreProc'],
+	\ 'border':  ['fg', 'Ignore'],
+	\ 'prompt':  ['fg', 'Conditional'],
+	\ 'pointer': ['fg', 'Exception'],
+	\ 'marker':  ['fg', 'Keyword'],
+	\ 'spinner': ['fg', 'Label'],
+	\ 'header':  ['fg', 'Comment']
+\ }
+
 " load everything: debian addons, pathogen, ft, syn {{{3
 set runtimepath+=/usr/share/vim/addons
+let g:pathogen_blacklist = ["ctrlp.vim"]
 call pathogen#infect()
 
 filetype plugin indent on
@@ -341,9 +360,12 @@ imap <silent> <F11> <C-O>:NERDTreeToggle<CR>
 nmap <silent> <F12> :GitGutterToggle<CR>
 imap <silent> <F12> <C-O>:GitGutterToggle<CR>
 
-nmap <silent> <C-B> :CtrlPBuffer<CR>
-nmap <silent> <C-T> :CtrlPBufTag<CR>
-nmap <silent> <C-G> :CtrlPTag<CR>
+nmap <silent> <C-P> :FzfFiles<CR>
+nmap <silent> <C-B> :FzfBuffers<CR>
+nmap <silent> <C-G> :FzfTags<CR>
+nmap <silent> <C-T> :FzfBTags<CR>
+nmap <silent> <C-X> :FzfCommands<CR>
+nmap <C-J> :FzfRg<space>
 
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
