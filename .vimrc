@@ -205,13 +205,13 @@ let g:airline_right_sep = '▒'
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 0
-function! AirlineInit()
+function! s:AirlineInit()
 	call airline#parts#define_raw('fileshorten', '%n:%{pathshorten(bufname("%"))}%m')
 	let spc = g:airline_symbols.space
 	let g:airline_section_c = airline#section#create(['%<', 'fileshorten', spc, 'readonly'])
 	let g:airline_section_z = airline#section#create(['windowswap', 'obsession', '%3p%%'.spc, 'linenr', 'maxlinenr', spc.': %c%V'])
 endfunction
-autocmd User AirlineAfterInit call AirlineInit()
+autocmd User AirlineAfterInit call s:AirlineInit()
 
 " async lint engine {{{3
 let g:ale_completion_enabled = 0
