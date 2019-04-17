@@ -223,6 +223,7 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_linter_aliases = {}
 let g:ale_linter_aliases['gitcommit'] = ['mail']
 let g:ale_linters = {}
+let g:ale_linters['elixir'] = []
 let g:ale_linters['gitcommit'] = ['proselint']
 let g:ale_linters['mail'] = ['proselint']
 let g:ale_linters['markdown'] = ['proselint']
@@ -233,6 +234,18 @@ let g:ale_linters['text'] = ['proselint']
 "let g:ale_linters['yaml'] = ['yamllint']
 let g:ale_linters_explicit = 1
 let g:ale_set_highlights = 1
+
+let g:ale_elixir_elixir_ls_config = {
+	\ 'elixirLS': {
+		\ 'dialyzerEnabled': v:false,
+	\ }
+\ }
+let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/elixir-ls/rel"
+
+function! s:ale_enable_linter(filetype, linter)
+	let b:ale_linters = deepcopy(g:ale_linters)
+	call add(b:ale_linters[a:filetype], a:linter)
+endfunction
 
 " fzf {{{3
 let g:fzf_command_prefix = 'Fzf'
@@ -329,6 +342,7 @@ autocmd BufNewFile,BufRead ~/android/*.json setlocal et
 autocmd BufNewFile,BufRead ~/android/*.xml setlocal et sw=2
 autocmd BufNewFile,BufRead ~/src-erlang/otp/* setlocal ts=8 sw=4
 autocmd BufNewFile,BufRead ~/src-scala/* setlocal et
+autocmd BufNewFile,BufRead ~/work/altworx/altworx_new/* call s:ale_enable_linter("elixir", "elixir-ls")
 
 " key maps {{{1
 
