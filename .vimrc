@@ -215,6 +215,9 @@ autocmd User AirlineAfterInit call AirlineInit()
 
 " async lint engine {{{3
 let g:ale_completion_enabled = 0
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {}
+let g:ale_fixers['elixir'] = ['mix_format']
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_text_changed = 0
 let g:ale_linter_aliases = {}
