@@ -214,22 +214,22 @@ endfunction
 autocmd User AirlineAfterInit call AirlineInit()
 
 " async lint engine {{{3
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 0
-let g:ale_set_highlights = 1
 let g:ale_completion_enabled = 0
-let g:ale_linters_explicit = 1
-let g:ale_linters = {}
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_text_changed = 0
 let g:ale_linter_aliases = {}
-let g:ale_linters['python'] = ['flake8', 'mypy', 'pyls']
-let g:ale_linters['sh'] = ['shellcheck']
-let g:ale_linters['mail'] = ['proselint']
-let g:ale_linters['text'] = ['proselint']
-let g:ale_linters['rst'] = ['proselint']
-let g:ale_linters['markdown'] = ['proselint']
-let g:ale_linters['gitcommit'] = ['proselint']
 let g:ale_linter_aliases['gitcommit'] = ['mail']
+let g:ale_linters = {}
+let g:ale_linters['gitcommit'] = ['proselint']
+let g:ale_linters['mail'] = ['proselint']
+let g:ale_linters['markdown'] = ['proselint']
+let g:ale_linters['python'] = ['flake8', 'mypy', 'pyls']
+let g:ale_linters['rst'] = ['proselint']
+let g:ale_linters['sh'] = ['shellcheck']
+let g:ale_linters['text'] = ['proselint']
 "let g:ale_linters['yaml'] = ['yamllint']
+let g:ale_linters_explicit = 1
+let g:ale_set_highlights = 1
 
 " fzf {{{3
 let g:fzf_command_prefix = 'Fzf'
