@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+if (( $# != 1 )); then
+	echo "Usage: dpkg-editcontrol package.deb"
+	exit 1
+fi
+
+TMPDIR=$(mktemp -d)
+export TMPDIR
+# shellcheck disable=SC2064
+trap "rm -rf $(printf %q "$TMPDIR")" EXIT
+
+deb=$(readlink -f "$1")
+control_tar=$(ar t "$deb" | grep '^control\.tar')
+
+o pushd "$(mktemp -d)"
+o cp "$deb" "$deb.orig.$(date +%s)"
+o ar x "$deb" "$control_tar"
+control_dir="$(mktemp -d)"
+o tar -v -a -f "$control_tar" -C "$control_dir" -x
+o vim "$control_dir"/control
+o tar -v -a -f "$control_tar" -C "$control_dir" -c ./
+o ar r "$deb" "$control_tar"
+o popd
