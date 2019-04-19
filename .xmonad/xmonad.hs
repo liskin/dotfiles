@@ -374,7 +374,6 @@ myStartupHook = do
         , "xset dpms 300 300 300"
         , "xsetroot -cursor_name left_ptr"
         , "xmodmap ~/.Xmodmap"
-        , "exec xbindkeys -n"
         , "exec redshift"
         , "xprop -root -remove _NET_WORKAREA"
         , "exec pasystray --notify=all"
