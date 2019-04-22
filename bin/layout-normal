@@ -1,0 +1,49 @@
+#!/bin/bash
+
+outputs=( $(xrandr --current | grep -P -o '^(\S+)(?= (dis)?connected)' | grep -v -x -F eDP-1) )
+outputs_off=()
+for o in "${outputs[@]}"; do
+	outputs_off+=(--output "$o" --off)
+done
+
+xrandr \
+	--output eDP-1 --mode 1920x1080 --pos 0x0 --panning 0x0 --dpi 96 --gamma 1.15:1.15:1.15 --primary \
+	"${outputs_off[@]}"
+
+    #--output DP-1 --off \
+    #--output DP-2 --off \
+    #--output DP-2-1 --off \
+    #--output DP-2-2 --off \
+    #--output DP-2-3 --off \
+    #--output HDMI-1 --off \
+    #--output HDMI-2 --off
+
+xinput map-to-output 'Raydium Corporation Raydium Touch System' eDP-1
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled' 1
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0
+xinput set-prop 'TPPS/2 IBM TrackPoint' 'libinput Accel Speed' -0.3
+#xinput set-prop 'TPPS/2 IBM TrackPoint' 'libinput Accel Speed' -0.05
+#xinput set-prop 'Synaptics TM3289-011' 'libinput Natural Scrolling Enabled' 1
+#xinput set-prop 'Synaptics TM3289-011' 'libinput Accel Speed' 0.3
+#xinput set-prop 'Synaptics TM3289-011' 'libinput Middle Emulation Enabled' 1
+#xinput set-prop 'Synaptics TM3289-011' 'libinput Disable While Typing Enabled' 0
+#xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation Button' 2
+#xinput set-prop 'TPPS/2 IBM TrackPoint' 'Evdev Wheel Emulation' 1
+
+perl -i -pe 's/dpmsEnabled:\s*\K\w+/True/' ~/.xscreensaver
+if ! xscreensaver-command -time | grep -q ': screen locked since'; then
+	systemctl --user restart xscreensaver.service
+fi
+xset +dpms
+
+#pkill -f intel-virtual-output
+#for pid in `pgrep redshift`; do grep -qz DISPLAY=:8 /proc/$pid/environ && kill $pid; done
+
+#xinput set-prop "SynPS/2 Synaptics TouchPad" "Synaptics Pad Scaling Coefficients" 1.5 1.5
+#xinput set-float-prop "SynPS/2 Synaptics TouchPad" "Coordinate Transformation Matrix" 1 0 0   0 1 0   0 0 1
+#xinput set-float-prop "SynPS/2 Synaptics TouchPad" "Device Accel Velocity Scaling" 5
+
+#pkill -x screenclone
+#xrandr --output LVDS1 --set SwapbuffersWait 1

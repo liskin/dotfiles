@@ -1,0 +1,61 @@
+#!/bin/bash
+
+set -eu
+#set -x
+
+#exit
+#exec >/tmp/layout-auto-$$.txt 2>&1
+
+export LANG=C
+#export DISPLAY=:0
+#export XAUTHORITY="/home/tomi/.Xauthority"
+
+hash_outputs()
+{
+	#xrandr --prop | perl -Mfeature=say -ne 'if (/^\S+ connected /){ say $& } elsif (/^\s+EDID:/ ... /^\s+[\w ]+:/) { print if /^\s+[0-9a-f]+$/;}'
+	for out in /sys/class/drm/card0-*; do
+		read status <$out/status
+		if [ "$status" = "connected" ]; then
+			echo $out
+			xxd -p $out/edid
+		fi
+	done
+}
+
+# Refresh EDID
+#xrandr >/dev/null
+#sleep 1
+#xrandr >/dev/null
+#sleep 1
+#sleep 1
+#xrefresh
+#xdotool mousemove_relative --sync 1 1
+#hash_outputs
+HASH=$(hash_outputs | md5sum -b | awk '{ print $1 }')
+
+PROFILE=
+case "$HASH" in
+	#cd82884dbf7795a00879318fa60236a4) PROFILE=work ;;
+	#cb307b1bf77e520cf0122aefce9feaa7) PROFILE=work ;;
+	#115bf7226d044832d1b73d87cfc62c3e) PROFILE=work ;;
+	#ca6959c0f5aa7a7994e27bcdd4bbba20) PROFILE=work2 ;;
+	#a4b2d6260d1222be0e1c805be4e4cc60) PROFILE=work2 ;;
+	#115bf7226d044832d1b73d87cfc62c3e) PROFILE=work2 ;;
+	#d41d8cd98f00b204e9800998ecf8427e) PROFILE=normal ;;
+	#3e17fe24c5179dde9e1ab4ee48fed83d) PROFILE=home ;;
+	#5047044f3ccb20cf3fa72ff1f722ba4e) PROFILE=home2 ;;
+	#ef91fddb932b75830b906d34f2e4e101) PROFILE=work2 ;;
+	#ee1080fcad38f108effffb442ccfd515) PROFILE=work2-dock ;;
+	#9bd8894c3a51bc8d5ef1790b7d9087c4) PROFILE=work2-dock ;;
+
+	e694b01c8af00f940bf52c65215220c0) PROFILE=work2-dock ;;
+	db75f6586279bdf1faf402f2ece5c93c) PROFILE=work2-dock ;;
+
+	da0f1d50b085f3c99f5e09a41c5d8571) PROFILE=normal ;;
+esac
+
+if [ -n "$PROFILE" ]; then
+    layout-$PROFILE
+else
+	echo "unknown layout: $HASH"
+fi
