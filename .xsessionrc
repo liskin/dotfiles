@@ -1,0 +1,4 @@
+#!sh
+# ^ sourced from /etc/X11/Xsession
+
+. ~/.bashrc-env

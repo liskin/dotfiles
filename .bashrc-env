@@ -1,0 +1,96 @@
+#!sh
+# ^ sourced from /etc/X11/Xsession via ~/.xsessionrc
+
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
+#PATH=/usr/lib/llvm-2.8/bin:$PATH
+#PATH=$HOME/.cabal/bin:$PATH
+#PATH=$HOME/skola/paradise/root/bin:$PATH
+#PATH=$HOME/skola/paradise/divine/_build/tools:$PATH
+#PATH=$HOME/skola/paradise/divine-mc-2.0/_build/tools:$PATH
+#export LD_LIBRARY_PATH=/home/tomi/skola/paradise/root/lib/mcrl2/
+
+#export TMPDIR=$HOME/tmp
+#export KRB5CCNAME=$TMPDIR/krb5cc
+
+unset LESS
+
+#export PERL5LIB=$HOME/work/GoodData/www-gooddata/lib
+unset PERL5LIB
+eval "$(perl -Mlocal::lib)"
+
+export ERL_LIBS=:/usr/lib/yaws/:$HOME/src-erlang:$HOME/work/GoodData/gdc-erlang-libs:$HOME/work/GoodData/gcf/gcf:$HOME/work/GoodData/aqe
+
+#export CLASSPATH="/usr/share/java/mysql-connector-java-3.1.12-bin.jar:"
+#export JAVA_HOME=/usr/lib/jvm/java-6-sun
+#export JAVA_HOME=/usr/lib/jvm/default-java
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export JDKHOME="$JAVA_HOME"
+export _JAVA_AWT_WM_NONREPARENTING=1
+#export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd_hrgb"
+
+export ANDROID_HOME=/home/tomi/android/android-sdk-linux
+
+export EC2_HOME=$HOME/bin/ec2-api-tools-1.6.7.3
+
+# ooffice & xmonad
+#export SAL_USE_VCLPLUGIN=kde4
+export SAL_USE_VCLPLUGIN=gtk3
+
+#export SDL_AUDIODRIVER=alsa
+export SDL_AUDIODRIVER=pulseaudio
+export MAIL=/var/mail/tomi
+
+export DEBFULLNAME="Tomas Janousek"
+export DEBEMAIL="tomi@nomi.cz"
+
+export CVS_RSH=ssh
+
+export LIBXCB_SLOPPY_LOCK=1
+export XCOMPOSEFILE=/etc/X11/Compose
+export GTK_IM_MODULE=xim
+#export LIBGL_DRI3_DISABLE=1
+unset LIBGL_DRI3_DISABLE
+export FREETYPE_PROPERTIES="truetype:interpreter-version=35"
+export QT_QPA_PLATFORMTHEME=gtk3
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+export SSH_ASKPASS=/usr/lib/ssh/x11-ssh-askpass
+
+#export INFOPATH=/opt/sp/lib/sicstus-3.12.3/doc/info:/opt/texlive/texmf/doc/info:$INFOPATH
+#export MANPATH=/opt/texlive/texmf/doc/man:/home/tomi/.cabal/share/man:$INFOPATH
+#export INFOPATH=/opt/sp/lib/sicstus-4.1.2/doc/info:/home/tomi/.info:$INFOPATH
+#export MANPATH=$HOME/.cabal/share/man:$INFOPATH
+#export MANPATH=$HOME/bin/hub-linux-amd64-2.3.0-pre10/share/man:$HOME/.local/share/man:
+unset INFOPATH
+export MANPATH=$HOME/.local/share/man:
+# FIXME: workaround for /usr/share/bash-completion/completions/man
+MANPATH=$(man -w)
+
+#export EPOCROOT=/home/tomi/symbiansdk/s60_31/
+#export EPOCROOT=/home/tomi/symbiansdk/symbian-sdks/5.0/ # trailing "/" is required!
+
+export HISTFILESIZE=50000
+export HISTSIZE=50000
+export HISTIGNORE=" *"
+
+export PDFVIEWER=zathura
+export PSVIEWER=zathura
+export DVIVIEWER=okular
+
+#export BROWSER=seamonkey
+export BROWSER=google-chrome
+
+export EDITOR=vim
+
+export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+
+#export GIT_ALLOW_PROTOCOL=file:git:http:https:ssh:hg
+#unset GIT_ALLOW_PROTOCOL
+
+if [ -n "$_LISKIN_NVIDIA_ENV" ]; then
+	export VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/nvidia_icd.json"
+	export LD_LIBRARY_PATH="/usr/lib/nvidia:/usr/lib/i386-linux-gnu/nvidia:/usr/lib/x86_64-linux-gnu/nvidia"
+fi
+
+export MPD_HOST="$XDG_RUNTIME_DIR"/mpd/socket
