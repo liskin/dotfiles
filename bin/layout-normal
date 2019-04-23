@@ -5,19 +5,23 @@ shopt -s lastpipe
 
 xrandr --current \
 | grep -P -o '^(\S+)(?= (dis)?connected)' \
-| grep -v -x -F eDP-1 \
 | readarray -t outputs
 
+laptop_output=
 outputs_off=()
 for o in "${outputs[@]}"; do
+	if [[ $o == eDP-* ]]; then
+		laptop_output="$o"
+	fi
 	outputs_off+=(--output "$o" --off)
 done
+: "${laptop_output:?}"
 
 xrandr \
-	--output eDP-1 --mode 1920x1080 --pos 0x0 --panning 0x0 --dpi 96 --gamma 1.15:1.15:1.15 --primary \
+	--output "$laptop_output" --mode 1920x1080 --pos 0x0 --panning 0x0 --dpi 96 --gamma 1.15:1.15:1.15 --primary \
 	"${outputs_off[@]}"
 
-xinput map-to-output 'Raydium Corporation Raydium Touch System' eDP-1 || :
+xinput map-to-output 'Raydium Corporation Raydium Touch System' "$laptop_output" || :
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1 || :
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled' 1 || :
