@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [[ $DISPLAY ]]; then
+	echo "run this from console!"
+	exit 1
+fi
+
+sudo modprobe nvidia_drm
+sleep 3
+XORGCONFIG=xorg.conf.nvidia startx
+sleep 3
+sudo rmmod nvidia_drm nvidia_modeset nvidia ipmi_devintf ipmi_msghandler
