@@ -1,0 +1,37 @@
+# vim:set ft=xf86conf:
+
+Section "Files"
+	ModulePath "/usr/lib/nvidia/nvidia"
+	ModulePath "/usr/lib/xorg/modules"
+EndSection
+
+Section "InputClass"
+	Identifier "trackpoint local settings"
+	MatchProduct "TPPS/2 IBM TrackPoint"
+	Option "AccelSpeed" "-0.3"
+EndSection
+
+#Section "Module"
+#	Load "modesetting"
+#EndSection
+
+Section "Device"
+	Identifier "nvidia"
+	Driver "nvidia"
+	BusID "PCI:2@0:0:0"
+	Option "AllowEmptyInitialConfiguration" "true"
+EndSection
+
+Section "Device"
+	Identifier "modesetting"
+	Driver "modesetting"
+	BusID "PCI:0@0:2:0"
+EndSection
+
+Section "ServerFlags"
+	Option "StandbyTime" "5"
+	Option "SuspendTime" "5"
+	Option "OffTime"     "5"
+	Option "AutoAddGPU" "false"
+	#Option "NoTrapSignals" "true"
+EndSection
