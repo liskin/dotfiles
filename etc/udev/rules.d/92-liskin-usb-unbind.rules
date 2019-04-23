@@ -1,0 +1,23 @@
+ACTION=="add",      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device",    ENV{PRODUCT}=="2386/310e/0", TEST!="/run/t25_touchscreen_enabled", RUN+="/bin/sh -c 'echo 2 >%S%p/power/autosuspend; echo auto >%S%p/power/control'"
+ACTION=="add|bind", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_interface", ENV{PRODUCT}=="2386/310e/0", TEST!="/run/t25_touchscreen_enabled", RUN+="/bin/sh -c 'a=%p; a=$${a##*/}; echo $$a >/sys/bus/usb/drivers/%E{DRIVER}/unbind'"
+
+ACTION=="add",      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device",    ENV{PRODUCT}=="bda/316/204", TEST!="/run/t25_sdcard_enabled", RUN+="/bin/sh -c 'echo 2 >%S%p/power/autosuspend; echo auto >%S%p/power/control'"
+ACTION=="add|bind", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_interface", ENV{PRODUCT}=="bda/316/204", TEST!="/run/t25_sdcard_enabled", RUN+="/bin/sh -c 'a=%p; a=$${a##*/}; echo $$a >/sys/bus/usb/drivers/%E{DRIVER}/unbind'"
+
+#SUBSYSTEM!="usb", GOTO="liskin_usb_unbind_end"
+#ACTION!="add|bind", GOTO="liskin_usb_unbind_end"
+#
+## Raydium touchscreen
+#ENV{PRODUCT}=="2386/310e/0", GOTO="liskin_usb_unbind_do"
+#
+## Realtek card reader
+##ENV{PRODUCT}=="bda/316/204", GOTO="liskin_usb_unbind_do"
+#
+#GOTO="liskin_usb_unbind_end"
+#
+#LABEL="liskin_usb_unbind_do"
+#
+#ACTION=="add", ENV{DEVTYPE}=="usb_device", RUN+="/bin/sh -c 'echo 2 >%S%p/power/autosuspend; echo auto >%S%p/power/control'"
+#ACTION=="bind", ENV{DEVTYPE}=="usb_interface", RUN+="/bin/sh -c 'a=%p; a=$${a##*/}; echo $$a >/sys/bus/usb/drivers/%E{DRIVER}/unbind'"
+#
+#LABEL="liskin_usb_unbind_end"

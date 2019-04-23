@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="usb", ENV{ID_VENDOR_ID}=="0bda", ENV{ID_MODEL_ID}=="0316", ATTR{events_poll_msecs}="0"
