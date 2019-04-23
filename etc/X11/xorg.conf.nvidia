@@ -11,10 +11,6 @@ Section "InputClass"
 	Option "AccelSpeed" "-0.3"
 EndSection
 
-#Section "Module"
-#	Load "modesetting"
-#EndSection
-
 Section "Device"
 	Identifier "nvidia"
 	Driver "nvidia"
@@ -33,5 +29,4 @@ Section "ServerFlags"
 	Option "SuspendTime" "5"
 	Option "OffTime"     "5"
 	Option "AutoAddGPU" "false"
-	#Option "NoTrapSignals" "true"
 EndSection
