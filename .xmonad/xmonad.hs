@@ -377,6 +377,7 @@ myStartupHook = do
         , "exec redshift"
         , "xprop -root -remove _NET_WORKAREA"
         , "exec pasystray --notify=all"
+        , "thinkpad-battery update-xmobar"
         ]
     rescreenHook
     when (disp == ":0") $ mapM_ spawnOnce
