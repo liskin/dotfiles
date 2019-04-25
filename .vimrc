@@ -247,6 +247,8 @@ function! s:ale_enable_linter(filetype, linter)
 	call add(b:ale_linters[a:filetype], a:linter)
 endfunction
 
+command! -nargs=1 -bar AleEnableLinter call s:ale_enable_linter(&ft, <q-args>)
+
 " fzf {{{3
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_colors = {
