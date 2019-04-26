@@ -33,6 +33,8 @@ export PDFVIEWER=zathura
 export PSVIEWER=zathura
 export SSH_ASKPASS=/usr/lib/ssh/x11-ssh-askpass
 
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+
 export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 export MPD_HOST="$XDG_RUNTIME_DIR"/mpd/socket
