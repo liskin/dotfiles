@@ -1,0 +1,11 @@
+[Unit]
+Description=bluetooth-fix-a2dp
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=%h/bin/bluetooth-fix-a2dp
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
