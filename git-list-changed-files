@@ -1,2 +1,0 @@
-#!/bin/bash
-( if [ "$#" -gt "0" ]; then git show --format='%H' --numstat "$@"; fi; git diff --numstat; git diff --numstat --cached ) | awk 'NF == 3 { print $3 }' | sort | uniq
