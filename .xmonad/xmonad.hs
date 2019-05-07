@@ -54,6 +54,7 @@ import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
+import XMonad.Util.Ungrab
 
 
 up = updatePointer (0.5, 0.5) (0, 0)
@@ -64,8 +65,8 @@ xF86XK_AudioMicMute = 0x1008FFB2
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ "exec " ++ XMonad.terminal conf)
-    , ((modMask,            xK_semicolon), spawn "sleep 0.1; xscreensaver-command -lock")
-    , ((0,            xF86XK_ScreenSaver), spawn "sleep 0.1; xscreensaver-command -lock")
+    , ((modMask,            xK_semicolon), unGrab >> spawn "xscreensaver-command -lock")
+    , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "xscreensaver-command -lock")
     , ((0,                     xK_Menu  ), spawn "exec dmenu_run -f -fn Fixed-10")
     , ((modMask,               xK_Menu  ), goToSelected def >> up)
     , ((modMask,               xK_grave ), goToSelected def >> up)
