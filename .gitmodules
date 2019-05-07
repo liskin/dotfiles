@@ -59,3 +59,15 @@
 	path = .vim/bundle/fzf.vim
 	url = https://github.com/liskin/fzf.vim.git
 	#url = https://github.com/junegunn/fzf.vim.git
+[submodule ".xmonad/dep/xmonad-contrib"]
+	path = .xmonad/dep/xmonad-contrib
+	url = https://github.com/liskin/xmonad-contrib.git
+[submodule ".xmonad/dep/xmonad"]
+	path = .xmonad/dep/xmonad
+	url = https://github.com/liskin/xmonad.git
+[submodule ".xmonad/dep/xmobar"]
+	path = .xmonad/dep/xmobar
+	url = https://github.com/liskin/xmobar.git
+[submodule ".xmonad/dep/gsmenu"]
+	path = .xmonad/dep/gsmenu
+	url = https://github.com/liskin/gsmenu.git
