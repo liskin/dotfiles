@@ -4,6 +4,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
@@ -41,9 +42,11 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
-import XMonad.Layout.MouseResizableTile
+import XMonad.Layout.MultiToggle
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
+import XMonad.Layout.Reflect
+import XMonad.Layout.ResizableTile
 import XMonad.Layout.SimpleFloat
 import XMonad.Layout.Spiral
 import XMonad.Layout.TrackFloating
@@ -96,15 +99,15 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((mod1Mask,              xK_Tab   ), windows W.focusDown   >> up)
     , ((modMask,               xK_j     ), windows W.focusDown   >> up)
     , ((modMask,               xK_k     ), windows W.focusUp     >> up)
-    , ((modMask,               xK_m     ), windows W.focusMaster >> up)
     , ((modMask,               xK_Return), windows W.swapMaster  >> up)
     , ((modMask .|. shiftMask, xK_j     ), windows W.swapDown    >> up)
     , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp      >> up)
 
     , ((modMask,               xK_h     ), sendMessage Shrink)
     , ((modMask,               xK_l     ), sendMessage Expand)
-    , ((modMask,               xK_u     ), sendMessage ShrinkSlave)
-    , ((modMask,               xK_i     ), sendMessage ExpandSlave)
+    , ((modMask,               xK_u     ), sendMessage MirrorShrink)
+    , ((modMask,               xK_i     ), sendMessage MirrorExpand)
+    , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX))
 
     , ((modMask,               xK_w     ), withFocused $ \w -> windows $ W.float w (W.RationalRect 0 0 1 1))
     , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
@@ -162,18 +165,18 @@ curDirToWorkspacename = do
 
 
 -- Layouts.
-myLayout = {-flexibleRead $ -} dir $
-    named "tiled" (fixl mrt) |||
-    named "mtiled" (fixl mrt') |||
+myLayout = dir $
+    named "tiled" (fixl tiled) |||
+    named "mtiled" (fixl (Mirror tiled)) |||
     named "tab" (fixl Full) |||
     named "grid" (fixl (GridRatio $ 4/3)) |||
     named "spiral" (fixl (spiral $ 0.618)) |||
     named "full" (layoutHints $ noBorders Full)
   where
-     mrt = mouseResizableTile          { draggerType = BordersDragger }
-     mrt' = mouseResizableTileMirrored { draggerType = BordersDragger }
+     tiled = ResizableTall 1 0.03 0.5 []
      dir = workspaceDir myHome
-     fixl x  = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders $ x
+     toggles = mkToggle (single REFLECTX)
+     fixl = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
@@ -182,10 +185,7 @@ laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
               , "tab"
               , "grid"
               , "spiral"
-              --, "float"
               , "full" ]
-
--- $( flexibleReadInstance 'myLayout )
 
 myHome = unsafePerformIO $ getEnv "HOME"
 
