@@ -384,6 +384,8 @@ nmap <silent> <C-T> :FzfBTags<CR>
 nmap <silent> <C-X> :FzfCommands<CR>
 nmap <C-J> :FzfRg<space>
 
+nmap <C-]> <Plug>(ale_go_to_definition)
+nmap <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
 imap <C-@> <C-Space>

@@ -9,7 +9,8 @@
 	url = https://github.com/wesQ3/vim-windowswap.git
 [submodule ".vim/bundle/ale"]
 	path = .vim/bundle/ale
-	url = https://github.com/w0rp/ale.git
+	url = https://github.com/liskin/ale.git
+	#url = https://github.com/w0rp/ale.git
 [submodule ".vim/bundle/ctrlp.vim"]
 	path = .vim/bundle/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
