@@ -342,7 +342,7 @@ autocmd BufNewFile,BufRead ~/android/*.json setlocal et
 autocmd BufNewFile,BufRead ~/android/*.xml setlocal et sw=2
 autocmd BufNewFile,BufRead ~/src-erlang/otp/* setlocal ts=8 sw=4
 autocmd BufNewFile,BufRead ~/src-scala/* setlocal et
-autocmd BufNewFile,BufRead ~/work/altworx/altworx_new/* call s:ale_enable_linter("elixir", "elixir-ls")
+autocmd BufNewFile,BufRead ~/work/altworx/altworx_new* call s:ale_enable_linter("elixir", "elixir-ls")
 
 " key maps {{{1
 
