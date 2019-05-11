@@ -136,9 +136,6 @@ let mapleader = ","
 let maplocalleader = "\\"
 
 let g:PHP_default_indenting = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_working_path_mode = '0'
 let g:gitgutter_enabled = 0
 let g:gitgutter_override_sign_column_highlight = 0
 let g:netrw_http_cmd  = "curl"
@@ -269,7 +266,6 @@ let g:fzf_colors = {
 
 " load everything: debian addons, pathogen, ft, syn {{{3
 set runtimepath+=/usr/share/vim/addons
-let g:pathogen_blacklist = ["ctrlp.vim"]
 call pathogen#infect()
 
 filetype plugin indent on
