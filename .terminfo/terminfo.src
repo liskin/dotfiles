@@ -1,4 +1,5 @@
 rxvt-unicode-256color|rxvt-unicode terminal with 256 colors (X Window System) + xterm+sm+1006,
+	XT,
 	colors#256, pairs#32767,
 	Se=\E[2 q, Ss=\E[%p1%d q,
 	Cr=\E]12;15\007, Cs=\E]12;%p1%s\007,
