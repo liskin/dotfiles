@@ -3,7 +3,7 @@ syn match elixirKeyword '\<\(do\|else\):'
 " sync on top-level and def-level end
 syn sync match elixirSync grouphere NONE "^end\s*$"
 syn sync match elixirSync grouphere elixirBlock "^  end\s*$"
-syn sync minlines=0
+syn sync minlines=0 maxlines=0
 
 hi link elixirBlockDefinition            Keyword
 hi link elixirDefine                     Keyword
