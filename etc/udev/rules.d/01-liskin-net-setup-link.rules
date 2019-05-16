@@ -1,0 +1,3 @@
+# https://gitlab.freedesktop.org/NetworkManager/NetworkManager/merge_requests/15#note_162509
+SUBSYSTEM=="net", ACTION=="add|change", ENV{INTERFACE}=="br-*", PROGRAM="/bin/sleep 0.5"
+SUBSYSTEM=="net", ACTION=="add|change", ENV{INTERFACE}=="docker[0-9]*", PROGRAM="/bin/sleep 0.5"
