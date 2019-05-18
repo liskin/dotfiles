@@ -177,6 +177,7 @@ let g:tagbar_type_elixir = {
 \ }
 
 " airline {{{3
+let g:airline_highlighting_cache = 1
 let g:airline_theme="dark"
 let g:airline_theme_patch_func = 'AirlineThemePatch'
 function! AirlineThemePatch(palette)
