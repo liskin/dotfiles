@@ -284,9 +284,9 @@ autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 " when editing a file, always jump to the last cursor position {{{2
 " see :help last-position-jump
 autocmd BufReadPost *
-  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-  \ |   exe "normal! g`\""
-  \ | endif
+	\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+	\ |   exe "normal! g`\""
+	\ | endif
 
 " ft-specifics {{{2
 autocmd FileType alex setlocal tw=78 et
