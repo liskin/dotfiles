@@ -58,6 +58,16 @@
 	path = .vim/bundle/fzf.vim
 	url = https://github.com/liskin/fzf.vim.git
 	#url = https://github.com/junegunn/fzf.vim.git
+[submodule ".vim/bundle/vim-rhubarb"]
+	path = .vim/bundle/vim-rhubarb
+	url = https://github.com/tpope/vim-rhubarb.git
+[submodule ".vim/bundle/vim-fubitive"]
+	path = .vim/bundle/vim-fubitive
+	url = https://github.com/liskin/vim-fubitive.git
+	#url = https://github.com/tommcdo/vim-fubitive.git
+[submodule ".vim/bundle/fugitive-gitlab.vim"]
+	path = .vim/bundle/fugitive-gitlab.vim
+	url = https://github.com/shumphrey/fugitive-gitlab.vim.git
 [submodule ".xmonad/dep/xmonad-contrib"]
 	path = .xmonad/dep/xmonad-contrib
 	url = https://github.com/liskin/xmonad-contrib.git
