@@ -52,6 +52,9 @@ if &term == "tmux-256color" " {{{3
 	set <A-n>=n
 endif
 
+" fix C-Space mappings in terminal {{{3
+map <C-@> <C-Space>
+
 " terminal timeouts, etc. {{{3
 set lazyredraw
 set notimeout
@@ -124,6 +127,7 @@ set completeopt=menu,menuone,longest,preview
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
 set hidden
+set omnifunc=ale#completion#OmniFunc
 set scrolloff=10
 set sessionoptions-=options
 set spelllang=en
@@ -232,7 +236,7 @@ let g:ale_linters['sh'] = ['shellcheck']
 let g:ale_linters['text'] = ['proselint']
 "let g:ale_linters['yaml'] = ['yamllint']
 let g:ale_linters_explicit = 1
-let g:ale_set_highlights = 1
+let g:ale_set_highlights = 0
 
 let g:ale_elixir_elixir_ls_config = {
 	\ 'elixirLS': {
@@ -386,8 +390,6 @@ nmap <C-]> <Plug>(ale_go_to_definition)
 nmap <C-W><C-]> <Plug>(ale_go_to_definition_in_split)
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
-imap <C-@> <C-Space>
-imap <C-Space> <Plug>(ale_complete)
 
 " prevent x from overriding what's in the clipboard. {{{2
 noremap x "_x
