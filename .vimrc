@@ -145,7 +145,7 @@ let g:puppet_align_hashes = 0
 let g:scala_scaladoc_indent = 1
 let g:tex_comment_nospell = 1
 
-" tagbar {{{3
+" tagbar {{{2
 let g:tagbar_autofocus=1
 let g:tagbar_ctags_bin = "ctags"
 let g:tagbar_left=1
@@ -177,7 +177,7 @@ let g:tagbar_type_elixir = {
 	\ 'sort' : 0
 \ }
 
-" airline {{{3
+" airline {{{2
 let g:airline_highlighting_cache = 1
 let g:airline_theme="dark"
 let g:airline_theme_patch_func = 'AirlineThemePatch'
@@ -212,7 +212,7 @@ function! s:AirlineInit()
 endfunction
 autocmd User AirlineAfterInit call s:AirlineInit()
 
-" async lint engine {{{3
+" async lint engine {{{2
 let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {}
@@ -248,7 +248,7 @@ endfunction
 
 command! -nargs=1 -bar AleEnableLinter call s:ale_enable_linter(&ft, <q-args>)
 
-" fzf {{{3
+" fzf {{{2
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_colors = {
 	\ 'fg':      ['fg', 'Normal'],
@@ -266,7 +266,7 @@ let g:fzf_colors = {
 	\ 'header':  ['fg', 'Comment']
 \ }
 
-" load everything: debian addons, pathogen, ft, syn {{{3
+" load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
 call pathogen#infect()
 
