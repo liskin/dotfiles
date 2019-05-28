@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Add (or remove, if exists) tunnel-sink-new to a given pulseaudio server on
+# local network, set it as default sink and move all streams.
+
+set -eu
+set -o pipefail
+shopt -s lastpipe
+
+export LANG=C
+
+function o
+{
+	printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"
+	"$@"
+}
+
+if [[ ! $1 ]]; then
+	echo 'parameter "something.local" expected'
+	exit 1
+fi
+
+o pactl list short modules | grep -F sink_name="$1" | if read -r module _; then
+	o pacmd unload-module "$module"
+else
+	o avahi-resolve -4 -n "$1" | read -r _ addr
+	[[ $addr ]]
+
+	o pacmd load-module module-tunnel-sink-new server="$addr" sink_name="$1"
+	o pacmd set-default-sink "$1"
+	o pa-switchstreams
+fi

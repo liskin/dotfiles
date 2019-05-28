@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Move all pulseaudio streams to the default sink.
+
+set -eu
+set -o pipefail
+shopt -s lastpipe
+
+export LANG=C
+
+function o
+{
+	printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"
+	"$@"
+}
+
+o pactl list short sink-inputs | while read -r sinkinput _ client _; do
+	if [[ $client != "-" ]]; then
+		o pactl move-sink-input "$sinkinput" "@DEFAULT_SINK@"
+	fi
+done
