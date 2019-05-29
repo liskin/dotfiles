@@ -121,6 +121,10 @@ set wildmode=list:longest
 set wildignore+=*.o,*.d,*.hi,*.beam,*.p_o,*.p_hi,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
+" :grep {{{2
+set grepprg=rg\ --vimgrep
+set grepformat=%f:%l:%c:%m,%f:%l:%m
+
 " other {{{2
 set backspace=indent,eol,start
 set completeopt=menu,menuone,longest,preview
