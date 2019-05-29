@@ -1,0 +1,39 @@
+#!bash
+
+function _init_completion_cache {
+	cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/bash-completion"
+	mkdir -p "$cache_dir" || return
+
+	# prune cache
+	find "${cache_dir:?}"/ -type f -mtime +30 -print -delete || return
+}
+
+function _mix_gen_cache {
+	mix help --names >"${1:?}.$$" || return
+	mv -f "${1:?}.$$" "${1:?}" || return
+}
+
+function _mix {
+	local cur prev words cword
+	_init_completion || return
+
+	# only complete first argument
+	[[ $cword == 1 ]] || return
+
+	local cache_dir
+	_init_completion_cache || return
+
+	local cache_entry
+	read -r cache_entry _ < <({ echo mix; pwd -P; } | sha1sum -b) || return
+
+	if [[ -f "$cache_dir/$cache_entry" ]]; then
+		# refresh in the background so that we're fast now and correct later
+		(_mix_gen_cache "$cache_dir/$cache_entry" &)
+	else
+		_mix_gen_cache "$cache_dir/$cache_entry" || return
+	fi
+
+	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_dir/$cache_entry")" -- "$cur")
+}
+
+complete -F _mix mix
