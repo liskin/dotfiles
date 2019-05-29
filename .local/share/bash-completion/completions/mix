@@ -20,7 +20,10 @@ function _mix {
 	_init_completion || return
 
 	# only complete first argument
-	[[ $cword == 1 ]] || return
+	if [[ $cword != 1 ]]; then
+		_filedir
+		return
+	fi
 
 	local cache_dir
 	_init_completion_cache || return
