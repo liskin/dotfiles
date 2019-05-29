@@ -9,8 +9,10 @@ function _init_completion_cache {
 }
 
 function _mix_gen_cache {
-	mix help --names >"${1:?}.$$" || return
-	mv -f "${1:?}.$$" "${1:?}" || return
+	local tmp
+	tmp="${1:?}.$BASHPID" || return
+	mix help --names >"$tmp" || return
+	mv -f "$tmp" "${1:?}" || return
 }
 
 function _mix {
