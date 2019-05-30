@@ -8,22 +8,44 @@ function _init_completion_cache {
 	find "${cache_dir:?}"/ -type f -mtime +30 -print -delete || return
 }
 
-function __file_older_than {
+function _completion_cache_file_older_than {
 	local last now
 	last=$(date +%s --reference="${1:?}")
 	now=$(date +%s)
 	(( last + ${2:?} < now ))
 }
 
-function _mix_gen_cache() (
+function _completion_cache_refresh() (
 	# lock to avoid overloading the CPU with concurrent refreshes
-	exec {lock_fd}>"${1:?}.lock"
+	exec {lock_fd}>"$cache_dir/$cache_entry.lock"
 	flock --nonblock "$lock_fd" || return
 
-	tmp="${1:?}.$BASHPID" || return
-	mix help --names >"$tmp" || return
-	mv -f "$tmp" "${1:?}" || return
+	tmp="$cache_dir/$cache_entry.$BASHPID" || return
+	"$@" >"$tmp" || return
+	mv -f "$tmp" "$cache_dir/$cache_entry" || return
 )
+
+function _completion_cache {
+	local cache_dir
+	_init_completion_cache || return
+
+	local cache_refresh_age="${cache_refresh_age:-10}"
+
+	local cache_entry
+	read -r cache_entry _ < <(printf "%q\\n" "$@" | sha1sum -b) || return
+
+	if [[ -f "$cache_dir/$cache_entry" ]]; then
+		# if the cache is not really fresh, refresh
+		# (do it in the background so that we're fast now and correct later)
+		if _completion_cache_file_older_than "$cache_dir/$cache_entry" 10; then
+			(_completion_cache_refresh "$@" &)
+		fi
+	else
+		_completion_cache_refresh "$@" || return
+	fi
+
+	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_dir/$cache_entry")" -- "$cur")
+}
 
 function _mix {
 	local cur prev words cword
@@ -35,23 +57,7 @@ function _mix {
 		return
 	fi
 
-	local cache_dir
-	_init_completion_cache || return
-
-	local cache_entry
-	read -r cache_entry _ < <({ echo mix; pwd -P; } | sha1sum -b) || return
-
-	if [[ -f "$cache_dir/$cache_entry" ]]; then
-		# if the cache is not really fresh, refresh
-		# (do it in the background so that we're fast now and correct later)
-		if __file_older_than "$cache_dir/$cache_entry" 10; then
-			(_mix_gen_cache "$cache_dir/$cache_entry" &)
-		fi
-	else
-		_mix_gen_cache "$cache_dir/$cache_entry" || return
-	fi
-
-	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_dir/$cache_entry")" -- "$cur")
+	_completion_cache mix help --names
 }
 
 complete -F _mix mix
