@@ -1,51 +1,6 @@
 #!bash
 
-function _init_completion_cache {
-	cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/bash-completion"
-	mkdir -p "$cache_dir" || return
-
-	# prune cache
-	find "${cache_dir:?}"/ -type f -mtime +30 -print -delete || return
-}
-
-function _completion_cache_file_older_than {
-	local last now
-	last=$(date +%s --reference="${1:?}")
-	now=$(date +%s)
-	(( last + ${2:?} < now ))
-}
-
-function _completion_cache_refresh() (
-	# lock to avoid overloading the CPU with concurrent refreshes
-	exec {lock_fd}>"$cache_entry.lock"
-	flock --nonblock "$lock_fd" || return
-
-	tmp="$cache_entry.$BASHPID"
-	"$@" >"$tmp" && mv -f "$tmp" "$cache_entry"
-)
-
-function _completion_cache {
-	local cache_dir
-	_init_completion_cache || return
-
-	local cache_refresh_age="${cache_refresh_age:-10}"
-
-	local cache_entry
-	read -r cache_entry _ < <(printf "%q\\n" "$@" | sha1sum -b) || return
-	cache_entry="$cache_dir/$cache_entry"
-
-	if [[ -f "$cache_entry" ]]; then
-		# if the cache is not really fresh, refresh
-		# (do it in the background so that we're fast now and correct later)
-		if _completion_cache_file_older_than "$cache_entry" 10; then
-			(_completion_cache_refresh "$@" &)
-		fi
-	else
-		_completion_cache_refresh "$@" || return
-	fi
-
-	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_entry")" -- "$cur")
-}
+type -t _completion_cache >/dev/null || source "${BASH_SOURCE[0]%/*}"/../helpers/completion_cache
 
 function _mix_help_names() (
 	cd "$1" && mix help --names
