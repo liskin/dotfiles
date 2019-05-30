@@ -28,7 +28,7 @@ function _completion_cache {
 	local cache_dir
 	_init_completion_cache || return
 
-	local cache_refresh_age="${cache_refresh_age:-10}"
+	local cache_refresh_age="${cache_refresh_age:-3600}"
 
 	local cache_entry
 	read -r cache_entry _ < <(printf "%q\\n" "$@" | sha1sum -b) || return
@@ -37,7 +37,7 @@ function _completion_cache {
 	if [[ -f "$cache_entry" ]]; then
 		# if the cache is not really fresh, refresh
 		# (do it in the background so that we're fast now and correct later)
-		if _completion_cache_file_older_than "$cache_entry" 10; then
+		if _completion_cache_file_older_than "$cache_entry" "$cache_refresh_age"; then
 			(_completion_cache_refresh "$@" &)
 		fi
 	else

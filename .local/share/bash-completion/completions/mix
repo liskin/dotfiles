@@ -16,7 +16,7 @@ function _mix {
 		return
 	fi
 
-	_completion_cache _mix_help_names "$(pwd -P)"
+	cache_refresh_age=10 _completion_cache _mix_help_names "$(pwd -P)"
 }
 
 complete -F _mix mix
