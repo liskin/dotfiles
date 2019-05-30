@@ -8,12 +8,22 @@ function _init_completion_cache {
 	find "${cache_dir:?}"/ -type f -mtime +30 -print -delete || return
 }
 
-function _mix_gen_cache {
-	local tmp
+function __file_older_than {
+	local last now
+	last=$(date +%s --reference="${1:?}")
+	now=$(date +%s)
+	(( last + ${2:?} < now ))
+}
+
+function _mix_gen_cache() (
+	# lock to avoid overloading the CPU with concurrent refreshes
+	exec {lock_fd}>"${1:?}.lock"
+	flock --nonblock "$lock_fd" || return
+
 	tmp="${1:?}.$BASHPID" || return
 	mix help --names >"$tmp" || return
 	mv -f "$tmp" "${1:?}" || return
-}
+)
 
 function _mix {
 	local cur prev words cword
@@ -32,8 +42,11 @@ function _mix {
 	read -r cache_entry _ < <({ echo mix; pwd -P; } | sha1sum -b) || return
 
 	if [[ -f "$cache_dir/$cache_entry" ]]; then
-		# refresh in the background so that we're fast now and correct later
-		(_mix_gen_cache "$cache_dir/$cache_entry" &)
+		# if the cache is not really fresh, refresh
+		# (do it in the background so that we're fast now and correct later)
+		if __file_older_than "$cache_dir/$cache_entry" 10; then
+			(_mix_gen_cache "$cache_dir/$cache_entry" &)
+		fi
 	else
 		_mix_gen_cache "$cache_dir/$cache_entry" || return
 	fi
