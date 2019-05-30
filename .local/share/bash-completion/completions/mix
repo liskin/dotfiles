@@ -17,12 +17,11 @@ function _completion_cache_file_older_than {
 
 function _completion_cache_refresh() (
 	# lock to avoid overloading the CPU with concurrent refreshes
-	exec {lock_fd}>"$cache_dir/$cache_entry.lock"
+	exec {lock_fd}>"$cache_entry.lock"
 	flock --nonblock "$lock_fd" || return
 
-	tmp="$cache_dir/$cache_entry.$BASHPID" || return
-	"$@" >"$tmp" || return
-	mv -f "$tmp" "$cache_dir/$cache_entry" || return
+	tmp="$cache_entry.$BASHPID"
+	"$@" >"$tmp" && mv -f "$tmp" "$cache_entry"
 )
 
 function _completion_cache {
@@ -33,18 +32,19 @@ function _completion_cache {
 
 	local cache_entry
 	read -r cache_entry _ < <(printf "%q\\n" "$@" | sha1sum -b) || return
+	cache_entry="$cache_dir/$cache_entry"
 
-	if [[ -f "$cache_dir/$cache_entry" ]]; then
+	if [[ -f "$cache_entry" ]]; then
 		# if the cache is not really fresh, refresh
 		# (do it in the background so that we're fast now and correct later)
-		if _completion_cache_file_older_than "$cache_dir/$cache_entry" 10; then
+		if _completion_cache_file_older_than "$cache_entry" 10; then
 			(_completion_cache_refresh "$@" &)
 		fi
 	else
 		_completion_cache_refresh "$@" || return
 	fi
 
-	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_dir/$cache_entry")" -- "$cur")
+	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_entry")" -- "$cur")
 }
 
 function _mix {
