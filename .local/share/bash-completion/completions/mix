@@ -47,6 +47,10 @@ function _completion_cache {
 	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_entry")" -- "$cur")
 }
 
+function _mix_help_names() (
+	cd "$1" && mix help --names
+)
+
 function _mix {
 	local cur prev words cword
 	_init_completion || return
@@ -57,7 +61,7 @@ function _mix {
 		return
 	fi
 
-	_completion_cache mix help --names
+	_completion_cache _mix_help_names "$(pwd -P)"
 }
 
 complete -F _mix mix
