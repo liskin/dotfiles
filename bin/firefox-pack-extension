@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+id=$(jq -r '.browser_specific_settings // .applications | .gecko.id' manifest.json)
+if [[ ! $id ]]; then
+	echo 'no id in manifest'
+	exit 1
+fi
+
+firefox_extensions=( ~/.mozilla/firefox/*.default/extensions )
+if [[ ! "${firefox_extensions[0]}" ]]; then
+	echo 'no firefox extensions directory'
+	echo 1
+fi
+
+git ls-tree -r --name-only HEAD | zip "${firefox_extensions[0]}"/"$id".xpi -@
