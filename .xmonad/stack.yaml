@@ -1,8 +1,8 @@
-resolver: lts-9.2
+resolver: lts-12.26
 extra-deps:
-    - X11-1.6.1.2
     - X11-xshape-0.1.1
     - getflag-1.0
+    - parsec-numbers-0.1.0
 
 packages:
     - dep/gsmenu

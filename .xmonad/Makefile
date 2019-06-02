@@ -1,6 +1,6 @@
-xmonad-i386-linux: stack
-	stack exec -- ghc --make xmonad.hs -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o xmonad-i386-linux.tmp
-	mv -f xmonad-i386-linux.tmp xmonad-i386-linux
+xmonad-x86_64-linux: stack
+	stack exec -- ghc --make xmonad.hs -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o xmonad-x86_64-linux.tmp
+	mv -f xmonad-x86_64-linux.tmp xmonad-x86_64-linux
 
 ghcid: stack
 	ghcid -c 'stack exec -- ghci xmonad.hs'

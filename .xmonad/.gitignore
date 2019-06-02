@@ -7,5 +7,8 @@
 *.orig
 *.zal*
 
-history
-xmonad-i386-linux
+/history
+/xmonad-*-linux
+
+/.stack-work/
+/bin/

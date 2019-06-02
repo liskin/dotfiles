@@ -59,9 +59,6 @@ import XMonad.Util.Ungrab
 
 up = updatePointer (0.5, 0.5) (0, 0)
 
-xF86XK_TouchpadToggle = 269025193
-xF86XK_AudioMicMute = 0x1008FFB2
-
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ "exec " ++ XMonad.terminal conf)
@@ -148,7 +145,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((modMask,               xK_Tab   ), nextScreen >> up)
     , ((modMask .|. shiftMask, xK_Tab   ), prevScreen >> up) ]
     ++
-    [ ((modMask .|. m, k), do { Just sc <- getScreen psc; Just w <- screenWorkspace sc; windows (f w); up })
+    [ ((modMask .|. m, k), do { Just sc <- getScreen def psc; Just w <- screenWorkspace sc; windows (f w); up })
     | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
     , (f, m) <- [(W.view, 0), (W.greedyView, shiftMask)] ]
 
@@ -376,7 +373,6 @@ myStartupHook = do
         , "xsetroot -cursor_name left_ptr"
         , "xmodmap ~/.Xmodmap"
         , "exec redshift"
-        , "xprop -root -remove _NET_WORKAREA"
         , "exec pasystray --notify=all"
         , "thinkpad-battery update-xmobar"
         ]
