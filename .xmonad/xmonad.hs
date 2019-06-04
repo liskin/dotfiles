@@ -28,7 +28,6 @@ import System.Posix.Types
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.FocusNth
-import XMonad.Actions.GridSelect
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
@@ -51,6 +50,7 @@ import XMonad.Layout.Spiral
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
+import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
 import XMonad.Util.Ungrab
@@ -88,7 +88,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((modMask,               xK_Escape), kill)
     , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
-    , ((modMask,               xK_space ), runSelectedAction def laySels)
+    , ((modMask,               xK_space ), runSelectedAction "layout" laySels)
     , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
 
     , ((mod1Mask,              xK_Tab   ), windows W.focusDown   >> up)
@@ -161,6 +161,14 @@ curDirToWorkspacename = do
     when (isNothing name) $ do
         dir <- io getCurrentDirectory
         setCurrentWorkspaceName $ last $ splitOneOf "/" dir
+
+runSelectedAction :: String -> [(String, X ())] -> X ()
+runSelectedAction prompt actions = do
+    unGrab
+    out <- lines <$> runProcessWithInput "rofi" ["-dmenu", "-p", prompt] (unlines $ map fst actions)
+    case out of
+        [sel] -> maybe (pure ()) id (sel `lookup` actions)
+        _ -> pure ()
 
 
 -- Layouts.
