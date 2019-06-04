@@ -61,15 +61,13 @@ up = updatePointer (0.5, 0.5) (0, 0)
 
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
-    [ ((mod1Mask .|. controlMask, xK_r  ), spawn $ "exec " ++ XMonad.terminal conf)
+    [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn ("exec " ++ XMonad.terminal conf))
     , ((modMask,            xK_semicolon), unGrab >> spawn "xscreensaver-command -lock")
     , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "xscreensaver-command -lock")
-    , ((0,                     xK_Menu  ), spawn "exec dmenu_run -f -fn Fixed-10")
-    , ((modMask,               xK_Menu  ), goToSelected def >> up)
-    , ((modMask,               xK_grave ), goToSelected def >> up)
-    , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
-    , ((modMask,               xK_v     ), renameWorkspace def)
-    , ((modMask,               xK_g     ), sendMessage (Chdir (myHome ++ "/work/GoodData")))
+    , ((0,                     xK_Menu  ), unGrab >> spawn "exec rofi -show run")
+    , ((controlMask,           xK_Menu  ), unGrab >> spawn "exec rofi -show drun")
+    , ((modMask,               xK_Menu  ), unGrab >> spawn "exec rofi -show window")
+    , ((modMask,               xK_e     ), unGrab >> spawn "exec emoji-menu.sh")
 
     , ((0,         xF86XK_AudioMicMute    ), spawn "pactl set-source-mute @DEFAULT_SOURCE@ toggle")
     , ((0,         xF86XK_AudioMute       ), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
@@ -117,6 +115,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((modMask              , xK_x     ), sendMessage (ToggleStrut D))
     , ((modMask              , xK_z     ), sendMessage ToggleStruts)
+
+    , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
+    , ((modMask,               xK_v     ), renameWorkspace def)
+    , ((modMask,               xK_g     ), sendMessage (Chdir (myHome ++ "/work/GoodData")))
 
     , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
