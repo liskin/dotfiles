@@ -5,10 +5,10 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
-import XMonad hiding ((|||))
+import XMonad hiding ((|||), modMask)
+import qualified XMonad
 import qualified XMonad.StackSet as W
 
-import Control.Applicative
 import Control.Exception ( try, SomeException )
 import Control.Monad
 import Control.Monad.Fix
@@ -36,7 +36,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.ManageHelpers hiding (pid)
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
@@ -47,7 +47,6 @@ import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
-import XMonad.Layout.SimpleFloat
 import XMonad.Layout.Spiral
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
@@ -151,7 +150,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
     , (f, m) <- [(W.view, 0), (W.greedyView, shiftMask)] ]
 
-myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
+myMouseBindings (XConfig {}) = M.fromList $
     [ ((mod1Mask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
     , ((mod1Mask, button2), windows . (W.swapMaster .) . W.focusWindow)
     , ((mod1Mask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
@@ -277,7 +276,6 @@ clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
 
 rescreenHook :: X ()
 rescreenHook = do
-    disp <- io $ getEnv "DISPLAY"
     let mainxmobar = sequence [ spawnPID "exec xmobar -x 0" ]
     let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary" ]
     let compton = sequence [ spawnPID "exec compton" ]
@@ -291,8 +289,8 @@ xmobarScreens = do
     forM (W.screens ws) $ \scr -> do
         let S num = W.screen scr
             n = show num
-            prop = "_XMONAD_LOG_SCREEN_" ++ show num
-        spawnPID $ "exec xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"_XMONAD_LOG_SCREEN_" ++ n ++ "\"]' -t '%_XMONAD_LOG_SCREEN_" ++ n ++ "%'"
+            prop = "_XMONAD_LOG_SCREEN_" ++ n
+        spawnPID $ "exec xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
 
 xmobarWindowLists :: X ()
 xmobarWindowLists = do
@@ -320,13 +318,13 @@ xmobarWindowLists = do
 
             finPP = myPP $ (tagprint (name tag) ++ " " ++ layout) :
                 [ fmt (b, w, show n ++ " " ++ shorten 30 (xmobarStrip (show t)))
-                | (b,w,t) <- wins | n <- [1..] ]
+                | (b,w,t) <- wins | n <- [(1 :: Int)..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
     where
         myPP l = xmobarPP
             { ppSep = "   "
-            , ppOrder = \(_:_:_:l) -> l
+            , ppOrder = \(_:_:_:x) -> x
             , ppExtras = map (return . Just) l
             , ppVisible = xmobarColor "green" "" . ppVisible xmobarPP
             }
@@ -340,16 +338,16 @@ savePids :: String -> [ ProcessID ] -> X ()
 savePids prop pids = do
     d <- asks display
     r <- asks theRoot
-    prop <- getAtom prop
+    aprop <- getAtom prop
     typ <- getAtom "PID"
-    io $ changeProperty32 d r prop typ propModeReplace $ map fromIntegral pids
+    io $ changeProperty32 d r aprop typ propModeReplace $ map fromIntegral pids
 
 getPids :: String -> X [ ProcessID ]
 getPids prop = do
     d <- asks display
     r <- asks theRoot
-    prop <- getAtom prop
-    fmap (map fromIntegral . fromMaybe []) $ io $ getWindowProperty32 d prop r
+    aprop <- getAtom prop
+    fmap (map fromIntegral . fromMaybe []) $ io $ getWindowProperty32 d aprop r
 
 killPids :: String -> X ()
 killPids prop = do
@@ -404,8 +402,8 @@ main = do
             terminal           = "urxvt",
             focusFollowsMouse  = True,
             borderWidth        = 2,
-            modMask            = mod4Mask,
-            workspaces         = map show [1..12] ++ map (('W' :) . show) [1..12],
+            XMonad.modMask     = mod4Mask,
+            workspaces         = map show [(1 :: Int)..12] ++ map (('W' :) . show) [(1 :: Int)..12],
             normalBorderColor  = "#dddddd",
             focusedBorderColor = "#ff0000",
 
