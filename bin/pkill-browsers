@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+case "$1" in
+	stop) sig=STOP ;;
+	cont) sig=CONT ;;
+	*) exit 1 ;;
+esac
+
+pkill -"$sig" -f '^/usr/[a-z/]+firefox|^/opt/google/chrome'
