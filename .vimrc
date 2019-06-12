@@ -178,9 +178,19 @@ let g:tagbar_type_elixir = {
 		\ 'p' : 'protocol',
 		\ 'm' : 'module'
 	\ },
-	\ 'scope2kind' : {
-		\ 'protocol' : 'p',
-		\ 'module' : 'm'
+	\ 'sort' : 0
+\ }
+let g:tagbar_type_markdown = {
+	\ 'ctagstype' : 'markdown',
+	\ 'ctagsbin' : 'markdown2ctags',
+	\ 'ctagsargs' : '-f - --sort=yes --sro=##',
+	\ 'kinds' : [
+		\ 's:sections',
+		\ 'i:images'
+	\ ],
+	\ 'sro' : '##',
+	\ 'kind2scope' : {
+		\ 's' : 'section'
 	\ },
 	\ 'sort' : 0
 \ }
@@ -240,6 +250,7 @@ let g:ale_linters['sh'] = ['shellcheck']
 let g:ale_linters['text'] = ['proselint']
 "let g:ale_linters['yaml'] = ['yamllint']
 let g:ale_linters_explicit = 1
+let g:ale_maximum_file_size = 524288
 let g:ale_set_highlights = 0
 
 let g:ale_elixir_elixir_ls_config = {
@@ -348,7 +359,7 @@ autocmd BufNewFile,BufRead ~/android/*.json setlocal et
 autocmd BufNewFile,BufRead ~/android/*.xml setlocal et sw=2
 autocmd BufNewFile,BufRead ~/src-erlang/otp/* setlocal ts=8 sw=4
 autocmd BufNewFile,BufRead ~/src-scala/* setlocal et
-autocmd BufNewFile,BufRead ~/work/altworx/altworx_new* call s:ale_enable_linter("elixir", "elixir-ls")
+autocmd BufNewFile,BufRead ~/work/altworx/* call s:ale_enable_linter("elixir", "elixir-ls")
 
 " key maps {{{1
 
