@@ -406,6 +406,8 @@ nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
 
+nmap <silent> <C-W>S :CloneBufTmp<CR>
+
 " prevent x from overriding what's in the clipboard. {{{2
 noremap x "_x
 noremap X "_X
