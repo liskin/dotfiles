@@ -1,18 +1,13 @@
 resolver: lts-12.26
 extra-deps:
-    - X11-xshape-0.1.1
-    - getflag-1.0
     - parsec-numbers-0.1.0
 
 packages:
-    - dep/gsmenu
     - dep/xmobar
     - dep/xmonad
     - dep/xmonad-contrib
 
 flags:
-    gsmenu:
-        use_xft: false
     xmobar:
         with_xft: false
         with_utf8: true

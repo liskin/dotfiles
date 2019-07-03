@@ -9,7 +9,6 @@ ghcid: stack
 
 stack:
 	stack build --copy-bins --local-bin-path "$(shell pwd)/bin" \
-		gsmenu \
 		xmobar \
 		xmonad \
 		xmonad-contrib \

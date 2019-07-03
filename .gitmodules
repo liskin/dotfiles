@@ -77,6 +77,3 @@
 [submodule ".xmonad/dep/xmobar"]
 	path = .xmonad/dep/xmobar
 	url = https://github.com/liskin/xmobar.git
-[submodule ".xmonad/dep/gsmenu"]
-	path = .xmonad/dep/gsmenu
-	url = https://github.com/liskin/gsmenu.git
