@@ -5,7 +5,7 @@ function _init_completion_cache {
 	mkdir -p "$cache_dir" || return
 
 	# prune cache
-	find "${cache_dir:?}"/ -type f -mtime +30 -print -delete || return
+	find "${cache_dir:?}"/ -type f -mtime +30 -delete || return
 }
 
 function _completion_cache_file_older_than {
