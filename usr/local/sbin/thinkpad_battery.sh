@@ -18,12 +18,19 @@ case "$1" in
 		;;
 
 	full-int)
-		echo 90 > /sys/class/power_supply/BAT0/charge_start_threshold
 		echo 100 > /sys/class/power_supply/BAT0/charge_stop_threshold
+		echo 90 > /sys/class/power_supply/BAT0/charge_start_threshold
 		;;
 
 	full-ext)
-		echo 90 > /sys/class/power_supply/BAT1/charge_start_threshold
 		echo 100 > /sys/class/power_supply/BAT1/charge_stop_threshold
+		echo 90 > /sys/class/power_supply/BAT1/charge_start_threshold
+		;;
+
+	full)
+		echo 100 > /sys/class/power_supply/BAT0/charge_stop_threshold
+		echo 100 > /sys/class/power_supply/BAT1/charge_stop_threshold
+		echo 90 > /sys/class/power_supply/BAT0/charge_start_threshold
+		echo 90 > /sys/class/power_supply/BAT1/charge_start_threshold
 		;;
 esac
