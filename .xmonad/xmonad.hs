@@ -36,6 +36,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers hiding (pid)
+import XMonad.Hooks.Place (placeHook, fixed)
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
@@ -199,11 +200,10 @@ myHome = unsafePerformIO $ getEnv "HOME"
 
 -- Managehook.
 myManageHook = composeAll
-    [ floatNextHook
-    -- , className =? "MPlayer"        --> doFloat
+    [ placeHook (fixed (0.5, 0.5))
+    , floatNextHook
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
-    , className =? "wmix"           --> doHideIgnore
     , className =? "hl_linux"       --> doFloat
     , className =? "duke3d"         --> doFloat
     , isFullscreen                  --> doFullFloat
@@ -211,7 +211,6 @@ myManageHook = composeAll
     , transience'
     , manageDocks
     ]
-    -- > xprop | grep WM_CLASS
 
 
 -- Loghook.
