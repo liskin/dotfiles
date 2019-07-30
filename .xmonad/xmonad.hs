@@ -20,7 +20,6 @@ import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
 import System.Directory ( getCurrentDirectory )
 import System.Environment
-import System.Exit
 import System.IO.Unsafe
 import System.Posix.Process
 import System.Posix.Signals
@@ -120,7 +119,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_v     ), renameWorkspace def)
     , ((modMask,               xK_g     ), sendMessage (Chdir (myHome ++ "/work/GoodData")))
 
-    , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((modMask .|. shiftMask, xK_q     ), rescreenHook)
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
     , ((mod1Mask .|. controlMask, xK_q  ), dumpLayouts)
     ]
@@ -393,6 +392,7 @@ myStartupHook = do
         , "exec firewall-applet"
         , "exec caffeine-indicator"
         , "exec usbguard-applet-qt"
+        , "exec alarm-clock-applet"
         ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
