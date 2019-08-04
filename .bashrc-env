@@ -1,10 +1,6 @@
 #!sh
 # ^ sourced from /etc/X11/Xsession via ~/.xsessionrc
 
-export HISTFILESIZE=50000
-export HISTSIZE=50000
-export HISTIGNORE=" *"
-
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
 export PATH=$HOME/bin:$HOME/.local/bin:$PATH
 
