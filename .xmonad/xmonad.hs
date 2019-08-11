@@ -392,7 +392,6 @@ myStartupHook = do
         , "exec firewall-applet"
         , "exec caffeine-indicator"
         , "exec usbguard-applet-qt"
-        , "exec alarm-clock-applet"
         ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
