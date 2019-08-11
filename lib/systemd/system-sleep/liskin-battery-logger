@@ -1,0 +1,10 @@
+#!/bin/sh
+
+case "$1" in
+	pre)
+		/bin/systemctl reload liskin-battery-logger.service
+		;;
+	post)
+		/bin/systemctl reload liskin-battery-logger.service
+		;;
+esac

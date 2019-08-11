@@ -1,0 +1,154 @@
+#!/usr/bin/env python3
+
+import argparse
+import contextlib
+import datetime
+import subprocess
+import systemd.journal
+import tempfile
+
+
+def parse_date(d):
+    cmd = ["date", '-d', d, '+%s']
+    ts = int(subprocess.check_output(cmd, encoding='utf-8').rstrip())
+    return datetime.datetime.fromtimestamp(ts)
+
+
+def gnuplot_fakeutc(d):
+    if not isinstance(d, datetime.datetime):
+        if isinstance(d, (int, float)):
+            d = datetime.datetime.fromtimestamp(d)
+        else:
+            raise ValueError
+    return int(d.replace(tzinfo=datetime.timezone.utc).timestamp())
+
+
+def get_log(since, until):
+    j = systemd.journal.Reader()
+    j.seek_realtime(since)
+    j.add_match(
+        _SYSTEMD_UNIT='liskin-battery-logger.service',
+        _TRANSPORT='stdout'
+    )
+    for entry in j:
+        if entry['__REALTIME_TIMESTAMP'] > until:
+            break
+
+        values = {}
+        for kv in entry['MESSAGE'].split():
+            [k, v] = kv.split(sep='=', maxsplit=1)
+            values[k] = v
+        values['time'] = entry['__REALTIME_TIMESTAMP']
+
+        yield values
+
+
+@contextlib.contextmanager
+def tempfile_lines(lines):
+    with tempfile.NamedTemporaryFile(mode='w+', encoding='utf-8') as f:
+        for l in lines:
+            f.write(l)
+            f.write('\n')
+        f.flush()
+        yield f
+
+
+def gnuplot(lines):
+    with tempfile_lines(lines) as f:
+        cmd = ["gnuplot", "--default-settings", "--persist", f.name]
+        subprocess.run(cmd, check=True)
+
+
+def uniq(l):
+    return sorted(list(set(l)))
+
+
+def batteries(entry):
+    return uniq(k[0:-8] for k in entry.keys() if k.endswith('/present'))
+
+
+def sum_batteries(entry, bs, attr):
+    return sum(int(
+        entry[f'{b}/{attr}'])
+        for b in bs if int(entry.get(f'{b}/present', '0')))
+
+
+def plot(log, override_bs=None):
+    def get_data():
+        for entry in log:
+            bs = override_bs or batteries(entry)
+            energy_now = sum_batteries(entry, bs, 'energy_now')
+            energy_full = sum_batteries(entry, bs, 'energy_full')
+            energy_full_design = sum_batteries(entry, bs, 'energy_full_design')
+            power_now = sum_batteries(entry, bs, 'power_now')
+            yield ' '.join([
+                str(gnuplot_fakeutc(entry['time'])),
+                entry['AC/online'],
+                str(100 * energy_now / energy_full)
+                if energy_full else '""',
+                str(100 * energy_full / energy_full_design)
+                if energy_full_design else '""',
+                str(power_now / 1000000)
+            ])
+
+    ac_style = "smooth uniq with lines lc 'blue' lw 3"
+    bat_style = "smooth uniq with lines lc 'red' lw 3"
+    wear_style = "smooth uniq with lines lc 'gray' lw 2"
+    awake_style = "with boxes lc 'yellow' fs transparent solid 0.2 noborder"
+    power_style = "smooth uniq with lines lc 'green' lw 2"
+    with tempfile_lines(get_data()) as f:
+        gnuplot(gnuplot_setup() + [
+            f"plot '{f.name}' \\",
+            f"using 1:(100):(60) title 'Awake' {awake_style}, '' \\",
+            f"using 1:4 title 'Wear' {wear_style}, '' \\",
+            f"using 1:5 title 'Power' axes x1y2 {power_style}, '' \\",
+            f"using 1:($2 == 1 ? $3 : 1/0) title 'AC' {ac_style}, '' \\",
+            f"using 1:($2 == 0 ? $3 : 1/0) title 'Battery' {bat_style}",
+        ])
+
+
+def gnuplot_setup():
+    return ["""
+    set xdata time
+    set timefmt '%s'
+
+    set format x "%H:%M\\n%d %b"
+    set format y "% g"
+    set format y2 "% g"
+
+    set ylabel "%Full"
+    set yrange [ 0 : 100 ]
+
+    set y2label "Watt"
+    set y2range [ 0 : 25 ]
+    set y2tics
+
+    set mytics 2
+    set grid xtics ytics mytics
+
+    set key bmargin horizontal
+    """]
+
+
+def parse_batteries(bs):
+    return [f'BAT{b}' for b in bs]
+
+
+def parse_args(*args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-s', '--since', type=parse_date, default=parse_date('now - 4 hours')
+    )
+    parser.add_argument(
+        '-u', '--until', type=parse_date, default=parse_date('now')
+    )
+    parser.add_argument(
+        '-b', '--batteries', type=parse_batteries, default=None
+    )
+    return parser.parse_args(*args)
+
+
+if __name__ == '__main__':
+    args = parse_args()
+    log = get_log(since=args.since, until=args.until)
+    plot(log=log, override_bs=args.batteries)

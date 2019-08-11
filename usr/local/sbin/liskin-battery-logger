@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+interval=60
+
+function log {
+	local out=""
+
+	for f in \
+		/sys/class/power_supply/AC/online \
+		/sys/class/power_supply/BAT[0-9]/{capacity,cycle_count,energy_now,energy_full,energy_full_design,power_now,present}
+	do
+		out="${out}${out:+ }${f#/sys/class/power_supply/}=$(< "$f")"
+	done
+
+	echo "$out"
+}
+
+trap 'true' USR1
+
+while :; do
+	log
+	sleep "$interval" &
+	wait
+	kill % 2>/dev/null
+done

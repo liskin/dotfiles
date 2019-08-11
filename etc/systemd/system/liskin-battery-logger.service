@@ -1,0 +1,12 @@
+[Unit]
+Description=liskin-battery-logger
+
+[Service]
+StandardOutput=journal
+ExecStart=/usr/local/sbin/liskin-battery-logger
+ExecReload=/bin/kill -USR1 $MAINPID
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

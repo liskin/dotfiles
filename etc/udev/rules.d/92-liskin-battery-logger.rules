@@ -1,0 +1,2 @@
+SUBSYSTEM=="power_supply", ACTION=="change", RUN+="/bin/systemctl reload liskin-battery-logger.service"
+SUBSYSTEM=="power_supply", ATTR{online}=="[01]", RUN+="/bin/systemctl reload liskin-battery-logger.service"
