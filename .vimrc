@@ -195,6 +195,14 @@ let g:tagbar_type_markdown = {
 	\ 'sort' : 0
 \ }
 
+" vista {{{2
+let g:vista#renderer#enable_icon = 0
+let g:vista_echo_cursor = 0
+let g:vista_finder_alternative_executives = []
+let g:vista_highlight_whole_line = 1
+let g:vista_markdown_executive = 'toc'
+let g:vista_sidebar_position = 'vertical topleft'
+
 " airline {{{2
 let g:airline_highlighting_cache = 1
 let g:airline_theme="dark"
@@ -381,6 +389,12 @@ imap <silent> <F7> <C-O>:lnext<CR>
 
 nmap <silent> <F8> :TagbarToggle<CR>
 imap <silent> <F8> <C-O>:TagbarToggle<CR>
+
+" nmap <silent> <F8> :Vista!!<CR>
+" imap <silent> <F8> <C-O>:Vista!!<CR>
+
+" nmap <silent> <F9> :Vista ale<CR>
+" imap <silent> <F9> <C-O>:Vista ale<CR>
 
 if has('gui_running')
 	nmap <silent> <F10> :ToggleMenu<CR>
