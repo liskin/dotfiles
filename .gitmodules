@@ -28,8 +28,8 @@
 	url = https://github.com/tpope/vim-dispatch.git
 [submodule ".vim/bundle/vim-elixir"]
 	path = .vim/bundle/vim-elixir
-	url = https://github.com/liskin/vim-elixir.git
-	#url = https://github.com/elixir-editors/vim-elixir.git
+	#url = https://github.com/liskin/vim-elixir.git
+	url = https://github.com/elixir-editors/vim-elixir.git
 [submodule ".vim/bundle/vim-fugitive"]
 	path = .vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
