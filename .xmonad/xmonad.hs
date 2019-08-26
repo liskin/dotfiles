@@ -70,8 +70,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((0,         xF86XK_AudioMicMute    ), spawn "pactl set-source-mute @DEFAULT_SOURCE@ toggle")
     , ((0,         xF86XK_AudioMute       ), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
-    , ((0,         xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -2%")
-    , ((0,         xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +2%")
+    , ((0,         xF86XK_AudioLowerVolume), spawn "pa-volume down")
+    , ((0,         xF86XK_AudioRaiseVolume), spawn "pa-volume up")
 
     , ((0,         xF86XK_AudioPlay ), spawn "mpc toggle")
     , ((0,         xF86XK_AudioPause), spawn "mpc toggle")
