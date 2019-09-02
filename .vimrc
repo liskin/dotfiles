@@ -143,6 +143,7 @@ set splitright
 let mapleader = ","
 let maplocalleader = "\\"
 
+let g:NERDDefaultAlign = "left"
 let g:PHP_default_indenting = 1
 let g:fugitive_gitlab_domains = ['https://gitlab.freedesktop.org', 'https://salsa.debian.org']
 let g:gitgutter_enabled = 0
@@ -356,6 +357,7 @@ autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal ft=gitcommit fo=tcq et spell
 autocmd BufNewFile,BufRead darcs-record* setf svn
 autocmd BufNewFile,BufRead neomutt-*-\w\+ setf mail
 autocmd BufNewFile,BufRead svn-commit.tmp setf svn
+autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile
 
 " project-specifics {{{2
 autocmd BufNewFile,BufRead */brutalis/* setlocal et
