@@ -1,0 +1,21 @@
+%{
+  colors: %{
+    true: [:red, :bright],
+    false: [:red, :bright],
+    nil: [:red, :bright],
+    atom: [:red, :bright],
+    binary: [:magenta, :bright],
+    float: [:magenta, :bright],
+    integer: [:magenta, :bright],
+    range: [:magenta, :bright],
+    function: [:yellow, :bright],
+    tuple: [:green, :bright],
+    list: [:green, :bright],
+    hash_set: [:green, :bright],
+    hash_dict: [:green, :bright],
+    pid: :yellow,
+    port: :yellow
+  }
+}
+
+# vim:set ft=elixir:
