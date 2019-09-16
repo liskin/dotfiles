@@ -60,7 +60,7 @@ URxvt.geometry: 100x34
 URxvt.print-pipe: cat >/dev/null
 dnl URxvt.realBold: false
 URxvt.scrollWithBuffer: true
-dnl URxvt.secondaryScroll: false
+URxvt.secondaryScroll: false
 URxvt.scrollstyle: rxvt
 URxvt.scrollColor: #004000
 URxvt.troughColor: #001000
