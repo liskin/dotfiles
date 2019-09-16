@@ -52,9 +52,11 @@
 	noprefix = true
 [interactive]
 	diffFilter = diff-highlight
+[core]
+	pager = less -FRX
 [pager]
-	diff = diff-highlight | less
-	show = diff-highlight | less
+	diff = diff-highlight | less -FRX
+	show = diff-highlight | less -FRX
 [stash]
 	showPatch = true
 [svn]
