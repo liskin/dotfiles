@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -eu
+
+git-all-repos | rofi -dmenu -p 'cd git' -sep '\0'

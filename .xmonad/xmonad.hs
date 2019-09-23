@@ -117,7 +117,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
     , ((modMask,               xK_v     ), renameWorkspace def)
-    , ((modMask,               xK_g     ), sendMessage (Chdir (myHome ++ "/work/GoodData")))
+    , ((modMask,               xK_g     ), changeDirRofiGit >> curDirToWorkspacename)
 
     , ((modMask .|. shiftMask, xK_q     ), rescreenHook)
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
@@ -168,6 +168,14 @@ runSelectedAction prompt actions = do
     out <- lines <$> runProcessWithInput "rofi" ["-dmenu", "-p", prompt] (unlines $ map fst actions)
     case out of
         [sel] -> maybe (pure ()) id (sel `lookup` actions)
+        _ -> pure ()
+
+changeDirRofiGit :: X ()
+changeDirRofiGit = do
+    unGrab
+    out <- lines <$> runProcessWithInput "rofi-git-all-repos" [] ""
+    case out of
+        [sel] -> sendMessage (Chdir sel)
         _ -> pure ()
 
 

@@ -1,5 +1,6 @@
 #!sh
 # ^ sourced from /etc/X11/Xsession via ~/.xsessionrc
+# shellcheck disable=SC2239
 
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
 export PATH=$HOME/bin:$HOME/.local/bin:$PATH

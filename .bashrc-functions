@@ -1,0 +1,11 @@
+#!bash
+# shellcheck disable=SC2239
+
+function cdgit {
+	local dir
+	dir=$(git-all-repos | fzf-tmux --read0) || return
+
+	if [[ -n $dir && -d $dir ]]; then
+		cd "$dir" || return
+	fi
+}
