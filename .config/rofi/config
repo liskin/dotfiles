@@ -2,3 +2,4 @@ rofi.theme: DarkBlue
 rofi.modi: window,run,drun
 rofi.lines: 20
 rofi.show-icons: true
+rofi.max-history-size: 500
