@@ -1,3 +1,6 @@
 #!/bin/sh
 
-exec xss-lock --ignore-sleep "$HOME/bin/liskin-xsecurelock"
+export XSECURELOCK_DIM_TIME_MS=3000
+export XSECURELOCK_WAIT_TIME_MS=10000
+
+exec xss-lock --ignore-sleep --notifier="/usr/libexec/xsecurelock/dimmer" "$HOME/bin/liskin-xsecurelock"

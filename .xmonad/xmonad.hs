@@ -382,7 +382,7 @@ myStartupHook = do
     mapM_ spawnOnce
         [ "xset r rate 200 25"
         , "xset b off"
-        , "xset s 300"
+        , "xset s 300 5"
         , "xset dpms 300 300 300"
         , "xsetroot -cursor_name left_ptr"
         , "xmodmap ~/.Xmodmap"
