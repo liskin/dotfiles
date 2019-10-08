@@ -1,0 +1,2 @@
+event=button[ /]power PBTN
+action=/usr/local/sbin/liskin-suspend button
