@@ -61,8 +61,8 @@ up = updatePointer (0.5, 0.5) (0, 0)
 -- Bindings.
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn ("exec " ++ XMonad.terminal conf))
-    , ((modMask,            xK_semicolon), unGrab >> spawn "xscreensaver-command -lock")
-    , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "xscreensaver-command -lock")
+    , ((modMask,            xK_semicolon), unGrab >> spawn "loginctl lock-session")
+    , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "loginctl lock-session")
     , ((0,                     xK_Menu  ), unGrab >> spawn "exec rofi -show run")
     , ((controlMask,           xK_Menu  ), unGrab >> spawn "exec rofi -show drun")
     , ((modMask,               xK_Menu  ), unGrab >> spawn "exec rofi -show window")
@@ -381,11 +381,12 @@ myStartupHook = do
     disp <- io $ getEnv "DISPLAY"
     mapM_ spawnOnce
         [ "xset r rate 200 25"
-        , "xset s off"
         , "xset b off"
+        , "xset s 300"
         , "xset dpms 300 300 300"
         , "xsetroot -cursor_name left_ptr"
         , "xmodmap ~/.Xmodmap"
+        , "exec liskin-xss-lock"
         , "exec redshift"
         , "exec pasystray --notify=all"
         , "thinkpad-battery update-xmobar"

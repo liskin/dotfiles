@@ -1,0 +1,22 @@
+#!/bin/sh
+
+export XSECURELOCK_BLANK_DPMS_STATE=on
+export XSECURELOCK_BLANK_TIMEOUT=-1
+export XSECURELOCK_SAVER="$HOME/bin/liskin-xsecurelock-saver"
+export XSECURELOCK_SAVER_RESET_ON_AUTH_CLOSE=1
+export XSECURELOCK_SHOW_DATETIME=1
+
+#export XSECURELOCK_KEY_XF86AudioMicMute_COMMAND="pactl set-source-mute @DEFAULT_SOURCE@ toggle"
+#export XSECURELOCK_KEY_XF86AudioMute_COMMAND="pactl set-sink-mute @DEFAULT_SINK@ toggle"
+
+export XSECURELOCK_KEY_XF86AudioLowerVolume_COMMAND="pa-volume down"
+export XSECURELOCK_KEY_XF86AudioRaiseVolume_COMMAND="pa-volume up"
+export XSECURELOCK_KEY_XF86AudioPlay_COMMAND="mpc toggle"
+export XSECURELOCK_KEY_XF86AudioPause_COMMAND="mpc toggle"
+export XSECURELOCK_KEY_XF86AudioStop_COMMAND="mpc stop"
+export XSECURELOCK_KEY_XF86AudioNext_COMMAND="mpc next"
+export XSECURELOCK_KEY_XF86AudioPrev_COMMAND="mpc prev"
+
+export XSECURELOCK_KEY_XF86Tools_COMMAND="sleep 0.5; xset dpms force off"
+
+exec /usr/bin/xsecurelock "$@"

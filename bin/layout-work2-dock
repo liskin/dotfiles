@@ -10,8 +10,4 @@ xrandr \
 xinput map-to-output 'Raydium Corporation Raydium Touch System' eDP-1 || :
 
 # kernel/intel bug workaround, disable dpms when docked
-perl -i -pe 's/dpmsEnabled:\s*\K\w+/False/' ~/.xscreensaver
-if ! xscreensaver-command -time | grep -q ': screen locked since'; then
-	systemctl --user restart xscreensaver.service
-fi
 xset -dpms

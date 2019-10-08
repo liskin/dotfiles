@@ -29,8 +29,4 @@ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enab
 xinput set-prop 'TPPS/2 IBM TrackPoint' 'libinput Accel Speed' -0.3 || :
 
 # kernel/intel bug workaround, reenable dpms when undocked
-perl -i -pe 's/dpmsEnabled:\s*\K\w+/True/' ~/.xscreensaver
-if ! xscreensaver-command -time | grep -q ': screen locked since'; then
-	systemctl --user restart xscreensaver.service
-fi
 xset +dpms
