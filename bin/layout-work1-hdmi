@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+xrandr \
+	--output HDMI-2 --mode 2560x1440 --pos 0x0 --dpi 96 \
+	--output eDP-1 --mode 1920x1080 --pos 1400x1440 --dpi 96 --primary
+
+xinput map-to-output 'Raydium Corporation Raydium Touch System' eDP-1 || :
+
+# kernel/intel bug workaround, disable dpms when docked
+xset -dpms
