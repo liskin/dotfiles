@@ -1,4 +1,4 @@
 --hidden
 --follow
---glob=!.git/*
+--glob=!.git
 --smart-case
