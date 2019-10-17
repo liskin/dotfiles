@@ -47,6 +47,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Spiral
+import XMonad.Layout.SubLayouts
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
@@ -98,19 +99,22 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_j     ), windows W.swapDown    >> up)
     , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp      >> up)
 
-    , ((modMask,               xK_h     ), sendMessage Shrink)
-    , ((modMask,               xK_l     ), sendMessage Expand)
-    , ((modMask,               xK_u     ), sendMessage MirrorShrink)
-    , ((modMask,               xK_i     ), sendMessage MirrorExpand)
-    , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX))
+    , ((modMask,               xK_h     ), sendMessage Shrink            >> up)
+    , ((modMask,               xK_l     ), sendMessage Expand            >> up)
+    , ((modMask,               xK_u     ), sendMessage MirrorShrink      >> up)
+    , ((modMask,               xK_i     ), sendMessage MirrorExpand      >> up)
+    , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX) >> up)
 
     , ((modMask,               xK_w     ), withFocused $ \w -> windows $ W.float w (W.RationalRect 0 0 1 1))
     , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
     , ((modMask,               xK_f     ), toggleFloatNext >> runLogHook)
     , ((modMask .|. shiftMask, xK_f     ), toggleFloatAllNew >> runLogHook)
 
-    , ((modMask              , xK_comma ), sendMessage (IncMasterN 1))
-    , ((modMask              , xK_period), sendMessage (IncMasterN (-1)))
+    , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)    >> up)
+    , ((modMask              , xK_period), sendMessage (IncMasterN (-1)) >> up)
+
+    , ((modMask .|. shiftMask, xK_comma ), withFocused (sendMessage . mergeDir id) >> up)
+    , ((modMask .|. shiftMask, xK_period), withFocused (sendMessage . UnMerge)     >> up)
 
     , ((modMask              , xK_x     ), sendMessage (ToggleStrut D))
     , ((modMask              , xK_z     ), sendMessage ToggleStruts)
@@ -181,14 +185,15 @@ changeDirRofiGit = do
 
 -- Layouts.
 myLayout = dir $
-    named "tiled" (fixl tiled) |||
-    named "mtiled" (fixl (Mirror tiled)) |||
+    named "tiled" (fixl $ sub $ tiled) |||
+    named "mtiled" (fixl $ sub $ Mirror $ tiled) |||
     named "tab" (fixl Full) |||
-    named "grid" (fixl (GridRatio $ 4/3)) |||
-    named "spiral" (fixl (spiral $ 0.618)) |||
+    named "grid" (fixl $ sub $ GridRatio (4/3)) |||
+    named "spiral" (fixl $ sub $ spiral 0.618) |||
     named "full" (layoutHints $ noBorders Full)
   where
      tiled = ResizableTall 1 0.03 0.5 []
+     sub = subLayout [] Full
      dir = workspaceDir myHome
      toggles = mkToggle (single REFLECTX)
      fixl = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
