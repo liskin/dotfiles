@@ -392,7 +392,6 @@ myStartupHook = do
         , "xsetroot -cursor_name left_ptr"
         , "xmodmap ~/.Xmodmap"
         , "exec liskin-xss-lock"
-        , "exec redshift"
         , "exec pasystray --notify=all"
         , "thinkpad-battery update-xmobar"
         ]
