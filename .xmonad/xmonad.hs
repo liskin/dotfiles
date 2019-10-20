@@ -36,6 +36,7 @@ import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers hiding (pid)
 import XMonad.Hooks.Place (placeHook, fixed)
+import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
@@ -184,7 +185,7 @@ changeDirRofiGit = do
 
 
 -- Layouts.
-myLayout = dir $
+myLayout = dir . refocusLastLayoutHook . trackFloating $
     named "tiled" (fixl $ sub $ tiled) |||
     named "mtiled" (fixl $ sub $ Mirror $ tiled) |||
     named "tab" (fixl Full) |||
@@ -196,7 +197,7 @@ myLayout = dir $
      sub = subLayout [] Full
      dir = workspaceDir myHome
      toggles = mkToggle (single REFLECTX)
-     fixl = trackFloating . avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
+     fixl = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
@@ -283,7 +284,9 @@ myEvHook (ConfigureEvent {ev_window = w}) = do
 -- myEvHook x = io (print x) >> mempty
 myEvHook _ = mempty
 
-myEventHook = hintsEventHook <+> myEvHook
+myEventHook = refocusLastEventHook <+> hintsEventHook <+> myEvHook
+    where
+        refocusLastEventHook = refocusLastWhen isFloat
 
 -- | clearEvents.  Remove all events of a given type from the event queue.
 clearTypedWindowEvents :: Window -> EventType -> X ()
