@@ -18,30 +18,30 @@ if &term == "rxvt-unicode-256color" " {{{3
 	set ttymouse=sgr
 
 	" focus events
-	let &t_ti = &t_ti . "[?1004h"
-	let &t_te = "[?1004l" . &t_te
-	set <F15>=[O
-	set <F16>=[I
+	let &t_ti = &t_ti . "\<Esc>[?1004h"
+	let &t_te = "\<Esc>[?1004l" . &t_te
+	exe "set <F15>=\<Esc>[O"
+	exe "set <F16>=\<Esc>[I"
 	nnoremap <silent> <F15> :call <SID>focus(0)<CR>
 	nnoremap <silent> <F16> :call <SID>focus(1)<CR>
 
 	" cursor shape {{{4
-	let &t_SI = "[5 q"
-	let &t_SR = "[3 q"
-	let &t_EI = "[2 q"
+	let &t_SI = "\<Esc>[5 q"
+	let &t_SR = "\<Esc>[3 q"
+	let &t_EI = "\<Esc>[2 q"
 
 	" ctrl+pgup/down to switch tabs {{{4
-	set <F13>=[5^
-	set <F14>=[6^
+	exe "set <F13>=\<Esc>[5^"
+	exe "set <F14>=\<Esc>[6^"
 	nmap <silent> <F13> :tabprev<CR>
 	nmap <silent> <F14> :tabnext<CR>
 
 	" fix keycodes {{{4
-	set <S-Up>=[a
-	set <S-Down>=[b
-	set <C-Left>=Od
-	set <C-Right>=Oc
-	set <A-n>=n
+	exe "set <S-Up>=\<Esc>[a"
+	exe "set <S-Down>=\<Esc>[b"
+	exe "set <C-Left>=\<Esc>Od"
+	exe "set <C-Right>=\<Esc>Oc"
+	exe "set <A-n>=\<Esc>n"
 endif
 
 if &term == "tmux-256color" " {{{3
@@ -49,17 +49,17 @@ if &term == "tmux-256color" " {{{3
 	set ttymouse=sgr
 
 	" focus events
-	let &t_ti = &t_ti . "[?1004h"
-	let &t_te = "[?1004l" . &t_te
-	set <F15>=[O
-	set <F16>=[I
+	let &t_ti = &t_ti . "\<Esc>[?1004h"
+	let &t_te = "\<Esc>[?1004l" . &t_te
+	exe "set <F15>=\<Esc>[O"
+	exe "set <F16>=\<Esc>[I"
 	nnoremap <silent> <F15> :call <SID>focus(0)<CR>
 	nnoremap <silent> <F16> :call <SID>focus(1)<CR>
 
 	" cursor shape {{{4
-	let &t_SI = "[5 q"
-	let &t_SR = "[3 q"
-	let &t_EI = "[2 q"
+	let &t_SI = "\<Esc>[5 q"
+	let &t_SR = "\<Esc>[3 q"
+	let &t_EI = "\<Esc>[2 q"
 
 	" bracketed paste {{{4
 	let &t_BE="\<Esc>[?2004h"
@@ -68,13 +68,13 @@ if &term == "tmux-256color" " {{{3
 	let &t_PE="\<Esc>[201~"
 
 	" ctrl+pgup/down to switch tabs {{{4
-	set <F13>=[5;5~
-	set <F14>=[6;5~
+	exe "set <F13>=\<Esc>[5;5~"
+	exe "set <F14>=\<Esc>[6;5~"
 	nmap <silent> <F13> :tabprev<CR>
 	nmap <silent> <F14> :tabnext<CR>
 
 	" fix keycodes {{{4
-	set <A-n>=n
+	exe "set <A-n>=\<Esc>n"
 endif
 
 " fix C-Space mappings in terminal {{{3
