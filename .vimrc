@@ -4,9 +4,26 @@ set nocompatible
 
 " term tweaks {{{2
 
+function! s:focus(focus)
+	if a:focus
+		checktime
+		silent doautocmd <nomodeline> FocusGained
+	else
+		silent doautocmd <nomodeline> FocusLost
+	endif
+endfunction
+
 if &term == "rxvt-unicode-256color" " {{{3
 	" my urxvt supports sgr mouse reporting {{{4
 	set ttymouse=sgr
+
+	" focus events
+	let &t_ti = &t_ti . "[?1004h"
+	let &t_te = "[?1004l" . &t_te
+	set <F15>=[O
+	set <F16>=[I
+	nnoremap <silent> <F15> :call <SID>focus(0)<CR>
+	nnoremap <silent> <F16> :call <SID>focus(1)<CR>
 
 	" cursor shape {{{4
 	let &t_SI = "[5 q"
@@ -30,6 +47,14 @@ endif
 if &term == "tmux-256color" " {{{3
 	" tmux supports sgr mouse reporting {{{4
 	set ttymouse=sgr
+
+	" focus events
+	let &t_ti = &t_ti . "[?1004h"
+	let &t_te = "[?1004l" . &t_te
+	set <F15>=[O
+	set <F16>=[I
+	nnoremap <silent> <F15> :call <SID>focus(0)<CR>
+	nnoremap <silent> <F16> :call <SID>focus(1)<CR>
 
 	" cursor shape {{{4
 	let &t_SI = "[5 q"
