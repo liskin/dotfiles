@@ -13,6 +13,11 @@ function! s:focus(focus)
 	endif
 endfunction
 
+for fn in range(13, 24)
+	exe "noremap <silent> <F" . fn . "> <Nop>"
+	exe "noremap! <silent> <F" . fn . "> <Nop>"
+endfor
+
 if &term == "rxvt-unicode-256color" " {{{3
 	" my urxvt supports sgr mouse reporting {{{4
 	set ttymouse=sgr
