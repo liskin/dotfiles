@@ -26,7 +26,6 @@ import System.Posix.Signals
 import System.Posix.Types
 
 import XMonad.Actions.CycleWS
-import XMonad.Actions.FocusNth
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
@@ -56,6 +55,7 @@ import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
 import XMonad.Util.Ungrab
+import qualified XMonad.Util.PureX as P
 
 
 up = updatePointer (0.5, 0.5) (0, 0)
@@ -130,13 +130,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
     ++
 
-    [((m, k), windows f >> up)
+    [((m, k), P.defile f >> up)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(W.view i, mod1Mask), (W.view i . W.shift i, controlMask)]]
+        , (f, m) <- [(P.view i, mod1Mask), (P.shift i <> P.view i, controlMask)]]
     ++
-    [((m, k), windows f >> up)
+    [((m, k), P.defile f >> up)
         | (i, k) <- zip (drop 12 $ XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(W.view i, modMask), (W.view i . W.shift i, modMask .|. controlMask)]]
+        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. controlMask)]]
     ++
     [ ((modMask,               xK_n     ), toggleWS    >> up)
     , ((modMask,               xK_Left  ), prevWS      >> up)
@@ -145,15 +145,16 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_Right ), swapTo Next >> up)
     ]
     ++
-    [ ((modMask .|. m, k), focusNth i >> a >> up) | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0]),
-        (m, a) <- [ (0, return ()), (shiftMask, windows W.swapMaster) ] ]
+    [ ((modMask .|. m, k), P.defile (P.focusNth i <> a) >> up)
+        | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0])
+        , (m, a) <- [ (0, return (Any False)), (shiftMask, P.modifyWindowSet' W.swapMaster >> return (Any True)) ] ]
     ++
     [ ((modMask,               xK_Tab   ), nextScreen >> up)
     , ((modMask .|. shiftMask, xK_Tab   ), prevScreen >> up) ]
     ++
-    [ ((modMask .|. m, k), do { Just sc <- getScreen def psc; Just w <- screenWorkspace sc; windows (f w); up })
+    [ ((modMask .|. m, k), do { Just sc <- getScreen def psc; Just w <- screenWorkspace sc; P.defile (f w); up })
     | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
-    , (f, m) <- [(W.view, 0), (W.greedyView, shiftMask)] ]
+    , (f, m) <- [(P.view, 0), (P.greedyView, shiftMask)] ]
 
 myMouseBindings (XConfig {}) = M.fromList $
     [ ((mod1Mask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
