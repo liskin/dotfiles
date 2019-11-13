@@ -6,12 +6,12 @@ set -eu
 exec {lock_fd}>"/run/liskin-suspend.lock"
 flock --nonblock "$lock_fd" || exit
 
-lsmod | grep -q nvidia && exit
 ! pgrep -t tty`fgconsole` X >/dev/null && exit
 
 pidof -q /usr/bin/xsecurelock && locked=: || locked=
 
 if [[ $locked ]]; then
+	lsmod | grep -q nvidia && exit
 	systemctl suspend
 else
 	loginctl lock-sessions
