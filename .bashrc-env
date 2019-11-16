@@ -49,7 +49,6 @@ export DEBEMAIL="tomi@nomi.cz"
 
 if [ -n "$_LISKIN_NVIDIA_ENV" ]; then
 	export VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/nvidia_icd.json"
-	export LD_LIBRARY_PATH="/usr/lib/nvidia:/usr/lib/i386-linux-gnu/nvidia:/usr/lib/x86_64-linux-gnu/nvidia"
 	unset __EGL_VENDOR_LIBRARY_FILENAMES
 else
 	export __EGL_VENDOR_LIBRARY_FILENAMES="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
