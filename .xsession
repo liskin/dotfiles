@@ -6,8 +6,6 @@ if xrandr --listproviders | grep -q NVIDIA-0; then
 	export _LISKIN_NVIDIA_ENV=1
 fi
 
-. ~/.bash_profile
-
 ~/bin/layout-normal
 
 while :; do
