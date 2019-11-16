@@ -388,6 +388,7 @@ autocmd BufNewFile,BufRead darcs-record* setf svn
 autocmd BufNewFile,BufRead neomutt-*-\w\+ setf mail
 autocmd BufNewFile,BufRead svn-commit.tmp setf svn
 autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile
+autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 
 " project-specifics {{{2
 autocmd BufNewFile,BufRead */brutalis/* setlocal et
