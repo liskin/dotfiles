@@ -408,7 +408,6 @@ myStartupHook = do
         , "exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
         , "exec firewall-applet"
         , "exec caffeine-indicator"
-        , "exec usbguard-applet-qt"
         ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
