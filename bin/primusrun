@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export LIBGL_DRI3_DISABLE=1
+
+if [[ $_LISKIN_NVIDIA_ENV ]]; then
+	export LD_LIBRARY_PATH="/usr/lib/nvidia:/usr/lib/i386-linux-gnu/nvidia:/usr/lib/x86_64-linux-gnu/nvidia:$LD_LIBRARY_PATH"
+	exec "$@"
+else
+	/usr/bin/primusrun "$@"
+fi
+
