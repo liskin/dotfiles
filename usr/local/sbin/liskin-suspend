@@ -11,7 +11,6 @@ flock --nonblock "$lock_fd" || exit
 pidof -q /usr/bin/xsecurelock && locked=: || locked=
 
 if [[ $locked ]]; then
-	lsmod | grep -q nvidia && exit
 	systemctl suspend
 else
 	loginctl lock-sessions
