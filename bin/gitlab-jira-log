@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+
+use Modern::Perl '2015';
+use autodie;
+
+my $base_url;
+my $git_url = `git remote get-url origin`;
+if ($git_url =~ m|^git@([\w.]+):([\w.\-/]+)\.git$|) {
+	$base_url = "http://$1/$2";
+} else {
+	die "unrecognized url: $git_url";
+}
+
+undef $/;
+my $input = <>;
+$input =~ s{^commit\s(\w+)$ (.*?\n) (?=\n^commit|\Z)}
+	{[$base_url/commit/${1}]:\n{noformat}${2}{noformat}\n}msxg;
+print $input;

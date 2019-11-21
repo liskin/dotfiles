@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+shopt -s lastpipe
+
+function o
+{
+	printf -->&2 "%s:%s\n" "${0##*/}" "$(printf " %q" "$@")"
+	"$@"
+}
+
+function croak {
+	local ex=$1; shift
+	printf -->&2 "xxx> %s: %s\n" "${0##*/}" "$*"
+	exit $ex
+}
+
+function do-curl
+{
+	if [[ -z ${github_token-} ]]; then
+		github_token=$(yq -r '."github.com"[0].oauth_token' ~/.config/hub)
+	fi
+
+	curl --silent --show-error --fail -H "Authorization: token ${github_token}" "$@"
+}
+
+function get-pr
+{
+	o do-curl "https://api.github.com/repos/${gh_owner}/${gh_repo}/pulls/${1}"
+}
+
+function read-pr-info
+{
+	get-pr "$1" \
+	| jq -r '.head.ref, .head.user.login, if .head.repo.private then .head.repo.ssh_url else .head.repo.clone_url end' \
+	| {
+		IFS= read -r pr_branch
+		IFS= read -r pr_owner
+		IFS= read -r pr_repo_url
+	}
+}
+
+function read-owner-repo
+{
+	local origin_url
+	o git remote get-url origin | IFS= read -r origin_url
+	if [[ "$origin_url" =~ ^(git@)?github\.com:(.*)/(.*)\.git$ ]]; then
+		gh_owner="${BASH_REMATCH[2]}"
+		gh_repo="${BASH_REMATCH[3]}"
+		:
+	elif [[ "$origin_url" =~ ^https?://github\.com/(.*)/(.*)$ ]]; then
+		gh_owner="${BASH_REMATCH[1]}"
+		gh_repo="${BASH_REMATCH[2]}"
+		gh_repo="${gh_repo%/}"
+		gh_repo="${gh_repo%.git}"
+		gh_repo="${gh_repo%/}"
+		:
+	else
+		croak 1 Cannot parse: "$origin_url"
+	fi
+}
+
+function add-remote
+{
+	if ! o git remote get-url "$1" >&/dev/null; then
+		o git remote add "$1" "$2"
+		o git config remote."$1".skipDefaultUpdate true
+	fi
+}
+
+function check-git-repo
+{
+	o git rev-parse --git-dir >/dev/null
+}
+
+function prepare
+{
+	check-git-repo
+	read-owner-repo
+	read-pr-info "$pr_number"
+	add-remote "$pr_owner" "$pr_repo_url"
+	o git fetch "$pr_owner" "$pr_branch"
+
+	local_branch="${pr_owner}-${pr_branch}"
+	o git branch --track "$local_branch" "${pr_owner}/${pr_branch}"
+}
+
+function checkout
+{
+	pr_number="$1"
+	prepare
+	o git checkout "$local_branch"
+}
+
+function worktree
+{
+	pr_number="$1"
+	prepare
+	o git worktree add "../${gh_repo}-${local_branch}" "$local_branch"
+}
+
+"$@"

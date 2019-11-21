@@ -1,0 +1,11 @@
+#!/bin/bash
+
+gitdir="$(readlink -f "$(git rev-parse --git-dir 2>/dev/null)")"
+case "$gitdir" in
+	"") ;;
+	*/.git) basename "$(dirname "$gitdir")" ;;
+	*/.git/worktrees/*) basename "$gitdir" ;;
+	*/.git/modules/*) basename "$gitdir" ;;
+	*/*.git) basename "$gitdir" .git ;;
+	*/*.git/worktrees/*) basename "$gitdir" .git ;;
+esac

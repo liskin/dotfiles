@@ -1,0 +1,2 @@
+#!/bin/bash
+git diff -U0 --relative --no-prefix "$@" | perl -M5.010 -ne '$file = $1 if /^--- (\S+)/; if ( /^@@ -(\d+)(?:,(\d+))? / and $2 ne "0" ) { $x = $2 // 1; system "git", "blame", "-L", "$1,+$x", "HEAD", "--", $file }' | cat
