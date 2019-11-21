@@ -12,7 +12,7 @@ BEGIN {
 	};
 }
 
-my ($bin, $lib) = ("$FindBin::RealBin/file-rename.pl", "$FindBin::RealBin/file-rename.pm");
+my ($bin, $lib) = ("$FindBin::RealBin/.file-rename.pl", "$FindBin::RealBin/.file-rename.pm");
 require $lib; $INC{'File/Rename.pm'} = $lib;
 $0 = $bin; do $0 or die($@ || $!);
 main();
