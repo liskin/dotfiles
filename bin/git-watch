@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+if (( ! $# )); then
+	echo "Usage: git-watch [<git ls-files args ...> --] <entr args>"
+	exit 1
+fi
+
+git_ls_files_args=()
+entr_args=()
+
+for arg in "$@"; do
+	if [[ "$arg" == "--" ]]; then
+		git_ls_files_args=("${entr_args[@]}")
+		entr_args=()
+	else
+		entr_args+=("$arg")
+	fi
+done
+
+# hack for entr 4.3, shouldn't be needed in 4.4
+ulimit -S -n 65536
+
+while sleep 0.2; do
+	git ls-files "${git_ls_files_args[@]}" | { entr -d "${entr_args[@]}" || (( $? == 2 )); }
+done
