@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+if (( $# != 1 )); then
+	echo "Usage: surf-watch file.html"
+	exit 1
+fi
+
+surf "$1" &
+entr -p <<<"$1" kill -HUP "$!" &
+
+wait -n || :
+pkill -P $$
