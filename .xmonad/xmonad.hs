@@ -396,12 +396,12 @@ myStartupHook = do
         , "xsetroot -cursor_name left_ptr"
         , "xmodmap ~/.Xmodmap"
         , "exec liskin-xss-lock"
-        , "exec pasystray --notify=all"
         , "thinkpad-battery update-xmobar"
         ]
     rescreenHook
     when (disp == ":0") $ mapM_ spawnOnce
         [ "exec /usr/lib/notify-osd/notify-osd"
+        , "exec pasystray --notify=all"
         , "exec nm-applet"
         , "exec blueman-applet"
         , "start-pulseaudio-x11"
