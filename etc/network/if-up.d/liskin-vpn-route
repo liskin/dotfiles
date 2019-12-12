@@ -1,2 +1,27 @@
 #!/usr/bin/env bash
-ip ro ad $(ip -json ro g 81.31.33.35 | jq -r '.[] | .dst + " via " + .gateway + " dev " + .dev')
+
+set -eu
+
+: "${IFACE:?}"
+
+default_gateway=$(ip -json ro ls default dev "$IFACE" | jq -r '.[] | .gateway')
+[[ "$default_gateway" ]] || exit 0
+
+function add-route-ip {
+	ip ro ad "${1:?dest}" via "$default_gateway" dev "$IFACE"
+}
+
+function add-route-host {
+	local dest="${1:?}"
+
+	getent hosts "$dest" \
+	| while read ip _; do
+		add-route-ip "$ip" || :
+	done
+}
+
+# openvpn
+add-route-ip 81.31.33.35 || :
+
+# geoclue
+add-route-host location.services.mozilla.com || :
