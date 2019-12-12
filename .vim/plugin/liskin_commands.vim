@@ -63,4 +63,13 @@ endfunction
 
 command! TrimWhitespace call s:TrimWhitespace()
 
+" {{{1 GeneratePassword
+
+function! s:GeneratePassword(mode, len = 20)
+	exec "read !apg -n 1 -M" a:mode "-m" a:len
+endfunction
+
+command! -nargs=? GeneratePassword call s:GeneratePassword("LCN", <f-args>)
+command! -nargs=? GeneratePasswordSpecial call s:GeneratePassword("LCNS", <f-args>)
+
 " vim:set foldenable foldmethod=marker: {{{1
