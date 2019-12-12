@@ -68,7 +68,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((controlMask,           xK_Menu  ), unGrab >> spawn "exec rofi -show drun")
     , ((modMask,               xK_Menu  ), unGrab >> spawn "exec rofi -show window")
     , ((modMask,               xK_e     ), unGrab >> spawn "exec emoji-menu.sh")
-    , ((modMask,               xK_p     ), unGrab >> spawn "passmenu --type")
 
     , ((0,         xF86XK_AudioMicMute    ), spawn "pactl set-source-mute @DEFAULT_SOURCE@ toggle")
     , ((0,         xF86XK_AudioMute       ), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
