@@ -13,6 +13,7 @@ xset b off
 xset s 480 5
 xset dpms 600 600 600
 xsetroot -cursor_name left_ptr
+setxkbmap
 xmodmap ~/.Xmodmap
 start-pulseaudio-x11
 liskin-xss-lock &
