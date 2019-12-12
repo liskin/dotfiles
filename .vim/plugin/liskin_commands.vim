@@ -65,8 +65,12 @@ command! TrimWhitespace call s:TrimWhitespace()
 
 " {{{1 GeneratePassword
 
+function! s:apg(mode, len)
+	return substitute(system('apg -n 1 -M ' . a:mode . ' -m ' . a:len), '\n\+$', '', '')
+endfunction
+
 function! s:GeneratePassword(mode, len = 20)
-	exec "read !apg -n 1 -M" a:mode "-m" a:len
+	exec "normal \"=s:apg(a:mode, a:len)\<Enter>p"
 endfunction
 
 command! -nargs=? GeneratePassword call s:GeneratePassword("LCN", <f-args>)
