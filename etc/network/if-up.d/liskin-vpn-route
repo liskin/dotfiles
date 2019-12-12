@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ip ro ad $(ip -json ro g 81.31.33.35 | jq -r '.[] | .dst + " via " + .gateway + " dev " + .dev')
