@@ -387,7 +387,7 @@ autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal ft=gitcommit fo=tcq et spell
 autocmd BufNewFile,BufRead darcs-record* setf svn
 autocmd BufNewFile,BufRead neomutt-*-\w\+ setf mail
 autocmd BufNewFile,BufRead svn-commit.tmp setf svn
-autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile
+autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile | let b:ale_enabled = 0
 autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 
 " project-specifics {{{2
