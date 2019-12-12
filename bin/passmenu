@@ -12,10 +12,10 @@ entry=$(printf '%s\n' "${password_files[@]}" | dmenu -p "pass entry" "$@")
 
 entry_content=$(pass show "$entry")
 
-if [[ ${1-} ]]; then
-	pass=$(<<<"$entry_content" sed -n -e '/^---$/,/^\.\.\.$/p' | yq -r -e ".$1")
-else
+if [[ ${1-} == @(pw|) ]]; then
 	pass=$(<<<"$entry_content" head -1)
+else
+	pass=$(<<<"$entry_content" sed -n -e '/^---$/,/^\.\.\.$/p' | yq -r -e ".$1")
 fi
 
-printf '%s' "$pass" | xdotool type --clearmodifiers --file -
+printf '%s' "$pass" | xdotool type --clearmodifiers --delay 0 --file -
