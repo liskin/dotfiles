@@ -52,7 +52,6 @@ import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
 import XMonad.Util.Run
-import XMonad.Util.SpawnOnce
 import XMonad.Util.Stack
 import XMonad.Util.Ungrab
 import qualified XMonad.Util.PureX as P
@@ -387,28 +386,7 @@ killPid pid = do
 
 -- Startuphook.
 myStartupHook = do
-    disp <- io $ getEnv "DISPLAY"
-    mapM_ spawnOnce
-        [ "xset r rate 200 25"
-        , "xset b off"
-        , "xset s 480 5"
-        , "xset dpms 600 600 600"
-        , "xsetroot -cursor_name left_ptr"
-        , "xmodmap ~/.Xmodmap"
-        , "exec liskin-xss-lock"
-        , "thinkpad-battery update-xmobar"
-        ]
     rescreenHook
-    when (disp == ":0") $ mapM_ spawnOnce
-        [ "exec /usr/lib/notify-osd/notify-osd"
-        , "exec pasystray --notify=all"
-        , "exec nm-applet"
-        , "exec blueman-applet"
-        , "start-pulseaudio-x11"
-        , "exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
-        , "exec firewall-applet"
-        , "exec caffeine-indicator"
-        ]
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
 

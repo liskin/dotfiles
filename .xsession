@@ -8,6 +8,27 @@ fi
 
 ~/bin/layout-normal
 
+xset r rate 200 25
+xset b off
+xset s 480 5
+xset dpms 600 600 600
+xsetroot -cursor_name left_ptr
+xmodmap ~/.Xmodmap
+start-pulseaudio-x11
+liskin-xss-lock &
+
+thinkpad-battery update-xmobar
+
+if [[ $DISPLAY == :0 ]]; then
+	/usr/lib/notify-osd/notify-osd &
+	pasystray --notify=all &
+	nm-applet &
+	blueman-applet &
+	/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+	firewall-applet &
+	caffeine-indicator &
+fi
+
 while :; do
 	xmonad
 	sleep 1
