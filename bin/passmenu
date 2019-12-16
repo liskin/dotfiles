@@ -1,21 +1,41 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 shopt -s nullglob globstar lastpipe
 
-prefix=${PASSWORD_STORE_DIR-~/.password-store}
-password_files=( "$prefix"/**/*.gpg )
-password_files=( "${password_files[@]#"$prefix"/}" )
-password_files=( "${password_files[@]%.gpg}" )
+function password-files {
+	local prefix password_files
 
-entry=$(printf '%s\n' "${password_files[@]}" | dmenu -p "pass entry" "$@")
+	prefix=${PASSWORD_STORE_DIR-~/.password-store}
+	password_files=( "$prefix"/**/*.gpg )
+	password_files=( "${password_files[@]#"$prefix"/}" )
+	password_files=( "${password_files[@]%.gpg}" )
+
+	printf '%s\n' "${password_files[@]}"
+}
+
+function extract-field { if [[ $1 == password ]]; then extract-password; else extract-other "$1"; fi; }
+function extract-password { head -1; }
+function extract-yaml { sed -n -e '/^---$/,/^\.\.\.$/p'; }
+function extract-fields { { extract-yaml | yq -r -e 'keys[]'; echo password; } | sort -u; }
+function extract-other { extract-yaml | yq -r -e ".\"${1:?}\""; }
+
+field=password
+entry=$(
+	password-files \
+	| rofi \
+		-dmenu \
+		-p "pass entry" \
+		-mesg $'Enter: type password\tAlt+1: type user\tAlt+2: type other'
+) && ret=$? || ret=$?
+case $ret in
+	0) ;;
+	10) field=user ;;
+	11) field= ;;
+	*) exit 1 ;;
+esac
 
 entry_content=$(pass show "$entry")
-
-if [[ ${1-} == @(pw|) ]]; then
-	pass=$(<<<"$entry_content" head -1)
-else
-	pass=$(<<<"$entry_content" sed -n -e '/^---$/,/^\.\.\.$/p' | yq -r -e ".\"$1\"")
-fi
-
+[[ $field ]] || field=$(extract-fields <<<"$entry_content" | rofi -dmenu -p "$entry field")
+pass=$(extract-field "$field" <<<"$entry_content")
 printf '%s' "$pass" | xdotool type --clearmodifiers --delay 0 --file -
