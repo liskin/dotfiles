@@ -11,7 +11,7 @@ function password-files {
 	password_files=( "${password_files[@]#"$prefix"/}" )
 	password_files=( "${password_files[@]%.gpg}" )
 
-	printf '%s\n' "${password_files[@]}"
+	printf '%s\n' "${password_files[@]}" | LANG=C sort
 }
 
 function extract-field { if [[ $1 == password ]]; then extract-password; else extract-other "$1"; fi; }
@@ -20,18 +20,44 @@ function extract-yaml { sed -n -e '/^---$/,/^\.\.\.$/p'; }
 function extract-fields { { extract-yaml | yq -r -e 'keys[]'; echo password; } | sort -u; }
 function extract-other { extract-yaml | yq -r -e ".\"${1:?}\""; }
 
-field=password
+history_db=${XDG_CACHE_HOME:-$HOME/.cache}/passmenu-history
+
+function history-init { tcbmgr inform "$history_db" &>/dev/null || tcbmgr create "$history_db"; }
+function history-get { tcbmgr get "$history_db" "$1" 2>/dev/null; }
+function history-put { tcbmgr put "$history_db" "$1" "$2"; }
+
+function get-history-key {
+	# needs https://github.com/erichgoldman/add-url-to-window-title
+	local window_title_url_pattern
+	window_title_url_pattern='^.* :: (https?://[^[:space:]]*)( \[Input Name: "([^"]*)"\] \[Input ID: "([^"]*)"\])? - (Google Chrome|Mozilla Firefox)$'
+	if [[ "$(xdotool getwindowfocus getwindowname)" =~ $window_title_url_pattern ]]; then
+		printf -- "%s?%s" "${BASH_REMATCH[1]%%\?*}" "${BASH_REMATCH[3]}"
+	else
+		return 1
+	fi
+}
+
+history-init
+if history_key=$(get-history-key); then
+	entry=$(history-get "entry?$history_key") || :
+	field=$(history-get "field?$history_key") || :
+fi
+
+[[ ${entry-} ]] || entry=
+[[ ${field-} ]] || field=password
 entry=$(
 	password-files \
 	| rofi \
 		-dmenu \
 		-p "pass entry" \
-		-mesg $'Enter: type password\tAlt+1: type user\tAlt+2: type other'
+		-mesg $'Enter: '"$field"$'      Alt+1: password      Alt+2: user      Alt+3: …' \
+		-select "$entry"
 ) && ret=$? || ret=$?
 case $ret in
 	0) ;;
-	10) field=user ;;
-	11) field= ;;
+	10) field=password ;;
+	11) field=user ;;
+	12) field= ;;
 	*) exit 1 ;;
 esac
 
@@ -39,3 +65,8 @@ entry_content=$(pass show "$entry")
 [[ $field ]] || field=$(extract-fields <<<"$entry_content" | rofi -dmenu -p "$entry field")
 pass=$(extract-field "$field" <<<"$entry_content")
 printf '%s' "$pass" | xdotool type --clearmodifiers --delay 0 --file -
+
+if [[ $history_key ]]; then
+	history-put "entry?$history_key" "$entry"
+	history-put "field?$history_key" "$field"
+fi
