@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eu
+
+: "${IFACE:?}"
+
+ip ro del default dev tun_nomi || :
