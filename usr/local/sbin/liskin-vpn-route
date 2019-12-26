@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+set -eu
+
+unset default_iface
+unset default_gateway
+
+function get-default-iface {
+	[[ "${default_iface-}" ]] && return
+
+	default_iface="${1-}"
+	[[ "${default_iface-}" ]] && return
+
+	default_iface=$(ip -json ro ls default | jq -r '.[] | .dev')
+	[[ "${default_iface-}" ]] && return
+
+	exit 0
+}
+
+function get-default-gateway {
+	[[ "${default_gateway-}" ]] && return
+
+	default_gateway=$(ip -json ro ls default dev "$default_iface" | jq -r '.[] | .gateway')
+	[[ "${default_gateway-}" ]] && return
+
+	exit 0
+}
+
+function add-exception-ip {
+	ip ro ad "${1:?dest}" via "$default_gateway" dev "$default_iface"
+}
+
+function add-exception-host {
+	local dest="${1:?}"
+
+	timeout 3 \
+		getent hosts "$dest" \
+	| while read ip _; do
+		add-exception-ip "$ip" || :
+	done
+}
+
+function vpn-routes-up {
+	get-default-iface "$@"
+	get-default-gateway
+
+	# vpn server
+	add-exception-ip 81.31.33.35 || :
+
+	# geoclue exception
+	add-exception-host location.services.mozilla.com || :
+
+	# default route
+	ip ro ad default dev tun_nomi || :
+}
+
+function vpn-routes-down {
+	# default route
+	ip ro del default dev tun_nomi || :
+}
+
+action="$1"; shift
+case "$action" in
+	up) vpn-routes-up "$@" ;;
+	down) vpn-routes-down "$@" ;;
+	*) exit 1 ;;
+esac

@@ -3,30 +3,12 @@
 set -eu
 
 : "${IFACE:?}"
+: "${MODE:?}"
 
-default_gateway=$(ip -json ro ls default dev "$IFACE" | jq -r '.[] | .gateway')
-[[ "$default_gateway" ]] || exit 0
-
-function add-route-ip {
-	ip ro ad "${1:?dest}" via "$default_gateway" dev "$IFACE"
-}
-
-function add-route-host {
-	local dest="${1:?}"
-
-	timeout 3 \
-		getent hosts "$dest" \
-	| while read ip _; do
-		add-route-ip "$ip" || :
-	done
-}
-
-# openvpn
-add-route-ip 81.31.33.35 || :
-
-# geoclue
-add-route-host location.services.mozilla.com || :
-
-if [[ $IFACE == bnep0 ]]; then
-	ip ro ad default dev tun_nomi || :
+if [[ "$MODE" == "start" ]]; then
+	if [[ "$IFACE" == @("bnep0") ]]; then
+		/usr/local/sbin/liskin-vpn-route up "$IFACE"
+	fi
+elif [[ "$MODE" == "stop" ]]; then
+	/usr/local/sbin/liskin-vpn-route down
 fi
