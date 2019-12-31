@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3
 
 from dataclasses import dataclass
 from typing import Any, List
@@ -13,13 +13,17 @@ def slurp(filename: str) -> str:
 
 
 @dataclass
-class Battery():
+class SysAttrs():
     path: str
-    capacity: int = 0
-    present: bool = False
 
     def _read_attr(self, attr: str) -> str:
         return slurp(os.path.join(self.path, attr))
+
+
+@dataclass
+class Battery(SysAttrs):
+    capacity: int = 0
+    present: bool = False
 
     def refresh(self) -> None:
         try:
@@ -30,9 +34,21 @@ class Battery():
             self.present = False
 
 
+@dataclass
+class AC(SysAttrs):
+    online: bool = False
+
+    def refresh(self) -> None:
+        try:
+            self.online = bool(int(self._read_attr('online')))
+        except Exception:
+            self.online = False
+
+
 class Main():
     num_batteries: int = 2
     batteries: List[Battery]
+    ac: AC
     notification: Any
 
     def __init__(self) -> None:
@@ -41,6 +57,7 @@ class Main():
             for n in range(self.num_batteries)
         ]
         self.batteries = [Battery(path=p) for p in sys_paths]
+        self.ac = AC(path='/sys/class/power_supply/AC')
 
         self.notification = notify2.Notification(
             summary='Low battery', icon='battery-low')
@@ -49,13 +66,14 @@ class Main():
     def refresh(self) -> None:
         for b in self.batteries:
             b.refresh()
+        self.ac.refresh()
 
     def low(self) -> bool:
         return all([b.capacity <= 5 for b in self.batteries if b.present])
 
     def tick(self) -> None:
         self.refresh()
-        if self.low():
+        if self.low() and not self.ac.online:
             self.notification.show()
 
     def loop(self) -> None:
