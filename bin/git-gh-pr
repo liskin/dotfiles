@@ -86,6 +86,12 @@ function prepare
 	o git branch --track "$local_branch" "${pr_owner}/${pr_branch}"
 }
 
+function fetch
+{
+	pr_number="$1"
+	prepare
+}
+
 function checkout
 {
 	pr_number="$1"
