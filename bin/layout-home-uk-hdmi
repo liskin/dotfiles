@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+xrandr \
+	--output HDMI-2 --mode 1920x1080 --pos 0x0 --dpi 96 \
+	--output eDP-1 --mode 1920x1080 --pos 0x1080 --dpi 96 --primary
+
+xinput map-to-output 'Raydium Corporation Raydium Touch System' eDP-1 || :
