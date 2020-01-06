@@ -22,6 +22,7 @@ case "$HASH" in
 	db75f6586279bdf1faf402f2ece5c93c) PROFILE=work2-dock ;;
 	285be418d98aec0e4e2ff27a9e4e74c6) PROFILE=work1-hdmi ;;
 	f075715f6c12906b65977f44401fc2b2) PROFILE=home-uk-hdmi ;;
+	1d2920f5381b0ab0b75e8b0792a474f3) PROFILE=home-uk-dock ;;
 
 	da0f1d50b085f3c99f5e09a41c5d8571) PROFILE=normal ;;
 esac
