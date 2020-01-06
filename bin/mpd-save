@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+save_dir=~/.cache/mpd/save
+
+mkdir -p "$save_dir"
+mpstore >"$save_dir/${1:?}"
