@@ -21,7 +21,6 @@ liskin-xss-lock &
 thinkpad-battery update-xmobar
 
 if [[ $DISPLAY == :0 ]]; then
-	/usr/lib/notify-osd/notify-osd &
 	pasystray --notify=all &
 	nm-applet &
 	blueman-applet &
