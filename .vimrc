@@ -178,6 +178,7 @@ let g:PHP_default_indenting = 1
 let g:fugitive_gitlab_domains = ['https://gitlab.freedesktop.org', 'https://salsa.debian.org']
 let g:gitgutter_enabled = 0
 let g:gitgutter_override_sign_column_highlight = 0
+let g:markdown_folding = 1
 let g:netrw_http_cmd  = "curl"
 let g:netrw_http_xcmd = "-LSsf -o"
 let g:puppet_align_hashes = 0
