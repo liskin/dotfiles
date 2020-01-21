@@ -28,7 +28,7 @@ function volume-bluetooth {
 function volume-pulseaudio {
 	local sign
 	[[ $1 == up ]] && sign="+" || sign="-"
-	pactl set-sink-volume @DEFAULT_SINK@ "$sign"2%
+	pactl set-sink-volume @DEFAULT_SINK@ "$sign"5%
 }
 
 if [[ $(pactl info) =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
