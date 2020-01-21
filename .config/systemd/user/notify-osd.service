@@ -5,7 +5,7 @@ StartLimitIntervalSec=0
 [Service]
 ExecStart=/usr/lib/notify-osd/notify-osd
 ExecStartPre=/bin/sh -c "/usr/bin/xset q >/dev/null 2>&1"
-Restart=on-failure
+Restart=always
 RestartSec=10
 StandardOutput=null
 StandardError=null
