@@ -5,3 +5,7 @@ set -eu
 save_dir=~/.cache/mpd/save
 
 mpload <"$save_dir/${1:?}"
+
+# FIXME: hack to avoid undef volume
+mpc toggle
+mpc toggle
