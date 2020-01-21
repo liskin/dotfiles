@@ -46,7 +46,7 @@ function player {
 
 	(( $# )) || { printf '%s\n' 'urls expected'; exit 1; }
 	o youtube-dl \
-		-f 'bestaudio[abr <= 320]/bestaudio' \
+		-f 'bestaudio[abr <= 320]/bestaudio/best' \
 		--add-metadata \
 		--no-mtime \
 		--sleep-interval 10 \
