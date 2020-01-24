@@ -4,10 +4,6 @@ set -eu
 
 save_dir=~/.cache/mpd/save
 
-# FIXME: hack to avoid undef volume
-mpc toggle
-mpc toggle
-
 mkdir -p "$save_dir"
 [[ -f "$save_dir/${1:?}" ]] && cp "$save_dir/${1:?}" "$save_dir/${1:?}~"
 mpstore >"$save_dir/${1:?}"
