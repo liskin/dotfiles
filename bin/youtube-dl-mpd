@@ -49,8 +49,8 @@ function player {
 		-f 'bestaudio[abr <= 320]/bestaudio/best' \
 		--add-metadata \
 		--no-mtime \
-		--sleep-interval 10 \
-		--max-sleep-interval 30 \
+		--sleep-interval 1 \
+		--max-sleep-interval 10 \
 		--exec 'youtube-dl-mpd-helper {}' \
 		"$@"
 }
