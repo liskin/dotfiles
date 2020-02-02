@@ -294,7 +294,12 @@ let g:ale_elixir_elixir_ls_config = {
 let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/elixir-ls/rel"
 
 function! s:ale_enable_linter(filetype, linter)
-	let b:ale_linters = deepcopy(g:ale_linters)
+	if !exists('b:ale_linters')
+		let b:ale_linters = deepcopy(g:ale_linters)
+	endif
+	if !has_key(b:ale_linters, a:filetype)
+		let b:ale_linters[a:filetype] = []
+	endif
 	call add(b:ale_linters[a:filetype], a:linter)
 endfunction
 
