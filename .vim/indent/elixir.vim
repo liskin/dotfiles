@@ -40,7 +40,7 @@ function! GetElixirIndent()
 		return ind
 	endif
 
-	if prevline =~ '\<\%(do\|after\|catch\|else\|rescue\)$'
+	if prevline =~ '\%(^\|\s\)\%(do\|after\|catch\|else\|rescue\|->\)$'
 		let ind += &shiftwidth
 	endif
 

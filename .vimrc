@@ -106,9 +106,9 @@ if has('gui_running') " {{{2
 endif
 
 " indent {{{2
-set copyindent
+set nocopyindent
 set noautoindent
-set preserveindent
+set nopreserveindent
 set shiftwidth=4
 set smarttab
 set softtabstop=-1 " use shiftwidth
@@ -179,6 +179,7 @@ let g:fugitive_gitlab_domains = ['https://gitlab.freedesktop.org', 'https://sals
 let g:gitgutter_enabled = 0
 let g:gitgutter_override_sign_column_highlight = 0
 let g:markdown_folding = 1
+let g:netrw_browsex_viewer = "sensible-browser"
 let g:netrw_http_cmd  = "curl"
 let g:netrw_http_xcmd = "-LSsf -o"
 let g:puppet_align_hashes = 0
@@ -363,6 +364,7 @@ autocmd FileType lhaskell setlocal tw=78 ai et
 autocmd FileType mail setlocal tw=78 ts=8 ai et | let &fenc = &enc
 autocmd FileType make setlocal sw=8 nosta noet
 autocmd FileType markdown setlocal ai formatoptions=tcroqn2 comments=n:> tw=78 et
+autocmd FileType meson setlocal et
 autocmd FileType perl setlocal isfname-=- formatoptions-=t formatoptions+=crql
 autocmd FileType php setlocal indentkeys&
 autocmd FileType python setlocal tw=78 et
