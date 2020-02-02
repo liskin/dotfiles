@@ -77,9 +77,6 @@
 [submodule ".xmonad/dep/xmobar"]
 	path = .xmonad/dep/xmobar
 	url = https://github.com/liskin/xmobar.git
-[submodule ".vim/bundle/vista.vim"]
-	path = .vim/bundle/vista.vim
-	url = https://github.com/liuchengxu/vista.vim
 [submodule ".vim/bundle/vim-boxdraw"]
 	path = .vim/bundle/vim-boxdraw
 	url = https://github.com/gyim/vim-boxdraw.git
