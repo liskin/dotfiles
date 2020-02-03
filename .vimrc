@@ -301,6 +301,8 @@ function! s:ale_enable_linter(filetype, linter)
 		let b:ale_linters[a:filetype] = []
 	endif
 	call add(b:ale_linters[a:filetype], a:linter)
+
+	ALELint
 endfunction
 
 command! -nargs=1 -bar AleEnableLinter call s:ale_enable_linter(&ft, <q-args>)

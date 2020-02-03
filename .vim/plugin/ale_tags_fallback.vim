@@ -1,3 +1,6 @@
+" Vim plugin that allows using ale's ALEGoToDefinition or vim's support for
+" tags, whichever is available, using a single keybinding <C-]>
+
 if &cp || exists('g:loaded_ale_tags_fallback')
 	finish
 endif
@@ -32,7 +35,7 @@ endfunction
 
 augroup ALETagsFallback
 	autocmd!
-	autocmd User ALELintPost call s:ale_lint_post()
+	autocmd User ALELintPre call s:ale_lint_post()
 augroup END
 
 function! s:execute(lsp_has_definition, fallback) abort
