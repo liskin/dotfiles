@@ -1,0 +1,2 @@
+#!/bin/sh
+systemctl --user start rclone-dropbox.service
