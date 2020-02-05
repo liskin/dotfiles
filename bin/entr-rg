@@ -19,9 +19,6 @@ for arg in "$@"; do
 	fi
 done
 
-# hack for entr 4.3, shouldn't be needed in 4.4
-ulimit -S -n 65536
-
 while sleep 0.2; do
 	rg --files "${rg_files_args[@]}" | { entr -d "${entr_args[@]}" || :; }
 done
