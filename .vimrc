@@ -457,6 +457,8 @@ imap <C-H> <C-\><C-O><C-H>
 
 nmap <silent> <C-W>S :CloneBufTmp<CR>
 
+nmap <silent> <C-W>C :tabclose<CR>
+
 " prevent x from overriding what's in the clipboard. {{{2
 noremap x "_x
 noremap X "_X
