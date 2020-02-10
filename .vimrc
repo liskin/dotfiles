@@ -119,7 +119,7 @@ set breakat=\ \	!@*-+;:,./?_
 set breakindent
 set breakindentopt=sbr
 set linebreak
-set showbreak=→
+set showbreak=\\
 set wrap
 
 " visuals {{{2

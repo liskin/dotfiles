@@ -16,7 +16,7 @@ if &t_Co == 256 || has('gui_running')
 	hi LineNr ctermfg=246
 	hi MatchParen ctermbg=30 cterm=bold guibg=#008787 gui=bold
 	hi MoreMsg gui=NONE ctermfg=121 guifg=#87ffaf
-	hi NonText cterm=bold gui=NONE
+	hi NonText cterm=bold ctermfg=202 gui=bold guifg=#ff5f00
 	hi Pmenu ctermbg=31 ctermfg=15 guibg=#0087af guifg=#ffffff
 	hi PmenuSel ctermbg=34 ctermfg=15 guibg=#00af00 guifg=#ffffff
 	hi PreProc cterm=bold ctermfg=81 gui=bold guifg=#5fd7ff
