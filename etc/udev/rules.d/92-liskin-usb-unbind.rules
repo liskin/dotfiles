@@ -1,5 +1,21 @@
-ACTION=="add",      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device",    ENV{PRODUCT}=="2386/310e/0", TEST!="/run/t25_touchscreen_enabled", RUN+="/bin/sh -c 'echo 2 >%S%p/power/autosuspend; echo auto >%S%p/power/control'"
-ACTION=="add|bind", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_interface", ENV{PRODUCT}=="2386/310e/0", TEST!="/run/t25_touchscreen_enabled", RUN+="/bin/sh -c 'a=%p; a=$${a##*/}; echo $$a >/sys/bus/usb/drivers/%E{DRIVER}/unbind'"
+ACTION!="add|bind", SUBSYSTEM!="usb", GOTO="liskin-usb-unbind-end"
 
-ACTION=="add",      SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device",    ENV{PRODUCT}=="bda/316/204", TEST!="/run/t25_sdcard_enabled", RUN+="/bin/sh -c 'echo 2 >%S%p/power/autosuspend; echo auto >%S%p/power/control'"
-ACTION=="add|bind", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_interface", ENV{PRODUCT}=="bda/316/204", TEST!="/run/t25_sdcard_enabled", RUN+="/bin/sh -c 'a=%p; a=$${a##*/}; echo $$a >/sys/bus/usb/drivers/%E{DRIVER}/unbind'"
+ENV{PRODUCT}=="2386/310e/0", TEST!="/run/t25_touchscreen_enabled", GOTO="liskin-usb-unbind-do"
+ENV{PRODUCT}=="bda/316/204", TEST!="/run/t25_sdcard_enabled", GOTO="liskin-usb-unbind-do"
+GOTO="liskin-usb-unbind-end"
+
+LABEL="liskin-usb-unbind-do"
+ENV{DEVTYPE}=="usb_device", GOTO="liskin-usb-unbind-do-device"
+ENV{DEVTYPE}=="usb_interface", GOTO="liskin-usb-unbind-do-interface"
+GOTO="liskin-usb-unbind-end"
+
+LABEL="liskin-usb-unbind-do-device"
+TEST=="power/control", ATTR{power/control}="auto"
+TEST=="power/autosuspend_delay_ms", ATTR{power/runtime_status}!="unsupported", ATTR{power/autosuspend_delay_ms}="2000"
+GOTO="liskin-usb-unbind-end"
+
+LABEL="liskin-usb-unbind-do-interface"
+RUN+="/bin/sh -c 'a=%p; a=$${a##*/}; echo $$a >/sys/bus/usb/drivers/%E{DRIVER}/unbind'"
+GOTO="liskin-usb-unbind-end"
+
+LABEL="liskin-usb-unbind-end"
