@@ -73,6 +73,7 @@
 	blame-options = -C -C -C
 	mouse = true
 	wrap-lines = true
+	diff-highlight = true
 [tig "bind"]
 	generic = e !>tmux-new-window-or-exec vim +"%(lineno)" "%(file)"
 	generic = E !>tmux-new-window-or-exec vim +"%(lineno)" "fugitive://%(repo:git-dir)//%(commit)/%(file)"

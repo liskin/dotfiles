@@ -80,3 +80,6 @@
 [submodule ".vim/bundle/vim-boxdraw"]
 	path = .vim/bundle/vim-boxdraw
 	url = https://github.com/gyim/vim-boxdraw.git
+[submodule ".config/tig/tig-colors-neonwolf"]
+	path = .config/tig/tig-colors-neonwolf
+	url = https://github.com/h3xx/tig-colors-neonwolf.git
