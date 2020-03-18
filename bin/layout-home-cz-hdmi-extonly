@@ -3,5 +3,5 @@
 set -eu
 
 xrandr \
-	--output HDMI-2 --mode 1680x1050 --pos 0x0 --dpi 96 --primary \
+	--output HDMI-2 --mode 1920x1200 --pos 0x0 --dpi 96 --primary \
 	--output eDP-1 --off

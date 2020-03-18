@@ -3,7 +3,7 @@
 set -eu
 
 xrandr \
-	--output HDMI-2 --mode 1680x1050 --pos 120x0 --dpi 96 \
-	--output eDP-1 --mode 1920x1080 --pos 0x1050 --dpi 96 --primary
+	--output HDMI-2 --mode 1920x1200 --pos 0x0 --dpi 96 \
+	--output eDP-1 --mode 1920x1080 --pos 0x1200 --dpi 96 --primary
 
 xinput map-to-output 'Raydium Corporation Raydium Touch System' eDP-1 || :
