@@ -1,4 +1,5 @@
 # docker
+SUBSYSTEM=="net", ACTION=="add|change", ATTR{address}=="02:42:*", ENV{INTERFACE}=="docker*", ENV{NM_UNMANAGED}="1"
 SUBSYSTEM=="net", ACTION=="add|change", ATTR{address}=="02:42:*", ENV{INTERFACE}=="br-*", ENV{NM_UNMANAGED}="1"
 
 # libvirt
