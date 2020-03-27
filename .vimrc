@@ -157,7 +157,7 @@ set grepformat=%f:%l:%c:%m,%f:%l:%m
 
 " other {{{2
 set backspace=indent,eol,start
-set completeopt=menu,menuone,longest,preview
+set completeopt=menu,menuone,longest,popup
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
 set hidden
