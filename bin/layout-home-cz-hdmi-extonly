@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
+
+randr=$(xrandr --query)
+
+out_eDP=$(<<<"$randr" awk '/^eDP.* connected/ { print $1 }')
+[[ $out_eDP ]]
+
+out_HDMI=$(<<<"$randr" awk '/^HDMI.* connected/ { print $1 }')
+[[ $out_HDMI ]]
 
 xrandr \
-	--output HDMI-2 --mode 1920x1200 --pos 0x0 --dpi 96 --primary \
-	--output eDP-1 --off
+	--output "$out_HDMI" --mode 1920x1200 --pos 0x0 --dpi 96 --primary \
+	--output "$out_eDP" --off
