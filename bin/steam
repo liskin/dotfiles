@@ -1,14 +1,22 @@
 #!/bin/bash
 
+set -eu
+
 # Workaround for buggy steam scripts
-if [[ $LD_LIBRARY_PATH ]]; then
+if [[ ${LD_LIBRARY_PATH-} ]]; then
 	LD_LIBRARY_PATH="$LD_LIBRARY_PATH:"
 fi
 
 exec \
 	/usr/bin/bwrap \
-		--dev-bind / / \
+		--ro-bind /{,} \
+		--dev-bind /dev{,} \
+		--bind "$XDG_RUNTIME_DIR"{,} \
+		--bind "$HOME/.steam-home" "$HOME" \
+		--ro-bind "$XAUTHORITY" "$XAUTHORITY" \
+		--bind "$(readlink -f "$HOME/.steam-home/.steam")"{,} \
 		--tmpfs /dev/shm \
+		--tmpfs /tmp \
 		-- \
 	${LD_LIBRARY_PATH+/usr/bin/env LD_LIBRARY_PATH="$LD_LIBRARY_PATH"} \
 	/usr/games/steam "$@"
