@@ -14,6 +14,7 @@ exec \
 		--bind "$XDG_RUNTIME_DIR"{,} \
 		--bind "$HOME/.steam-home" "$HOME" \
 		--ro-bind "$XAUTHORITY" "$XAUTHORITY" \
+		--ro-bind "$HOME/bin/primusrun"{,} \
 		--bind "$(readlink -f "$HOME/.steam-home/.steam")"{,} \
 		--tmpfs /dev/shm \
 		--tmpfs /tmp \
