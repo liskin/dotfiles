@@ -56,8 +56,8 @@
 	url = https://github.com/derekwyatt/vim-scala.git
 [submodule ".vim/bundle/fzf.vim"]
 	path = .vim/bundle/fzf.vim
-	url = https://github.com/liskin/fzf.vim.git
-	#url = https://github.com/junegunn/fzf.vim.git
+	#url = https://github.com/liskin/fzf.vim.git
+	url = https://github.com/junegunn/fzf.vim.git
 [submodule ".vim/bundle/vim-rhubarb"]
 	path = .vim/bundle/vim-rhubarb
 	url = https://github.com/tpope/vim-rhubarb.git
