@@ -53,7 +53,7 @@ function! s:execute(lsp_has_definition, fallback) abort
 endfunction
 
 command! -bar ALETagsFallbackGoToDefinition call s:execute("ALEGoToDefinition", "normal! \<C-]>")
-command! -bar ALETagsFallbackGoToDefinitionInSplit call s:execute("ALEGoToDefinitionInSplit", "normal! \<C-W>\<C-]>")
+command! -bar ALETagsFallbackGoToDefinitionInSplit call s:execute("ALEGoToDefinition -split", "normal! \<C-W>\<C-]>")
 
 nnoremap <silent> <Plug>(ale_tags_fallback_go_to_definition) :ALETagsFallbackGoToDefinition<Return>
 nnoremap <silent> <Plug>(ale_tags_fallback_go_to_definition_in_split) :ALETagsFallbackGoToDefinitionInSplit<Return>
