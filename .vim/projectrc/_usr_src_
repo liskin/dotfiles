@@ -1,0 +1,1 @@
+autocmd BufNewFile,BufRead */linux-*/* setlocal sw=8 ts=8

@@ -293,19 +293,24 @@ let g:ale_elixir_elixir_ls_config = {
 \ }
 let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/elixir-ls/rel"
 
-function! s:ale_enable_linter(filetype, linter)
+function! s:ale_add_linter(ale_linters, filetype, linter) abort
+	if !has_key(a:ale_linters, a:filetype)
+		let a:ale_linters[a:filetype] = []
+	endif
+	call add(a:ale_linters[a:filetype], a:linter)
+endfunction
+
+function! s:ale_enable_linter(filetype, linter) abort
 	if !exists('b:ale_linters')
 		let b:ale_linters = deepcopy(g:ale_linters)
 	endif
-	if !has_key(b:ale_linters, a:filetype)
-		let b:ale_linters[a:filetype] = []
-	endif
-	call add(b:ale_linters[a:filetype], a:linter)
+	call s:ale_add_linter(b:ale_linters, a:filetype, a:linter)
 
 	ALELint
 endfunction
 
-command! -nargs=1 -bar AleEnableLinter call s:ale_enable_linter(&ft, <q-args>)
+command! -nargs=1 -bar AleBufEnableLinter call s:ale_enable_linter(&ft, <q-args>)
+command! -nargs=+ -bar AleAddLinter call s:ale_add_linter(g:ale_linters, <f-args>)
 
 " fzf {{{2
 let g:fzf_command_prefix = 'Fzf'
@@ -390,18 +395,6 @@ autocmd BufNewFile,BufRead neomutt-*-\w\+ setf mail
 autocmd BufNewFile,BufRead svn-commit.tmp setf svn
 autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile et | let b:ale_enabled = 0
 autocmd BufNewFile,BufRead Jenkinsfile setf groovy
-
-" project-specifics {{{2
-autocmd BufNewFile,BufRead */brutalis/* setlocal et
-autocmd BufNewFile,BufRead */divine*/* setlocal et
-autocmd BufNewFile,BufRead */fluxbox*/* setlocal et "| cs add /usr/src/tomi/fluxbox/src/cscope.out
-autocmd BufNewFile,BufRead */linux-2.6*/* setlocal sw=8 ts=8
-autocmd BufNewFile,BufRead */linux-liskin*/* setlocal sw=8 ts=8
-autocmd BufNewFile,BufRead ~/android/*.json setlocal et
-autocmd BufNewFile,BufRead ~/android/*.xml setlocal et sw=2
-autocmd BufNewFile,BufRead ~/src-erlang/otp/* setlocal ts=8 sw=4
-autocmd BufNewFile,BufRead ~/src-scala/* setlocal et
-autocmd BufNewFile,BufRead ~/work/altworx/* call s:ale_enable_linter("elixir", "elixir-ls")
 
 " key maps {{{1
 
