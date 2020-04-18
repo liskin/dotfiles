@@ -83,3 +83,6 @@
 [submodule ".config/tig/tig-colors-neonwolf"]
 	path = .config/tig/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf.git
+[submodule ".vim/bundle/vader.vim"]
+	path = .vim/bundle/vader.vim
+	url = https://github.com/junegunn/vader.vim
