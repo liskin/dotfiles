@@ -293,6 +293,8 @@ let g:ale_elixir_elixir_ls_config = {
 \ }
 let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/elixir-ls/rel"
 
+let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
+
 function! s:ale_add_linter(ale_linters, filetype, linter) abort
 	if !has_key(a:ale_linters, a:filetype)
 		let a:ale_linters[a:filetype] = []
