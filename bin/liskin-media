@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -eu
+
+export LANG=C
+
+function volume-bluetooth {
+	local method
+	[[ $1 == up ]] && method=VolumeUp || method=VolumeDown
+	dbus-send \
+		--print-reply --type=method_call \
+		--system --dest=org.bluez \
+		/org/bluez/hci0/dev_"$2" org.bluez.MediaControl1."$method" >/dev/null
+}
+
+function volume-pulseaudio {
+	local sign
+	[[ $1 == up ]] && sign="+" || sign="-"
+	pactl set-sink-volume @DEFAULT_SINK@ "$sign"5%
+}
+
+function action-volume {
+	if [[ ${1-} != @(up|down) ]]; then
+		echo 'up|down expected'
+		exit 1
+	fi
+
+	# Volume up/down via:
+	#  - bluetooth AVRCP (if avilable and default sink)
+	#  - pulseaudio (otherwise)
+	#
+	# Motivation: lowering volume in software degrades quality as the upper
+	# bits are unused.
+
+	if [[ $(pactl info) =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
+		bt_addr="${BASH_REMATCH[1]}"
+		volume-bluetooth "$1" "$bt_addr" && exit 0
+	fi
+
+	volume-pulseaudio "$1"
+}
+
+function action-mute     { pactl set-sink-mute   @DEFAULT_SINK@   toggle; }
+function action-mic-mute { pactl set-source-mute @DEFAULT_SOURCE@ toggle; }
+
+function action-play { mpc toggle; }
+function action-stop { mpc stop; }
+function action-next { mpc next; }
+function action-prev { mpc prev; }
+
+if [[ $(type -t "action-${1-}") == function ]]; then
+	"action-$1" "${@:2}"
+else
+	echo "unexpected action: ${1-}"
+fi
