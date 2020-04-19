@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s lastpipe
 
 export LANG=C
 
@@ -19,18 +20,17 @@ function volume-pulseaudio {
 	pactl set-sink-volume @DEFAULT_SINK@ "$sign"5%
 }
 
+# Volume up/down via:
+#  - bluetooth AVRCP (if avilable and default sink)
+#  - pulseaudio (otherwise)
+#
+# Motivation: lowering volume in software degrades quality as the upper
+# bits are unused.
 function action-volume {
 	if [[ ${1-} != @(up|down) ]]; then
 		echo 'up|down expected'
 		exit 1
 	fi
-
-	# Volume up/down via:
-	#  - bluetooth AVRCP (if avilable and default sink)
-	#  - pulseaudio (otherwise)
-	#
-	# Motivation: lowering volume in software degrades quality as the upper
-	# bits are unused.
 
 	if [[ $(pactl info) =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
 		bt_addr="${BASH_REMATCH[1]}"
@@ -43,10 +43,63 @@ function action-volume {
 function action-mute     { pactl set-sink-mute   @DEFAULT_SINK@   toggle; }
 function action-mic-mute { pactl set-source-mute @DEFAULT_SOURCE@ toggle; }
 
-function action-play { mpc toggle; }
-function action-stop { mpc stop; }
-function action-next { mpc next; }
-function action-prev { mpc prev; }
+# Listen for MPRIS events and remember which player we interacted with last
+function action-mpris-daemon {
+	playerctl --all-players --follow --format '{{playerName}} {{status}}' status \
+	| while read -r player status; do
+		if [[ $status == @(Paused|Playing) ]]; then
+			printf "%s\n" "$player" >"${XDG_RUNTIME_DIR}/liskin-media-last"
+		fi
+	done
+}
+
+function get-mpris-playing {
+	playerctl --all-players --format '{{playerName}} {{status}}' status \
+	| while read -r player status; do
+		if [[ $status == Playing ]]; then
+			printf "%s\n" "$player"
+			return
+		fi
+	done
+
+	return 1
+}
+
+function get-mpris-one-playing-or-paused {
+	local -a players=()
+
+	playerctl --all-players --format '{{playerName}} {{status}}' status \
+	| while read -r player status; do
+		if [[ $status == @(Paused|Playing) ]]; then
+			players+=("$player")
+		fi
+	done
+
+	if (( "$(( ${players[@]+${#players[@]}} ))" == 1 )); then
+		echo "${players[0]}"
+	else
+		return 1
+	fi
+}
+
+function get-mpris-last {
+	if [[ -f "${XDG_RUNTIME_DIR}/liskin-media-last" ]]; then
+		echo "$(< "${XDG_RUNTIME_DIR}/liskin-media-last")"
+	else
+		return 1
+	fi
+}
+
+function get-mpris-smart {
+	get-mpris-playing || get-mpris-one-playing-or-paused || get-mpris-last
+}
+
+function action-kokot { "$@"; }
+
+function action-play { p=$(get-mpris-smart); playerctl -p "$p" play-pause; }
+function action-stop { playerctl -a stop; }
+function action-next { p=$(get-mpris-playing); playerctl -p "$p" next; }
+function action-prev { p=$(get-mpris-playing); playerctl -p "$p" previous; }
 
 if [[ $(type -t "action-${1-}") == function ]]; then
 	"action-$1" "${@:2}"
