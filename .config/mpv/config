@@ -1,0 +1,27 @@
+# Write your default config options here!
+
+hwdec-codecs=all
+hwdec=vaapi
+gpu-hwdec-interop=vaapi-egl
+
+hr-seek=yes
+
+script-opts=osc-layout=box,osc-deadzonesize=0
+
+#ytdl-format=(bestvideo+bestaudio/best)[height <=? 1200][vcodec ^= avc1]/(bestvideo+bestaudio/best)[height <=? 1200]/bestvideo+bestaudio/best
+ytdl-format=((bestvideo[height <=? 1080][vcodec ^= vp9] / bestvideo[height <=? 1080][vcodec ^= avc1] / bestvideo[height <=? 1080]) + bestaudio) / best[height <=? 1080][vcodec ^= vp9] / best[height <=? 1080][vcodec ^= avc1] / best[height <=? 1080] / (bestvideo + bestaudio) / best
+
+#cache-default=1024
+#hwdec=no
+#hwdec=vaapi
+#hwdec=auto
+
+#sub-scale=0.8
+sub-font-size=40
+sub-ass-force-margins=yes
+#sub-use-margins=yes
+#sub-codepage=enca:cs:cp1250
+#profile=opengl-hq
+#profile=opengl
+#vo=xv
+#vf=pp=de
