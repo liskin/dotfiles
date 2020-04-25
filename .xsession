@@ -8,6 +8,15 @@ fi
 
 ~/bin/layout-normal
 
+function alttab {
+	# wait for xmonad to start
+	until wmctrl -m &>/dev/null && wmctrl -l &>/dev/null; do
+		sleep 0.5
+	done
+
+	exec alttab
+}
+
 xset r rate 200 25
 xset b off
 xset s 480 5
@@ -17,6 +26,7 @@ setxkbmap
 xmodmap ~/.Xmodmap
 start-pulseaudio-x11
 liskin-xss-lock &
+alttab &
 
 thinkpad-battery update-xmobar
 
