@@ -94,8 +94,6 @@ function get-mpris-smart {
 	get-mpris-playing || get-mpris-one-playing-or-paused || get-mpris-last
 }
 
-function action-kokot { "$@"; }
-
 function action-play { p=$(get-mpris-smart); playerctl -p "$p" play-pause; }
 function action-stop { playerctl -a stop; }
 function action-next { p=$(get-mpris-playing); playerctl -p "$p" next; }
