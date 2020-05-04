@@ -34,7 +34,7 @@
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
 	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
-	wdiff = -c pager.diff=pager diff --word-diff=color -w
+	wdiff = -c pager.diff='less -FRX' diff --word-diff=color -w
 	wshow = show --word-diff=color -w
 	puf = push --force-with-lease
 	dcommit = svn dcommit --rmdir --interactive
