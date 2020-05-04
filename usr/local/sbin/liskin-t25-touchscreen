@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -eu
+
+case "$1" in
+	on)
+		touch /run/t25_touchscreen_enabled
+		echo on >/sys/bus/usb/devices/1-10/power/control
+		echo 0 >/sys/bus/usb/devices/1-10/power/autosuspend
+		echo '1-10:1.0' >/sys/bus/usb/drivers/usbhid/bind
+		;;
+
+	off)
+		rm -f /run/t25_touchscreen_enabled
+		udevadm trigger -v -c add -s usb -p PRODUCT=2386/310e/0 -a bDeviceClass='*'
+		udevadm trigger -v -c add -s usb -p PRODUCT=2386/310e/0 -a bInterfaceClass='*'
+		;;
+
+	toggle)
+		if [[ -f /run/t25_touchscreen_enabled ]]; then
+			exec "$0" off
+		else
+			exec "$0" on
+		fi
+		;;
+esac
