@@ -28,7 +28,7 @@ start-pulseaudio-x11
 liskin-xss-lock &
 alttab &
 
-thinkpad-battery update-xmobar
+liskin-thinkpad-battery update-xmobar
 
 if [[ $DISPLAY == :0 ]]; then
 	pasystray --notify=all &

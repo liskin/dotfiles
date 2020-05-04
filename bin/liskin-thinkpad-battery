@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo /usr/local/sbin/thinkpad_battery.sh "$@"
+sudo /usr/local/sbin/liskin-battery "$@"
 
 thresholds="|$(< /sys/class/power_supply/BAT0/charge_start_threshold)-$(< /sys/class/power_supply/BAT0/charge_stop_threshold)|$(< /sys/class/power_supply/BAT1/charge_start_threshold)-$(< /sys/class/power_supply/BAT1/charge_stop_threshold)"
 if [[ $thresholds == "|40-80|40-80" ]]; then

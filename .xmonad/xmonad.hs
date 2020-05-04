@@ -80,12 +80,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0,         xF86XK_AudioNext       ), spawn "liskin-media next")
     , ((0,         xF86XK_AudioPrev       ), spawn "liskin-media prev")
 
-    , ((0,         xF86XK_TouchpadToggle), spawn "touchpad_toggle")
-    , ((0,         xF86XK_WebCam        ), spawn "touchscreen_toggle")
+    , ((0,         xF86XK_TouchpadToggle), spawn "liskin-touchpad-toggle")
+    , ((0,         xF86XK_WebCam        ), spawn "liskin-touchscreen-toggle")
     , ((0,         xF86XK_Display       ), spawn "layout-auto")
     , ((0,         xF86XK_Sleep         ), spawn "layout-normal")
     , ((0,         xF86XK_Tools         ), spawn "sleep 0.5; xset dpms force off")
-    , ((mod1Mask,      xK_space         ), spawn "touchpad_toggle")
+    , ((mod1Mask,      xK_space         ), spawn "liskin-touchpad-toggle")
 
     , ((modMask,               xK_Escape), kill)
     , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
