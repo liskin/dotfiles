@@ -12,9 +12,10 @@ Config { font     = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
                     , Run BatteryN ["BAT1"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","|<left>%|<watts>W","--","-O","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-i","<icon=/home/tomi/.xmonad/icons/power-ac.xbm/>","-o","<icon=/home/tomi/.xmonad/icons/power-bat.xbm/>"] 50 "battery1"
                     , Run CoreTemp ["-t","<icon=/home/tomi/.xmonad/icons/temp.xbm/><core0>C"] 50
                     , Run MultiCpu ["-H","95","--high","red","-t","<icon=/home/tomi/.xmonad/icons/cpu.xbm/>(<autovbar>)","--","--contiguous-icons"] 10
-                    , Run Com "bash" ["-c", "[[ \"$(< /proc/modules)\" == *nvidia* ]] && echo \"<fc=red>nvidia</fc>\" || :"] "nvidia" 600
+                    , Run Com "bash" ["-c", "[[ \"$(< /proc/modules)\" == *nvidia* ]] && echo \" <fc=red>nvidia</fc>\" || :"] "nvidia" 600
+                    , Run Com "bash" ["-c", "[[ \"$(/usr/local/sbin/liskin-gvt-g list)\" ]] && echo \" <fc=red>gvt</fc>\" || :"] "gvt" 600
                     ]
        , sepChar  = "%"
        , alignSep = ""
-       , template = "%XMonadLog%  %nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
+       , template = "%XMonadLog% %gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
        }
