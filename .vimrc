@@ -109,6 +109,7 @@ endif
 set nocopyindent
 set noautoindent
 set nopreserveindent
+set nojoinspaces
 set shiftwidth=4
 set smarttab
 set softtabstop=-1 " use shiftwidth
