@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+shopt -s nullglob lastpipe
+
+uuid="22cd2beb-e287-4e5f-99bc-3ab247dffb43"
+
+function list {
+	local i
+	for i in /sys/class/mdev_bus/*/mdev_supported_types/*/devices/*; do
+		echo "$i"
+	done
+}
+
+function remove {
+	local i
+	list \
+	| while read -r i; do
+		echo 1 >"$i"/remove
+	done
+}
+
+function create {
+	local i
+	for i in /sys/class/mdev_bus/*/mdev_supported_types/*; do
+		echo "$uuid" >"$i"/create
+		return
+	done
+}
+
+case "$1" in
+	create) create ;;
+	remove) remove ;;
+	list) list ;;
+	*) echo "unknown command: $1"; exit 1; ;;
+esac
