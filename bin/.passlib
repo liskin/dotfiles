@@ -1,0 +1,20 @@
+#!bash
+
+shopt -s nullglob globstar
+
+function password-files {
+	local prefix password_files
+
+	prefix=${PASSWORD_STORE_DIR-~/.password-store}
+	password_files=( "$prefix"/**/*.gpg )
+	password_files=( "${password_files[@]#"$prefix"/}" )
+	password_files=( "${password_files[@]%.gpg}" )
+
+	printf '%s\n' "${password_files[@]}" | LANG=C sort
+}
+
+function extract-field { if [[ $1 == password ]]; then extract-password; else extract-other "$1"; fi; }
+function extract-password { head -1; }
+function extract-yaml { sed -n -e '/^---$/,/^\.\.\.$/p'; }
+function extract-fields { { extract-yaml | yq -r -e 'keys[]'; echo password; } | sort -u; }
+function extract-other { extract-yaml | yq -r -e ".\"${1:?}\""; }

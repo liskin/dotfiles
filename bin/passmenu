@@ -3,22 +3,8 @@
 set -eu -o pipefail
 shopt -s nullglob globstar lastpipe
 
-function password-files {
-	local prefix password_files
-
-	prefix=${PASSWORD_STORE_DIR-~/.password-store}
-	password_files=( "$prefix"/**/*.gpg )
-	password_files=( "${password_files[@]#"$prefix"/}" )
-	password_files=( "${password_files[@]%.gpg}" )
-
-	printf '%s\n' "${password_files[@]}" | LANG=C sort
-}
-
-function extract-field { if [[ $1 == password ]]; then extract-password; else extract-other "$1"; fi; }
-function extract-password { head -1; }
-function extract-yaml { sed -n -e '/^---$/,/^\.\.\.$/p'; }
-function extract-fields { { extract-yaml | yq -r -e 'keys[]'; echo password; } | sort -u; }
-function extract-other { extract-yaml | yq -r -e ".\"${1:?}\""; }
+base="$(dirname "$(readlink -f "$0")")"
+. "$base/.passlib"
 
 history_db=${XDG_CACHE_HOME:-$HOME/.cache}/passmenu-history
 
