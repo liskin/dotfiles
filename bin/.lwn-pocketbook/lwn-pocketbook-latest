@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+base="$(dirname "$(readlink -f "$0")")"
+. "$base/.passlib"
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+o cd ~/docs/LWN
+epub=lwn-latest.epub
+o "$base/lwn-pocketbook" "$epub"
+date=$(ebook-meta "$epub" | perl -Mfeature=say -ne '/^Title *: LWN.net Weekly Edition for (.*) \[LWN\.net\]/ && say $1')
+[[ $date ]]
+date_iso=$(TZ=UTC LANG=C date -d "$date" +%F)
+[[ $date_iso ]]
+o mv -i "$epub" lwn-"$date_iso".epub
+epub=lwn-"$date_iso".epub
+o rclone copy "$epub" dropbox:'Apps/Dropbox PocketBook/LWN/'

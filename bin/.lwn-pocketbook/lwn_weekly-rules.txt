@@ -1,0 +1,20 @@
+# PocketBook doesn't know how to pick an oblique font
+action: change
+query: oblique
+property: font-style
+match_type: is
+action_data: italic
+
+# PocketBook doesn't know how to pick a monospace font
+action: change
+query: .*\bmonospace\b.*
+property: font-family
+match_type: matches
+action_data: "DejaVu Sans Mono"
+
+# Drop all other families, we're not embedding those
+action: remove
+query: "DejaVu Sans Mono"
+property: font-family
+match_type: is_not
+action_data: 

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+base="$(dirname "$(readlink -f "$0")")"
+. "$base/.passlib"
+
+out=${1:-lwn-$(date +%F).epub}
+
+pass_entry=$(pass show web/lwn.net)
+username=$(extract-field user <<<"$pass_entry")
+password=$(extract-field password <<<"$pass_entry")
+
+env \
+CALIBRE_OVERRIDE_LANG=C \
+${2+LWN_EDITION="$2"} \
+ebook-convert "$base/lwn_weekly.recipe" "$out" \
+	--output-profile=generic_eink_hd \
+	--change-justification=justify \
+	--transform-css-rules="$base/lwn_weekly-rules.txt" \
+	--search-replace="$base/lwn_weekly-searchreplace.txt" \
+	--embed-all-fonts \
+	--disable-font-rescaling \
+	--username="$username" \
+	--password="$password" \
+	${DEBUG+--debug-pipeline=dbg}
