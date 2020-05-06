@@ -1,7 +1,7 @@
 define(fixed7x13, `-misc-fixed-$1-$2-normal--13-120-75-75-c-70-iso10646-1')dnl
 define(fixed_font, fixed7x13(medium, r))dnl
 define(fixed_boldFont, fixed7x13(bold, r))dnl
-define(fixed_italicfont, fixed7x13(medium, o))dnl
+define(fixed_italicFont, fixed7x13(medium, o))dnl
 dnl
 define(fixed9x18, `-misc-fixed-$1-$2-normal--18-120-100-100-c-90-iso10646-1')dnl
 define(fixedBig_font, fixed9x18(medium, r))dnl
