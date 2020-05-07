@@ -28,9 +28,15 @@ function create {
 	done
 }
 
+function ulimit-memlock {
+	# raise memlock limit of invoking user's libvirtd to 16G
+	prlimit --pid "$(pgrep -U "${SUDO_USER:?}" libvirtd)" --memlock=$((2**34))
+}
+
 case "$1" in
-	create) create ;;
+	create) create; ulimit-memlock || : ;;
 	remove) remove ;;
 	list) list ;;
+	ulimit-memlock) ulimit-memlock ;;
 	*) echo "unknown command: $1"; exit 1; ;;
 esac
