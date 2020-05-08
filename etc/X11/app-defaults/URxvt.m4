@@ -35,6 +35,11 @@ define(default_boldFont, `fixed_boldFont,fixed_font,symbols_fonts')dnl
 define(default_italicFont, `fixed_italicFont,fixed_font,symbols_fonts')dnl
 define(default_boldItalicFont, `')dnl
 dnl
+define(big_font, `fixedBig_font,symbols_fonts')dnl
+define(big_boldFont, `fixedBig_boldFont,fixedBig_font,symbols_fonts')dnl
+define(big_italicFont, `fixedBig_italicFont,fixedBig_font,symbols_fonts')dnl
+define(big_boldItalicFont, `')dnl
+dnl
 define(scalable_font, `mono_font,symbols_fonts')dnl
 define(scalable_boldFont, `mono_boldFont,symbols_fonts')dnl
 define(scalable_italicFont, `mono_italicFont,symbols_fonts')dnl
@@ -82,12 +87,12 @@ define(set_boldFont, _set_font(711, `$1'))dnl
 define(set_italicFont, _set_font(712, `$1'))dnl
 define(set_boldItalicFont, _set_font(713, `$1'))dnl
 define(set_default_fonts, `set_font(`default_font')set_boldFont(`default_boldFont')set_italicFont(`default_italicFont')set_boldItalicFont(`default_boldItalicFont')')dnl
-define(set_fixedBig_fonts, `set_font(`fixedBig_font')set_boldFont(`fixedBig_boldFont')set_italicFont(`fixedBig_italicFont')set_boldItalicFont(`fixedBig_boldItalicFont')')dnl
+define(set_big_fonts, `set_font(`big_font')set_boldFont(`big_boldFont')set_italicFont(`big_italicFont')set_boldItalicFont(`big_boldItalicFont')')dnl
 define(set_mono_fonts, `set_font(`scalable_font')set_boldFont(`scalable_boldFont')set_italicFont(`scalable_italicFont')set_boldItalicFont(`scalable_boldItalicFont')')dnl
 define(meta_key, `M-C')dnl
 URxvt.keysym.meta_key-Home: command:set_default_fonts
 URxvt.keysym.meta_key-End: command:set_mono_fonts
-URxvt.keysym.meta_key-Insert: command:set_fixedBig_fonts
+URxvt.keysym.meta_key-Insert: command:set_big_fonts
 URxvt.keysym.meta_key-Page_Up: font-size:increase
 URxvt.keysym.meta_key-Page_Down: font-size:decrease
 URxvt.keysym.meta_key-Delete: font-size:show
