@@ -42,7 +42,7 @@ function uplfile {
 	local f x
 	for f in "$@"; do
 		x=$(basename "$f" | perl -MURI::Escape -pe 's|.*|uri_escape($&)|e')
-		echo http://store.lisk.in/tmp/"$x"
+		echo https://store.lisk.in/tmp/"$x"
 	done
 }
 
@@ -54,6 +54,6 @@ function uplfileperm {
 	local f x
 	for f in "$@"; do
 		x=$(basename "$f" | perl -MURI::Escape -pe 's|.*|uri_escape($&)|e')
-		echo http://store.lisk.in/tmp/perm/"$x"
+		echo https://store.lisk.in/tmp/perm/"$x"
 	done
 }
