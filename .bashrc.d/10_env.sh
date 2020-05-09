@@ -32,6 +32,8 @@ export SSH_ASKPASS=/usr/lib/ssh/x11-ssh-askpass
 
 export RIPGREP_CONFIG_PATH=~/.config/ripgreprc
 export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_TMUX_HEIGHT=100%
+export FZF_TMUX=0
 export BAT_STYLE=plain
 
 export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
