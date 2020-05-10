@@ -12,9 +12,7 @@ MANPATH=$(man -w)
 export MAIL=/var/mail/tomi
 
 # various hacks
-export FREETYPE_PROPERTIES="truetype:interpreter-version=35"
 export GTK_IM_MODULE=xim
-export LIBXCB_SLOPPY_LOCK=1
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export QT_QPA_PLATFORMTHEME=gtk3
 export SAL_USE_VCLPLUGIN=gtk3

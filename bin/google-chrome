@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu
+
+export FONTCONFIG_FILE=~/.config/fontconfig/browser.conf
+
+# TODO: memory cgroup
+
+exec \
+	/usr/bin/google-chrome \
+	--disable-smooth-scrolling \
+	--disk-cache-size=2000000000 \
+	--enable-easy-off-store-extension-install \
+	--ignore-gpu-blacklist \
+	"$@"

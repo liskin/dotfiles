@@ -96,7 +96,7 @@ set mouse=a
 
 if has('gui_running') " {{{2
 	hi Normal guifg=white guibg=black
-	set guifont=Fixed\ 10
+	set guifont=Fixed
 
 	" make it look like no-gui vim {{{3
 	set guioptions-=m " no menu

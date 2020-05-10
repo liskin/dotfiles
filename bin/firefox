@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eu
+
+export FONTCONFIG_FILE=~/.config/fontconfig/browser.conf
+export MOZ_USE_XINPUT2=1
+
+# TODO: memory cgroup
+
+exec /usr/bin/firefox "$@"
