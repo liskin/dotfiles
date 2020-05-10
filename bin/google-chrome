@@ -12,4 +12,5 @@ exec \
 	--disk-cache-size=2000000000 \
 	--enable-easy-off-store-extension-install \
 	--ignore-gpu-blacklist \
+	--disable-font-subpixel-positioning \
 	"$@"
