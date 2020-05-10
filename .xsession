@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# ssh-agent is setgid and drops LD_* vars, reload them
+. ~/.bashrc.d/10_env.sh
+
 if xrandr --listproviders | grep -q NVIDIA-0; then
 	xrandr --setprovideroutputsource modesetting NVIDIA-0
 	xrandr --auto

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# reload env on xmonad (re)start
+. ~/.bashrc.d/10_env.sh
+
+exec ~/.xmonad/xmonad-x86_64-linux "$@"

@@ -12,6 +12,7 @@ MANPATH=$(man -w)
 export MAIL=/var/mail/tomi
 
 # various hacks
+export LD_LIBRARY_PATH=~/src/pango-force-subpixel-positioning/_build
 export GTK_IM_MODULE=xim
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export QT_QPA_PLATFORMTHEME=gtk3
