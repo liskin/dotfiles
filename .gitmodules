@@ -86,3 +86,6 @@
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
+[submodule "src/emoji-rofi-menu"]
+	path = src/emoji-rofi-menu
+	url = https://github.com/liskin/emoji-rofi-menu

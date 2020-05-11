@@ -1,0 +1,1 @@
+../src/emoji-rofi-menu/emoji-menu.sh
