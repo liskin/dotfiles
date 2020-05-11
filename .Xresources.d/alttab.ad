@@ -1,5 +1,3 @@
-SshAskpass.grabKeyboard: false
-
 alttab.desktops: 0
 alttab.screens: 0
 alttab.backscroll.keysym: Control_L
