@@ -48,6 +48,6 @@ if [[ $DISPLAY == :0 ]]; then
 fi
 
 while :; do
-	xmonad
+	${XSESSION_WM:-xmonad}
 	sleep 1
 done
