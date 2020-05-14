@@ -89,3 +89,10 @@
 [submodule "src/emoji-rofi-menu"]
 	path = src/emoji-rofi-menu
 	url = https://github.com/liskin/emoji-rofi-menu
+[submodule "src/urxvt-scripts"]
+	path = src/urxvt-scripts
+	#url = https://github.com/pkkolos/urxvt-scripts.git
+	url = https://github.com/liskin/urxvt-scripts.git
+[submodule "src/urxvt-aAtt"]
+	path = src/urxvt-aAtt
+	url = https://github.com/Vifon/autocomplete-ALL-the-things

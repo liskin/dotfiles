@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+
+use MIME::Base64;
+use Encode;
+
+sub on_osc_seq {
+	my ($term, $op, $args) = @_;
+	return () unless $op eq 52;
+	my ($clip, $data) = split ';', $args, 2;
+	my $data_decoded = decode_base64($data);
+	$data_decoded = decode('utf8', $data_decoded);
+	$term->selection($data_decoded, $clip =~ /c/);
+	$term->selection_grab(urxvt::CurrentTime, $clip =~ /c/);
+	return ();
+}
