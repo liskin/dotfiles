@@ -5,6 +5,7 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
+{-# OPTIONS_GHC -Wall -Wno-missing-signatures -fno-warn-orphans #-}
 import XMonad hiding ((|||), modMask)
 import qualified XMonad
 import qualified XMonad.StackSet as W
@@ -46,8 +47,10 @@ import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.Simplest(Simplest(..))
 import XMonad.Layout.Spiral
 import XMonad.Layout.SubLayouts
+import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
@@ -193,11 +196,18 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
     named "full" (layoutHints $ noBorders Full)
   where
      tiled = ResizableTall 1 0.03 0.5 []
-     sub = subLayout [] Full
      dir = workspaceDir myHome
      toggles = mkToggle (single REFLECTX)
      fixl = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
      -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
+
+     sub = addTabs CustomShrink decoTheme . subLayout [] Simplest
+     decoTheme = def{
+         decoHeight = 6,
+         activeColor = "#ff0000", inactiveColor = "#dddddd", urgentColor = "#ffff00",
+         activeBorderWidth = 1, inactiveBorderWidth = 1, urgentBorderWidth = 1,
+         activeBorderColor = "#000000", inactiveBorderColor = "#000000", urgentBorderColor = "#ff0000"
+     }
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled"
@@ -208,6 +218,9 @@ laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
               , "full" ]
 
 myHome = unsafePerformIO $ getEnv "HOME"
+
+instance Shrinker CustomShrink where
+    shrinkIt _ _ = []
 
 
 -- Managehook.
