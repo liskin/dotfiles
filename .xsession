@@ -16,6 +16,19 @@ fi
 
 ~/bin/layout-normal
 
+xset r rate 200 25
+xset b off
+xset s 480 5
+xset dpms 600 600 600
+xsetroot -cursor_name left_ptr
+setxkbmap
+xmodmap ~/.Xmodmap
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1 || :
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled' 1 || :
+xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0 || :
+xinput set-prop 'TPPS/2 IBM TrackPoint' 'libinput Accel Speed' -0.3 || :
+
 function alttab {
 	# wait for xmonad to start
 	until wmctrl -m &>/dev/null && wmctrl -l &>/dev/null; do
@@ -25,17 +38,9 @@ function alttab {
 	exec alttab
 }
 
-xset r rate 200 25
-xset b off
-xset s 480 5
-xset dpms 600 600 600
-xsetroot -cursor_name left_ptr
-setxkbmap
-xmodmap ~/.Xmodmap
 start-pulseaudio-x11
 liskin-xss-lock &
 alttab &
-
 liskin-thinkpad-battery update-xmobar
 
 if [[ $DISPLAY == :0 ]]; then

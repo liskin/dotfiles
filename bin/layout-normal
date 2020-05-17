@@ -22,11 +22,6 @@ xrandr \
 	"${outputs_off[@]}"
 
 xinput map-to-output 'Raydium Corporation Raydium Touch System' "$laptop_output" || :
-xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1 || :
-xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
-xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled' 1 || :
-xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0 || :
-xinput set-prop 'TPPS/2 IBM TrackPoint' 'libinput Accel Speed' -0.3 || :
 
 # kernel/intel bug workaround, reenable dpms when undocked
 xset +dpms
