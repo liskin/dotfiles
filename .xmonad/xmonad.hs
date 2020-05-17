@@ -85,7 +85,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
     , ((0,         xF86XK_TouchpadToggle), spawn "liskin-touchpad-toggle")
     , ((0,         xF86XK_WebCam        ), spawn "liskin-touchscreen-toggle")
-    , ((0,         xF86XK_Display       ), spawn "layout-auto")
+    , ((0,         xF86XK_Display       ), spawn "layout-auto layout-vertical")
     , ((0,         xF86XK_Sleep         ), spawn "layout-normal")
     , ((0,         xF86XK_Tools         ), spawn "sleep 0.5; xset dpms force off")
     , ((mod1Mask,      xK_space         ), spawn "liskin-touchpad-toggle")
@@ -315,7 +315,7 @@ rescreenHook = do
     let compton = sequence [ spawnPID "exec compton" ]
     killPids "_XMONAD_XMOBARS"
     savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
-    spawn "exec fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00"
+    spawn "exec ~/bin/.xlayout/post.sh"
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do

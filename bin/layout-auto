@@ -2,34 +2,14 @@
 
 set -eu
 
-export LANG=C
+base="$(dirname "$(readlink -f "$0")")"
+. "$base/.xlayoutlib"
 
-function hash_outputs {
-	for out in /sys/class/drm/card0-*; do
-		read -r status <"$out"/status
-		if [ "$status" = "connected" ]; then
-			echo "$out"
-			xxd -p "$out"/edid
-		fi
-	done
-}
-
-HASH=$(hash_outputs | md5sum -b | awk '{ print $1 }')
-
-PROFILE=
-case "$HASH" in
-	e694b01c8af00f940bf52c65215220c0) PROFILE=work2-dock ;;
-	db75f6586279bdf1faf402f2ece5c93c) PROFILE=work2-dock ;;
-	285be418d98aec0e4e2ff27a9e4e74c6) PROFILE=work1-hdmi ;;
-	f075715f6c12906b65977f44401fc2b2) PROFILE=home-uk-hdmi ;;
-	1d2920f5381b0ab0b75e8b0792a474f3) PROFILE=home-uk-dock ;;
-	f8a091b5d71786dea15e4a9f5845aaff) PROFILE=home-cz-hdmi ;;
-
-	da0f1d50b085f3c99f5e09a41c5d8571) PROFILE=normal ;;
-esac
-
-if [ -n "$PROFILE" ]; then
-    layout-$PROFILE
+fingerprint=$(fingerprint-outputs)
+if [[ -f "$base/.xlayout/$fingerprint" ]]; then
+	"$base/.xlayout/$fingerprint"
+elif [[ "${1-}" ]]; then
+	"$1"
 else
-	echo "unknown layout: $HASH"
+	echo "unknown layout: $fingerprint"
 fi

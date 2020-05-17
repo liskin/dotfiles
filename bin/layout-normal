@@ -1,27 +1,5 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s lastpipe
 
-xrandr --current \
-| grep -P -o '^(\S+)(?= (dis)?connected)' \
-| readarray -t outputs
-
-laptop_output=
-outputs_off=()
-for o in "${outputs[@]}"; do
-	if [[ $o == eDP-* ]]; then
-		laptop_output="$o"
-	fi
-	outputs_off+=(--output "$o" --off)
-done
-: "${laptop_output:?}"
-
-xrandr \
-	--output "$laptop_output" --mode 1920x1080 --pos 0x0 --panning 0x0 --dpi 96 --gamma 1.15:1.15:1.15 --primary \
-	"${outputs_off[@]}"
-
-xinput map-to-output 'Raydium Corporation Raydium Touch System' "$laptop_output" || :
-
-# kernel/intel bug workaround, reenable dpms when undocked
-xset +dpms
+xrandr-smart --output 'eDP-*' --auto --pos 0x0 --panning 0x0 --dpi 96 --gamma 1.15:1.15:1.15 --primary
