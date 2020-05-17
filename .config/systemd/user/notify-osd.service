@@ -3,6 +3,7 @@ Description=notify-osd
 StartLimitIntervalSec=0
 
 [Service]
+BusName=org.freedesktop.Notifications
 ExecStart=/usr/lib/notify-osd/notify-osd
 ExecStartPre=/bin/sh -c "/usr/bin/xset q >/dev/null 2>&1"
 Restart=always

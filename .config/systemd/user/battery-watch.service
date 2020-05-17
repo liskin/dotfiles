@@ -1,6 +1,8 @@
 [Unit]
 Description=battery-watch
 StartLimitIntervalSec=0
+Wants=notify-osd.service
+After=notify-osd.service
 
 [Service]
 ExecStart=%h/bin/battery-watch
