@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-xrandr-smart --output 'DP-*' --mode 1920x1080 --pos 0x0 --dpi 96 --primary

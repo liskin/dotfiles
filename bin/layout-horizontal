@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eu
+
+xrandr-smart \
+	--output 'eDP-*' --auto --dpi 96 --primary \
+	--output '!(eDP-*)' --auto --right-of 'eDP-*' --dpi 96

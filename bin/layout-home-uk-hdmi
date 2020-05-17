@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-xrandr-smart \
-	--output 'HDMI-*' --mode 1920x1080 --pos 0x0 --dpi 96 \
-	--output 'eDP-*' --mode 1920x1080 --pos 0x1080 --dpi 96 --primary
