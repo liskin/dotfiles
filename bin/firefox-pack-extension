@@ -11,7 +11,7 @@ fi
 firefox_extensions=( ~/.mozilla/firefox/*.default/extensions )
 if [[ ! "${firefox_extensions[0]}" ]]; then
 	echo 'no firefox extensions directory'
-	echo 1
+	exit 1
 fi
 
 git ls-tree -r --name-only HEAD | zip "${firefox_extensions[0]}"/"$id".xpi -@
