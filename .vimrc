@@ -94,21 +94,6 @@ set ttyfast
 
 set mouse=a
 
-" workaround for SIGWINCH race {{{3
-let s:start_lines = &lines
-let s:start_columns = &columns
-
-function! s:resettermsize()
-	if s:start_lines != &lines || s:start_columns != &columns
-		silent !true
-		redraw!
-	endif
-endfunction
-
-augroup ResetTermSize
-	autocmd VimEnter * call timer_start(0, {... -> s:resettermsize()})
-augroup END
-
 if has('gui_running') " {{{2
 	hi Normal guifg=white guibg=black
 	set guifont=Fixed

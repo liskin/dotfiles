@@ -1,8 +1,3 @@
 #!/usr/bin/env bash
 
-set -eu
-
-[[ -t 0 ]] || exec x-terminal-emulator -e "$0" "$@"
-
-cd
-exec vim NOTES.otl
+exec tvim NOTES.otl

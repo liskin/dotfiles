@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu
+
+[[ -t 0 ]] || WAIT_FOR_WM=: exec x-terminal-emulator -e "$0" "$@"
+
+if [[ ${WAIT_FOR_WM-} ]]; then
+	unset WAIT_FOR_WM
+
+	# wait for the terminal window to be resized and mapped by the window manager
+	# (vim can't handle SIGWINCH during startup)
+	timeout 5s xdotool search --pid "$PPID" --onlyvisible --sync >/dev/null || :
+fi
+
+exec vim "$@"

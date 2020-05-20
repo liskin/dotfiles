@@ -1,2 +1,2 @@
 au BufWinLeave ~/NOTES.otl mkview
-au BufWinEnter ~/NOTES.otl call timer_start(0, {... -> execute('silent! loadview')})
+au BufWinEnter ~/NOTES.otl silent loadview
