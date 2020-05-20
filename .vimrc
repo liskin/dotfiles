@@ -183,6 +183,7 @@ set sessionoptions-=options
 set spelllang=en
 set splitbelow
 set splitright
+set viewoptions-=options
 
 " plugins {{{1
 
