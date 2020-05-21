@@ -17,5 +17,6 @@ function! s:paste_toggled(new, old) abort
 endfunc
 
 augroup FastPaste
+	autocmd!
 	autocmd OptionSet paste call s:paste_toggled(v:option_new, v:option_old)
 augroup END

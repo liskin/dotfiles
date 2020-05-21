@@ -31,6 +31,7 @@ command! LoadProjectRC call s:load_projectrc()
 command! EditProjectRC call s:edit_projectrc()
 
 augroup ProjectRC
+	autocmd!
 	autocmd BufNewFile,BufRead ~/.vim/projectrc/* setf vim
 augroup END
 

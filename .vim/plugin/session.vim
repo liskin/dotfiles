@@ -56,7 +56,7 @@ command! NewSession call s:new_session()
 command! RmSession call s:rm_session()
 
 augroup MySession
-	au!
+	autocmd!
 	autocmd VimLeave * call s:save_session()
 	autocmd CursorHold * call s:auto_save_session()
 augroup END
