@@ -301,7 +301,10 @@ function! s:ale_add_linter(ale_linters, filetype, linter) abort
 	if !has_key(a:ale_linters, a:filetype)
 		let a:ale_linters[a:filetype] = []
 	endif
-	call add(a:ale_linters[a:filetype], a:linter)
+
+	if index(a:ale_linters[a:filetype], a:linter) == -1
+		call add(a:ale_linters[a:filetype], a:linter)
+	endif
 endfunction
 
 function! s:ale_enable_linter(filetype, linter) abort
