@@ -15,11 +15,14 @@ function! s:projectrc_filenames() abort
 endfunc
 
 function! s:load_projectrc() abort
-	for projectrc in reverse(s:projectrc_filenames())
-		if file_readable(projectrc)
-			execute "source" fnameescape(projectrc)
-		endif
-	endfor
+	augroup ProjectRCLocal
+		autocmd!
+		for projectrc in reverse(s:projectrc_filenames())
+			if file_readable(projectrc)
+				execute "source" fnameescape(projectrc)
+			endif
+		endfor
+	augroup END
 endfunc
 
 function! s:edit_projectrc() abort
