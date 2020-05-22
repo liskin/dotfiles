@@ -6,3 +6,5 @@ xrandr \
 	--output DP-2-2-8 --mode 2560x1440 --pos 0x0 --dpi 96 \
 	--output DP-2-1 --mode 1920x1080 --pos 2560x360 --dpi 96 \
 	--output eDP-1 --mode 1920x1080 --pos 1400x1440 --dpi 96 --primary
+
+xset -dpms

@@ -5,3 +5,5 @@ set -eu
 xrandr-smart \
 	--output 'eDP-*' --auto --dpi 96 --primary \
 	--output '!(eDP-*)' --auto --same-as 'eDP-*' --dpi 96
+
+xset -dpms
