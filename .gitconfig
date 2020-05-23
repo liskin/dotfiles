@@ -81,3 +81,7 @@
 	prune = true
 [includeIf "gitdir:~/work/altworx/"]
 	path = ~/work/altworx/.gitconfig
+[protocol]
+	# https://github.com/git/git/commit/11c7f2a30b9dadcccc7bde66a34e0cb0cb5cf52c
+	# https://public-inbox.org/git/20200422084254.GA27502@furthur.local/
+	version = 0
