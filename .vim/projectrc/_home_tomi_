@@ -1,2 +1,5 @@
 au BufWinLeave ~/NOTES.otl mkview
 au BufWinEnter ~/NOTES.otl silent loadview
+
+au BufWinLeave ~/TODO.md mkview
+au BufWinEnter ~/TODO.md silent loadview
