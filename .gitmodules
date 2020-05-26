@@ -96,3 +96,6 @@
 [submodule "src/urxvt-aAtt"]
 	path = src/urxvt-aAtt
 	url = https://github.com/Vifon/autocomplete-ALL-the-things
+[submodule ".vim/bundle/ghost-text.vim"]
+	path = .vim/bundle/ghost-text.vim
+	url = https://github.com/pandysong/ghost-text.vim
