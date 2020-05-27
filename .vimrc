@@ -186,6 +186,7 @@ let g:netrw_http_cmd  = "curl"
 let g:netrw_http_xcmd = "-LSsf -o"
 let g:puppet_align_hashes = 0
 let g:scala_scaladoc_indent = 1
+let g:speeddating_no_mappings = 1
 let g:tex_comment_nospell = 1
 
 " tagbar {{{2
@@ -454,8 +455,14 @@ nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
 
-nmap <silent> <C-W>S :CloneBufTmp<CR>
+nmap  <C-U> <Plug>SpeedDatingUp
+nmap  <C-Y> <Plug>SpeedDatingDown
+xmap  <C-U> <Plug>SpeedDatingUp
+xmap  <C-Y> <Plug>SpeedDatingDown
+nmap d<C-U> <Plug>SpeedDatingNowUTC
+nmap d<C-Y> <Plug>SpeedDatingNowLocal
 
+nmap <silent> <C-W>S :CloneBufTmp<CR>
 nmap <silent> <C-W>C :tabclose<CR>
 
 " prevent x from overriding what's in the clipboard. {{{2
