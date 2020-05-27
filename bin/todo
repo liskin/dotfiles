@@ -1,3 +1,2 @@
-#!/usr/bin/env bash
-
-exec needsterminal vim TODO.md
+#!/bin/sh
+exec vim TODO.md

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+unset needsterminal
+case "$1" in
+	vim) needsterminal=: ;;
+	vit) needsterminal=: ;;
+	todo|notes) needsterminal=: ;;
+esac
+
+exec ${needsterminal+needsterminal} "$@"

@@ -1,3 +1,2 @@
-#!/usr/bin/env bash
-
-exec needsterminal vim NOTES.otl
+#!/bin/sh
+exec vim NOTES.otl
