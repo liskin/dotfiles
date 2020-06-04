@@ -102,3 +102,10 @@
 [submodule ".vim/bundle/vim-speeddating"]
 	path = .vim/bundle/vim-speeddating
 	url = https://github.com/tpope/vim-speeddating
+[submodule ".vim/bundle/vimwiki"]
+	path = .vim/bundle/vimwiki
+	url = https://github.com/vimwiki/vimwiki/
+[submodule ".vim/bundle/taskwiki"]
+	path = .vim/bundle/taskwiki
+	#url = https://github.com/tbabej/taskwiki
+	url = https://github.com/liskin/taskwiki

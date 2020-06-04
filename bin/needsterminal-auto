@@ -4,7 +4,7 @@ set -eu
 
 unset needsterminal
 case "$1" in
-	vim) needsterminal=: ;;
+	vim|wiki) needsterminal=: ;;
 	vit) needsterminal=: ;;
 	todo|notes) needsterminal=: ;;
 esac

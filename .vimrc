@@ -338,6 +338,12 @@ let g:fzf_colors = {
 	\ 'header':  ['fg', 'Comment']
 \ }
 
+" vimwiki {{{2
+let g:vimwiki_global_ext = 0
+let g:vimwiki_folding = 'syntax'
+let g:taskwiki_disable_concealcursor = 1
+let g:taskwiki_sort_order = 'status+,end+,due+,priority-'
+
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
 call pathogen#infect()
@@ -389,6 +395,7 @@ autocmd FileType tex,lhaskell syn region texZone start="\\begin{[a-z]\+code}" en
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{alltt}" end="\\end{alltt}\|%stopzone\>"
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{minted}" end="\\end{minted}\|%stopzone\>"
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{ndoc}" end="\\end{ndoc}\|%stopzone\>"
+autocmd FileType vimwiki setlocal et
 autocmd FileType xhtml setlocal indentkeys&
 autocmd FileType xml setlocal indentkeys&
 autocmd BufNewFile,BufRead *.dve setlocal cin

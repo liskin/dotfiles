@@ -1,0 +1,28 @@
+weekstart=monday
+
+urgency.inherit=1
+urgency.blocking.coefficient=0.0
+urgency.tags.coefficient=0.0
+urgency.user.tag.later.coefficient=-10.0
+
+include /usr/share/taskwarrior/dark-256.theme
+color.blocking=
+color.tagged=
+color.tag.next=rgb454
+color.active=on rgb210
+color.due=on rgb100
+color.due.today=on rgb300
+color.overdue=on rgb400
+color.uda.priority.H=
+color.uda.priority.M=
+color.uda.priority.L=
+
+context.today=(scheduled<tomorrow or due<tomorrow or +next or +ACTIVE) and (-COMPLETED or end>=today)
+context.tomorrow=(scheduled>=tomorrow and scheduled<tomorrow+1d) or (due>=tomorrow and due<tomorrow+1d)
+
+uda.reviewed.type=date
+uda.reviewed.label=Reviewed
+report._reviewed.description=Tasksh review report.  Adjust the filter to your needs.
+report._reviewed.columns=uuid
+report._reviewed.sort=reviewed+,modified+
+report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
