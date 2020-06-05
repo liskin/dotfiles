@@ -339,10 +339,11 @@ let g:fzf_colors = {
 \ }
 
 " vimwiki {{{2
-let g:vimwiki_global_ext = 0
-let g:vimwiki_folding = 'syntax'
 let g:taskwiki_disable_concealcursor = 1
 let g:taskwiki_sort_order = 'status+,end+,due+,priority-'
+let g:vimwiki_auto_chdir = 1
+let g:vimwiki_folding = 'syntax'
+let g:vimwiki_global_ext = 0
 
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
