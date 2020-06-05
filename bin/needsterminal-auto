@@ -3,12 +3,11 @@
 set -eu
 shopt -s extglob
 
-unset needsterminal
 case "$1" in
-	vim|wiki) needsterminal=: ;;
-	todo|notes) needsterminal=: ;;
-	m|m-*|mutt|mutt-*) needsterminal=: ;;
-	nomi|nomi-*) needsterminal=: ;;
+	vim|wiki) set -- needsterminal "$@" ;;
+	todo|notes) set -- needsterminal "$@" ;;
+	m|m-*|mutt|mutt-*) set -- needsterminal "$@" ;;
+	nomi|nomi-*) set -- needsterminal "$@" ;;
 esac
 
-exec ${needsterminal+needsterminal} "$@"
+exec "$@"
