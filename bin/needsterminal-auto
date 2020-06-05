@@ -5,7 +5,6 @@ shopt -s extglob
 
 case "$1" in
 	vim|wiki) set -- needsterminal "$@" ;;
-	todo|notes) set -- needsterminal "$@" ;;
 	m|m-*|mutt|mutt-*) set -- needsterminal "$@" ;;
 	nomi|nomi-*) set -- needsterminal "$@" ;;
 esac
