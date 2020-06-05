@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s extglob
 
 unset needsterminal
 case "$1" in
 	vim|wiki) needsterminal=: ;;
-	vit) needsterminal=: ;;
 	todo|notes) needsterminal=: ;;
+	m|m-*|mutt|mutt-*) needsterminal=: ;;
+	nomi|nomi-*) needsterminal=: ;;
 esac
 
 exec ${needsterminal+needsterminal} "$@"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s nullglob
+
+# detect and break recursion
+[[ ${__EXEC_ALIAS-} ]] && exit 1; export __EXEC_ALIAS=:
+
+__bashrc_aliases=(~/.bashrc.d/5*_aliases*.sh)
+
+exec bash -O expand_aliases -c "$(printf "%s\n" \
+	"${__bashrc_aliases[@]/#/. }" \
+	"$(printf "%q " "$(basename "$0")" "$@")" \
+)"
