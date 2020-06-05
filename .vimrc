@@ -374,7 +374,7 @@ autocmd FileType cabal setlocal tw=78 et
 autocmd FileType cpp setlocal tw=78 path=.,/usr/include,,
 autocmd FileType dot setlocal ai
 autocmd FileType erlang setlocal formatoptions-=t formatoptions+=crql suffixesadd+=.erl path+=**
-autocmd FileType gitcommit setlocal tw=72
+autocmd FileType gitcommit setlocal tw=72 et fo=tcq spell spelllang=en
 autocmd FileType happy setlocal tw=78 et
 autocmd FileType haskell setlocal tw=78 et
 autocmd FileType html setlocal indentkeys&
@@ -395,19 +395,12 @@ autocmd FileType tex,lhaskell syn region texZone start="\\begin{[a-z]\+code}" en
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{alltt}" end="\\end{alltt}\|%stopzone\>"
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{minted}" end="\\end{minted}\|%stopzone\>"
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{ndoc}" end="\\end{ndoc}\|%stopzone\>"
+autocmd FileType text setlocal tw=78 ai
 autocmd FileType vimwiki setlocal et
 autocmd FileType xhtml setlocal indentkeys&
 autocmd FileType xml setlocal indentkeys&
-autocmd BufNewFile,BufRead *.dve setlocal cin
 autocmd BufNewFile,BufRead *.hsc setlocal ft=haskell
-autocmd BufNewFile,BufRead *.mdve setlocal cin
-autocmd BufNewFile,BufRead *.txt setlocal tw=78 ai
-autocmd BufNewFile,BufRead CMakeLists.txt setlocal tw=0
-autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal fo=tcq et spell spelllang=en
-autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal ft=gitcommit fo=tcq et spell spelllang=en
-autocmd BufNewFile,BufRead darcs-record* setf svn
-autocmd BufNewFile,BufRead neomutt-*-\w\+ setf mail
-autocmd BufNewFile,BufRead svn-commit.tmp setf svn
+autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal ft=gitcommit
 autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile et | let b:ale_enabled = 0
 autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 
