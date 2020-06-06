@@ -36,5 +36,5 @@ alias mutt-news-kernel='mutt -g nntp.lore.kernel.org'
 #alias mutt-lkml='mutt -f news://nntp.lore.kernel.org/org.kernel.vger.linux-kernel'
 export-aliases mutt-altworx mutt-news-gmane mutt-news-kernel
 
-alias wiki="vim ~/vimwiki/index.wiki"
+alias wiki="vim ~/taskwiki/index.wiki"
 export-aliases wiki

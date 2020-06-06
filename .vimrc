@@ -347,6 +347,8 @@ let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [{}]
 let g:vimwiki_list[0].auto_tags = 1
 let g:vimwiki_list[0].links_space_char = '-'
+let g:vimwiki_list[0].name = 'taskwiki'
+let g:vimwiki_list[0].path = '~/taskwiki'
 
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
