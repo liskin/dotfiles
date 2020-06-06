@@ -17,8 +17,9 @@ color.uda.priority.H=
 color.uda.priority.M=
 color.uda.priority.L=
 
-context.today=(scheduled<tomorrow or due<tomorrow or +next or +ACTIVE) and (-COMPLETED or end>=today)
-context.tomorrow=(scheduled>=tomorrow and scheduled<tomorrow+1d) or (due>=tomorrow and due<tomorrow+1d)
+context.today=(((scheduled<tomorrow or due<tomorrow or +next or +ACTIVE) and -COMPLETED) or end>=today)
+context.tomorrow=((scheduled>=tomorrow and scheduled<tomorrow+1d) or (due>=tomorrow and due<tomorrow+1d))
+context.todo+recent=(-COMPLETED or end>=yesterday)
 
 uda.reviewed.type=date
 uda.reviewed.label=Reviewed
