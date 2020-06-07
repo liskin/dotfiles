@@ -413,49 +413,49 @@ autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 
 " key maps {{{1
 
-nmap <silent> <F2> :w!<CR>
-imap <silent> <F2> <C-O>:w!<CR>
+nnoremap <silent> <F2> :w!<CR>
+inoremap <silent> <F2> <C-O>:w!<CR>
 
-nmap <silent> <F3> :IndentGuidesToggle<CR>
-imap <silent> <F3> <C-O>:IndentGuidesToggle<CR>
+nnoremap <silent> <F3> :IndentGuidesToggle<CR>
+inoremap <silent> <F3> <C-O>:IndentGuidesToggle<CR>
 
-nmap <silent> <F4> :cprevious<CR>
-imap <silent> <F4> <C-O>:cprevious<CR>
-nmap <silent> <F5> :cnext<CR>
-imap <silent> <F5> <C-O>:cnext<CR>
+nnoremap <silent> <F4> :cprevious<CR>
+inoremap <silent> <F4> <C-O>:cprevious<CR>
+nnoremap <silent> <F5> :cnext<CR>
+inoremap <silent> <F5> <C-O>:cnext<CR>
 
-nmap <silent> <F6> :lprevious<CR>
-imap <silent> <F6> <C-O>:lprevious<CR>
-nmap <silent> <F7> :lnext<CR>
-imap <silent> <F7> <C-O>:lnext<CR>
+nnoremap <silent> <F6> :lprevious<CR>
+inoremap <silent> <F6> <C-O>:lprevious<CR>
+nnoremap <silent> <F7> :lnext<CR>
+inoremap <silent> <F7> <C-O>:lnext<CR>
 
-nmap <silent> <F8> :TagbarToggle<CR>
-imap <silent> <F8> <C-O>:TagbarToggle<CR>
+nnoremap <silent> <F8> :TagbarToggle<CR>
+inoremap <silent> <F8> <C-O>:TagbarToggle<CR>
 
-" nmap <silent> <F8> :Vista!!<CR>
-" imap <silent> <F8> <C-O>:Vista!!<CR>
+" nnoremap <silent> <F8> :Vista!!<CR>
+" inoremap <silent> <F8> <C-O>:Vista!!<CR>
 
-" nmap <silent> <F9> :Vista ale<CR>
-" imap <silent> <F9> <C-O>:Vista ale<CR>
+" nnoremap <silent> <F9> :Vista ale<CR>
+" inoremap <silent> <F9> <C-O>:Vista ale<CR>
 
 if has('gui_running')
-	nmap <silent> <F10> :ToggleMenu<CR>
-	imap <silent> <F10> <C-O>:ToggleMenu<CR>
+	nnoremap <silent> <F10> :ToggleMenu<CR>
+	inoremap <silent> <F10> <C-O>:ToggleMenu<CR>
 	command ToggleMenu if &go=~'m'|set go-=m|else|set go+=m|endif
 endif
 
-nmap <silent> <F11> :NERDTreeToggle<CR>
-imap <silent> <F11> <C-O>:NERDTreeToggle<CR>
+nnoremap <silent> <F11> :NERDTreeToggle<CR>
+inoremap <silent> <F11> <C-O>:NERDTreeToggle<CR>
 
-nmap <silent> <F12> :GitGutterToggle<CR>
-imap <silent> <F12> <C-O>:GitGutterToggle<CR>
+nnoremap <silent> <F12> :GitGutterToggle<CR>
+inoremap <silent> <F12> <C-O>:GitGutterToggle<CR>
 
-nmap <silent> <C-P> :FzfFiles<CR>
-nmap <silent> <C-B> :FzfBuffers<CR>
-nmap <silent> <C-G> :FzfTags<CR>
-nmap <silent> <C-T> :FzfBTags<CR>
-nmap <silent> <C-X> :FzfCommands<CR>
-nmap <C-J> :FzfRg<space>
+nnoremap <silent> <C-P> :FzfFiles<CR>
+nnoremap <silent> <C-B> :FzfBuffers<CR>
+nnoremap <silent> <C-G> :FzfTags<CR>
+nnoremap <silent> <C-T> :FzfBTags<CR>
+nnoremap <silent> <C-X> :FzfCommands<CR>
+nnoremap <C-J> :FzfRg<space>
 
 nmap <C-]> <Plug>(ale_tags_fallback_go_to_definition)
 nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
@@ -469,8 +469,8 @@ xmap  <C-Y> <Plug>SpeedDatingDown
 nmap d<C-U> <Plug>SpeedDatingNowUTC
 nmap d<C-Y> <Plug>SpeedDatingNowLocal
 
-nmap <silent> <C-W>S :CloneBufTmp<CR>
-nmap <silent> <C-W>C :tabclose<CR>
+nnoremap <silent> <C-W>S :CloneBufTmp<CR>
+nnoremap <silent> <C-W>C :tabclose<CR>
 
 " prevent x from overriding what's in the clipboard. {{{2
 noremap x "_x
