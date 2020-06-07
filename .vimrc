@@ -342,6 +342,7 @@ let g:fzf_colors = {
 let g:taskwiki_disable_concealcursor = 1
 let g:taskwiki_sort_order = 'status+,end+,due+,priority-'
 let g:vimwiki_auto_chdir = 1
+let g:vimwiki_autowriteall = 0
 let g:vimwiki_folding = 'custom' " let taskwiki configure folding
 let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [{}]
