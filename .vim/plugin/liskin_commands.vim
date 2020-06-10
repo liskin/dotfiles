@@ -30,8 +30,8 @@ command! CloneBufTmp call s:clone_buf_tmp()
 
 function! s:delete_hidden_buffers()
 	let tpbl=[]
-	call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
-	for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+	call map(range(1, tabpagenr('$')), {_, t -> extend(tpbl, tabpagebuflist(t))})
+	for buf in filter(range(1, bufnr('$')), {_, b -> bufexists(b) && index(tpbl, b)==-1})
 		silent execute 'bwipeout' buf
 	endfor
 endfunction
@@ -47,7 +47,7 @@ function! s:SynInfo()
 endfunction
 
 function! s:SynStack()
-	echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+	echo map(synstack(line('.'), col('.')), {_, s -> synIDattr(s, "name")})
 endfunction
 
 command! SynInfo call s:SynInfo()
