@@ -23,6 +23,10 @@ context.today=(((scheduled<tomorrow or due<tomorrow or +next or +ACTIVE) and -CO
 context.tomorrow=((scheduled>=tomorrow and scheduled<tomorrow+1d) or (due>=tomorrow and due<tomorrow+1d))
 context.todo+recent=(-COMPLETED or end>=yesterday)
 
+context.done_yesterday=(end>=yesterday and end<today)
+context.done_this_week=(end>=socw and end<=eocw)
+context.done_last_week=(end>=socw-1w and end<=eocw-1w)
+
 uda.reviewed.type=date
 uda.reviewed.label=Reviewed
 report._reviewed.description=Tasksh review report.  Adjust the filter to your needs.
