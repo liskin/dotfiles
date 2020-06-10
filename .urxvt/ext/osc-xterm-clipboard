@@ -1,21 +1,25 @@
 #!/usr/bin/perl
 
+use Digest::SHA qw( sha256_hex );
 use Encode;
 use MIME::Base64;
-use Regexp::Common qw /URI/;
+use Regexp::Common qw( URI );
 
 sub on_osc_seq {
 	my ($term, $op, $args) = @_;
 	return () unless $op eq 52;
 
-	my ($clip, $data) = split ';', $args, 2;
+	my ($clip, $data) = split(';', $args, 2);
 	$data = decode('utf8', decode_base64($data));
 
-	$term->selection($data, $clip =~ /c/);
-	$term->selection_grab(urxvt::CurrentTime, $clip =~ /c/);
-
-	if ($data =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}$}) {
-		system("sensible-browser", $data);
+	my ($secret, $uri) = split(' ', $data, 2);
+	if (length $secret and length $uri
+			and sha256_hex($secret) eq '16b13054a650e0357f048a8bcff001f3a39955f4fdec032659a1031f95198367'
+			and $uri =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}$}) {
+		system("sensible-browser", $uri);
+	} else {
+		$term->selection($data, $clip =~ /c/);
+		$term->selection_grab(urxvt::CurrentTime, $clip =~ /c/);
 	}
 
 	return ();
