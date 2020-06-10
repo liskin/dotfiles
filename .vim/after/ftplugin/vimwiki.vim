@@ -1,8 +1,20 @@
 if exists("b:did_ftplugin_taskwiki_after") | finish | endif
 let b:did_ftplugin_taskwiki_after = 1
 
-nnoremap <silent><buffer> <C-]> :VimwikiFollowLink<CR>
-nnoremap <silent><buffer> <C-W><C-]> :VimwikiSplitLink<CR>
+function! s:follow_link(split)
+	let syn_stack = map(synstack(line('.'), col('.')), {_, s -> synIDattr(s, "name")})
+	let inside_link = index(syn_stack, 'VimwikiLink') != -1
+	if inside_link
+		execute a:split ? "VimwikiSplitLink" : "VimwikiFollowLink"
+	else
+		execute "py3 Mappings.task_info_or_vimwiki_follow_link(split=" . (a:split ? "True" : "False") . ")"
+	endif
+endfunction
+
+nnoremap <silent><buffer> <CR> :call <SID>follow_link(0)<CR>
+nnoremap <silent><buffer> <C-W><CR> :call <SID>follow_link(1)<CR>
+nnoremap <silent><buffer> <C-]> :call <SID>follow_link(0)<CR>
+nnoremap <silent><buffer> <C-W><C-]> :call <SID>follow_link(1)<CR>
 
 function! s:refresh() abort
 	let data_location = py3eval("cache().get_relevant_tw().config.get('data.location')")
