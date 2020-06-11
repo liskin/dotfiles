@@ -4,6 +4,7 @@ use Digest::SHA qw( sha256_hex );
 use Encode;
 use MIME::Base64;
 use Regexp::Common qw( URI );
+use Regexp::Common::URI::RFC2396 qw( $fragment );
 
 sub on_osc_seq {
 	my ($term, $op, $args) = @_;
@@ -15,7 +16,7 @@ sub on_osc_seq {
 	my ($secret, $uri) = split(' ', $data, 2);
 	if (length $secret and length $uri
 			and sha256_hex($secret) eq '16b13054a650e0357f048a8bcff001f3a39955f4fdec032659a1031f95198367'
-			and $uri =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}$}) {
+			and $uri =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}(?:#$fragment)?$}) {
 		system("sensible-browser", $uri);
 	} else {
 		$term->selection($data, $clip =~ /c/);
