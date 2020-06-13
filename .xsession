@@ -44,10 +44,9 @@ alttab &
 liskin-thinkpad-battery update-xmobar
 
 if [[ $DISPLAY == :0 ]]; then
-	systemctl --user --no-block start redshift.service notify-osd.service battery-watch.service
+	systemctl --user --no-block start redshift.service notify-osd.service battery-watch.service blueman-applet.service
 	pasystray --notify=all &
 	nm-applet &
-	blueman-applet &
 	/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 	firewall-applet &
 	caffeine-indicator &
