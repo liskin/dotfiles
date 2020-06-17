@@ -50,7 +50,7 @@ export DEBFULLNAME="Tomas Janousek"
 export DEBEMAIL="tomi@nomi.cz"
 
 if [ -n "$_LISKIN_NVIDIA_ENV" ]; then
-	export VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/nvidia_icd.json"
+	export VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/nv_vulkan_wrapper.json"
 	unset __EGL_VENDOR_LIBRARY_FILENAMES
 else
 	export __EGL_VENDOR_LIBRARY_FILENAMES="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
