@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eu
+
+export WINEPREFIX=~/.local/share/wineprefixes/digitaleditions WINEARCH=win32
+
+# workaround for invisible window
+for conf in "${WINEPREFIX}/drive_c/users/tomi/Local Settings/Application Data/Adobe_Systems_Incorporate/DigitalEditions.exe"_*/*/user.config; do
+	xmlstarlet ed --inplace -d '/configuration/userSettings/DE.Properties.Settings/setting[@name="MainWindowLocation"]' "$conf"
+done
+
+cd "${WINEPREFIX}/drive_c/Program Files/Adobe/Adobe Digital Editions 4.5"
+wine DigitalEditions.exe
