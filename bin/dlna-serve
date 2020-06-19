@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Simple DLNA server (from current directory) and player using anacrolix-dms and gupnp-tools
+
+set -eu -o pipefail
+
+interface="${1:-wlan1}"
+addr=$(ip -json ad show dev "$interface" | jq -r '.[] | .addr_info[] | select(.family == "inet") | .local')
+[[ $addr ]]
+
+dms -http "$addr":12161 -ifname "$interface" -path "$(pwd)" &
+gupnp-av-cp --port=12162 --interface="$interface" &
+
+trap 'pkill -P $$' EXIT
+wait -n || :
