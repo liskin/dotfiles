@@ -3,8 +3,10 @@ data.location=~/taskwiki/.task
 weekstart=monday
 
 urgency.inherit=1
+urgency.active.coefficient=10.0
 urgency.blocking.coefficient=0.0
 urgency.tags.coefficient=0.0
+urgency.user.tag.soon.coefficient=5.0
 urgency.user.tag.later.coefficient=-10.0
 
 include /usr/share/taskwarrior/dark-256.theme
@@ -21,6 +23,7 @@ color.uda.priority.L=
 
 context.today=(((scheduled<tomorrow or due<tomorrow or +next or +ACTIVE) and -COMPLETED) or end>=today)
 context.tomorrow=(((scheduled>=tomorrow and scheduled<tomorrow+1d) or (due>=tomorrow and due<tomorrow+1d)) and -COMPLETED)
+context.soon=(((scheduled>=tomorrow+1d and scheduled<tomorrow+7d) or (due>=tomorrow+1d and due<tomorrow+7d) or +soon) and -COMPLETED)
 context.todo+recent=(-COMPLETED or end>=yesterday)
 
 context.done_yesterday=(end>=yesterday and end<today)
