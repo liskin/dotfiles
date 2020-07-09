@@ -343,6 +343,7 @@ let g:taskwiki_disable_concealcursor = 1
 let g:taskwiki_sort_order = 'status+,end+,due+,priority-'
 let g:vimwiki_auto_chdir = 1
 let g:vimwiki_autowriteall = 0
+let g:vimwiki_conceal_pre = 1
 let g:vimwiki_folding = 'custom' " let taskwiki configure folding
 let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [{}]
@@ -350,6 +351,8 @@ let g:vimwiki_list[0].auto_tags = 1
 let g:vimwiki_list[0].links_space_char = '-'
 let g:vimwiki_list[0].name = 'taskwiki'
 let g:vimwiki_list[0].path = '~/taskwiki'
+let g:vimwiki_listsym_rejected = 'D'
+let g:vimwiki_listsyms = ' WSX'
 
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
