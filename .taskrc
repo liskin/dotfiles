@@ -30,6 +30,9 @@ context.done_yesterday=(end>=yesterday and end<today)
 context.done_this_week=(end>=monday-1w and end<monday)
 context.done_last_week=(end>=monday-2w and end<monday-1w)
 
+report.next.filter=status:pending limit:page -later
+report.ready.filter=+READY -later
+
 uda.reviewed.type=date
 uda.reviewed.label=Reviewed
 report._reviewed.description=Tasksh review report.  Adjust the filter to your needs.
