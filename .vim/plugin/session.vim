@@ -30,6 +30,13 @@ function! s:save_session()
 	endif
 endfunc
 
+function! s:auto_load_session()
+	" TOOD: allow options that don't open buffers, perhaps? (check argc(), check buffer list, …)
+	if len(v:argv) == 1
+		call s:load_session()
+	endif
+endfunc
+
 function! s:auto_save_session()
 	if len(v:this_session)
 		let next_save = s:last_save + s:auto_save_interval
@@ -57,6 +64,7 @@ command! RmSession call s:rm_session()
 
 augroup MySession
 	autocmd!
+	autocmd VimEnter * nested call s:auto_load_session()
 	autocmd VimLeave * call s:save_session()
 	autocmd CursorHold * call s:auto_save_session()
 augroup END
