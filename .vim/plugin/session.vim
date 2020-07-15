@@ -18,13 +18,25 @@ endfunc
 function! s:load_session()
 	let l:session = s:session_filename()
 	if file_readable(l:session)
-		execute "source" fnameescape(l:session)
-		let s:last_save = localtime()
+		augroup SessionSwapExists
+			autocmd!
+			autocmd SwapExists * let v:this_session = ""
+			execute "source" fnameescape(l:session)
+			autocmd!
+		augroup END
+
+		if !empty(v:this_session)
+			let s:last_save = localtime()
+		else
+			echohl ErrorMsg
+			echomsg "Possible session conflict detected, v:this_session unset, use :MkSession to override"
+			echohl None
+		endif
 	endif
 endfunc
 
 function! s:save_session()
-	if len(v:this_session)
+	if !empty(v:this_session) && !v:dying
 		execute "mksession!" fnameescape(v:this_session)
 		let s:last_save = localtime()
 	endif
@@ -38,7 +50,7 @@ function! s:auto_load_session()
 endfunc
 
 function! s:auto_save_session()
-	if len(v:this_session)
+	if !empty(v:this_session)
 		let next_save = s:last_save + s:auto_save_interval
 		if localtime() >= next_save
 			call s:save_session()
@@ -52,7 +64,7 @@ function! s:new_session()
 endfunc
 
 function! s:rm_session()
-	if len(v:this_session)
+	if !empty(v:this_session)
 		call delete(v:this_session)
 		let v:this_session = ""
 	endif
