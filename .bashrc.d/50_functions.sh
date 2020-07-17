@@ -37,7 +37,7 @@ function whiteboardclean {
 function uplfile {
 	(( $# )) || return
 
-	scp "$@" nomi.cz:~/wwwtmp/ || return
+	rsync --chmod=F644 -v "$@" nomi.cz:~/wwwtmp/ || return
 
 	local f x
 	for f in "$@"; do
@@ -49,7 +49,7 @@ function uplfile {
 function uplfileperm {
 	(( $# )) || return
 
-	scp "$@" nomi.cz:~/wwwtmp/perm/ || return
+	rsync --chmod=F644 -v "$@" nomi.cz:~/wwwtmp/perm/ || return
 
 	local f x
 	for f in "$@"; do
