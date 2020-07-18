@@ -1,10 +1,11 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE ParallelListComp #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
 {-# OPTIONS_GHC -Wall -Wno-missing-signatures -fno-warn-orphans #-}
 import XMonad hiding ((|||), modMask)
 import qualified XMonad
@@ -63,7 +64,7 @@ import qualified XMonad.Util.PureX as P
 up = updatePointer (0.5, 0.5) (0, 0)
 
 -- Bindings.
-myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
+myKeys conf@(XConfig {XMonad.modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn ("exec " ++ XMonad.terminal conf))
     , ((modMask,            xK_semicolon), unGrab >> spawn "loginctl lock-session")
     , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "loginctl lock-session")
@@ -157,10 +158,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
     , (f, m) <- [(P.view, 0), (P.greedyView, shiftMask)] ]
 
-myMouseBindings (XConfig {}) = M.fromList $
-    [ ((mod1Mask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
-    , ((mod1Mask, button2), windows . (W.swapMaster .) . W.focusWindow)
-    , ((mod1Mask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
+myMouseBindings (XConfig {XMonad.modMask}) = M.fromList $
+    [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
+    , ((modMask, button2), windows . (W.swapMaster .) . W.focusWindow)
+    , ((modMask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
     ]
 
 curDirToWorkspacename = do
