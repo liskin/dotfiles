@@ -12,4 +12,4 @@ dms -http "$addr":12161 -ifname "$interface" -path "$(pwd)" &
 gupnp-av-cp --port=12162 --interface="$interface" &
 
 trap 'pkill -P $$' EXIT
-wait -n || :
+wait || :
