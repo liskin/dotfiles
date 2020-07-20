@@ -21,9 +21,10 @@ function! s:load_session()
 		augroup SessionSwapExists
 			autocmd!
 			autocmd SwapExists * let v:this_session = ""
-			execute "source" fnameescape(l:session)
-			autocmd!
 		augroup END
+
+		execute "source" fnameescape(l:session)
+		autocmd! SessionSwapExists
 
 		if !empty(v:this_session)
 			let s:last_save = localtime()
