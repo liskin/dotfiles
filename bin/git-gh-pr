@@ -22,7 +22,7 @@ function do-curl
 		github_token=$(yq -r '."github.com"[0].oauth_token' ~/.config/hub)
 	fi
 
-	curl --silent --show-error --fail -H "Authorization: token ${github_token}" "$@"
+	curl --silent --show-error --fail --location -H "Authorization: token ${github_token}" "$@"
 }
 
 function get-pr
