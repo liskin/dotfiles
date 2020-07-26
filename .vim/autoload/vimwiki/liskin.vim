@@ -1,13 +1,14 @@
 if exists("b:loaded_vimwiki_liskin_auto") | finish | endif
 let b:loaded_vimwiki_liskin_auto = 1
 
-function! vimwiki#liskin#follow_link(split)
+" taskwiki only follows wikilinks by default, not URLs; this is a workaround
+function! vimwiki#liskin#follow_link()
 	let syn_stack = map(synstack(line('.'), col('.')), {_, s -> synIDattr(s, "name")})
 	let inside_link = index(syn_stack, 'VimwikiLink') != -1
 	if inside_link
-		execute a:split ? "VimwikiSplitLink" : "VimwikiFollowLink"
+		VimwikiSplitLink
 	else
-		execute "py3 Mappings.task_info_or_vimwiki_follow_link(split=" . (a:split ? "True" : "False") . ")"
+		py3 Mappings.task_info_or_vimwiki_follow_link()
 	endif
 endfunction
 
