@@ -6,7 +6,7 @@ function! vimwiki#liskin#follow_link()
 	let syn_stack = map(synstack(line('.'), col('.')), {_, s -> synIDattr(s, "name")})
 	let inside_link = index(syn_stack, 'VimwikiLink') != -1
 	if inside_link
-		VimwikiSplitLink
+		VimwikiFollowLink
 	else
 		py3 Mappings.task_info_or_vimwiki_follow_link()
 	endif
