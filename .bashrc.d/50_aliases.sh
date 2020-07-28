@@ -38,3 +38,6 @@ export-aliases mutt-altworx mutt-news-gmane mutt-news-kernel
 
 alias wiki="vim ~/taskwiki/index.wiki"
 export-aliases wiki
+
+alias livereload-make="python3 -c 'from livereload import Server, shell; server = Server(); server.watch(\".\", shell(\"make\")); server.serve();'"
+export-aliases livereload-make
