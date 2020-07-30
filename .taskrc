@@ -24,6 +24,7 @@ color.uda.priority.L=
 context.today=( ( ( scheduled<tomorrow or due<tomorrow or +next or +ACTIVE ) and -COMPLETED ) or end>=today )
 context.tomorrow=( ( ( scheduled>=tomorrow and scheduled<tomorrow+1d ) or ( due>=tomorrow and due<tomorrow+1d ) ) and -COMPLETED )
 context.soon=( ( ( scheduled>=tomorrow+1d and scheduled<tomorrow+7d ) or ( due>=tomorrow+1d and due<tomorrow+7d ) or +soon ) and -COMPLETED )
+context.soonish=( scheduled: and due: and -next and -soon and -later and status:pending )
 
 context.todo+recent=(-COMPLETED or end>=yesterday)
 
