@@ -21,14 +21,15 @@ color.uda.priority.H=
 color.uda.priority.M=
 color.uda.priority.L=
 
-context.today=(((scheduled<tomorrow or due<tomorrow or +next or +ACTIVE) and -COMPLETED) or end>=today)
-context.tomorrow=(((scheduled>=tomorrow and scheduled<tomorrow+1d) or (due>=tomorrow and due<tomorrow+1d)) and -COMPLETED)
-context.soon=(((scheduled>=tomorrow+1d and scheduled<tomorrow+7d) or (due>=tomorrow+1d and due<tomorrow+7d) or +soon) and -COMPLETED)
+context.today=( ( ( scheduled<tomorrow or due<tomorrow or +next or +ACTIVE ) and -COMPLETED ) or end>=today )
+context.tomorrow=( ( ( scheduled>=tomorrow and scheduled<tomorrow+1d ) or ( due>=tomorrow and due<tomorrow+1d ) ) and -COMPLETED )
+context.soon=( ( ( scheduled>=tomorrow+1d and scheduled<tomorrow+7d ) or ( due>=tomorrow+1d and due<tomorrow+7d ) or +soon ) and -COMPLETED )
+
 context.todo+recent=(-COMPLETED or end>=yesterday)
 
-context.done_yesterday=(end>=yesterday and end<today)
-context.done_this_week=(end>=monday-1w and end<monday)
-context.done_last_week=(end>=monday-2w and end<monday-1w)
+context.done_yesterday=( end>=yesterday and end<today )
+context.done_this_week=( end>=monday-1w and end<monday )
+context.done_last_week=( end>=monday-2w and end<monday-1w )
 
 report.next.filter=status:pending limit:page -later
 report.ready.filter=+READY -later
