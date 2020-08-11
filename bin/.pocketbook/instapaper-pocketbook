@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+base="$(dirname "$(readlink -f "$0")")"
+. "$base/.passlib"
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+out=/tmp/instapaper-$(date +%F_%H-%M).epub
+
+pass_entry=$(pass show web/instapaper)
+username=$(extract-field user <<<"$pass_entry")
+password=$(extract-field password <<<"$pass_entry")
+
+env \
+CALIBRE_OVERRIDE_LANG=C \
+ebook-convert "Instapaper.recipe" "$out" \
+	--output-profile=generic_eink_hd \
+	--change-justification=justify \
+	--embed-all-fonts \
+	--username="$username" \
+	--password="$password" \
+	${DEBUG+--debug-pipeline=dbg}
+
+o rclone copy "$out" dropbox:'Apps/Dropbox PocketBook/tmp/'
+o rm "$out"
