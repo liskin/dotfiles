@@ -1,1 +1,1 @@
-ACTION=="add|change", SUBSYSTEM=="power_supply", ATTR{type}=="Battery", ATTR{present}=="1", ATTR{charge_start_threshold}="40", ATTR{charge_stop_threshold}="80"
+ACTION=="add", SUBSYSTEM=="power_supply", ATTR{type}=="Battery", ATTR{present}=="1", ATTR{charge_start_threshold}="40", ATTR{charge_stop_threshold}="80"
