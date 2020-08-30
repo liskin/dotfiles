@@ -247,8 +247,9 @@ myLogHook = do
                 , willFloatAllNewPP ("Float " ++)
                 , urgentsExtras
                 ]
-            , ppVisible = xmobarColor "green" "" . ppVisible xmobarPP
-            , ppUrgent = ppUrgentC
+            , ppVisible = xmobarBorder "Top" "green" 1 . ppVisibleC
+            , ppCurrent = xmobarBorder "Top" "yellow" 1 . ppCurrentC
+            , ppUrgent = xmobarBorder "Top" "#ff0000" 1 . ppUrgentC
             , ppSep = " | "
             , ppOrder = \(w:_:_:s) -> w:s
             }
@@ -256,6 +257,8 @@ myLogHook = do
     xmobarWindowLists
     --fadeInactiveLogHook 0.87
     where
+        ppVisibleC = xmobarColor "green" ""
+        ppCurrentC = xmobarColor "yellow" ""
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
         shortenUrgent t | isWeechatTitle t = t
@@ -361,8 +364,11 @@ xmobarWindowLists = do
             { ppSep = "   "
             , ppOrder = \(_:_:_:x) -> x
             , ppExtras = map (return . Just) l
-            , ppVisible = xmobarColor "green" "" . ppVisible xmobarPP
+            , ppVisible = xmobarBorder "Bottom" "green" 1 . ppVisibleC
+            , ppCurrent = xmobarBorder "Bottom" "yellow" 1 . ppCurrentC
             }
+        ppVisibleC = xmobarColor "green" ""
+        ppCurrentC = xmobarColor "yellow" ""
 
 screenWins scr = forM stack $ either (name False) (name True)
     where
