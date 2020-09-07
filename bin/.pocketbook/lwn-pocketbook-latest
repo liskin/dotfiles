@@ -16,4 +16,4 @@ date_iso=$(TZ=UTC LANG=C date -d "$date" +%F)
 [[ $date_iso ]]
 o mv -i "$epub" lwn-"$date_iso".epub
 epub=lwn-"$date_iso".epub
-o rclone copy "$epub" dropbox:'Apps/Dropbox PocketBook/LWN/'
+o "$base/pocketbook-news" "$epub"
