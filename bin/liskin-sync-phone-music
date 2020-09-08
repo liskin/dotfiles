@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+if (( $# != 1 )); then
+	echo "Usage: liskin-sync-phone-music sftp.host.name"
+	exit 1
+fi
+
+TMPDIR=$(mktemp -d)
+export TMPDIR
+# shellcheck disable=SC2064
+trap "rm -rf $(printf %q "$TMPDIR")" EXIT
+
+mpd_music_dir="$(echo config | nc -N -U "$MPD_HOST" | awk '$1 == "music_directory:" { print $2 }')"
+: "${mpd_music_dir:?}"
+
+mpd_playlist_dir=~/.config/mpd/playlists
+
+o pushd "$(mktemp -d)" >/dev/null
+for f in "$mpd_music_dir"/* "$mpd_playlist_dir"/*; do
+	[[ -e "$f"/.skip-sync-phone-music ]] && continue
+	o ln -s "$f"
+done
+o du -shL
+o lftp sftp://"$1"/~/Music/ -e "mirror -R ${DRY_RUN+--dry-run} --verbose --no-perms --dereference --delete --delete-excluded --exclude-glob */*.m3u" </dev/null
+o popd >/dev/null

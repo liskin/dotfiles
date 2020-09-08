@@ -12,7 +12,7 @@ my_cache_dir=~/.cache/"$cache_dir_name"
 function prepare-cache {
 	o mkdir -p "$my_cache_dir"
 	o ln -sfT "$my_cache_dir" "$mpd_music_dir/$cache_dir_name"
-	o find "$my_cache_dir"/ -type f -mtime +30 -print -delete
+	o find "$my_cache_dir"/ -type f -mtime +30 \( \! -name '.*' \) -print -delete
 	o mpc update --wait "$cache_dir_name/"
 }
 
