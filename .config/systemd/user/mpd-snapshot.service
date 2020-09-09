@@ -1,0 +1,6 @@
+[Unit]
+Description=snapshot mpd playlist
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/mpd-save snapshot
