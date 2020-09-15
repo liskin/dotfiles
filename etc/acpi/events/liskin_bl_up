@@ -1,0 +1,2 @@
+event=video/brightnessup
+action=/root/src/acpilight/xbacklight -next
