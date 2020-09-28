@@ -109,3 +109,6 @@
 	path = .vim/bundle/taskwiki
 	#url = https://github.com/tbabej/taskwiki
 	url = https://github.com/liskin/taskwiki
+[submodule ".vim/bundle/vim-toml"]
+	path = .vim/bundle/vim-toml
+	url = https://github.com/cespare/vim-toml
