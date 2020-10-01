@@ -323,8 +323,15 @@ function! s:ale_enable_linter(filetype, linter) abort
 	ALELint
 endfunction
 
+function! s:ale_add_linters(ale_linters, filetype, ...) abort
+	for l:linter in a:000
+		call s:ale_add_linter(a:ale_linters, a:filetype, l:linter)
+	endfor
+endfunction
+
 command! -nargs=1 -bar AleBufEnableLinter call s:ale_enable_linter(&ft, <q-args>)
-command! -nargs=+ -bar AleAddLinter call s:ale_add_linter(g:ale_linters, <f-args>)
+command! -nargs=+ -bar AleAddLinter call s:ale_add_linters(g:ale_linters, <f-args>)
+command! -nargs=+ -bar AleAddFixer call s:ale_add_linters(g:ale_fixers, <f-args>)
 
 " fzf {{{2
 let g:fzf_command_prefix = 'Fzf'
