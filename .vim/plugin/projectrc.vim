@@ -38,4 +38,7 @@ augroup ProjectRC
 	autocmd BufNewFile,BufRead ~/.vim/projectrc/* setf vim
 augroup END
 
+" utils for ProjectRCs:
+command! -nargs=1 SourceRelative execute "source" (fnameescape(expand('<sfile>:p:h')) . "/" . <q-args>)
+
 LoadProjectRC
