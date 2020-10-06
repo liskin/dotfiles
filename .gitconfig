@@ -30,6 +30,8 @@
 	autoStash = true
 [branch]
 	autosetuprebase = always
+[init]
+	defaultBranch = main
 [alias]
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
