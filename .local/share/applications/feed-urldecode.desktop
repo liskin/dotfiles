@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=feed-urldecode: handler
+Exec=liskin-feed-urldecode %u
+StartupNotify=false
+MimeType=x-scheme-handler/feed-urldecode;

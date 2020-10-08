@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == feed-urldecode:* ]]; then
+	uri="${1#feed-urldecode:}"
+	uri="${uri//+/ }"
+	uri=$(echo -e "${uri//%/\\x}")
+
+	if [[ $uri == http?(s)://* ]]; then
+		liferea-add-feed "$uri"
+	fi
+fi
