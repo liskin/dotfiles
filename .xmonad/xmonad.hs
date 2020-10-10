@@ -168,7 +168,8 @@ curDirToWorkspacename = do
     name <- getCurrentWorkspaceName
     when (isNothing name) $ do
         dir <- io getCurrentDirectory
-        setCurrentWorkspaceName $ last $ splitOneOf "/" dir
+        when (dir /= myHome) $ do
+            setCurrentWorkspaceName $ last $ splitOneOf "/" dir
 
 runSelectedAction :: String -> [(String, X ())] -> X ()
 runSelectedAction prompt actions = do
