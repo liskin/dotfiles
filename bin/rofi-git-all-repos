@@ -2,4 +2,6 @@
 
 set -eu
 
-git-all-repos | rofi -dmenu -p 'cd git' -sep '\0'
+git-all-repos \
+| xargs -0 -n1 \
+| rofi-dmenu-frece --db ~/.cache/rofi-git-all-repos-cache -- -i -p 'cd git'
