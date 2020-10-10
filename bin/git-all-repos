@@ -2,43 +2,12 @@
 
 set -eu
 
-cache_file="${XDG_CACHE_HOME:-$HOME/.cache}/git-all-repos"
-cache_refresh_age=60
-
-function file_older_than {
-	local last now
-	last=$(date +%s --reference="${1:?}")
-	now=$(date +%s)
-	(( last + ${2:?} < now ))
-}
-
-function cache_refresh() (
-	: "${cache_file:?}"
-
-	# lock to avoid overloading the CPU with concurrent refreshes
-	exec {lock_fd}>"${cache_file}.lock"
-	flock --nonblock "$lock_fd" || return
-
-	tmp="${cache_file}.$BASHPID"
-	"$@" >"$tmp" && mv -f "$tmp" "$cache_file"
-)
-
-function cache {
-	if [[ -f "$cache_file" ]]; then
-		# if the cache is not really fresh, refresh
-		# (do it in the background so that we're fast now and correct later)
-		if file_older_than "$cache_file" "$cache_refresh_age"; then
-			cache_refresh "$@" </dev/null >/dev/null &
-		fi
-	else
-		cache_refresh "$@" </dev/null >/dev/null || return
-	fi
-
-	cat "$cache_file"
-}
+base="$(dirname "$(readlink -f "$0")")"
+. "$base/.cachelib"
 
 function locate-all-repos {
 	locate -0 -A -i --regex '/\.git$' | sed -z -e 's|/.git$||' | grep -z -v -F '/_old/'
 }
 
-cache locate-all-repos
+cache_file="${XDG_CACHE_HOME:-$HOME/.cache}/git-all-repos" cache_refresh_age=60 cache \
+locate-all-repos

@@ -1,0 +1,42 @@
+#!bash
+
+# "interactive" cache that refreshes in the background so that we get a
+# possibly stale result immediately and a correct result as soon as it's ready
+# (mostly copypaste from .local/share/bash-completion/helpers/completion_cache)
+
+set -eu
+
+function file_older_than {
+	local last now
+	last=$(date +%s --reference="${1:?}")
+	now=$(date +%s)
+	(( last + ${2:?} < now ))
+}
+
+function cache_refresh() (
+	: "${cache_file:?}"
+
+	# lock to avoid overloading the CPU with concurrent refreshes
+	exec {lock_fd}>"${cache_file}.lock"
+	flock --nonblock "$lock_fd" || return
+
+	tmp="${cache_file}.$BASHPID"
+	"$@" >"$tmp" && mv -f "$tmp" "$cache_file"
+)
+
+function cache {
+	: "${cache_file:?}"
+	: "${cache_refresh_age:?}"
+
+	if [[ -f "$cache_file" ]]; then
+		# if the cache is not really fresh, refresh
+		# (do it in the background so that we're fast now and correct later)
+		if file_older_than "$cache_file" "$cache_refresh_age"; then
+			cache_refresh "$@" </dev/null >/dev/null &
+		fi
+	else
+		cache_refresh "$@" </dev/null >/dev/null || return
+	fi
+
+	cat "$cache_file"
+}
