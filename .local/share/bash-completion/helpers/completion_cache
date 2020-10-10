@@ -38,11 +38,13 @@ function _completion_cache {
 		# if the cache is not really fresh, refresh
 		# (do it in the background so that we're fast now and correct later)
 		if _completion_cache_file_older_than "$cache_entry" "$cache_refresh_age"; then
-			(_completion_cache_refresh "$@" &)
+			# subshell to disable job control
+			(_completion_cache_refresh "$@" </dev/null >/dev/null &)
 		fi
 	else
-		_completion_cache_refresh "$@" || return
+		_completion_cache_refresh "$@" </dev/null >/dev/null || return
 	fi
 
+	# shellcheck disable=SC2154
 	readarray -t COMPREPLY < <(compgen -W "$(< "$cache_entry")" -- "$cur")
 }
