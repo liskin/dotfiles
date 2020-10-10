@@ -28,10 +28,10 @@ function cache {
 		# if the cache is not really fresh, refresh
 		# (do it in the background so that we're fast now and correct later)
 		if file_older_than "$cache_file" "$cache_refresh_age"; then
-			(cache_refresh "$@" &)
+			cache_refresh "$@" </dev/null >/dev/null &
 		fi
 	else
-		cache_refresh "$@" || return
+		cache_refresh "$@" </dev/null >/dev/null || return
 	fi
 
 	cat "$cache_file"
