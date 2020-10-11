@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Wrapper around xmonad which allows shell globs in --output and automatically
+# Wrapper around xrandr which allows shell globs in --output and automatically
 # disables all other outputs.
 #
 # see https://work.lisk.in/2020/10/11/xrandr-ux.html
