@@ -61,6 +61,11 @@ function xrandr-auto-off {
 		[[ $arg == --output ]] && outputs+=("$1")
 	done
 
+	if ! (( ${outputs[@]+${#outputs[@]}} )); then
+		printf -->&2 "Aborting, would disable all outputs.\n"
+		exit 1
+	fi
+
 	for output in $(get-xrandr-outputs-except ${outputs[@]+"${outputs[@]}"}); do
 		args+=(--output "$output" --off)
 	done
