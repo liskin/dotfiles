@@ -1,8 +1,99 @@
 #!/usr/bin/env bash
 
-set -eu
+# Wrapper around xmonad which allows shell globs in --output and automatically
+# disables all other outputs.
+#
+# see https://work.lisk.in/2020/10/11/xrandr-ux.html
 
-base="$(dirname "$(readlink -f "$0")")"
-. "$base/.xlayoutlib"
+set -eu -o pipefail
+
+export LC_ALL=C
+
+unset xrandr_query
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+function get-xrandr-query {
+	[[ "${xrandr_query-}" ]] && return
+
+	xrandr_query=$(xrandr --query)
+}
+
+function get-xrandr-outputs {
+	<<<"$xrandr_query" grep -P -o '^([\w-]+)(?= (dis)?connected)'
+}
+
+function get-xrandr-connected-outputs {
+	<<<"$xrandr_query" grep -P -o '^([\w-]+)(?= connected)'
+}
+
+function get-xrandr-outputs-except {
+	get-xrandr-outputs | grep -F -v -x -f <(printf "%s\n" "$@")
+}
+
+function find-one {
+	local tmp one=
+
+	while read -r tmp; do
+		# shellcheck disable=SC2053
+		if [[ $tmp == $1 ]]; then
+			[[ $one ]] && return 1
+			one="$tmp"
+		fi
+	done
+
+	[[ $one ]] && printf "%s\n" "$one"
+}
+
+function find-xrandr-output { get-xrandr-outputs | find-one "$1"; }
+function find-xrandr-connected-output { get-xrandr-connected-outputs | find-one "$1"; }
+
+function xrandr-auto-off {
+	local -a outputs=()
+	local output
+	local -a args=()
+	local arg
+
+	while (( $# )); do
+		arg="$1"; shift
+		args+=("$arg")
+
+		[[ $arg == --output ]] && outputs+=("$1")
+	done
+
+	for output in $(get-xrandr-outputs-except ${outputs[@]+"${outputs[@]}"}); do
+		args+=(--output "$output" --off)
+	done
+
+	o xrandr "${args[@]}"
+}
+
+function xrandr-auto-find {
+	local -a args=()
+	local arg
+
+	while (( $# )); do
+		arg="$1"; shift
+		args+=("$arg")
+
+		if [[ $arg == --@(output|left-of|right-of|above|below|same-as) ]] && (( $# )); then
+			arg="$1"; shift
+			arg=$(find-xrandr-connected-output "$arg")
+			args+=("$arg")
+		fi
+	done
+
+	o xrandr-auto-off "${args[@]}"
+}
+
+get-xrandr-query
+
+# skip main if sourced
+return 0 2>/dev/null || :
+
+if (( ! $# )); then
+	echo "Usage: xmonad-smart --output …"
+	exit 1
+fi
 
 xrandr-auto-find "$@"

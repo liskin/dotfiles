@@ -2,8 +2,7 @@
 
 set -eu
 
-base="$(dirname "$(readlink -f "$0")")"
-. "$base/.xlayoutlib"
+. ~/bin/xrandr-smart
 
 fbsetroot -mod 5 5 -fg rgb:00/10/00 -bg rgb:00/00/00
 

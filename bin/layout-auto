@@ -1,13 +1,26 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
+shopt -s nullglob lastpipe
 
-base="$(dirname "$(readlink -f "$0")")"
-. "$base/.xlayoutlib"
+export LC_ALL=C
+
+function fingerprint-outputs {
+	local out h
+
+	for out in /sys/class/drm/card0-*; do
+		if [[ "$(< "$out"/status)" == "connected" ]]; then
+			echo "$out"
+			xxd -p "$out"/edid
+		fi
+	done | md5sum -b | read -r h _
+
+	printf "%s\n" "$h"
+}
 
 fingerprint=$(fingerprint-outputs)
-if [[ -f "$base/.xlayout/$fingerprint" ]]; then
-	"$base/.xlayout/$fingerprint"
+if [[ -f ~/bin/.xlayout/"$fingerprint" ]]; then
+	~/bin/.xlayout/"$fingerprint"
 elif [[ "${1-}" ]]; then
 	"$1"
 else
