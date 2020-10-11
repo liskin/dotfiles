@@ -97,7 +97,7 @@ get-xrandr-query
 return 0 2>/dev/null || :
 
 if (( ! $# )); then
-	echo "Usage: xmonad-smart --output …"
+	echo "Usage: xrandr-smart --output …"
 	exit 1
 fi
 
