@@ -1,11 +1,17 @@
 #!/bin/bash
 
-gitdir="$(readlink -f "$(git rev-parse --git-dir 2>/dev/null)")"
+set -eu
+
+toplevel="$(git rev-parse --show-toplevel 2>/dev/null)"
+toplevel="$(basename "$toplevel")"
+
+superproject="$(git rev-parse --show-superproject-working-tree 2>/dev/null)"
+superproject="$(basename "$superproject")"
+
+gitdir="$(git rev-parse --absolute-git-dir 2>/dev/null)"
 case "$gitdir" in
-	"") ;;
-	*/.git) basename "$(dirname "$gitdir")" ;;
-	*/.git/worktrees/*) basename "$gitdir" ;;
-	*/.git/modules/*) basename "$gitdir" ;;
-	*/*.git) basename "$gitdir" .git ;;
-	*/*.git/worktrees/*) basename "$gitdir" .git ;;
+	*/*[^/].git) project="$(basename "$gitdir" .git)" ;;
+	*) project="$toplevel" ;;
 esac
+
+echo "$superproject${superproject:+:}$project"
