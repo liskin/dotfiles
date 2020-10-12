@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-xrandr-smart --output 'eDP-*' --auto --pos 0x0 --panning 0x0 --dpi 96 --gamma 1.15:1.15:1.15 --primary
-
-xset +dpms

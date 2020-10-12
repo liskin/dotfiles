@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-sudo /usr/local/sbin/liskin-gvt-g "$@"

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-sudo /usr/local/sbin/liskin-t25-touchscreen toggle

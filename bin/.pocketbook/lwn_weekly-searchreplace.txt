@@ -1,4 +1,0 @@
-(?P<pre>\<pre.*?\>)(?!<code)
-\g<pre><code>
-(?<!</code>)</pre>
-</code></pre>

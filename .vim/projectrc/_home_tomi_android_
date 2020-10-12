@@ -1,2 +1,0 @@
-autocmd BufNewFile,BufRead *.json setlocal et
-autocmd BufNewFile,BufRead *.xml setlocal et sw=2

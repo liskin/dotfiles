@@ -1,4 +1,0 @@
-#!sh
-# ^ sourced from /etc/X11/Xsession
-
-. ~/.bashrc.d/10_env.sh

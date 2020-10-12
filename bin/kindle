@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-export WINEPREFIX=~/.local/share/wineprefixes/kindle
-cd "${WINEPREFIX}/drive_c/Program Files (x86)/Amazon/Kindle"
-wine Kindle.exe

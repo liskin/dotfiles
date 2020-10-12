@@ -1,6 +1,0 @@
-[Unit]
-Description=rclone-dropbox
-
-[Service]
-Type=notify
-ExecStart=/usr/bin/rclone mount --vfs-cache-mode=full dropbox: %h/mnt/dropbox

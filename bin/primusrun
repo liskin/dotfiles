@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [[ $_LISKIN_NVIDIA_ENV ]]; then
-	exec "$@"
-else
-	export LIBGL_DRI3_DISABLE=1
-	/usr/bin/primusrun "$@"
-fi
-

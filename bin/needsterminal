@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-[[ -t 0 && $DISPLAY ]] || WAIT_FOR_WM=: exec x-terminal-emulator -e "$0" "$@"
-[[ ${WAIT_FOR_WM-} ]] && { unset WAIT_FOR_WM; xwaitforwindow || :; }
-
-exec "$@"

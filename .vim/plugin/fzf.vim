@@ -1,1 +1,0 @@
-/usr/share/doc/fzf/examples/plugin/fzf.vim
