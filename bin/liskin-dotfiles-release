@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+shopt -s lastpipe
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+function release-tree {
+	: "${1:?tag-name expected}"
+
+	tree="$(o git mktree)"
+	commit="$(o git commit-tree -p @ "$tree" -m "$1" </dev/tty)"
+	o git tag -s "$1" "$commit" </dev/tty
+}
+
+function release-xrandr-smart {
+	: "${1:?version expected}"
+
+	{
+		git ls-tree --full-tree @:bin xrandr-smart
+	} | release-tree xrandr-smart-"$1"
+}
+
+toplevel="$(git rev-parse --show-toplevel 2>/dev/null)"
+o cd "$toplevel"
+
+o "$@"
