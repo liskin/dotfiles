@@ -125,4 +125,5 @@
 	url = https://github.com/liskin/add-url-to-window-title
 [submodule "src-webextensions/chrome-blank-tab"]
 	path = src-webextensions/chrome-blank-tab
-	url = https://github.com/karlerikjonatan/chrome-blank-tab
+	#url = https://github.com/karlerikjonatan/empty-tab
+	url = https://github.com/liskin/empty-tab
