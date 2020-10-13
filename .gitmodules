@@ -119,3 +119,10 @@
 [submodule "src/git-filter-repo"]
 	path = src/git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
+[submodule "src-webextensions/add-url-to-window-title"]
+	path = src-webextensions/add-url-to-window-title
+	#url = https://github.com/erichgoldman/add-url-to-window-title
+	url = https://github.com/liskin/add-url-to-window-title
+[submodule "src-webextensions/chrome-blank-tab"]
+	path = src-webextensions/chrome-blank-tab
+	url = https://github.com/karlerikjonatan/chrome-blank-tab
