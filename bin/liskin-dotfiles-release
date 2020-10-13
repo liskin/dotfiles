@@ -25,10 +25,13 @@ function release-xrandr-smart {
 
 	make -C .local/share/man man1/xrandr-smart.1
 	manpage=$(o git hash-object -w .local/share/man/man1/xrandr-smart.1)
+	readme=$(echo xrandr-smart.1.md | git hash-object -w --stdin)
 
 	{
 		git ls-tree --full-tree @:bin xrandr-smart
+		git ls-tree --full-tree @:.local/share/man xrandr-smart.1.md
 		printf "100644 blob %s\txrandr-smart.1\n" "$manpage"
+		printf "120000 blob %s\tREADME.md\n" "$readme"
 	} | release-tree xrandr-smart "$1"
 }
 

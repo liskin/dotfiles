@@ -1,6 +1,8 @@
-% XRANDR-SMART(1) liskin/dotfiles manpages
-% Tomas Janousek
-% October 2020
+---
+title: 'XRANDR-SMART(1) liskin/dotfiles manpages'
+author: Tomas Janousek
+date: October 2020
+---
 
 # NAME
 
