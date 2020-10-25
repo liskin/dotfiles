@@ -17,7 +17,7 @@ mpd_playlist_dir=~/.config/mpd/playlists
 mtp_mount="$HOME/mnt/mtpfs"
 o findmnt --raw "$mtp_mount" >/dev/null && need_mnt= || need_mnt=:
 if [[ $need_mnt ]]; then
-	jmtpfs "$mtp_mount"
+	o jmtpfs "$mtp_mount"
 fi
 
 dest="$mtp_mount/Phone/Music"
@@ -46,5 +46,5 @@ o rsync \
 o popd >/dev/null
 
 if [[ $need_mnt ]]; then
-	fusermount -u "$mtp_mount"
+	o fusermount -u "$mtp_mount"
 fi
