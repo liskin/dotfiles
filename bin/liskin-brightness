@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Adjust brightness of an external monitor using ddcutil
+# Usage: liskin-brightness [xrandr output]
+# If xrandr output isn't specified, the one (provided there's just one) external monitor is used.
+
+set -eu -o pipefail
+shopt -s nullglob lastpipe
+
+. ~/bin/xrandr-smart
+
+output=$(find-xrandr-connected-output "${1:-"!(eDP-*)"}")
+i2c=$(basename /sys/class/drm/card0-"$output"/i2c-* | find-one 'i2c-*')
+i2c="${i2c#i2c-}"
+
+ddcutil --bus "$i2c" --terse getvcp 10 | read -r _ _ _ current _
+
+trap 'pkill -P $$' EXIT
+
+zenity --title "$output brightness" --text "$output brightness" --scale --print-partial --value="$current" \
+| while read -r desired; do
+	while read -r -t 1 desired_tmp; do desired="$desired_tmp"; done
+	ddcutil --bus "$i2c" setvcp 10 "$desired"
+done
