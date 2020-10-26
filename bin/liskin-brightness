@@ -19,6 +19,6 @@ trap 'pkill -P $$' EXIT
 
 zenity --title "$output brightness" --text "$output brightness" --scale --print-partial --value="$current" \
 | while read -r desired; do
-	while read -r -t 1 desired_tmp; do desired="$desired_tmp"; done
+	while read -r -t 0.2 desired_tmp; do desired="$desired_tmp"; done
 	ddcutil --bus "$i2c" setvcp 10 "$desired"
 done
