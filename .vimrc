@@ -369,6 +369,14 @@ let g:vimwiki_list[0].listsym_rejected = 'D'
 let g:vimwiki_list[0].listsyms = ' WSX'
 let g:vimwiki_list[0].listsyms_propagate = 0
 
+" vim-visual-multi {{{2
+let g:VM_maps = {}
+let g:VM_maps["Add Cursor Down"] = ''
+let g:VM_maps["Add Cursor Up"] = ''
+let g:VM_maps["Select l"] = ''
+let g:VM_maps["Select h"] = ''
+let g:VM_mouse_mappings = 1
+
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
 call pathogen#infect()

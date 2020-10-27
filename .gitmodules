@@ -42,9 +42,6 @@
 [submodule ".vim/bundle/vim-mkdir"]
 	path = .vim/bundle/vim-mkdir
 	url = https://github.com/pbrisbin/vim-mkdir.git
-[submodule ".vim/bundle/vim-multiple-cursors"]
-	path = .vim/bundle/vim-multiple-cursors
-	url = https://github.com/terryma/vim-multiple-cursors.git
 [submodule ".vim/bundle/vim-openscad"]
 	path = .vim/bundle/vim-openscad
 	url = https://github.com/sirtaj/vim-openscad.git
@@ -128,3 +125,6 @@
 	path = src-webextensions/chrome-blank-tab
 	#url = https://github.com/karlerikjonatan/empty-tab
 	url = https://github.com/liskin/empty-tab
+[submodule ".vim/bundle/vim-visual-multi"]
+	path = .vim/bundle/vim-visual-multi
+	url = https://github.com/mg979/vim-visual-multi
