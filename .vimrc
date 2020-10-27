@@ -258,6 +258,7 @@ let g:airline_right_sep = ''
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#fugitiveline#enabled = 0
 function! s:AirlineInit()
 	call airline#parts#define_raw('fileshorten', '%n:%{pathshorten(bufname("%"))}%m')
 	let spc = g:airline_symbols.space
