@@ -38,4 +38,8 @@ if &t_Co == 256 || has('gui_running')
 	hi WarningMsg ctermfg=9
 	"hi TabLineFill term=underline cterm=underline gui=underline
 	"hi TabLineSel ctermbg=4
+
+	hi def link diffAdded Identifier
+	hi def link diffChanged PreProc
+	hi def link diffRemoved Special
 endif
