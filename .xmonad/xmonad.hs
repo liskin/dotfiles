@@ -108,7 +108,7 @@ myKeys conf@(XConfig {XMonad.modMask}) = M.fromList $
     , ((modMask,               xK_i     ), sendMessage MirrorExpand      >> up)
     , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX) >> up)
 
-    , ((modMask,               xK_w     ), withFocused $ \w -> windows $ W.float w (W.RationalRect 0 0 1 1))
+    , ((modMask,               xK_w     ), toggleFullscreen)
     , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
     , ((modMask,               xK_f     ), toggleFloatNext >> runLogHook)
     , ((modMask .|. shiftMask, xK_f     ), toggleFloatAllNew >> runLogHook)
@@ -186,6 +186,14 @@ changeDirRofiGit = do
     case out of
         [sel] -> sendMessage (Chdir sel)
         _ -> pure ()
+
+toggleFullscreen :: X ()
+toggleFullscreen =
+    withWindowSet $ \ws ->
+    withFocused $ \w -> do
+        let fullRect = W.RationalRect 0 0 1 1
+        let isFullFloat = w `M.lookup` W.floating ws == Just fullRect
+        windows $ if isFullFloat then W.sink w else W.float w fullRect
 
 
 -- Layouts.
