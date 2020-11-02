@@ -10,6 +10,19 @@ PS1='\[\033[48;5;053m\033[01;$(( $? ? 31 : 32 ))m\][\u'${__docker_ps1}'@\h\[\033
 
 unset __docker_ps1
 
+function __prompt_command_col1 {
+	local cur_y=
+	echo -n $'\033[6n'
+	IFS='[;' read -s -r -d'R' _ _ cur_y
+	if [[ $cur_y != 1 ]]; then
+		echo -n $'\033[41m↵\033[m\n'
+	fi
+}
+
+PROMPT_COMMAND=(
+	__prompt_command_col1
+)
+
 ## If this is an xterm set the title to user@host:dir
 #case $TERM in
 #xterm*|rxvt*)
