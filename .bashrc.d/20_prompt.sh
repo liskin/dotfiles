@@ -12,8 +12,8 @@ unset __docker_ps1
 
 function __prompt_command_col1 {
 	local cur_y=
-	echo -n $'\033[6n'
-	IFS='[;' read -s -r -d'R' _ _ cur_y
+	while read -t 0; do :; done
+	IFS='[;' read -s -r -d'R' -p$'\033[6n' _ _ cur_y
 	if [[ $cur_y != 1 ]]; then
 		echo -n $'\033[41m↵\033[m\n'
 	fi
