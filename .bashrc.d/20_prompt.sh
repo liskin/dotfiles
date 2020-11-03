@@ -19,9 +19,11 @@ function __prompt_command_col1 {
 	fi
 }
 
-PROMPT_COMMAND=(
-	__prompt_command_col1
-)
+if [[ ! $MC_SID ]]; then
+	PROMPT_COMMAND=(
+		__prompt_command_col1
+	)
+fi
 
 ## If this is an xterm set the title to user@host:dir
 #case $TERM in
