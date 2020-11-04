@@ -7,8 +7,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wall -Wno-missing-signatures -fno-warn-orphans #-}
-import XMonad hiding ((|||), modMask)
-import qualified XMonad
+import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
 import Control.Exception ( try, SomeException )
@@ -65,7 +64,7 @@ import qualified XMonad.Util.PureX as P
 up = updatePointer (0.5, 0.5) (0, 0)
 
 -- Bindings.
-myKeys conf@(XConfig {XMonad.modMask}) = M.fromList $
+myKeys conf@(XConfig{modMask}) = M.fromList $
     [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn ("exec " ++ XMonad.terminal conf))
     , ((modMask,            xK_semicolon), unGrab >> spawn "loginctl lock-session")
     , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "loginctl lock-session")
@@ -159,7 +158,7 @@ myKeys conf@(XConfig {XMonad.modMask}) = M.fromList $
     | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
     , (f, m) <- [(P.view, 0), (P.greedyView, shiftMask)] ]
 
-myMouseBindings (XConfig {XMonad.modMask}) = M.fromList $
+myMouseBindings (XConfig{modMask}) = M.fromList $
     [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
     , ((modMask, button2), windows . (W.swapMaster .) . W.focusWindow)
     , ((modMask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
@@ -430,30 +429,29 @@ dumpLayouts = do
 
 -- Main.
 main = do
-    let defaults = def {
-            terminal           = "urxvt",
-            focusFollowsMouse  = True,
-            borderWidth        = 2,
-            XMonad.modMask     = mod4Mask,
-            workspaces         = map show [(1 :: Int)..12] ++ map (('W' :) . show) [(1 :: Int)..12],
-            normalBorderColor  = "#dddddd",
-            focusedBorderColor = "#ff0000",
-
-            keys               = myKeys,
-            mouseBindings      = myMouseBindings,
-
-            layoutHook         = myLayout,
-            manageHook         = myManageHook,
-            logHook            = myLogHook,
-            startupHook        = myStartupHook,
-            handleEventHook    = myEventHook
-            }
     let activationIgnore = className =? "Google-chrome" <||> className =? "google-chrome"
     xmonad $
-        javaHack $
-        ignoreNetActiveWindow activationIgnore $
-        docks $
-        ewmhFullscreen $
-        ewmh $
+        javaHack .
+        ignoreNetActiveWindow activationIgnore .
+        docks .
+        ewmhFullscreen .
+        ewmh .
         withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
-        defaults
+            def
+            { terminal           = "urxvt"
+            , focusFollowsMouse  = True
+            , borderWidth        = 2
+            , modMask            = mod4Mask
+            , workspaces         = map show [(1 :: Int)..12] ++ map (('W' :) . show) [(1 :: Int)..12]
+            , normalBorderColor  = "#dddddd"
+            , focusedBorderColor = "#ff0000"
+
+            , keys               = myKeys
+            , mouseBindings      = myMouseBindings
+
+            , layoutHook         = myLayout
+            , manageHook         = myManageHook
+            , logHook            = myLogHook
+            , startupHook        = myStartupHook
+            , handleEventHook    = myEventHook
+            }
