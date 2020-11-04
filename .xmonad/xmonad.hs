@@ -19,6 +19,7 @@ import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
+import Data.Typeable
 import Graphics.X11.ExtraTypes.XF86
 import System.Directory ( getCurrentDirectory )
 import System.Environment
@@ -218,6 +219,8 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
          activeBorderColor = "#000000", inactiveBorderColor = "#000000", urgentBorderColor = "#ff0000"
      }
 
+asMyLayout (Layout l) = (`asTypeOf` myLayout) <$> cast l
+
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled"
               , "mtiled"
@@ -227,6 +230,11 @@ laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
               , "full" ]
 
 myHome = unsafePerformIO $ getEnv "HOME"
+
+shortenDir :: String -> String
+shortenDir s | (myHome ++ "/") `isPrefixOf` s = '~' : drop (length myHome) s
+             | myHome == s                    = "~"
+             | otherwise                      = s
 
 instance Shrinker CustomShrink where
     shrinkIt _ _ = []
@@ -348,6 +356,8 @@ xmobarWindowLists = do
             wks = W.workspace scr
             tag = W.tag wks
             layout = description . W.layout $ wks
+            dir' = maybe "<err>" getWorkspaceDir . asMyLayout . W.layout $ wks
+            dir = shortenLeft 30 . shortenDir $ dir'
 
             fmt (True, _, n) | num == current =
                      xmobarColor "#ffff00" ""        $ n
@@ -359,7 +369,7 @@ xmobarWindowLists = do
                 then ppCurrent finPP
                 else ppVisible finPP
 
-            finPP = myPP $ (tagprint (name tag) ++ " " ++ layout) :
+            finPP = myPP $ (tagprint (name tag) ++ " " ++ dir ++ " | " ++ layout) :
                 [ fmt (b, w, show n ++ " " ++ shorten 30 (xmobarStrip (show t)))
                 | (b,w,t) <- wins | n <- [(1 :: Int)..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
