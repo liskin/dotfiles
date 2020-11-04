@@ -209,7 +209,6 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
      dir = workspaceDir myHome
      toggles = mkToggle (single REFLECTX)
      fixl = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
-     -- layoutHints _musi_ byt pred (po :-)) smartBorders, jinak blbne urxvt
 
      sub = addTabs CustomShrink decoTheme . subLayout [] Simplest
      decoTheme = def{
@@ -264,7 +263,6 @@ myLogHook = do
             }
     workspaceNamesPP myPP >>= dynamicLogString >>= xmonadPropLog
     xmobarWindowLists
-    --fadeInactiveLogHook 0.87
     where
         ppVisibleC = xmobarColor "green" ""
         ppCurrentC = xmobarColor "yellow" ""
@@ -295,8 +293,7 @@ myLogHook = do
         isWeechatTitle = ("t[N] " `isPrefixOf`)
 
 
--- Restart xmobar on RAndR.
-myEvHook (ConfigureEvent {ev_window = w}) = do
+randrRestartEventHook (ConfigureEvent {ev_window = w}) = do
     r <- asks theRoot
     if w == r
         then do
@@ -306,10 +303,9 @@ myEvHook (ConfigureEvent {ev_window = w}) = do
             return $ All False
         else
             return $ All True
--- myEvHook x = io (print x) >> mempty
-myEvHook _ = mempty
+randrRestartEventHook _ = mempty
 
-myEventHook = refocusLastEventHook <+> hintsEventHook <+> myEvHook
+myEventHook = refocusLastEventHook <+> hintsEventHook <+> randrRestartEventHook
     where
         refocusLastEventHook = refocusLastWhen isFloat
 
@@ -424,8 +420,6 @@ dumpLayouts = do
 
 -- Main.
 main = do
-    -- putStr $ drawTree $ fmap show $ (read $ show myLayout :: Tree (String, String))
-
     let defaults = def {
             terminal           = "urxvt",
             focusFollowsMouse  = True,
