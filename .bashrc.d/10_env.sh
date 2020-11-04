@@ -5,10 +5,6 @@
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
 export PATH=$HOME/bin/.aliases:$HOME/bin:$HOME/.local/bin:$PATH
 
-export MANPATH=$HOME/.local/share/man:
-# FIXME: workaround for /usr/share/bash-completion/completions/man
-MANPATH=$(man -w)
-
 export MAIL=/var/mail/tomi
 
 # various hacks
@@ -38,8 +34,6 @@ export BAT_STYLE=plain
 export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 export MPD_HOST="$XDG_RUNTIME_DIR"/mpd/socket
-
-eval "$(perl -Mlocal::lib)"
 
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 export JDKHOME="$JAVA_HOME"

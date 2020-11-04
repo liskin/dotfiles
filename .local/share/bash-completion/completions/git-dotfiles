@@ -1,0 +1,4 @@
+#!bash
+
+. /usr/share/bash-completion/completions/git
+complete -F _git git-dotfiles
