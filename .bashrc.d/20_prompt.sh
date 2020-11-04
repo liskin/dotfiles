@@ -21,6 +21,7 @@ function __prompt_command_col1 {
 
 if [[ ! $MC_SID ]]; then
 	PROMPT_COMMAND=(
+		"${PROMPT_COMMAND[@]}"
 		__prompt_command_col1
 	)
 fi
