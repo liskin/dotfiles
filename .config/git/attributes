@@ -1,0 +1,8 @@
+*.ex	diff=elixir
+*.html	diff=html
+*.java	diff=java
+*.markdown	diff=markdown
+*.md	diff=markdown
+*.pl	diff=perl
+*.pm	diff=perl
+*.py	diff=python
