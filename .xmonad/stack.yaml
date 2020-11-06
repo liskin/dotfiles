@@ -6,6 +6,7 @@ packages:
     - dep/xmobar
     - dep/xmonad
     - dep/xmonad-contrib
+    - dep/X11
 
 flags:
     xmobar:
