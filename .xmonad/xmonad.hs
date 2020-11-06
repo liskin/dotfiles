@@ -253,6 +253,11 @@ myManageHook = composeAll
     , manageDocks
     ]
 
+myActivateHook = composeOne
+    [ className =? "Google-chrome" <||> className =? "google-chrome" -?> doAskUrgent
+    , pure True -?> doFocus
+    ]
+
 
 -- Loghook.
 myLogHook = do
@@ -429,13 +434,14 @@ dumpLayouts = do
 
 -- Main.
 main = do
-    let activationIgnore = className =? "Google-chrome" <||> className =? "google-chrome"
     xmonad $
         javaHack .
-        ignoreNetActiveWindow activationIgnore .
         docks .
-        ewmhFullscreen .
-        ewmh .
+        ewmh' def
+            { activateHook = myActivateHook
+            , workspaceListTransform = workspaceNamesListTransform
+            , fullscreen = True
+            } .
         withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
             def
             { terminal           = "urxvt"
