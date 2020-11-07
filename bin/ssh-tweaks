@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+ssh=/usr/bin/ssh
+ssh_config=$("$ssh" -G "$@")
+
+if grep -x -F -e 'sendenv _TERM_OLD_NCURSES' --silent <<<"$ssh_config"; then
+	case "$TERM" in
+		rxvt-unicode-256color) TERM=rxvt-unicode ;;
+		tmux-256color) TERM=screen-256color ;;
+	esac
+fi
+
+exec "$ssh" "$@"
