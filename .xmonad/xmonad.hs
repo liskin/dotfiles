@@ -317,7 +317,25 @@ randrRestartEventHook (ConfigureEvent {ev_window = w}) = do
             return $ All True
 randrRestartEventHook _ = mempty
 
-myEventHook = refocusLastEventHook <+> hintsEventHook <+> randrRestartEventHook
+trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
+    -- when trayer is lowered to the bottom of stack, put all xmobars that
+    -- are above it below
+    whenX (runQuery (className =? "trayer") w) $ do
+        withDisplay $ \dpy -> do
+            rootw <- asks theRoot
+            (_, _, ws) <- io $ queryTree dpy rootw
+            let aboveTrayerWs = dropWhile (w /=) ws
+            xmobarWs <- filterM (runQuery (appName =? "xmobar")) aboveTrayerWs
+            mapM_ (io . lowerWindow dpy) xmobarWs
+    mempty
+trayerDockEventHook _ = mempty
+
+myEventHook = mconcat
+    [ refocusLastEventHook
+    , hintsEventHook
+    , randrRestartEventHook
+    , trayerDockEventHook
+    ]
     where
         refocusLastEventHook = refocusLastWhen isFloat
 
@@ -332,7 +350,7 @@ clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
 rescreenHook :: X ()
 rescreenHook = do
     let mainxmobar = sequence [ spawnPID "exec xmobar -x 0" ]
-    let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary" ]
+    let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l" ]
     let compton = sequence [ spawnPID "exec compton" ]
     killPids "_XMONAD_XMOBARS"
     savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
