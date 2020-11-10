@@ -1,0 +1,10 @@
+[Unit]
+Description=liskin-backup-bash-history timer
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=5m
+Persistent=true
+
+[Install]
+WantedBy=default.target
