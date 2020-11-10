@@ -11,5 +11,7 @@ case $- in
 esac
 
 for i in ~/.bashrc.d/*.sh; do
+	[[ $__bashrc_bench ]] && { echo "$i"; date +%s.%N; }
 	. "$i"
+	[[ $__bashrc_bench ]] && { date +%s.%N; }
 done; unset i
