@@ -32,6 +32,8 @@
 	autosetuprebase = always
 [init]
 	defaultBranch = main
+[pretty]
+	fixes = Fixes: %h (\"%s\")
 [alias]
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
@@ -41,6 +43,7 @@
 	puf = push --force-with-lease
 	dcommit = svn dcommit --rmdir --interactive
 	rev-sort-topo-reverse = rev-list --topo-order --no-walk --reverse
+	fixes = -c core.abbrev=12 log -1 --pretty=fixes
 [mergetool]
 	keepBackup = false
 [merge]
