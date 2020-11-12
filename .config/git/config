@@ -34,6 +34,7 @@
 	defaultBranch = main
 [pretty]
 	fixes = Fixes: %h (\"%s\")
+	co-authored-by = Co-authored-by: %an <%ae>
 [alias]
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
@@ -44,6 +45,7 @@
 	dcommit = svn dcommit --rmdir --interactive
 	rev-sort-topo-reverse = rev-list --topo-order --no-walk --reverse
 	fixes = -c core.abbrev=12 log -1 --pretty=fixes
+	co-authored-by = log -1 --pretty=co-authored-by --author
 [mergetool]
 	keepBackup = false
 [merge]
