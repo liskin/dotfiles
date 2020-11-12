@@ -280,8 +280,8 @@ myLogHook = do
         ppCurrentC = xmobarColor "yellow" ""
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
-        shortenUrgent t | isWeechatTitle t = t
-                        | otherwise = shorten 30 (xmobarStrip t)
+        shortenUrgent t | isWeechatTitle t = t -- FIXME: strip everything but <fc
+                        | otherwise = xmobarRaw $ shorten 30 t
         ppUrgentExtra urgents w = do
             nw <- getName w
             let pp = if w `elem` urgents then ppUrgentC else ppNormalC
@@ -300,7 +300,7 @@ myLogHook = do
             ws <- gets windowset
             filterM isWeechat
                 [ w | wks <- W.workspaces ws, W.tag wks == "1"
-                , w <- fst (toIndex (W.stack wks)) ]
+                , w <- W.integrate' (W.stack wks) ]
         isWeechat w = (isWeechatTitle . show) `fmap` getName w
         isWeechatTitle = ("t[N] " `isPrefixOf`)
 
@@ -392,7 +392,7 @@ xmobarWindowLists = do
                 else ppVisible finPP
 
             finPP = myPP $ (tagprint (name tag) ++ " " ++ dir ++ " | " ++ layout) :
-                [ fmt (b, w, show n ++ " " ++ shorten 30 (xmobarStrip (show t)))
+                [ fmt (b, w, show n ++ " " ++ xmobarRaw (shorten 30 (show t)))
                 | (b,w,t) <- wins | n <- [(1 :: Int)..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
