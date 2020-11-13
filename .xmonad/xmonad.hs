@@ -71,7 +71,8 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((0,                     xK_Menu  ), unGrab >> spawn "exec rofi -show run")
     , ((controlMask,           xK_Menu  ), unGrab >> spawn "exec rofi -show drun")
     , ((modMask,               xK_Menu  ), unGrab >> spawn "exec rofi -show window")
-    , ((modMask,               xK_e     ), unGrab >> spawn "exec emoji-menu.sh")
+    , ((modMask,               xK_e     ), unGrab >> spawn "exec rofi-emoji-menu")
+    , ((modMask .|. shiftMask, xK_e     ), unGrab >> spawn "exec rofi-emoji-sign")
     , ((modMask,               xK_p     ), unGrab >> spawn "passmenu --type")
 
     , ((0,         xF86XK_AudioMicMute    ), spawn "liskin-media mic-mute")
