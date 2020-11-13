@@ -50,6 +50,8 @@
 	keepBackup = false
 [merge]
 	tool = kdiff3
+	suppressDest = master
+	suppressDest = main
 [diff]
 	algorithm = histogram
 	compactionHeuristic = true
