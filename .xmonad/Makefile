@@ -1,8 +1,12 @@
-all: xmonad-x86_64-linux dep/xmobar/examples/xmonadpropwrite
+ARCH := $(shell uname -m)
+OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
+XMONAD_BINARY := xmonad-$(ARCH)-$(OS)
 
-xmonad-x86_64-linux: stack
-	stack exec -- ghc --make xmonad.hs -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o xmonad-x86_64-linux.tmp
-	mv -f xmonad-x86_64-linux.tmp xmonad-x86_64-linux
+all: $(XMONAD_BINARY) dep/xmobar/examples/xmonadpropwrite
+
+$(XMONAD_BINARY): stack
+	stack exec -- ghc --make xmonad.hs -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o $@.tmp
+	mv -f $@.tmp $@
 
 dep/xmobar/examples/xmonadpropwrite: stack
 	stack exec -- ghc --make dep/xmobar/examples/xmonadpropwrite.hs
