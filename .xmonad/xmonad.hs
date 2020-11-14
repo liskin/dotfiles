@@ -60,6 +60,8 @@ import XMonad.Util.Stack
 import XMonad.Util.Ungrab
 import qualified XMonad.Util.PureX as P
 
+import Xmobar.X11.Actions (stripActions)
+
 
 up = updatePointer (0.5, 0.5) (0, 0)
 
@@ -281,7 +283,7 @@ myLogHook = do
         ppCurrentC = xmobarColor "yellow" ""
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
-        shortenUrgent t | isWeechatTitle t = t -- FIXME: strip everything but <fc
+        shortenUrgent t | isWeechatTitle t = stripActions t
                         | otherwise = xmobarRaw $ shorten 30 t
         ppUrgentExtra urgents w = do
             nw <- getName w
