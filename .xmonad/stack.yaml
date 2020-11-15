@@ -1,6 +1,5 @@
 resolver: lts-16.18
-extra-deps:
-    - parsec-numbers-0.1.0
+extra-deps: []
 
 packages:
     - dep/xmobar
