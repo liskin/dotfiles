@@ -305,7 +305,8 @@ myLogHook = do
                 [ w | wks <- W.workspaces ws, W.tag wks == "1"
                 , w <- W.integrate' (W.stack wks) ]
         isWeechat w = (isWeechatTitle . show) `fmap` getName w
-        isWeechatTitle = ("t[N] " `isPrefixOf`)
+
+isWeechatTitle = ("t[N] " `isPrefixOf`)
 
 
 randrRestartEventHook (ConfigureEvent {ev_window = w}) = do
@@ -384,6 +385,10 @@ xmobarWindowLists = do
             dir' = maybe "<err>" getWorkspaceDir . asMyLayout . W.layout $ wks
             dir = shortenLeft 30 . shortenDir $ dir'
 
+            sanitize t = xmobarRaw . shorten 30 . strip $ t
+                where strip | isWeechatTitle t = xmobarStrip
+                            | otherwise        = id
+
             fmt (True, _, n) | num == current =
                      xmobarColor "#ffff00" ""        $ n
             fmt (_,    w, n) = if w `elem` urgents
@@ -395,7 +400,7 @@ xmobarWindowLists = do
                 else ppVisible finPP
 
             finPP = myPP $ (tagprint (name tag) ++ " " ++ dir ++ " | " ++ layout) :
-                [ fmt (b, w, show n ++ " " ++ xmobarRaw (shorten 30 (show t)))
+                [ fmt (b, w, show n ++ " " ++ sanitize (show t))
                 | (b,w,t) <- wins | n <- [(1 :: Int)..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
