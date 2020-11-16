@@ -45,7 +45,7 @@
 	dcommit = svn dcommit --rmdir --interactive
 	rev-sort-topo-reverse = rev-list --topo-order --no-walk --reverse
 	fixes = -c core.abbrev=12 log -1 --pretty=fixes
-	co-authored-by = log -1 --pretty=co-authored-by --author
+	co-authored-by = log -1 --pretty=co-authored-by --regexp-ignore-case --author
 [mergetool]
 	keepBackup = false
 [merge]
