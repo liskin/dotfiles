@@ -47,5 +47,7 @@ if [ -n "$_LISKIN_NVIDIA_ENV" ]; then
 	export VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/nv_vulkan_wrapper.json"
 	unset __EGL_VENDOR_LIBRARY_FILENAMES
 else
+	VK_ICD_FILENAMES="$(printf "%s:" /usr/share/vulkan/icd.d/intel_icd.*.json)"
+	export VK_ICD_FILENAMES="${VK_ICD_FILENAMES%:}"
 	export __EGL_VENDOR_LIBRARY_FILENAMES="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
 fi
