@@ -15,13 +15,15 @@ sub on_osc_seq {
 
 	my ($secret, $uri) = split(' ', $data, 2);
 	if (length $secret and length $uri
-			and sha256_hex($secret) eq '16b13054a650e0357f048a8bcff001f3a39955f4fdec032659a1031f95198367'
-			and $uri =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}(?:#$fragment)?$}) {
-		system("sensible-browser", $uri);
-	} else {
-		$term->selection($data, $clip =~ /c/);
-		$term->selection_grab(urxvt::CurrentTime, $clip =~ /c/);
+			and sha256_hex($secret) eq '16b13054a650e0357f048a8bcff001f3a39955f4fdec032659a1031f95198367') {
+		$data = $uri;
+		if ($uri =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}(?:#$fragment)?$}) {
+			system("sensible-browser", $uri);
+		}
 	}
+
+	$term->selection($data, $clip =~ /c/);
+	$term->selection_grab(urxvt::CurrentTime, $clip =~ /c/);
 
 	return ();
 }
