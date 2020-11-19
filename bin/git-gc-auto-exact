@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# git gc --auto for low object counts
+
+set -eu -o pipefail
+
+threshold="${1:?}"
+objects=$(git count-objects -v | awk '$1 == "count:" { print $2 }')
+
+if (( objects > threshold )); then
+	git gc
+fi
