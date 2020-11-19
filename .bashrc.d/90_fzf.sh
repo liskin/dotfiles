@@ -5,3 +5,30 @@ source /usr/share/doc/fzf/examples/key-bindings.bash
 # https://github.com/junegunn/fzf/pull/2246
 #source /usr/share/doc/fzf/examples/completion.bash
 source ~/.bashrc.d/.fzf-completion.bash
+
+function __bash_history_infinite__ {
+	local commit
+
+	{
+		builtin fc -lnr -2147483648
+
+		git --git-dir="${HOME}/backup/bash-history/.git" rev-list HEAD \
+		| while read -r commit; do
+			git --git-dir="${HOME}/backup/bash-history/.git" show "${commit}:.bash_history" | tac || break
+		done
+	} \
+	| perl -n -l -e 's/^[ \t]*//; print unless $seen{$_}++'
+}
+
+function __fzf_history__ {
+	local output
+	output=$(__bash_history_infinite__ |
+		FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" $(__fzfcmd) --query "$READLINE_LINE"
+	) || return
+	READLINE_LINE=${output}
+	if [ -z "$READLINE_POINT" ]; then
+		echo "$READLINE_LINE"
+	else
+		READLINE_POINT=0x7fffffff
+	fi
+}
