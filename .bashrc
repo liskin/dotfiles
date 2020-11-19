@@ -11,7 +11,11 @@ case $- in
 esac
 
 for i in ~/.bashrc.d/*.sh; do
-	[[ $__bashrc_bench ]] && { echo "$i"; date +%s.%N; }
-	. "$i"
-	[[ $__bashrc_bench ]] && { date +%s.%N; }
+	if [[ $__bashrc_bench ]]; then
+		TIMEFORMAT="$i: %R"
+		time . "$i"
+		unset TIMEFORMAT
+	else
+		. "$i"
+	fi
 done; unset i
