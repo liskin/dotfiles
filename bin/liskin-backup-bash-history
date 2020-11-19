@@ -7,6 +7,7 @@ if compgen -v | grep ^GIT_; then
 fi
 
 cd ~/backup/bash-history
+[[ "$(git symbolic-ref HEAD)" == "refs/heads/main" ]]
 cp ~/.bash_history .
 git add .
 git diff --cached --exit-code --quiet && diff=$? || diff=$?

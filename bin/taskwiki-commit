@@ -7,6 +7,7 @@ if compgen -v | grep ^GIT_; then
 fi
 
 cd ~/taskwiki
+[[ "$(git symbolic-ref HEAD)" == "refs/heads/master" ]]
 git add .
 git diff --cached --exit-code --quiet && diff=$? || diff=$?
 [[ $diff != 1 ]] && exit $diff
