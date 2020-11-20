@@ -62,10 +62,10 @@
 [interactive]
 	diffFilter = diff-highlight
 [core]
-	pager = less -FRX
+	pager = less -FRX --tabs=1,5
 [pager]
-	diff = diff-highlight | less -FRX
-	show = diff-highlight | less -FRX
+	diff = diff-highlight | less -FRX --tabs=1,5
+	show = diff-highlight | less -FRX --tabs=1,5
 [stash]
 	showPatch = true
 [svn]
