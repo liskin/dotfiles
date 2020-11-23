@@ -244,14 +244,12 @@ instance Shrinker CustomShrink where
 
 -- Managehook.
 myManageHook = composeAll
-    [ placeHook (fixed (0.5, 0.5))
+    [ isFullscreen --> doFullFloat
+    , placeHook (fixed (0.5, 0.5))
     , floatNextHook
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore
-    , className =? "hl_linux"       --> doFloat
-    , className =? "duke3d"         --> doFloat
-    , isFullscreen                  --> doFullFloat
-    , isDialog                      --> doFloat
+    , className =? "hl_linux" --> doFloat
+    , className =? "duke3d" --> doFloat
+    , isDialog --> doFloat
     , transience'
     , manageDocks
     ]
