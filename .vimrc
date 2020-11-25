@@ -414,7 +414,6 @@ autocmd FileType happy setlocal tw=78 et
 autocmd FileType haskell setlocal tw=78 et
 autocmd FileType html setlocal indentkeys&
 autocmd FileType lhaskell setlocal tw=78 ai et
-autocmd FileType mail setlocal tw=78 ts=8 ai et | let &fenc = &enc
 autocmd FileType markdown setlocal ai formatoptions=tcroqn2 comments=n:> tw=78 et
 autocmd FileType meson setlocal et
 autocmd FileType perl setlocal isfname-=- formatoptions-=t formatoptions+=crql

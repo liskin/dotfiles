@@ -6,6 +6,11 @@ source ~/.config/mutt/bgedit-detect-screen-tmux.sh|
 set alias_file=~/.config/mutt/aliases
 source ~/.config/mutt/aliases
 
+# wrapping
+set wrap=100
+set reflow_wrap=100
+set text_flowed=yes
+
 # sidebar
 set sidebar_divider_char='│'
 set sidebar_sort_method=alpha
