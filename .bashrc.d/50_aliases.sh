@@ -25,6 +25,10 @@ export-aliases nomi nomi-https nomi-mosh
 
 alias ssh=ssh-tweaks
 
+alias mutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/mutt'
+alias neomutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/neomutt'
+export-aliases mutt neomutt
+
 alias m='mutt -F ~/.config/mutt/muttrc-nomi'
 alias m-altworx='mutt-altworx'
 alias m-tmux="tmux new-session -s m -n nomi \\; new-window -d -n altworx \\; send-keys -l \$'m\\n' \\; send-keys -t :altworx -l \$'m-altworx\\n'"
