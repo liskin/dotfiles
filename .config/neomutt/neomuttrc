@@ -1,0 +1,20 @@
+source ~/.muttrc
+
+set catchup_newsgroup=no
+set newsrc="~/.newsrc-%s"
+set nntp_context=30000
+set nntp_listgroup=no
+set nntp_load_description=no
+set save_unsubscribed=yes
+
+bind index,pager i change-newsgroup
+bind compose o edit-followup-to
+bind compose N edit-newsgroups
+bind compose x edit-x-comment-to
+bind attach,index,pager F followup-message
+bind index,pager P post-message
+bind browser g reload-active
+bind index,pager \ei change-newsgroup-readonly
+bind attach,index,pager \eF forward-to-group
+bind index \eG get-parent
+bind index \CG get-message
