@@ -1,4 +1,5 @@
 source ~/.config/mutt/muttrc-old
+source ~/.config/mutt/muttrc-colors
 source ~/.config/mutt/bgedit-detect-screen-tmux.sh|
 
 # sidebar
