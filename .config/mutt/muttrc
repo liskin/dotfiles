@@ -2,6 +2,9 @@ source ~/.config/mutt/muttrc-old
 source ~/.config/mutt/muttrc-colors
 source ~/.config/mutt/bgedit-detect-screen-tmux.sh|
 
+set alias_file=~/.config/mutt/aliases
+source ~/.config/mutt/aliases
+
 # sidebar
 set sidebar_divider_char='│'
 set sidebar_sort_method=alpha
