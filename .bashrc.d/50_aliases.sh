@@ -25,12 +25,12 @@ export-aliases nomi nomi-https nomi-mosh
 
 alias ssh=ssh-tweaks
 
-alias m='mutt -F ~/.muttrc-nomi'
+alias m='mutt -F ~/.config/mutt/muttrc-nomi'
 alias m-altworx='mutt-altworx'
 alias m-tmux="tmux new-session -s m -n nomi \\; new-window -d -n altworx \\; send-keys -l \$'m\\n' \\; send-keys -t :altworx -l \$'m-altworx\\n'"
 export-aliases m m-altworx m-tmux
 
-alias mutt-altworx='mutt -F ~/.muttrc-altworx'
+alias mutt-altworx='mutt -F ~/.config/mutt/muttrc-altworx'
 alias mutt-news-gmane='neomutt -g news.gmane.io'
 alias mutt-news-kernel='neomutt -g nntp.lore.kernel.org'
 #alias mutt-lkml='mutt -f news://nntp.lore.kernel.org/org.kernel.vger.linux-kernel'

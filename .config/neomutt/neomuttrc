@@ -1,4 +1,6 @@
-source ~/.muttrc
+setenv __neomutt=1
+
+source ~/.config/mutt/muttrc
 
 set catchup_newsgroup=no
 set newsrc="~/.newsrc-%s"
