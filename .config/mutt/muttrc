@@ -1,2 +1,12 @@
 source ~/.config/mutt/muttrc-old
 source ~/.config/mutt/bgedit-detect-screen-tmux.sh|
+
+# sidebar
+set sidebar_divider_char='│'
+set sidebar_sort_method=alpha
+unset sidebar_visible
+macro index \eb '<enter-command>toggle sidebar_visible<enter><refresh>'
+macro pager \eb '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
+bind index,pager \CP sidebar-prev
+bind index,pager \CN sidebar-next
+bind index,pager \CO sidebar-open
