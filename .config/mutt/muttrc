@@ -1,1 +1,2 @@
 source ~/.config/mutt/muttrc-old
+source ~/.config/mutt/bgedit-detect-screen-tmux.sh|
