@@ -8,3 +8,7 @@ set send_multipart_alternative_filter="~/.config/mutt/markdown2html"
 # TODO: also avoid sending HTML to some mailing lists
 send-hook . 'set send_multipart_alternative=yes'
 send-hook '~s \\[PATCH' 'set send_multipart_alternative=no'
+
+# show HTML yes/no in compose_format and toggle on H
+send2-hook . 'set compose_format="-- Mutt: Compose  [Approx. msg size: %l   Atts: %a   HTML: $send_multipart_alternative]%>-"'
+macro compose H "<enter-command>set invsend_multipart_alternative<enter><edit-subject><enter>"
