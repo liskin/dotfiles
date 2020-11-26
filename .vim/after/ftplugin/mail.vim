@@ -7,5 +7,10 @@ setlocal autoindent
 setlocal expandtab
 
 " format=flowed
-setlocal fo+=w
+setlocal formatoptions+=w
 setlocal listchars+=trail:\\
+
+" markdown
+setlocal formatoptions+=n
+setlocal comments=fb:*,fb:-,fb:+,n:>
+setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^[-*+]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:
