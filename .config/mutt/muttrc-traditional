@@ -1,4 +1,10 @@
 set imap_deflate=yes
 
+# send multipart/alternative by generating the HTML variant using pandoc
 set send_multipart_alternative=yes
 set send_multipart_alternative_filter="~/.config/mutt/markdown2html"
+
+# but avoid HTML when sending patches
+# TODO: also avoid sending HTML to some mailing lists
+send-hook . 'set send_multipart_alternative=yes'
+send-hook '~s \\[PATCH' 'set send_multipart_alternative=no'
