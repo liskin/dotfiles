@@ -1,5 +1,8 @@
 set imap_deflate=yes
 
+# background compose in screen/tmux
+source "~/.config/mutt/bgedit-detect-screen-tmux.sh |"
+
 # send multipart/alternative by generating the HTML variant using pandoc
 set send_multipart_alternative=yes
 set send_multipart_alternative_filter="~/.config/mutt/markdown2html"
