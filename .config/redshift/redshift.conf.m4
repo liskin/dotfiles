@@ -4,6 +4,5 @@ temp-night=3700
 location-provider=manual
 
 [manual]
-; Brno
-lat=49.206389
-lon=16.607222
+lat=LAT
+lon=LON
