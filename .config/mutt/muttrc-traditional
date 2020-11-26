@@ -1,4 +1,4 @@
 set imap_deflate=yes
 
 set send_multipart_alternative=yes
-set send_multipart_alternative_filter="python3 /usr/share/doc/mutt/examples/markdown2html"
+set send_multipart_alternative_filter="~/.config/mutt/markdown2html"
