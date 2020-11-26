@@ -82,7 +82,7 @@ th, td { padding: 0.5em; }
 .even { background: #eee; }
 '''
 
-STYLESHEET = os.path.join(os.path.expanduser('~/.mutt'),
+STYLESHEET = os.path.join(os.path.expanduser('~/.config/mutt'),
                           'markdown2html.css')
 if os.path.exists(STYLESHEET):
     DEFAULT_CSS += open(STYLESHEET).read()
