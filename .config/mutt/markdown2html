@@ -175,7 +175,7 @@ def _identify_quotes_for_later(mdwn):
                               cur, flags=re.MULTILINE))
 
         # All other occurrences of blockquotes get the "subsequent" marker:
-        elif cur.startswith('>') and prev and not prev.startswith('>'):
+        elif cur.startswith('>') and prev is not None and not prev.startswith('>'):
             ret.append(re.sub(r'^((?:\s*>\s*)+)(.+)',
                               r'\g<1>{.quotesubsequent}\g<2>',
                               cur, flags=re.MULTILINE))
