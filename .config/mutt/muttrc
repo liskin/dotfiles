@@ -1,6 +1,6 @@
+source "~/.config/mutt/muttrc-detect-neo.sh $mailcap_path |"
 source ~/.config/mutt/muttrc-old
 source ~/.config/mutt/muttrc-colors
-source ~/.config/mutt/muttrc-no-neo.sh|
 source ~/.config/mutt/bgedit-detect-screen-tmux.sh|
 
 set alias_file=~/.config/mutt/aliases
