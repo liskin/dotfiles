@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# width = min(muttrc:wrap, $COLUMNS)
+max_width="$(mutt -D | grep -P -o '\bwrap\s*=\s*\K\d+')"
+width="$(tput cols)"
+(( width = width < max_width ? width : max_width )) || :
+
+# charset, but only allow secure characters
+charset="$1"; shift
+[[ $charset == +([a-zA-Z0-9_-]) ]] || charset=
+
+exec /usr/bin/elinks \
+	-force-html \
+	${charset:+-eval "set document.codepage.assume = \"$charset\"" -eval "set document.codepage.force_assumed = 1"} \
+	-eval "set document.dump.width = $width" \
+	-dump "$@"
