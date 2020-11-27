@@ -29,16 +29,21 @@ alias mutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/mutt'
 alias neomutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/neomutt'
 export-aliases mutt neomutt
 
-alias m='mutt -F ~/.config/mutt/muttrc-nomi'
+alias mutt-nomi='mutt -F ~/.config/mutt/muttrc-nomi'
+alias neomutt-nomi='neomutt -F ~/.config/mutt/muttrc-nomi'
+alias mutt-altworx='mutt -F ~/.config/mutt/muttrc-altworx'
+alias neomutt-altworx='neomutt -F ~/.config/mutt/muttrc-altworx'
+export-aliases mutt-nomi neomutt-nomi mutt-altworx neomutt-altworx
+
+alias m='mutt-nomi'
 alias m-altworx='mutt-altworx'
 alias m-tmux="tmux new-session -s m -n nomi \\; new-window -d -n altworx \\; send-keys -l \$'m\\n' \\; send-keys -t :altworx -l \$'m-altworx\\n'"
 export-aliases m m-altworx m-tmux
 
-alias mutt-altworx='mutt -F ~/.config/mutt/muttrc-altworx'
 alias mutt-news-gmane='neomutt -g news.gmane.io'
 alias mutt-news-kernel='neomutt -g nntp.lore.kernel.org'
 #alias mutt-lkml='mutt -f news://nntp.lore.kernel.org/org.kernel.vger.linux-kernel'
-export-aliases mutt-altworx mutt-news-gmane mutt-news-kernel
+export-aliases mutt-news-gmane mutt-news-kernel
 
 alias wiki="vim ~/taskwiki/index.wiki"
 export-aliases wiki
