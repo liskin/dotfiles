@@ -3,4 +3,5 @@ Type=Application
 Name=feed-urldecode: handler
 Exec=liskin-feed-urldecode %u
 StartupNotify=false
+NoDisplay=true
 MimeType=x-scheme-handler/feed-urldecode;

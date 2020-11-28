@@ -13,3 +13,4 @@ video/x-flv=mpv.desktop
 video/x-matroska=mpv.desktop
 video/x-msvideo=mpv.desktop
 x-scheme-handler/feed-urldecode=feed-urldecode.desktop
+x-scheme-handler/mailto=mutt-mailto.desktop

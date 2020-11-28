@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=mutt mailto: handler
+Exec=needsterminal m %u
+StartupNotify=false
+NoDisplay=true
+MimeType=x-scheme-handler/mailto;
