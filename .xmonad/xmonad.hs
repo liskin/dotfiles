@@ -67,7 +67,7 @@ up = updatePointer (0.5, 0.5) (0, 0)
 
 -- Bindings.
 myKeys conf@(XConfig{modMask}) = M.fromList $
-    [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn ("exec " ++ XMonad.terminal conf))
+    [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn "D=\"$(xcwd)\"; ${D:+cd \"$D\"}; exec urxvt")
     , ((modMask,            xK_semicolon), unGrab >> spawn "loginctl lock-session")
     , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "loginctl lock-session")
     , ((0,                     xK_Menu  ), unGrab >> spawn "exec rofi -show run")
