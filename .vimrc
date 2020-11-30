@@ -379,6 +379,11 @@ let g:VM_maps["Select l"] = ''
 let g:VM_maps["Select h"] = ''
 let g:VM_mouse_mappings = 1
 
+" editorconfig-vim {{{2
+let g:EditorConfig_disable_rules = ['tab_width']
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+autocmd FileType gitcommit let b:EditorConfig_disable = 1
+
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
 call pathogen#infect()
