@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s lastpipe
 
 if (( ! $# )); then
 	echo "Usage: entr-rg [<rg --files args ...> --] <entr args>"
@@ -20,5 +21,5 @@ for arg in "$@"; do
 done
 
 while sleep 0.2; do
-	rg --files "${rg_files_args[@]}" | { entr -d "${entr_args[@]}" || :; }
+	rg --files "${rg_files_args[@]}" | { entr -d "${entr_args[@]}" && break || :; }
 done
