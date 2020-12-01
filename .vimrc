@@ -93,6 +93,7 @@ set ttimeoutlen=50
 set ttyfast
 
 set mouse=a
+set mousemodel=popup_setpos
 
 if has('gui_running') " {{{2
 	hi Normal guifg=white guibg=black
@@ -289,6 +290,7 @@ let g:ale_linters['text'] = ['proselint']
 "let g:ale_linters['yaml'] = ['yamllint']
 let g:ale_linters_explicit = 1
 let g:ale_maximum_file_size = 524288
+let g:ale_popup_menu_enabled = 1
 let g:ale_set_highlights = 0
 
 let g:ale_elixir_elixir_ls_config = {
