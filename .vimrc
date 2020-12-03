@@ -386,6 +386,13 @@ let g:EditorConfig_disable_rules = ['tab_width']
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 autocmd FileType gitcommit let b:EditorConfig_disable = 1
 
+" ultisnips {{{2
+let g:UltiSnipsExpandTrigger = '<c-_>'
+let g:UltiSnipsListSnippets = ''
+let g:snips_author = 'liskin'
+let g:snips_email = 'tomi@nomi.cz'
+let g:snips_github = "https://github.com/liskin"
+
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
 call pathogen#infect()
@@ -489,6 +496,7 @@ nnoremap <silent> <C-B> :FzfBuffers<CR>
 nnoremap <silent> <C-G> :FzfTags<CR>
 nnoremap <silent> <C-T> :FzfBTags<CR>
 nnoremap <silent> <C-X> :FzfCommands<CR>
+nnoremap <silent> <C-_> :FzfSnippets<CR>
 nnoremap <C-J> :FzfRg<space>
 
 nmap <C-]> <Plug>(ale_tags_fallback_go_to_definition)
