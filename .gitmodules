@@ -103,9 +103,6 @@
 [submodule ".vim/bundle/ghost-text.vim"]
 	path = .vim/bundle/ghost-text.vim
 	url = https://github.com/pandysong/ghost-text.vim
-[submodule ".vim/bundle/vim-speeddating"]
-	path = .vim/bundle/vim-speeddating
-	url = https://github.com/tpope/vim-speeddating
 [submodule ".vim/bundle/vimwiki"]
 	path = .vim/bundle/vimwiki
 	url = https://github.com/vimwiki/vimwiki/

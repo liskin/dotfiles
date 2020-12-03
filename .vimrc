@@ -496,15 +496,11 @@ nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
 
-nmap  <C-U> <Plug>SpeedDatingUp
-nmap  <C-Y> <Plug>SpeedDatingDown
-xmap  <C-U> <Plug>SpeedDatingUp
-xmap  <C-Y> <Plug>SpeedDatingDown
-nmap d<C-U> <Plug>SpeedDatingNowUTC
-nmap d<C-Y> <Plug>SpeedDatingNowLocal
-
 nnoremap <silent> <C-W>S :CloneBufTmp<CR>
 nnoremap <silent> <C-W>C :tabclose<CR>
+
+nnoremap <silent> <C-Q> <C-X>
+vnoremap <silent> <C-Q> <C-X>
 
 " prevent x from overriding what's in the clipboard. {{{2
 noremap x "_x
