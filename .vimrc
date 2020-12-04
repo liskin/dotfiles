@@ -387,7 +387,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 autocmd FileType gitcommit let b:EditorConfig_disable = 1
 
 " ultisnips {{{2
-let g:UltiSnipsExpandTrigger = '<c-_>'
+let g:UltiSnipsExpandTrigger = '<c-x><c-_>'
 let g:UltiSnipsListSnippets = ''
 let g:snips_author = 'liskin'
 let g:snips_email = 'tomi@nomi.cz'
@@ -496,8 +496,10 @@ nnoremap <silent> <C-B> :FzfBuffers<CR>
 nnoremap <silent> <C-G> :FzfTags<CR>
 nnoremap <silent> <C-T> :FzfBTags<CR>
 nnoremap <silent> <C-X> :FzfCommands<CR>
-nnoremap <silent> <C-_> :FzfSnippets<CR>
 nnoremap <C-J> :FzfRg<space>
+
+nnoremap <silent> <C-_> :FzfSnippets<CR>
+inoremap <silent> <C-_> <C-\><C-O>:FzfSnippets<CR>
 
 nmap <C-]> <Plug>(ale_tags_fallback_go_to_definition)
 nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
