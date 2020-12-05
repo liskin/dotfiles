@@ -1,12 +1,15 @@
 resolver: lts-16.18
-extra-deps: []
 
 packages:
     - X11
+    - arbtt
     - ghcid
     - xmobar
     - xmonad
     - xmonad-contrib
+
+extra-deps:
+    - bytestring-progress-1.4
 
 flags:
     xmobar:

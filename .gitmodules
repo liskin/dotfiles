@@ -144,3 +144,6 @@
 [submodule "src-haskell/ghcid"]
 	path = src-haskell/ghcid
 	url = https://github.com/ndmitchell/ghcid
+[submodule "src-haskell/arbtt"]
+	path = src-haskell/arbtt
+	url = https://github.com/nomeata/arbtt
