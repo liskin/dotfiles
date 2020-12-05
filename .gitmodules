@@ -65,20 +65,20 @@
 [submodule ".vim/bundle/fugitive-gitlab.vim"]
 	path = .vim/bundle/fugitive-gitlab.vim
 	url = https://github.com/shumphrey/fugitive-gitlab.vim.git
-[submodule ".xmonad/dep/xmonad-contrib"]
-	path = .xmonad/dep/xmonad-contrib
+[submodule "src-haskell/xmonad-contrib"]
+	path = src-haskell/xmonad-contrib
 	#url = https://github.com/xmonad/xmonad-contrib.git
 	url = https://github.com/liskin/xmonad-contrib.git
-[submodule ".xmonad/dep/xmonad"]
-	path = .xmonad/dep/xmonad
+[submodule "src-haskell/xmonad"]
+	path = src-haskell/xmonad
 	#url = https://github.com/xmonad/xmonad.git
 	url = https://github.com/liskin/xmonad.git
-[submodule ".xmonad/dep/xmobar"]
-	path = .xmonad/dep/xmobar
+[submodule "src-haskell/xmobar"]
+	path = src-haskell/xmobar
 	#url = https://github.com/jaor/xmobar.git
 	url = https://github.com/liskin/xmobar.git
-[submodule ".xmonad/dep/X11"]
-	path = .xmonad/dep/X11
+[submodule "src-haskell/X11"]
+	path = src-haskell/X11
 	#url = https://github.com/xmonad/X11
 	url = https://github.com/liskin/X11
 [submodule ".vim/bundle/vim-boxdraw"]

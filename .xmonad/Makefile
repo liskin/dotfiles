@@ -2,21 +2,20 @@ ARCH := $(shell uname -m)
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 XMONAD_BINARY := xmonad-$(ARCH)-$(OS)
 
-all: $(XMONAD_BINARY) dep/xmobar/examples/xmonadpropwrite
+all: $(XMONAD_BINARY)
 
-$(XMONAD_BINARY): stack
-	stack exec -- ghc --make xmonad.hs -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o $@.tmp
+$(XMONAD_BINARY): build-deps
+	cd ~/src-haskell && \
+		stack exec -- ghc --make $(CURDIR)/xmonad.hs -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o $(CURDIR)/$@.tmp
 	mv -f $@.tmp $@
 
-dep/xmobar/examples/xmonadpropwrite: stack
-	stack exec -- ghc --make dep/xmobar/examples/xmonadpropwrite.hs
+ghcid: build-deps
+	cd ~/src-haskell && \
+		ghcid -c 'stack exec -- ghci $(CURDIR)/xmonad.hs'
 
-ghcid: stack
-	ghcid -c 'stack exec -- ghci xmonad.hs'
-
-stack:
-	stack build --copy-bins --local-bin-path "$(shell pwd)/bin" \
-		xmobar \
-		xmonad \
-		xmonad-contrib \
-		split
+.PHONY: build-deps
+build-deps:
+	$(MAKE) -C ~/src-haskell build BUILD_TARGETS="xmobar xmonad xmonad-contrib split"
+	cd ~/src-haskell && \
+		stack exec -- ghc --make xmobar/examples/xmonadpropwrite.hs && \
+		cp xmobar/examples/xmonadpropwrite .bin/

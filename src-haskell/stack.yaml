@@ -2,10 +2,10 @@ resolver: lts-16.18
 extra-deps: []
 
 packages:
-    - dep/xmobar
-    - dep/xmonad
-    - dep/xmonad-contrib
-    - dep/X11
+    - X11
+    - xmobar
+    - xmonad
+    - xmonad-contrib
 
 flags:
     xmobar:
