@@ -141,3 +141,6 @@
 [submodule ".vim/bundle/vim-snippets"]
 	path = .vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
+[submodule "src-haskell/ghcid"]
+	path = src-haskell/ghcid
+	url = https://github.com/ndmitchell/ghcid

@@ -3,6 +3,7 @@ extra-deps: []
 
 packages:
     - X11
+    - ghcid
     - xmobar
     - xmonad
     - xmonad-contrib
