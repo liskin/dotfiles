@@ -65,41 +65,12 @@
 [submodule ".vim/bundle/fugitive-gitlab.vim"]
 	path = .vim/bundle/fugitive-gitlab.vim
 	url = https://github.com/shumphrey/fugitive-gitlab.vim.git
-[submodule "src-haskell/xmonad-contrib"]
-	path = src-haskell/xmonad-contrib
-	#url = https://github.com/xmonad/xmonad-contrib.git
-	url = https://github.com/liskin/xmonad-contrib.git
-[submodule "src-haskell/xmonad"]
-	path = src-haskell/xmonad
-	#url = https://github.com/xmonad/xmonad.git
-	url = https://github.com/liskin/xmonad.git
-[submodule "src-haskell/xmobar"]
-	path = src-haskell/xmobar
-	#url = https://github.com/jaor/xmobar.git
-	url = https://github.com/liskin/xmobar.git
-[submodule "src-haskell/X11"]
-	path = src-haskell/X11
-	#url = https://github.com/xmonad/X11
-	url = https://github.com/liskin/X11
 [submodule ".vim/bundle/vim-boxdraw"]
 	path = .vim/bundle/vim-boxdraw
 	url = https://github.com/gyim/vim-boxdraw.git
 [submodule ".vim/bundle/vader.vim"]
 	path = .vim/bundle/vader.vim
 	url = https://github.com/junegunn/vader.vim
-[submodule "src/tig-colors-neonwolf"]
-	path = src/tig-colors-neonwolf
-	url = https://github.com/h3xx/tig-colors-neonwolf
-[submodule "src/emoji-rofi-menu"]
-	path = src/emoji-rofi-menu
-	url = https://github.com/liskin/emoji-rofi-menu
-[submodule "src/urxvt-scripts"]
-	path = src/urxvt-scripts
-	#url = https://github.com/pkkolos/urxvt-scripts.git
-	url = https://github.com/liskin/urxvt-scripts.git
-[submodule "src/urxvt-aAtt"]
-	path = src/urxvt-aAtt
-	url = https://github.com/Vifon/autocomplete-ALL-the-things
 [submodule ".vim/bundle/ghost-text.vim"]
 	path = .vim/bundle/ghost-text.vim
 	url = https://github.com/pandysong/ghost-text.vim
@@ -118,17 +89,6 @@
 	path = .vim/bundle/vim-characterize
 	#url = https://github.com/tpope/vim-characterize
 	url = https://github.com/liskin/vim-characterize
-[submodule "src/git-filter-repo"]
-	path = src/git-filter-repo
-	url = https://github.com/newren/git-filter-repo.git
-[submodule "src-webextensions/add-url-to-window-title"]
-	path = src-webextensions/add-url-to-window-title
-	#url = https://github.com/erichgoldman/add-url-to-window-title
-	url = https://github.com/liskin/add-url-to-window-title
-[submodule "src-webextensions/chrome-blank-tab"]
-	path = src-webextensions/chrome-blank-tab
-	#url = https://github.com/karlerikjonatan/empty-tab
-	url = https://github.com/liskin/empty-tab
 [submodule ".vim/bundle/vim-visual-multi"]
 	path = .vim/bundle/vim-visual-multi
 	url = https://github.com/mg979/vim-visual-multi
@@ -141,6 +101,46 @@
 [submodule ".vim/bundle/vim-snippets"]
 	path = .vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
+[submodule "src/tig-colors-neonwolf"]
+	path = src/tig-colors-neonwolf
+	url = https://github.com/h3xx/tig-colors-neonwolf
+[submodule "src/emoji-rofi-menu"]
+	path = src/emoji-rofi-menu
+	url = https://github.com/liskin/emoji-rofi-menu
+[submodule "src/urxvt-scripts"]
+	path = src/urxvt-scripts
+	#url = https://github.com/pkkolos/urxvt-scripts.git
+	url = https://github.com/liskin/urxvt-scripts.git
+[submodule "src/urxvt-aAtt"]
+	path = src/urxvt-aAtt
+	url = https://github.com/Vifon/autocomplete-ALL-the-things
+[submodule "src/git-filter-repo"]
+	path = src/git-filter-repo
+	url = https://github.com/newren/git-filter-repo.git
+[submodule "src-webextensions/add-url-to-window-title"]
+	path = src-webextensions/add-url-to-window-title
+	#url = https://github.com/erichgoldman/add-url-to-window-title
+	url = https://github.com/liskin/add-url-to-window-title
+[submodule "src-webextensions/chrome-blank-tab"]
+	path = src-webextensions/chrome-blank-tab
+	#url = https://github.com/karlerikjonatan/empty-tab
+	url = https://github.com/liskin/empty-tab
+[submodule "src-haskell/xmonad-contrib"]
+	path = src-haskell/xmonad-contrib
+	#url = https://github.com/xmonad/xmonad-contrib.git
+	url = https://github.com/liskin/xmonad-contrib.git
+[submodule "src-haskell/xmonad"]
+	path = src-haskell/xmonad
+	#url = https://github.com/xmonad/xmonad.git
+	url = https://github.com/liskin/xmonad.git
+[submodule "src-haskell/xmobar"]
+	path = src-haskell/xmobar
+	#url = https://github.com/jaor/xmobar.git
+	url = https://github.com/liskin/xmobar.git
+[submodule "src-haskell/X11"]
+	path = src-haskell/X11
+	#url = https://github.com/xmonad/X11
+	url = https://github.com/liskin/X11
 [submodule "src-haskell/ghcid"]
 	path = src-haskell/ghcid
 	url = https://github.com/ndmitchell/ghcid
