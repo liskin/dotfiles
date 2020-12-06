@@ -167,3 +167,6 @@ include "%L"
 <Multi_key> <g> <y> : "ψ" U03C8
 <Multi_key> <g> <W> : "Ω" U03A9
 <Multi_key> <g> <w> : "ω" U03C9
+
+<Multi_key> <minus> <space> : "​" U200B # ZERO WIDTH SPACE
+<Multi_key> <space> <minus> : "​" U200B # ZERO WIDTH SPACE
