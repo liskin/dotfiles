@@ -1,6 +1,0 @@
-#!sh
-# This file is sourced by Xsession(5), not executed.
-
-if has_option liskin-use-systemd-journal; then
-	STARTUP="/usr/bin/systemd-cat --priority=info --stderr-priority=warning --level-prefix=false $STARTUP"
-fi
