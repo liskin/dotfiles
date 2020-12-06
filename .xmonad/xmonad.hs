@@ -60,6 +60,7 @@ import XMonad.Util.NamedWindows
 import XMonad.Util.Run
 import XMonad.Util.Stack
 import XMonad.Util.Ungrab
+import qualified XMonad.Util.ExtensibleState as XS
 import qualified XMonad.Util.PureX as P
 
 import Xmobar.X11.Actions (stripActions)
@@ -356,8 +357,8 @@ rescreenHook = do
     let mainxmobar = sequence [ spawnPID "exec xmobar -x 0" ]
     let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l" ]
     let compton = sequence [ spawnPID "exec compton" ]
-    killPids "_XMONAD_XMOBARS"
-    savePids "_XMONAD_XMOBARS" . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
+    killPids
+    savePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
     spawn "exec ~/bin/.xlayout/post.sh"
 
 xmobarScreens :: X [ ProcessID ]
@@ -420,24 +421,18 @@ screenWins scr = forM stack $ either (name False) (name True)
         stack = toTags . W.stack . W.workspace $ scr
         name b = \w -> (,,) <$> pure b <*> pure w <*> getName w
 
-savePids :: String -> [ ProcessID ] -> X ()
-savePids prop pids = do
-    d <- asks display
-    r <- asks theRoot
-    aprop <- getAtom prop
-    typ <- getAtom "PID"
-    io $ changeProperty32 d r aprop typ propModeReplace $ map fromIntegral pids
+data KillPids = KillPids [ ProcessID ] deriving (Show, Read)
 
-getPids :: String -> X [ ProcessID ]
-getPids prop = do
-    d <- asks display
-    r <- asks theRoot
-    aprop <- getAtom prop
-    fmap (map fromIntegral . fromMaybe []) $ io $ getWindowProperty32 d aprop r
+instance ExtensionClass KillPids where
+    initialValue = KillPids []
+    extensionType = PersistentExtension
 
-killPids :: String -> X ()
-killPids prop = do
-    pids <- getPids prop
+savePids :: [ ProcessID ] -> X ()
+savePids = XS.put . KillPids
+
+killPids :: X ()
+killPids = do
+    KillPids pids <- XS.get
     io $ mapConcurrently_ killPid pids
 
 killPid :: ProcessID -> IO ()
