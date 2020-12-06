@@ -10,7 +10,9 @@
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
-import Control.Exception ( try, SomeException )
+import Control.Concurrent (threadDelay)
+import Control.Concurrent.Async (race_, mapConcurrently_)
+import Control.Exception (handle, SomeException)
 import Control.Monad
 import Control.Monad.Fix
 import Data.List ( intercalate, isPrefixOf, nub )
@@ -436,14 +438,17 @@ getPids prop = do
 killPids :: String -> X ()
 killPids prop = do
     pids <- getPids prop
-    io $ mapM_ killPid pids
+    io $ mapConcurrently_ killPid pids
 
 killPid :: ProcessID -> IO ()
-killPid pid = do
-    _ :: Either SomeException () <- try $ do
-        signalProcess sigTERM pid
-        void $ getProcessStatus True False pid
-    return ()
+killPid pid = try_ $ race_ (killer 50000) waiter
+    where
+        try_ = handle (\(_ :: SomeException) -> pure ())
+        waiter = getProcessStatus True False pid
+        killer delay = do
+            signalProcess (if delay < 1000000 then sigTERM else sigKILL) pid
+            threadDelay delay
+            killer (delay * 2)
 
 
 -- Startuphook.
