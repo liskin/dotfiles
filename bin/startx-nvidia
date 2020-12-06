@@ -7,6 +7,6 @@ fi
 
 sudo modprobe nvidia-drm
 sleep 3
-XORGCONFIG=xorg.conf.nvidia startx "$@"
+XORGCONFIG=xorg.conf.nvidia _LISKIN_NVIDIA=1 startx "$@"
 sleep 3
 sudo modprobe -r nvidia

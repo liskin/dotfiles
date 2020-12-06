@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $_LISKIN_NVIDIA_ENV ]]; then
+if [[ $_LISKIN_NVIDIA ]]; then
 	exec "$@"
 else
 	export LIBGL_DRI3_DISABLE=1

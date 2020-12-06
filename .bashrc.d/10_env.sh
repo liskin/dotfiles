@@ -42,7 +42,7 @@ export ANDROID_HOME=/home/tomi/android/android-sdk-linux
 export DEBFULLNAME="Tomas Janousek"
 export DEBEMAIL="tomi@nomi.cz"
 
-if [ -n "$_LISKIN_NVIDIA_ENV" ]; then
+if [ -n "$_LISKIN_NVIDIA" ]; then
 	export VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/nv_vulkan_wrapper.json"
 	unset __EGL_VENDOR_LIBRARY_FILENAMES
 else

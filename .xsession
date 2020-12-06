@@ -11,7 +11,6 @@ for xres in ~/.Xresources.d/*.{ad,m4}; do xrdb -cpp m4 -merge "$xres"; done
 if xrandr --listproviders | grep -q NVIDIA-0; then
 	xrandr --setprovideroutputsource modesetting NVIDIA-0
 	xrandr --auto
-	export _LISKIN_NVIDIA_ENV=1
 fi
 
 ~/bin/layout-normal
