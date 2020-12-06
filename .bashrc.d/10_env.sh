@@ -13,7 +13,6 @@ export GTK_IM_MODULE=xim
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export QT_QPA_PLATFORMTHEME=gtk3
 export SAL_USE_VCLPLUGIN=gtk3
-export XCOMPOSEFILE=/etc/X11/Compose
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 export LESS="--mouse --wheel-lines=3"
