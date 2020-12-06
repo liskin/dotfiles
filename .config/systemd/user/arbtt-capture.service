@@ -1,0 +1,12 @@
+[Unit]
+Description=arbtt-capture
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=%h/bin/arbtt-capture --sample-rate=20
+ExecStartPre=/bin/sh -c "/usr/bin/xset q >/dev/null 2>&1"
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
