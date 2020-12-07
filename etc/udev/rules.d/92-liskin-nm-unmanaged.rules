@@ -1,6 +1,10 @@
+ACTION=="remove", GOTO="liskin-nm-unmanaged-end"
+
 # docker
-SUBSYSTEM=="net", ACTION=="add|change", ATTR{address}=="02:42:*", ENV{INTERFACE}=="docker*", ENV{NM_UNMANAGED}="1"
-SUBSYSTEM=="net", ACTION=="add|change", ATTR{address}=="02:42:*", ENV{INTERFACE}=="br-*", ENV{NM_UNMANAGED}="1"
+SUBSYSTEM=="net", ATTR{address}=="02:42:*", ENV{INTERFACE}=="docker*", ENV{NM_UNMANAGED}="1"
+SUBSYSTEM=="net", ATTR{address}=="02:42:*", ENV{INTERFACE}=="br-*", ENV{NM_UNMANAGED}="1"
 
 # libvirt
-SUBSYSTEM=="net", ACTION=="add|change", ATTR{address}=="52:54:*", ENV{INTERFACE}=="virbr*", ENV{NM_UNMANAGED}="1"
+SUBSYSTEM=="net", ATTR{address}=="52:54:*", ENV{INTERFACE}=="virbr*", ENV{NM_UNMANAGED}="1"
+
+LABEL="liskin-nm-unmanaged-end"

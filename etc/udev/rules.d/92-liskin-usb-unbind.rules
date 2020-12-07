@@ -1,4 +1,5 @@
-ACTION!="add|bind", SUBSYSTEM!="usb", GOTO="liskin-usb-unbind-end"
+ACTION=="remove", GOTO="liskin-usb-unbind-end"
+SUBSYSTEM!="usb", GOTO="liskin-usb-unbind-end"
 
 ENV{PRODUCT}=="2386/310e/0", TEST!="/run/t25_touchscreen_enabled", GOTO="liskin-usb-unbind-do"
 ENV{PRODUCT}=="bda/316/204", TEST!="/run/t25_sdcard_enabled", GOTO="liskin-usb-unbind-do"
