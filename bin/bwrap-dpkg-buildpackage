@@ -1,0 +1,9 @@
+#!/bin/bash
+exec bwrap \
+	--ro-bind / / \
+	--tmpfs /tmp \
+	--dev /dev \
+	--proc /proc \
+	--bind "$PWD/.."{,} \
+	--bind "$HOME/.ccache"{,} \
+	dpkg-buildpackage "$@"

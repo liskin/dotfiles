@@ -50,3 +50,15 @@ export-alias google-chrome-app-keep="google-chrome --app=https://keep.google.com
 export-alias google-chrome-app-matrix-element="google-chrome --app=https://app.element.io/"
 export-alias google-chrome-app-slack-altworx="google-chrome --app=https://altworx.slack.com/"
 export-alias google-chrome-app-slack-goodalumni="google-chrome --app=https://goodalumni.slack.com/"
+
+export-alias zoom='flatpak run us.zoom.Zoom'
+
+export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
+export-alias meld='LC_MESSAGES=C /usr/bin/meld'
+export-alias google-earth-pro='LC_NUMERIC=C /usr/bin/google-earth-pro'
+export-alias google-earth='google-earth-pro'
+
+export-alias nmcli-c-up-bluetooth='nmcli c up s10e.phone.lisk.in'
+export-alias nmcli-c-down-bluetooth='nmcli c down s10e.phone.lisk.in'
+export-alias nmcli-c-up-vpn-altworx='nmcli c up vpn-altworx'
+export-alias nmcli-c-down-vpn-altworx='nmcli c down vpn-altworx'
