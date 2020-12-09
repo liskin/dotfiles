@@ -8,13 +8,18 @@ $(XMONAD_BINARY): build-deps
 	mv -f $@.tmp $@
 
 .PHONY: ghcid
-ghcid: build-deps
-	cd ~/src-haskell && \
-		ghcid -c 'stack exec -- ghci $(CURDIR)/xmonad.hs'
+ghcid: TARGET=ghci
+ghcid:
+	ghcid -c '$(MAKE) $(TARGET)'
 
-ghcid-%: build-deps _phony
+.PHONY: ghci
+ghci: build-deps
 	cd ~/src-haskell && \
-		ghcid -c 'stack ghci $*:lib'
+		stack exec -- ghci $(CURDIR)/xmonad.hs
+
+ghci-%: build-deps _phony
+	cd ~/src-haskell && \
+		stack ghci $*:lib
 
 .PHONY: build-deps
 build-deps:
