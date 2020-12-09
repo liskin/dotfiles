@@ -387,10 +387,12 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 autocmd FileType gitcommit let b:EditorConfig_disable = 1
 
 " ultisnips {{{2
+let g:UltiSnipsEditSplit = 'context'
 let g:UltiSnipsExpandTrigger = '<c-x><c-_>'
 let g:UltiSnipsListSnippets = ''
-let g:snips_author = 'liskin'
+let g:snips_name = 'Tomáš Janoušek'
 let g:snips_email = 'tomi@nomi.cz'
+let g:snips_author = 'liskin'
 let g:snips_github = "https://github.com/liskin"
 
 " load everything: debian addons, pathogen, ft, syn {{{2
