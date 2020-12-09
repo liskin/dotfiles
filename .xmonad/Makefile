@@ -12,9 +12,15 @@ ghcid: build-deps
 	cd ~/src-haskell && \
 		ghcid -c 'stack exec -- ghci $(CURDIR)/xmonad.hs'
 
+ghcid-%: build-deps _phony
+	cd ~/src-haskell && \
+		ghcid -c 'stack ghci $*:lib'
+
 .PHONY: build-deps
 build-deps:
 	$(MAKE) -C ~/src-haskell build BUILD_TARGETS="xmobar xmonad xmonad-contrib split"
 	cd ~/src-haskell && \
 		stack exec -- ghc --make xmobar/examples/xmonadpropwrite.hs && \
 		cp xmobar/examples/xmonadpropwrite .bin/
+
+.PHONY: _phony
