@@ -379,28 +379,28 @@ xmobarWindowLists = do
     forM_ (W.screens ws) $ \scr -> do
         wins <- screenWins scr
         let S num = W.screen scr
-            prop = "_XMONAD_LOG_SCREEN_" ++ show num
-            wks = W.workspace scr
-            tag = W.tag wks
-            layout = description . W.layout $ wks
-            dir' = maybe "<err>" getWorkspaceDir . asMyLayout . W.layout $ wks
-            dir = shortenLeft 30 . shortenDir $ dir'
+        let prop = "_XMONAD_LOG_SCREEN_" ++ show num
+        let wks = W.workspace scr
+        let tag = W.tag wks
+        let layout = description . W.layout $ wks
+        let dir' = maybe "<err>" getWorkspaceDir . asMyLayout . W.layout $ wks
+        let dir = shortenLeft 30 . shortenDir $ dir'
 
-            sanitize t = xmobarRaw . shorten 30 . strip $ t
+        let sanitize t = xmobarRaw . shorten 30 . strip $ t
                 where strip | isWeechatTitle t = xmobarStrip
                             | otherwise        = id
 
-            fmt (True, _, n) | num == current =
+        let fmt (True, _, n) | num == current =
                      xmobarColor "#ffff00" ""        $ n
             fmt (_,    w, n) = if w `elem` urgents
                 then xmobarColor "#ff0000" "#ffff00" $ n
                 else xmobarColor "#808000" ""        $ n
 
-            tagprint = if current == num
-                then ppCurrent finPP
-                else ppVisible finPP
+        let tagprint = if current == num
+                then ppCurrent (myPP [])
+                else ppVisible (myPP [])
 
-            finPP = myPP $ (tagprint (name tag) ++ " " ++ dir ++ " | " ++ layout) :
+        let finPP = myPP $ (tagprint (name tag) ++ " " ++ dir ++ " | " ++ layout) :
                 [ fmt (b, w, show n ++ " " ++ sanitize (show t))
                 | (b,w,t) <- wins | n <- [(1 :: Int)..] ]
         dynamicLogString finPP >>= xmonadPropLog' prop
