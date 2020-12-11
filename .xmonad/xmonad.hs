@@ -7,9 +7,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wall -Wno-missing-signatures -fno-warn-orphans #-}
+
+module Main (main) where
+
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
+import Codec.Binary.UTF8.String (encodeString)
 import Control.Applicative (liftA2)
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_, mapConcurrently_)
@@ -60,7 +64,6 @@ import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
 import XMonad.Util.Run
-import XMonad.Util.Stack
 import XMonad.Util.Ungrab
 import qualified XMonad.Util.ExtensibleState as XS
 import qualified XMonad.Util.PureX as P
@@ -394,62 +397,56 @@ xmobarScreens = do
         spawnPID $ "exec xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
 
 xmobarWindowLists :: X ()
-xmobarWindowLists = do
-    name <- getWorkspaceNames
-    ws <- gets windowset
+xmobarWindowLists = withWindowSet $ \ws -> do
+    addWksName <- getWorkspaceNames
     urgents <- readUrgents
-    let S current = W.screen $ W.current ws
     forM_ (W.screens ws) $ \scr -> do
-        wins <- screenWins scr
-        let S num = W.screen scr
-        let prop = "_XMONAD_LOG_SCREEN_" ++ show num
         let wks = W.workspace scr
         let tag = W.tag wks
+        let stack = W.stack wks
+        let isFocused = (W.focus <$> stack ==) . Just
+        let isCurrent = tag == W.tag (W.workspace (W.current ws))
+
+        let tagFmt | isCurrent = ppCurrentC
+                   | otherwise = ppVisibleC
+
         let layout = description . W.layout $ wks
         let dir' = fromMaybe "<err>" . getAlt $ inspectWorkspace myLayout Curdir wks
         let dir = shortenLeft 30 . shortenDir $ dir'
+        let logHeader = tagFmt (addWksName tag) ++ " " ++ dir ++ " | " ++ layout
 
-        let sanitize t = xmobarRaw . shorten 30 . strip $ t
-                where strip | isWeechatTitle t = xmobarStrip
-                            | otherwise        = id
+        let winFmt w | isFocused w && isCurrent = ppFocusC
+            winFmt w | w `elem` urgents         = ppUrgentC
+                     | otherwise                = ppUnfocusC
 
+        let wins = W.integrate' stack
+        tits <- mapM getName wins
         let gs = map fst (groups wks)
-        let indices = [ show n ++ i
-                      | (n, g) <- zip [(1::Int)..] gs
-                      , let is = case g of [_] -> [""]; _ -> map (:[]) ("⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..])
-                      , (_, i) <- zip g is
-                      ]
+        let indices = [ i | (n, g) <- zip [1..] gs
+                      , i <- primes [ show (n :: Int) | _ <- g ] ]
+        let logWins = [ winFmt w (i ++ " " ++ sanitize (show tit))
+                      | w <- wins | tit <- tits | i <- indices ]
 
-        let fmt (True, _, n) | num == current =
-                     xmobarColor "#ffff00" ""        $ n
-            fmt (_,    w, n) = if w `elem` urgents
-                then xmobarColor "#ff0000" "#ffff00" $ n
-                else xmobarColor "#808000" ""        $ n
-
-        let tagprint = if current == num
-                then ppCurrent (myPP [])
-                else ppVisible (myPP [])
-
-        let finPP = myPP $ (tagprint (name tag) ++ " " ++ dir ++ " | " ++ layout) :
-                [ fmt (b, w, i ++ " " ++ sanitize (show t))
-                | (b,w,t) <- wins | i <- indices ]
-        dynamicLogString finPP >>= xmonadPropLog' prop
+        xmobarLog scr . intercalate "  " $ logHeader : logWins
 
     where
-        myPP l = xmobarPP
-            { ppSep = "   "
-            , ppOrder = \(_:_:_:x) -> x
-            , ppExtras = map (return . Just) l
-            , ppVisible = xmobarBorder "Bottom" "green" 1 . ppVisibleC
-            , ppCurrent = xmobarBorder "Bottom" "yellow" 1 . ppCurrentC
-            }
-        ppVisibleC = xmobarColor "green" ""
-        ppCurrentC = xmobarColor "yellow" ""
+        ppVisibleC = xmobarBorder "Bottom" "green" 1 . xmobarColor "green" ""
+        ppCurrentC = xmobarBorder "Bottom" "yellow" 1 . xmobarColor "yellow" ""
 
-screenWins scr = forM stack $ either (name False) (name True)
-    where
-        stack = toTags . W.stack . W.workspace $ scr
-        name b = \w -> (,,) <$> pure b <*> pure w <*> getName w
+        ppFocusC   = xmobarColor "#ffff00" ""
+        ppUrgentC  = xmobarColor "#ff0000" "#ffff00"
+        ppUnfocusC = xmobarColor "#808000" ""
+
+        sanitize t = xmobarRaw . shorten 30 . strip $ t
+          where
+            strip | isWeechatTitle t = xmobarStrip
+                  | otherwise        = id
+
+        xmobarLog (W.screen -> S n) = xmonadPropLog' prop . encodeString
+          where prop = "_XMONAD_LOG_SCREEN_" ++ show n
+
+        primes [n] = [n]
+        primes ns = [ n ++ [p] | n <- ns | p <- "⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..] ]
 
 groups :: WindowSpace -> [([Window], Window)]
 groups ws = foc . gr . W.integrate' . W.stack $ ws
