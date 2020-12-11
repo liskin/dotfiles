@@ -416,7 +416,7 @@ xmobarWindowLists = do
         let gs = map fst (groups wks)
         let indices = [ show n ++ i
                       | (n, g) <- zip [(1::Int)..] gs
-                      , let is = case g of [_] -> [""]; _ -> map (:[]) ['a'..]
+                      , let is = case g of [_] -> [""]; _ -> map (:[]) ("⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..])
                       , (_, i) <- zip g is
                       ]
 
