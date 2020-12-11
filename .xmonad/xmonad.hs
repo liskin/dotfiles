@@ -10,17 +10,18 @@
 import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
+import Control.Applicative (liftA2)
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_, mapConcurrently_)
 import Control.Exception (handle, SomeException)
 import Control.Monad
 import Control.Monad.Fix
-import Data.List ( intercalate, isPrefixOf, nub )
+import Data.Function (on)
+import Data.List (groupBy, intercalate, isPrefixOf, nub)
 import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
 import Data.Monoid
-import Data.Typeable
 import Graphics.X11.ExtraTypes.XF86
 import System.Directory ( getCurrentDirectory )
 import System.Environment
@@ -43,6 +44,7 @@ import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
+import XMonad.Layout.Inspect
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MultiToggle
@@ -153,9 +155,9 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_Right ), swapTo Next >> up)
     ]
     ++
-    [ ((modMask .|. m, k), P.defile (P.focusNth i <> a) >> up)
+    [ ((modMask .|. m, k), P.defile (focusNth i swap) >> up)
         | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0])
-        , (m, a) <- [ (0, return (Any False)), (shiftMask, P.modifyWindowSet' W.swapMaster >> return (Any True)) ] ]
+        , (m, swap) <- [(0, False), (shiftMask, True)] ]
     ++
     [ ((modMask,               xK_Tab   ), nextScreen >> up)
     , ((modMask .|. shiftMask, xK_Tab   ), prevScreen >> up) ]
@@ -201,6 +203,29 @@ toggleFullscreen =
         let isFullFloat = w `M.lookup` W.floating ws == Just fullRect
         windows $ if isFullFloat then W.sink w else W.float w fullRect
 
+focusNth :: Int -> Bool -> P.PureX Any
+focusNth n swap = P.withFocii $ \_ focused -> do
+    focusFrom focused <> if swap then swapWith focused else mempty
+  where
+    focusFrom focused = do
+        ws <- P.curWorkspace
+        case drop n (groups ws) of
+            [] -> mempty -- index out of bounds
+            ((g, gf) : _) -> P.focusWindow $
+                case dropWhile (focused /=) (g ++ g) of
+                    (_ : next : _) -> next
+                    _ -> gf -- focused not in this group
+
+    swapWith _ | not swap = mempty
+    swapWith oldFocused = P.withFocii $ \_ newFocused -> do
+        P.putStack . fmap (swapStack oldFocused newFocused) =<< P.getStack
+        P.focusWindow newFocused <> pure (Any $ oldFocused /= newFocused)
+
+    swapStack a b (W.Stack f u d) = W.Stack (sw f) (map sw u) (map sw d)
+      where sw x | x == a = b
+                 | x == b = a
+                 | otherwise = x
+
 
 -- Layouts.
 myLayout = dir . refocusLastLayoutHook . trackFloating $
@@ -223,8 +248,6 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
          activeBorderWidth = 1, inactiveBorderWidth = 1, urgentBorderWidth = 1,
          activeBorderColor = "#000000", inactiveBorderColor = "#000000", urgentBorderColor = "#ff0000"
      }
-
-asMyLayout (Layout l) = (`asTypeOf` myLayout) <$> cast l
 
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled"
@@ -383,12 +406,19 @@ xmobarWindowLists = do
         let wks = W.workspace scr
         let tag = W.tag wks
         let layout = description . W.layout $ wks
-        let dir' = maybe "<err>" getWorkspaceDir . asMyLayout . W.layout $ wks
+        let dir' = fromMaybe "<err>" . getAlt $ inspectWorkspace myLayout Curdir wks
         let dir = shortenLeft 30 . shortenDir $ dir'
 
         let sanitize t = xmobarRaw . shorten 30 . strip $ t
                 where strip | isWeechatTitle t = xmobarStrip
                             | otherwise        = id
+
+        let gs = map fst (groups wks)
+        let indices = [ show n ++ i
+                      | (n, g) <- zip [(1::Int)..] gs
+                      , let is = case g of [_] -> [""]; _ -> map (:[]) ['a'..]
+                      , (_, i) <- zip g is
+                      ]
 
         let fmt (True, _, n) | num == current =
                      xmobarColor "#ffff00" ""        $ n
@@ -401,8 +431,8 @@ xmobarWindowLists = do
                 else ppVisible (myPP [])
 
         let finPP = myPP $ (tagprint (name tag) ++ " " ++ dir ++ " | " ++ layout) :
-                [ fmt (b, w, show n ++ " " ++ sanitize (show t))
-                | (b,w,t) <- wins | n <- [(1 :: Int)..] ]
+                [ fmt (b, w, i ++ " " ++ sanitize (show t))
+                | (b,w,t) <- wins | i <- indices ]
         dynamicLogString finPP >>= xmonadPropLog' prop
 
     where
@@ -420,6 +450,14 @@ screenWins scr = forM stack $ either (name False) (name True)
     where
         stack = toTags . W.stack . W.workspace $ scr
         name b = \w -> (,,) <$> pure b <*> pure w <*> getName w
+
+groups :: WindowSpace -> [([Window], Window)]
+groups ws = foc . gr . W.integrate' . W.stack $ ws
+  where
+    gs = inspectWorkspace myLayout GetGroups ws
+    gr = groupBy (eq `on` (`M.lookup` gs))
+    eq a b = fromMaybe False $ liftA2 (==) a b
+    foc = map (\g@(w:_) -> (g, fromMaybe w (w `M.lookup` gs)))
 
 data KillPids = KillPids [ ProcessID ] deriving (Show, Read)
 
