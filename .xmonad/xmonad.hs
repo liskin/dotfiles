@@ -14,14 +14,12 @@ import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
 import Codec.Binary.UTF8.String (encodeString)
-import Control.Applicative (liftA2)
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_, mapConcurrently_)
 import Control.Exception (handle, SomeException)
 import Control.Monad
 import Control.Monad.Fix
-import Data.Function (on)
-import Data.List (groupBy, intercalate, isPrefixOf, nub)
+import Data.List (intercalate, isPrefixOf, nub)
 import Data.List.Split
 import qualified Data.Map as M
 import Data.Maybe
@@ -212,12 +210,10 @@ focusNth n swap = P.withFocii $ \_ focused -> do
   where
     focusFrom focused = do
         ws <- P.curWorkspace
-        case drop n (groups ws) of
+        case drop n (W.integrate' . getGroupStack myLayout $ ws) of
             [] -> mempty -- index out of bounds
-            ((g, gf) : _) -> P.focusWindow $
-                case dropWhile (focused /=) (g ++ g) of
-                    (_ : next : _) -> next
-                    _ -> gf -- focused not in this group
+            (g : _) | W.focus g /= focused -> P.focusWindow (W.focus g)
+                    | otherwise -> P.focusWindow (W.focus . W.focusDown' $ g)
 
     swapWith _ | not swap = mempty
     swapWith oldFocused = P.withFocii $ \_ newFocused -> do
@@ -410,9 +406,9 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let tagFmt | isCurrent = ppCurrentC
                    | otherwise = ppVisibleC
 
-        let layout = description . W.layout $ wks
         let dir' = fromMaybe "<err>" . getAlt $ inspectWorkspace myLayout Curdir wks
         let dir = shortenLeft 30 . shortenDir $ dir'
+        let layout = description . W.layout $ wks
         let logHeader = tagFmt (addWksName tag) ++ " " ++ dir ++ " | " ++ layout
 
         let winFmt w | isFocused w && isCurrent = ppFocusC
@@ -421,7 +417,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
 
         let wins = W.integrate' stack
         tits <- mapM getName wins
-        let gs = map fst (groups wks)
+        let gs = map W.integrate . W.integrate' . getGroupStack myLayout $ wks
         let indices = [ i | (n, g) <- zip [1..] gs
                       , i <- primes [ show (n :: Int) | _ <- g ] ]
         let logWins = [ winFmt w (i ++ " " ++ sanitize (show tit))
@@ -447,14 +443,6 @@ xmobarWindowLists = withWindowSet $ \ws -> do
 
         primes [n] = [n]
         primes ns = [ n ++ [p] | n <- ns | p <- "⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..] ]
-
-groups :: WindowSpace -> [([Window], Window)]
-groups ws = foc . gr . W.integrate' . W.stack $ ws
-  where
-    gs = inspectWorkspace myLayout GetGroups ws
-    gr = groupBy (eq `on` (`M.lookup` gs))
-    eq a b = fromMaybe False $ liftA2 (==) a b
-    foc = map (\g@(w:_) -> (g, fromMaybe w (w `M.lookup` gs)))
 
 data KillPids = KillPids [ ProcessID ] deriving (Show, Read)
 
