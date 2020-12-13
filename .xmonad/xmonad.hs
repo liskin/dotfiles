@@ -46,7 +46,6 @@ import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
-import XMonad.Layout.Inspect
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MultiToggle
@@ -307,7 +306,7 @@ myLogHook = do
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
         shortenUrgent t | isWeechatTitle t = stripActions t
-                        | otherwise = xmobarRaw $ shorten 30 t
+                        | otherwise = xmobarRaw $ shorten' "~" 30 t
         ppUrgentExtra urgents w = do
             nw <- getName w
             let pp = if w `elem` urgents then ppUrgentC else ppNormalC
@@ -406,7 +405,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let tagFmt | isCurrent = ppCurrentC
                    | otherwise = ppVisibleC
 
-        let dir' = fromMaybe "<err>" . getAlt $ inspectWorkspace myLayout Curdir wks
+        let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
         let dir = shortenLeft 30 . shortenDir $ dir'
         let layout = description . W.layout $ wks
         let logHeader = tagFmt (addWksName tag) ++ " " ++ dir ++ " | " ++ layout
@@ -433,7 +432,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         ppUrgentC  = xmobarColor "#ff0000" "#ffff00"
         ppUnfocusC = xmobarColor "#808000" ""
 
-        sanitize t = xmobarRaw . shorten 30 . strip $ t
+        sanitize t = xmobarRaw . shorten' "~" 30 . strip $ t
           where
             strip | isWeechatTitle t = xmobarStrip
                   | otherwise        = id
