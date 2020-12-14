@@ -42,7 +42,7 @@ liskin-xss-lock &
 alttab &
 liskin-thinkpad-battery update-xmobar
 
-if [[ $DISPLAY == :0 ]]; then
+if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSION_ID" ]]; then
 	systemctl --user --no-block start \
 		redshift.service \
 		notify-osd.service \
@@ -54,9 +54,20 @@ if [[ $DISPLAY == :0 ]]; then
 	/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 	firewall-applet &
 	caffeine-indicator &
-fi
 
-while :; do
-	${XSESSION_WM:-xmonad}
-	sleep 1
-done
+	systemctl --user import-environment SSH_AUTH_SOCK
+	exec systemd-run \
+		--quiet \
+		--wait --collect \
+		--user --slice="session.slice" --unit="xmonad@$XDG_SESSION_ID-$DISPLAY.service" \
+		${XDG_SEAT:+--setenv="XDG_SEAT=$XDG_SEAT"} \
+		${XDG_SESSION_ID:+--setenv="XDG_SESSION_ID=$XDG_SESSION_ID"} \
+		${XDG_VTNR:+--setenv="XDG_VTNR=$XDG_VTNR"} \
+		--property="Requires=graphical-session-pre.target" \
+		--property="After=graphical-session-pre.target" \
+		--property="BindsTo=graphical-session.target" \
+		--property="Restart=on-failure" \
+		-- ~/bin/xmonad
+else
+	exec ~/bin/xmonad
+fi
