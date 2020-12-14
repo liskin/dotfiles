@@ -1,11 +1,9 @@
 [Unit]
-Description=battery-watch
+Description=firewall-applet
 PartOf=graphical-session.target
-Wants=notify-osd.service
-After=notify-osd.service
 
 [Service]
-ExecStart=%h/bin/battery-watch
+ExecStart=/usr/bin/firewall-applet
 Restart=always
 
 [Install]

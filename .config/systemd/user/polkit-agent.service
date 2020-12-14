@@ -1,11 +1,9 @@
 [Unit]
-Description=battery-watch
+Description=policykit agent
 PartOf=graphical-session.target
-Wants=notify-osd.service
-After=notify-osd.service
 
 [Service]
-ExecStart=%h/bin/battery-watch
+ExecStart=/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 Restart=always
 
 [Install]

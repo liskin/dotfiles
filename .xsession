@@ -43,18 +43,6 @@ alttab &
 liskin-thinkpad-battery update-xmobar
 
 if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSION_ID" ]]; then
-	systemctl --user --no-block start \
-		redshift.service \
-		notify-osd.service \
-		battery-watch.service \
-		blueman-applet.service \
-		arbtt-capture.service
-	pasystray --notify=all &
-	nm-applet &
-	/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
-	firewall-applet &
-	caffeine-indicator &
-
 	systemctl --user import-environment SSH_AUTH_SOCK
 	exec systemd-run \
 		--quiet \

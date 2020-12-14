@@ -1,11 +1,9 @@
 [Unit]
-Description=battery-watch
+Description=caffeine-indicator
 PartOf=graphical-session.target
-Wants=notify-osd.service
-After=notify-osd.service
 
 [Service]
-ExecStart=%h/bin/battery-watch
+ExecStart=/usr/bin/caffeine-indicator
 Restart=always
 
 [Install]

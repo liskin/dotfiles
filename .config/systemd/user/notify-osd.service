@@ -1,15 +1,13 @@
 [Unit]
 Description=notify-osd
-StartLimitIntervalSec=0
+PartOf=graphical-session.target
 
 [Service]
 BusName=org.freedesktop.Notifications
 ExecStart=/usr/lib/notify-osd/notify-osd
-ExecStartPre=/bin/sh -c "/usr/bin/xset q >/dev/null 2>&1"
 Restart=always
-RestartSec=10
 StandardOutput=null
 StandardError=null
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
