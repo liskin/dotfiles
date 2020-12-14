@@ -68,12 +68,22 @@ import Xmobar.X11.Actions (stripActions)
 
 up = updatePointer (0.5, 0.5) (0, 0)
 
+cmdAppScope =
+    [ "exec", "systemd-run", "--quiet", "--collect"
+    , "--user" , "--scope", "--slice=app.slice", "--unit=\"app-$$.scope\""
+    , "--" ]
+
+cmdXCwd = [ "D=\"$(xcwd)\";", "${D:+cd \"$D\"};" ]
+
+spawnApp s = spawn . unwords $ cmdAppScope ++ [s]
+spawnTerm s = spawn . unwords $ cmdXCwd ++ cmdAppScope ++ [s]
+
 -- Bindings.
 myKeys conf@(XConfig{modMask}) = M.fromList $
     -- running apps
-    [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn "D=\"$(xcwd)\"; ${D:+cd \"$D\"}; exec urxvt")
-    , ((0,                     xK_Menu  ), unGrab >> spawn "exec rofi -show run")
-    , ((controlMask,           xK_Menu  ), unGrab >> spawn "exec rofi -show drun")
+    [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawnTerm "urxvt")
+    , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
+    , ((controlMask,           xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
     -- various rofi tools
     , ((modMask,               xK_Menu  ), unGrab >> spawn "exec rofi -show window")
