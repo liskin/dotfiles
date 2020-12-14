@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+set -o pipefail
+
+export LANG=C
+
+[[ ! $DISPLAY ]] && exit
+
+pactl list short modules | grep -F display="$DISPLAY" | while read -r module _; do
+	pacmd unload-module "$module" || :
+done

@@ -44,7 +44,7 @@ liskin-thinkpad-battery update-xmobar
 
 if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSION_ID" ]]; then
 	systemctl --user import-environment SSH_AUTH_SOCK
-	exec systemd-run \
+	systemd-run \
 		--quiet \
 		--wait --collect \
 		--user --slice="session.slice" --unit="xmonad@$XDG_SESSION_ID-$DISPLAY.service" \
@@ -57,5 +57,7 @@ if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSIO
 		--property="Restart=on-failure" \
 		-- ~/bin/xmonad
 else
-	exec ~/bin/xmonad
+	~/bin/xmonad
 fi
+
+~/bin/stop-pulseaudio-x11
