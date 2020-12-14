@@ -148,7 +148,6 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
 
     , ((modMask .|. shiftMask, xK_q     ), rescreenHook)
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
-    , ((mod1Mask .|. controlMask, xK_q  ), dumpLayouts)
     ]
     ++
 
@@ -485,10 +484,6 @@ myStartupHook = do
     rescreenHook
 
 javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
-
-dumpLayouts = do
-    lay <- gets windowset
-    io $ appendFile "/tmp/xmonad_layout_log" ("\n\n-----\n" ++ show lay)
 
 -- Main.
 main = do
