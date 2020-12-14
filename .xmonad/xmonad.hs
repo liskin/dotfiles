@@ -69,15 +69,21 @@ import Xmobar.X11.Actions (stripActions)
 
 up = updatePointer (0.5, 0.5) (0, 0)
 
+cmdLogJournal =
+    [ "systemd-cat"
+    , "--priority=info", "--stderr-priority=warning", "--level-prefix=false"
+    , "--" ]
+
 cmdAppScope =
-    [ "exec", "systemd-run", "--quiet", "--collect"
+    [ "systemd-run", "--quiet", "--collect"
     , "--user" , "--scope", "--slice=app.slice", "--unit=\"app-$$.scope\""
     , "--" ]
 
 cmdXCwd = [ "D=\"$(xcwd)\";", "${D:+cd \"$D\"};" ]
 
-spawnApp s = spawn . unwords $ cmdAppScope ++ [s]
-spawnTerm s = spawn . unwords $ cmdXCwd ++ cmdAppScope ++ [s]
+spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
+spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
+spawnTerm s = spawn . unwords $ cmdXCwd ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
 
 -- Bindings.
 myKeys conf@(XConfig{modMask}) = M.fromList $
@@ -87,31 +93,31 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((controlMask,           xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
     -- various rofi tools
-    , ((modMask,               xK_Menu  ), unGrab >> spawn "exec rofi -show window")
-    , ((modMask,               xK_e     ), unGrab >> spawn "exec rofi-emoji-menu")
-    , ((modMask .|. shiftMask, xK_e     ), unGrab >> spawn "exec rofi-emoji-sign")
-    , ((modMask,               xK_p     ), unGrab >> spawn "exec passmenu --type")
+    , ((modMask,               xK_Menu  ), unGrab >> spawnExec "rofi -show window")
+    , ((modMask,               xK_e     ), unGrab >> spawnExec "rofi-emoji-menu")
+    , ((modMask .|. shiftMask, xK_e     ), unGrab >> spawnExec "rofi-emoji-sign")
+    , ((modMask,               xK_p     ), unGrab >> spawnExec "passmenu --type")
 
     -- media keys
-    , ((0,         xF86XK_AudioMicMute    ), spawn "exec liskin-media mic-mute")
-    , ((0,         xF86XK_AudioMute       ), spawn "exec liskin-media mute")
-    , ((0,         xF86XK_AudioLowerVolume), spawn "exec liskin-media volume down")
-    , ((0,         xF86XK_AudioRaiseVolume), spawn "exec liskin-media volume up")
-    , ((0,         xF86XK_AudioPlay       ), spawn "exec liskin-media play")
-    , ((0,         xF86XK_AudioPause      ), spawn "exec liskin-media play")
-    , ((0,         xF86XK_AudioStop       ), spawn "exec liskin-media stop")
-    , ((0,         xF86XK_AudioNext       ), spawn "exec liskin-media next")
-    , ((0,         xF86XK_AudioPrev       ), spawn "exec liskin-media prev")
+    , ((0,         xF86XK_AudioMicMute    ), spawnExec "liskin-media mic-mute")
+    , ((0,         xF86XK_AudioMute       ), spawnExec "liskin-media mute")
+    , ((0,         xF86XK_AudioLowerVolume), spawnExec "liskin-media volume down")
+    , ((0,         xF86XK_AudioRaiseVolume), spawnExec "liskin-media volume up")
+    , ((0,         xF86XK_AudioPlay       ), spawnExec "liskin-media play")
+    , ((0,         xF86XK_AudioPause      ), spawnExec "liskin-media play")
+    , ((0,         xF86XK_AudioStop       ), spawnExec "liskin-media stop")
+    , ((0,         xF86XK_AudioNext       ), spawnExec "liskin-media next")
+    , ((0,         xF86XK_AudioPrev       ), spawnExec "liskin-media prev")
 
     -- other special keys
-    , ((mod1Mask,  xK_space             ), spawn "exec liskin-touchpad-toggle")
-    , ((0,         xF86XK_TouchpadToggle), spawn "exec liskin-touchpad-toggle")
-    , ((0,         xF86XK_WebCam        ), spawn "exec liskin-touchscreen-toggle")
-    , ((0,         xF86XK_Display       ), spawn "exec layout-auto layout-vertical")
-    , ((0,         xF86XK_Sleep         ), spawn "exec layout-normal")
+    , ((mod1Mask,  xK_space             ), spawnExec "liskin-touchpad-toggle")
+    , ((0,         xF86XK_TouchpadToggle), spawnExec "liskin-touchpad-toggle")
+    , ((0,         xF86XK_WebCam        ), spawnExec "liskin-touchscreen-toggle")
+    , ((0,         xF86XK_Display       ), spawnExec "layout-auto layout-vertical")
+    , ((0,         xF86XK_Sleep         ), spawnExec "layout-normal")
     , ((0,         xF86XK_Tools         ), spawn "sleep 0.5; xset dpms force off")
-    , ((0,         xF86XK_ScreenSaver   ), unGrab >> spawn "exec loginctl lock-session")
-    , ((modMask,   xK_semicolon         ), unGrab >> spawn "exec loginctl lock-session")
+    , ((0,         xF86XK_ScreenSaver   ), unGrab >> spawnExec "loginctl lock-session")
+    , ((modMask,   xK_semicolon         ), unGrab >> spawnExec "loginctl lock-session")
 
     , ((modMask,               xK_Escape), kill)
     , ((modMask,               xK_space ), runSelectedAction "layout" laySels)
