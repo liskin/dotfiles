@@ -70,35 +70,39 @@ up = updatePointer (0.5, 0.5) (0, 0)
 
 -- Bindings.
 myKeys conf@(XConfig{modMask}) = M.fromList $
+    -- running apps
     [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawn "D=\"$(xcwd)\"; ${D:+cd \"$D\"}; exec urxvt")
-    , ((modMask,            xK_semicolon), unGrab >> spawn "loginctl lock-session")
-    , ((0,            xF86XK_ScreenSaver), unGrab >> spawn "loginctl lock-session")
     , ((0,                     xK_Menu  ), unGrab >> spawn "exec rofi -show run")
     , ((controlMask,           xK_Menu  ), unGrab >> spawn "exec rofi -show drun")
+
+    -- various rofi tools
     , ((modMask,               xK_Menu  ), unGrab >> spawn "exec rofi -show window")
     , ((modMask,               xK_e     ), unGrab >> spawn "exec rofi-emoji-menu")
     , ((modMask .|. shiftMask, xK_e     ), unGrab >> spawn "exec rofi-emoji-sign")
-    , ((modMask,               xK_p     ), unGrab >> spawn "passmenu --type")
+    , ((modMask,               xK_p     ), unGrab >> spawn "exec passmenu --type")
 
-    , ((0,         xF86XK_AudioMicMute    ), spawn "liskin-media mic-mute")
-    , ((0,         xF86XK_AudioMute       ), spawn "liskin-media mute")
-    , ((0,         xF86XK_AudioLowerVolume), spawn "liskin-media volume down")
-    , ((0,         xF86XK_AudioRaiseVolume), spawn "liskin-media volume up")
-    , ((0,         xF86XK_AudioPlay       ), spawn "liskin-media play")
-    , ((0,         xF86XK_AudioPause      ), spawn "liskin-media play")
-    , ((0,         xF86XK_AudioStop       ), spawn "liskin-media stop")
-    , ((0,         xF86XK_AudioNext       ), spawn "liskin-media next")
-    , ((0,         xF86XK_AudioPrev       ), spawn "liskin-media prev")
+    -- media keys
+    , ((0,         xF86XK_AudioMicMute    ), spawn "exec liskin-media mic-mute")
+    , ((0,         xF86XK_AudioMute       ), spawn "exec liskin-media mute")
+    , ((0,         xF86XK_AudioLowerVolume), spawn "exec liskin-media volume down")
+    , ((0,         xF86XK_AudioRaiseVolume), spawn "exec liskin-media volume up")
+    , ((0,         xF86XK_AudioPlay       ), spawn "exec liskin-media play")
+    , ((0,         xF86XK_AudioPause      ), spawn "exec liskin-media play")
+    , ((0,         xF86XK_AudioStop       ), spawn "exec liskin-media stop")
+    , ((0,         xF86XK_AudioNext       ), spawn "exec liskin-media next")
+    , ((0,         xF86XK_AudioPrev       ), spawn "exec liskin-media prev")
 
-    , ((0,         xF86XK_TouchpadToggle), spawn "liskin-touchpad-toggle")
-    , ((0,         xF86XK_WebCam        ), spawn "liskin-touchscreen-toggle")
-    , ((0,         xF86XK_Display       ), spawn "layout-auto layout-vertical")
-    , ((0,         xF86XK_Sleep         ), spawn "layout-normal")
+    -- other special keys
+    , ((mod1Mask,  xK_space             ), spawn "exec liskin-touchpad-toggle")
+    , ((0,         xF86XK_TouchpadToggle), spawn "exec liskin-touchpad-toggle")
+    , ((0,         xF86XK_WebCam        ), spawn "exec liskin-touchscreen-toggle")
+    , ((0,         xF86XK_Display       ), spawn "exec layout-auto layout-vertical")
+    , ((0,         xF86XK_Sleep         ), spawn "exec layout-normal")
     , ((0,         xF86XK_Tools         ), spawn "sleep 0.5; xset dpms force off")
-    , ((mod1Mask,      xK_space         ), spawn "liskin-touchpad-toggle")
+    , ((0,         xF86XK_ScreenSaver   ), unGrab >> spawn "exec loginctl lock-session")
+    , ((modMask,   xK_semicolon         ), unGrab >> spawn "exec loginctl lock-session")
 
     , ((modMask,               xK_Escape), kill)
-    , ((modMask .|. controlMask, xK_space ), sendMessage NextLayout)
     , ((modMask,               xK_space ), runSelectedAction "layout" laySels)
     , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
 
