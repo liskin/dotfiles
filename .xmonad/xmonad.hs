@@ -79,7 +79,7 @@ cmdAppScope =
     , "--user" , "--scope", "--slice=app.slice", "--unit=\"app-$$.scope\""
     , "--" ]
 
-cmdXCwd = [ "D=\"$(xcwd)\";", "${D:+cd \"$D\"};" ]
+cmdXCwd = [ "D=\"$(xcwd)\" || D=;", "${D:+cd \"$D\"};" ]
 
 spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
