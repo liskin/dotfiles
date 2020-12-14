@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# log to systemd journal
+exec /usr/bin/systemd-cat --priority=info --stderr-priority=warning --level-prefix=false -- ~/.xsession </dev/null
