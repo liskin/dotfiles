@@ -13,7 +13,7 @@ if xrandr --listproviders | grep -q NVIDIA-0; then
 	xrandr --auto
 fi
 
-~/bin/layout-normal
+layout-normal
 
 xset r rate 200 25
 xset b off
@@ -55,9 +55,9 @@ if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSIO
 		--property="After=graphical-session-pre.target" \
 		--property="BindsTo=graphical-session.target" \
 		--property="Restart=on-failure" \
-		-- ~/bin/xmonad
+		-- xmonad
 else
-	~/bin/xmonad
+	xmonad
 fi
 
-~/bin/stop-pulseaudio-x11
+stop-pulseaudio-x11
