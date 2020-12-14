@@ -25,6 +25,7 @@ import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
 import System.Directory ( getCurrentDirectory )
 import System.Environment
+import System.Exit
 import System.IO.Unsafe
 import System.Posix.Process
 import System.Posix.Signals
@@ -146,8 +147,9 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask,               xK_v     ), renameWorkspace def)
     , ((modMask,               xK_g     ), changeDirRofiGit >> curDirToWorkspacename)
 
-    , ((modMask .|. shiftMask, xK_q     ), rescreenHook)
-    , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
+    , ((modMask .|. shiftMask               , xK_q), rescreenHook)
+    , ((modMask                             , xK_q), restart (myHome ++ "/bin/xmonad") True)
+    , ((modMask .|. mod1Mask .|. controlMask, xK_q), io (exitWith ExitSuccess))
     ]
     ++
 
