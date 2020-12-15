@@ -1,11 +1,9 @@
 [Unit]
 Description=liskin-media mpris-daemon
-StartLimitIntervalSec=0
 
 [Service]
 ExecStart=%h/bin/liskin-media mpris-daemon
-Restart=on-failure
-RestartSec=10
+Restart=always
 
 [Install]
 WantedBy=default.target
