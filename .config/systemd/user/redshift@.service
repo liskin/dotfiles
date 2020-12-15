@@ -1,0 +1,11 @@
+[Unit]
+Description=redshift DISPLAY=%I
+PartOf=xmonad@%i.target
+
+[Service]
+Slice=app.slice
+
+Restart=always
+
+EnvironmentFile=%t/xsession-env-%I
+ExecStart=/usr/bin/redshift
