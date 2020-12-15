@@ -3,6 +3,8 @@
 if [[ $_LISKIN_NVIDIA ]]; then
 	exec "$@"
 else
+	unset VK_ICD_FILENAMES
+	unset __EGL_VENDOR_LIBRARY_FILENAMES
 	export LIBGL_DRI3_DISABLE=1
 	/usr/bin/primusrun "$@"
 fi
