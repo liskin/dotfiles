@@ -84,6 +84,7 @@ cmdXCwd = [ "D=\"$(xcwd)\" || D=;", "${D:+cd \"$D\"};" ]
 spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
 spawnTerm s = spawn . unwords $ cmdXCwd ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
+spawnJournalPid s = spawnPID . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 
 -- Bindings.
 myKeys conf@(XConfig{modMask}) = M.fromList $
@@ -394,12 +395,12 @@ clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
 
 rescreenHook :: X ()
 rescreenHook = do
-    let mainxmobar = sequence [ spawnPID "exec xmobar -x 0" ]
-    let trayer = sequence [ spawnPID "exec trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l" ]
-    let compton = sequence [ spawnPID "exec compton" ]
+    let mainxmobar = sequence [ spawnJournalPid "xmobar -x 0" ]
+    let trayer = sequence [ spawnJournalPid "trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l" ]
+    let compton = sequence [ spawnJournalPid "compton" ]
     killPids
     savePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
-    spawn "exec ~/bin/.xlayout/post.sh"
+    spawnExec "~/bin/.xlayout/post.sh"
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
@@ -408,7 +409,7 @@ xmobarScreens = do
         let S num = W.screen scr
             n = show num
             prop = "_XMONAD_LOG_SCREEN_" ++ n
-        spawnPID $ "exec xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
+        spawnJournalPid $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
 
 xmobarWindowLists :: X ()
 xmobarWindowLists = withWindowSet $ \ws -> do
