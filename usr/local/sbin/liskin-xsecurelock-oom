@@ -4,5 +4,5 @@ set -eu
 
 [[ "$1" == +([0-9]) ]]
 cd /proc/"$1"
-[[ "$(readlink exe)" == "/usr/bin/xsecurelock" ]]
+[[ "$(readlink exe)" == /usr/bin/@(xsecurelock|xss-lock) ]]
 echo '-1000' >oom_score_adj
