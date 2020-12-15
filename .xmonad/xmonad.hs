@@ -397,9 +397,8 @@ rescreenHook :: X ()
 rescreenHook = do
     let mainxmobar = sequence [ spawnJournalPid "xmobar -x 0" ]
     let trayer = sequence [ spawnJournalPid "trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l" ]
-    let compton = sequence [ spawnJournalPid "compton" ]
     killPids
-    savePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer, compton ]
+    savePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer ]
     spawnExec "~/bin/.xlayout/post.sh"
 
 xmobarScreens :: X [ ProcessID ]

@@ -1,0 +1,8 @@
+[Unit]
+Description=xmonad DISPLAY=%I
+RefuseManualStart=yes
+StopWhenUnneeded=yes
+
+Wants=alttab@%i.service
+Wants=compton@%i.service
+Wants=xss-lock@%i.service

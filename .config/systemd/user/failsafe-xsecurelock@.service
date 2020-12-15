@@ -1,0 +1,13 @@
+[Unit]
+Description=failsafe-xsecurelock DISPLAY=%I
+
+[Service]
+Slice=session.slice
+
+Restart=on-failure
+
+EnvironmentFile=%t/xsession-env-%I
+EnvironmentFile=%h/.config/xsecurelock
+ExecCondition=/bin/sh -c "/usr/bin/xset q >/dev/null 2>&1"
+ExecStart=xsecurelock
+ExecStartPost=-sudo /usr/local/sbin/liskin-xsecurelock-oom ${MAINPID}

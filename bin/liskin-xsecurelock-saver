@@ -1,7 +1,3 @@
 #!/bin/sh
 
-for pid in $(pidof /usr/bin/xsecurelock); do
-	sudo /usr/local/sbin/liskin-xsecurelock-oom "$pid"
-done
-
 exec /usr/lib/xscreensaver/loop -delay 1000000 -cycles 8000 "$@"

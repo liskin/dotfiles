@@ -28,36 +28,39 @@ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled'
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0 || :
 xinput set-prop 'TPPS/2 IBM TrackPoint' 'libinput Accel Speed' -0.3 || :
 
-function alttab {
-	# wait for xmonad to start
-	until wmctrl -m &>/dev/null && wmctrl -l &>/dev/null; do
-		sleep 0.5
-	done
-
-	exec alttab
-}
-
 start-pulseaudio-x11
-liskin-xss-lock &
-alttab &
 liskin-thinkpad-battery update-xmobar
+
+{
+	echo DISPLAY="$DISPLAY"
+	echo XDG_SEAT="$XDG_SEAT"
+	echo XDG_SESSION_ID="$XDG_SESSION_ID"
+	echo XDG_VTNR="$XDG_VTNR"
+} >"$XDG_RUNTIME_DIR"/xsession-env-"$DISPLAY"
 
 if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSION_ID" ]]; then
 	systemctl --user import-environment SSH_AUTH_SOCK
 	systemd-run \
 		--quiet \
-		--wait --collect \
-		--user --slice="session.slice" --unit="xmonad@$XDG_SESSION_ID-$DISPLAY.service" \
-		${XDG_SEAT:+--setenv="XDG_SEAT=$XDG_SEAT"} \
-		${XDG_SESSION_ID:+--setenv="XDG_SESSION_ID=$XDG_SESSION_ID"} \
-		${XDG_VTNR:+--setenv="XDG_VTNR=$XDG_VTNR"} \
+		--collect --wait \
+		--user --slice="session.slice" --unit="xmonad-$XDG_SESSION_ID-$DISPLAY.service" \
+		--property="EnvironmentFile=$XDG_RUNTIME_DIR/xsession-env-$DISPLAY" \
 		--property="Requires=graphical-session-pre.target" \
 		--property="After=graphical-session-pre.target" \
 		--property="BindsTo=graphical-session.target" \
+		--property="BindsTo=xmonad@$DISPLAY.target" \
+		--property="OnFailure=failsafe-xsecurelock@$DISPLAY.service" \
 		--property="Restart=on-failure" \
 		-- xmonad
 else
-	xmonad
+	systemd-run \
+		--quiet \
+		--collect --scope \
+		--user --slice="session.slice" --unit="xmonad-$XDG_SESSION_ID-$DISPLAY.scope" \
+		--property="BindsTo=xmonad@$DISPLAY.target" \
+		-- xmonad
 fi
 
+systemctl --user start "failsafe-xsecurelock@$DISPLAY.service"
 stop-pulseaudio-x11
+sleep 2
