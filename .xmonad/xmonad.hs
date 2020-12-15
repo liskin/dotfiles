@@ -117,8 +117,8 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((0,         xF86XK_Display       ), spawnExec "layout-auto layout-vertical")
     , ((0,         xF86XK_Sleep         ), spawnExec "layout-normal")
     , ((0,         xF86XK_Tools         ), spawn "sleep 0.5; xset dpms force off")
-    , ((0,         xF86XK_ScreenSaver   ), unGrab >> spawnExec "loginctl lock-session")
-    , ((modMask,   xK_semicolon         ), unGrab >> spawnExec "loginctl lock-session")
+    , ((0,         xF86XK_ScreenSaver   ), unGrab >> spawnExec "loginctl lock-session \"$XDG_SESSION_ID\"")
+    , ((modMask,   xK_semicolon         ), unGrab >> spawnExec "loginctl lock-session \"$XDG_SESSION_ID\"")
 
     , ((modMask,               xK_Escape), kill)
     , ((modMask,               xK_space ), runSelectedAction "layout" laySels)
