@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
+shopt -s lastpipe
 
 # avoid concurrent executions
 exec {lock_fd}>"/run/liskin-suspend.lock"
 flock --nonblock "$lock_fd" || exit
 
-! pgrep -t tty`fgconsole` X >/dev/null && exit
+unlocked=$(
+	loginctl list-sessions --no-legend \
+		| awk '{ print $1 }' \
+		| xargs -n1 loginctl show-session --property=LockedHint \
+		| grep --invert-match --line-regexp --fixed-strings LockedHint=yes || :
+)
 
-pidof -q /usr/bin/xsecurelock && locked=: || locked=
-
-if [[ $locked ]]; then
+if [[ ! $unlocked ]]; then
 	systemctl suspend
 else
 	loginctl lock-sessions
