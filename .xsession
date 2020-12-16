@@ -20,7 +20,7 @@ xset b off
 xset s 480 5
 xset dpms 600 600 600
 xsetroot -cursor_name left_ptr
-setxkbmap
+setxkbmap ${_LISKIN_NVIDIA:+-option terminate:ctrl_alt_bksp}
 xmodmap ~/.Xmodmap
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1 || :
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
