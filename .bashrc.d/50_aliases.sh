@@ -62,3 +62,6 @@ export-alias nmcli-c-up-bluetooth='nmcli c up s10e.phone.lisk.in'
 export-alias nmcli-c-down-bluetooth='nmcli c down s10e.phone.lisk.in'
 export-alias nmcli-c-up-vpn-altworx='nmcli c up vpn-altworx'
 export-alias nmcli-c-down-vpn-altworx='nmcli c down vpn-altworx'
+
+export-alias rofi-emoji-menu='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-menu.sh'
+export-alias rofi-emoji-sign='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-sign.sh'
