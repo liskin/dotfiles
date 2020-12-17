@@ -11,6 +11,6 @@ exec \
 	--disable-smooth-scrolling \
 	--disk-cache-size=2000000000 \
 	--enable-easy-off-store-extension-install \
-	--ignore-gpu-blacklist \
+	--ignore-gpu-blocklist \
 	--disable-font-subpixel-positioning \
 	"$@"
