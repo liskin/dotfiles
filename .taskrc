@@ -4,7 +4,9 @@ weekstart=monday
 
 urgency.inherit=1
 urgency.active.coefficient=10.0
+urgency.annotations.coefficient=0.0
 urgency.blocking.coefficient=0.0
+urgency.project.coefficient=0.0
 urgency.tags.coefficient=0.0
 urgency.user.tag.soon.coefficient=5.0
 urgency.user.tag.later.coefficient=-10.0
@@ -21,10 +23,10 @@ color.uda.priority.H=
 color.uda.priority.M=
 color.uda.priority.L=
 
-context.today=( ( ( scheduled<tomorrow or due<tomorrow or +next or +ACTIVE ) and -COMPLETED ) or end>=today )
-context.tomorrow=( ( ( scheduled>=tomorrow and scheduled<tomorrow+1d ) or ( due>=tomorrow and due<tomorrow+1d ) ) and -COMPLETED )
-context.soon=( ( ( scheduled>=tomorrow+1d and scheduled<tomorrow+7d ) or ( due>=tomorrow+1d and due<tomorrow+7d ) or +soon ) and -COMPLETED )
-context.soonish=( scheduled: and due: and -next and -soon and -later and status:pending )
+context.today=( ( ( scheduled<tomorrow or due<tomorrow or +next or +ACTIVE ) and status:pending ) or end>=today )
+context.tomorrow=( ( ( scheduled>=tomorrow and scheduled<tomorrow+1d ) or ( due>=tomorrow and due<tomorrow+1d ) ) and status:pending )
+context.soon=( ( scheduled>=tomorrow+1d or due>=tomorrow+1d or ( scheduled: and due: and -later ) ) and status:pending )
+context.later=( +later and status:pending )
 
 context.todo+recent=(-COMPLETED or end>=yesterday)
 
