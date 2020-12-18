@@ -162,6 +162,7 @@ set backspace=indent,eol,start
 set completeopt=menu,menuone,longest,popup
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
+set formatoptions+=r
 set hidden
 set omnifunc=ale#completion#OmniFunc
 set scrolloff=10
