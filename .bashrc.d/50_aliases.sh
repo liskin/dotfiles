@@ -18,11 +18,12 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias ssh=ssh-tweaks
+alias task=task-local
+
 export-alias nomi="ssh -C nomi.cz -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-https="ssh -C nomi.cz-https -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-mosh="MOSH_TITLE_NOPREFIX=1 mosh nomi.cz bin/atmux"
-
-alias ssh=ssh-tweaks
 
 export-alias mutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/mutt'
 export-alias neomutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/neomutt'

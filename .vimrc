@@ -456,6 +456,7 @@ autocmd BufNewFile,BufRead *.hsc setlocal ft=haskell
 autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal ft=gitcommit
 autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile et | let b:ale_enabled = 0
 autocmd BufNewFile,BufRead Jenkinsfile setf groovy
+autocmd BufNewFile,BufRead */.config/git/include/* setf gitconfig
 
 " key maps {{{1
 

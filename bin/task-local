@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# project-local taskwarrior wrapper
+
+set -eu -o pipefail
+shopt -s lastpipe
+
+git config --get taskwarrior.project | read -r project \
+|| exec task "$@"
+
+TASKRC=<(
+	cat <<-END
+		include ~/.taskrc
+		context=local
+		context.local=proj:"$project"
+		default.project="$project"
+	END
+) exec task "$@"
