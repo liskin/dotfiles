@@ -1,4 +1,5 @@
 if exists("b:did_ftplugin_taskwiki_after") | finish | endif
+if !exists(":VimwikiFollowLink") || !exists(":TaskWikiBufferLoad") | finish | endif
 let b:did_ftplugin_taskwiki_after = 1
 
 nnoremap <silent><buffer> <CR> :call vimwiki#liskin#follow_link()<CR>

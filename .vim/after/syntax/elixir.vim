@@ -1,3 +1,5 @@
+if !hlexists("elixirId") | finish | endif
+
 syn match elixirKeyword '\<\(do\|else\):'
 
 " sync on top-level and def-level end

@@ -1,6 +1,4 @@
-if &cp || exists('g:loaded_projectrc')
-	finish
-endif
+if &cp || exists('g:loaded_projectrc') | finish | endif
 
 let g:loaded_projectrc = 1
 
@@ -10,7 +8,11 @@ if !isdirectory(s:projectrc_dir)
 endif
 
 function! s:projectrc_filenames() abort
-	let paths = ale#path#Upwards(getcwd())
+	try
+		let paths = ale#path#Upwards(getcwd())
+	catch /^Vim\%((\a\+)\)\=:E117:/
+		return []
+	endtry
 	return map(paths, {_, d -> s:projectrc_dir . fnamemodify(d, ":p:gs%[^A-Za-z0-9]%_%")})
 endfunc
 

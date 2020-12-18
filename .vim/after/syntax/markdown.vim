@@ -1,3 +1,5 @@
+if !hlexists("markdownH1") | finish | endif
+
 " jekyll/liquid directives
 syn region markdownRule start="{%" end="%}"
 

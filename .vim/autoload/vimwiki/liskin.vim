@@ -2,7 +2,7 @@ if exists("b:loaded_vimwiki_liskin_auto") | finish | endif
 let b:loaded_vimwiki_liskin_auto = 1
 
 " taskwiki only follows wikilinks by default, not URLs; this is a workaround
-function! vimwiki#liskin#follow_link()
+function! vimwiki#liskin#follow_link() abort
 	let syn_stack = map(synstack(line('.'), col('.')), {_, s -> synIDattr(s, "name")})
 	let inside_link = index(syn_stack, 'VimwikiLink') != -1
 	if inside_link
