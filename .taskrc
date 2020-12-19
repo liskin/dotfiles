@@ -10,6 +10,7 @@ urgency.project.coefficient=0.0
 urgency.tags.coefficient=0.0
 urgency.user.tag.soon.coefficient=5.0
 urgency.user.tag.later.coefficient=-10.0
+urgency.waiting.coefficient=-15.0
 
 include /usr/share/taskwarrior/dark-256.theme
 color.blocking=
@@ -40,3 +41,8 @@ report._reviewed.description=Tasksh review report.  Adjust the filter to your ne
 report._reviewed.columns=uuid
 report._reviewed.sort=reviewed+,modified+
 report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
+
+report.next.sort=scheduled+,urgency-
+report.all.columns=id,status.short,uuid.short,start.active,entry.age,end.age,depends.indicator,priority,project,tags,recur.indicator,wait.remaining,scheduled.remaining,due,until.remaining,description
+report.list.filter=status:pending or status:waiting
+report.long.filter=status:pending or status:waiting
