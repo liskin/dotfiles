@@ -8,11 +8,14 @@ shopt -s lastpipe
 git config --get taskwarrior.project | read -r project \
 || exec task "$@"
 
-TASKRC=<(
+function gen-config {
 	cat <<-END
 		include ~/.taskrc
+
 		context=local
-		context.local=proj:"$project"
-		default.project="$project"
+		context.local=proj:$project
+		default.project=$project
 	END
-) exec task "$@"
+}
+
+TASKRC=<(gen-config) exec task "$@"
