@@ -4,7 +4,7 @@
 {-# LANGUAGE ParallelListComp #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# OPTIONS_GHC -Wall -Wno-missing-signatures -fno-warn-orphans #-}
+{-# OPTIONS_GHC -Wall -Wno-missing-signatures -Wno-orphans -Wno-unused-top-binds #-}
 
 module Main (main) where
 
@@ -293,6 +293,7 @@ myManageHook = composeAll
     , floatNextHook
     , className =? "hl_linux" --> doFloat
     , className =? "duke3d" --> doFloat
+    , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
     , isDialog --> doFloat
     , transience'
     , manageDocks
@@ -302,6 +303,10 @@ myActivateHook = composeOne
     [ className =? "Google-chrome" <||> className =? "google-chrome" -?> doAskUrgent
     , pure True -?> doFocus
     ]
+
+doLower, doRaise :: ManageHook
+doLower = ask >>= \w -> liftX $ withDisplay $ \dpy -> io (lowerWindow dpy w) >> mempty
+doRaise = ask >>= \w -> liftX $ withDisplay $ \dpy -> io (raiseWindow dpy w) >> mempty
 
 
 -- Loghook.
