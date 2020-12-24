@@ -9,15 +9,18 @@ fi
 
 exec \
 	/usr/bin/bwrap \
+		--unshare-pid \
 		--ro-bind /{,} \
 		--dev-bind /dev{,} \
+		--tmpfs /dev/shm \
+		--proc /proc \
+		--tmpfs /tmp \
+		--bind /tmp/.X11-unix{,} \
 		--bind "$XDG_RUNTIME_DIR"{,} \
 		--bind "$HOME/.steam-home" "$HOME" \
 		--ro-bind "$XAUTHORITY" "$XAUTHORITY" \
 		--ro-bind "$HOME/bin/primusrun"{,} \
 		--bind "$(readlink -f "$HOME/.steam-home/.steam")"{,} \
-		--tmpfs /dev/shm \
-		--tmpfs /tmp \
 		-- \
 	${LD_LIBRARY_PATH+/usr/bin/env LD_LIBRARY_PATH="$LD_LIBRARY_PATH"} \
 	/usr/games/steam "$@"
