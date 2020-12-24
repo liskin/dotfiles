@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eu
+
+function set-font- { printf '%b%s;%s%b' '\033]' "$1" "$2" '\007'; }
+function set-font { set-font- 710 "$1"; }
+function set-bold-font { set-font- 711 "$1"; }
+function set-italic-font { set-font- 712 "$1"; }
+function set-bolditalic-font { set-font- 713 "$1"; }
+
+function fallback { echo "xft:Symbola,xft:Unidings,xft:Musica"; }
+function xft { echo "xft:$1:pixelsize=$2:slant=$3:weight=$4,$(fallback)"; }
+
+function set-fonts-xft {
+	set-font "$(xft "$1" "$2" roman normal)"
+	set-bold-font "$(xft "$1" "$2" roman bold)"
+	set-italic-font "$(xft "$1" "$2" oblique normal)"
+	set-bolditalic-font "$(xft "$1" "$2" oblique bold)"
+}
+
+set-fonts-xft "${1:?}" "${2:-20}"

@@ -21,6 +21,12 @@ alias l='ls -CF'
 alias ssh=ssh-tweaks
 alias task=task-local
 
+alias urxvt-setfont-anonymous-pro='urxvt-setfont "Anonymous Pro"'
+alias urxvt-setfont-courier-prime='urxvt-setfont "Courier Prime Code"'
+alias urxvt-setfont-fira-code='urxvt-setfont "Fira Code"'
+alias urxvt-setfont-hack='urxvt-setfont "Hack"'
+alias urxvt-setfont-inconsolata='urxvt-setfont "Inconsolata"'
+
 export-alias nomi="ssh -C nomi.cz -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-https="ssh -C nomi.cz-https -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-mosh="MOSH_TITLE_NOPREFIX=1 mosh nomi.cz bin/atmux"

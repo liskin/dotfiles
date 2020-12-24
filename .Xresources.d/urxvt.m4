@@ -9,11 +9,11 @@ define(fixedBig_boldFont, fixed9x18(bold, r))dnl
 define(fixedBig_italicFont, `')dnl
 define(fixedBig_boldItalicFont, `')dnl
 dnl
-define(mono, `xft:monospace:pixelsize=10:style=$1')dnl
-define(mono_font, mono(Book))dnl
-define(mono_boldFont, mono(Bold))dnl
-define(mono_italicFont, mono(Oblique))dnl
-define(mono_boldItalicFont, mono(Bold Oblique))dnl
+define(mono, `xft:monospace:pixelsize=10:slant=$1:weight=$2')dnl
+define(mono_font, mono(roman,normal))dnl
+define(mono_boldFont, mono(roman,bold))dnl
+define(mono_italicFont, mono(oblique,normal))dnl
+define(mono_boldItalicFont, mono(oblique,bold))dnl
 dnl
 define(symbols_fonts, `xft:Symbola,xft:Unidings,xft:Musica')dnl
 dnl
