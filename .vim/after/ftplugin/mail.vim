@@ -9,7 +9,6 @@ setlocal expandtab
 " format=flowed
 setlocal formatoptions+=w
 setlocal listchars+=trail:\\
-silent! call airline#extensions#whitespace#disable()
 
 " markdown
 setlocal formatoptions+=n
