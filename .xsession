@@ -2,6 +2,9 @@
 
 shopt -s nullglob
 
+# prevent launching pkttyagent and being stopped by SIGTTIN
+exec </dev/null
+
 # ssh-agent is setgid and drops LD_* vars, reload them
 . ~/.bashrc.d/10_env.sh
 
