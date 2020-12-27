@@ -72,3 +72,6 @@ export-alias nmcli-c-down-vpn-altworx='nmcli c down vpn-altworx'
 
 export-alias rofi-emoji-menu='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-menu.sh'
 export-alias rofi-emoji-sign='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-sign.sh'
+
+export-alias steam='bwrap-steam /usr/games/steam'
+export-alias protontricks='bwrap-steam ~/.local/bin/protontricks'

@@ -20,7 +20,10 @@ exec \
 		--bind "$HOME/.steam-home" "$HOME" \
 		--ro-bind "$XAUTHORITY" "$XAUTHORITY" \
 		--ro-bind "$HOME/bin/primusrun"{,} \
+		--ro-bind "$HOME/.local/bin/protontricks"{,} \
+		--ro-bind "$HOME/.local/pipx/venvs"{,} \
+		--ro-bind "$HOME/.local/venvs"{,} \
 		--bind "$(readlink -f "$HOME/.steam-home/.steam")"{,} \
 		-- \
 	${LD_LIBRARY_PATH+/usr/bin/env LD_LIBRARY_PATH="$LD_LIBRARY_PATH"} \
-	/usr/games/steam "$@"
+	"$@"
