@@ -31,6 +31,7 @@ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled'
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0 || :
 xinput set-prop 'TPPS/2 IBM TrackPoint' 'libinput Accel Speed' -0.3 || :
 
+start-pulseaudio-x11
 liskin-thinkpad-battery update-xmobar
 
 {
@@ -41,8 +42,6 @@ liskin-thinkpad-battery update-xmobar
 } >"$XDG_RUNTIME_DIR"/xsession-env-"$DISPLAY"
 
 if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSION_ID" ]]; then
-	start-pulseaudio-x11
-
 	systemctl --user import-environment SSH_AUTH_SOCK
 	systemd-run \
 		--quiet \
@@ -56,10 +55,12 @@ if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSIO
 		--property="OnFailure=failsafe-xsecurelock@$DISPLAY.service" \
 		--property="Restart=on-failure" \
 		-- xmonad
-
-	stop-pulseaudio-x11
 else
-	pax11publish -e
+	# workaround for https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/issues/1076
+	# (also, we don't want AudioPlay/Pause keys in more than one X server)
+	xprop -root -remove PULSE_ID
+	stop-pulseaudio-x11
+
 	systemd-run \
 		--quiet \
 		--collect --scope \
@@ -69,4 +70,5 @@ else
 fi
 
 systemctl --user start "failsafe-xsecurelock@$DISPLAY.service"
+stop-pulseaudio-x11
 sleep 2
