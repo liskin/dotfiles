@@ -18,7 +18,8 @@ exec \
 		--bind /tmp/.X11-unix{,} \
 		--bind "$XDG_RUNTIME_DIR"{,} \
 		--bind "$HOME/.steam-home" "$HOME" \
-		--ro-bind "$XAUTHORITY" "$XAUTHORITY" \
+		--ro-bind "$XAUTHORITY"{,} \
+		--ro-bind "$HOME/.config/pulse/cookie"{,} \
 		--ro-bind "$HOME/bin/primusrun"{,} \
 		--ro-bind "$HOME/.local/bin/protontricks"{,} \
 		--ro-bind "$HOME/.local/pipx/venvs"{,} \
