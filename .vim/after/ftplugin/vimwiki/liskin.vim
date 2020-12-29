@@ -2,6 +2,9 @@ if exists("b:did_ftplugin_vimwiki_liskin_after") | finish | endif
 if !exists(":VimwikiFollowLink") || !exists(":TaskWikiBufferLoad") | finish | endif
 let b:did_ftplugin_vimwiki_liskin_after = 1
 
+command! -buffer TaskWikiNote call vimwiki#liskin#TaskWikiNote()
+nnoremap <silent><buffer> <LocalLeader>n :TaskWikiNote<CR>
+
 nnoremap <silent><buffer> <CR> :call vimwiki#liskin#follow_link()<CR>
 nnoremap <silent><buffer> <C-]> :call vimwiki#liskin#follow_link()<CR>
 nmap <silent><buffer> <C-W><CR> <Plug>VimwikiSplitLink
