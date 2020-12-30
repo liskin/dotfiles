@@ -1,2 +1,2 @@
-AleAddLinter python mypy pyls
+AleAddLinter python mypy
 AleAddFixer python isort
