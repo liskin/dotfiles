@@ -21,5 +21,7 @@ else
 
 	if [[ ${1-} == "button" ]]; then
 		chvt 1 || :
+		sleep 1
+		fbset --verbose --geometry 1920 1080 1920 1080 32
 	fi
 fi
