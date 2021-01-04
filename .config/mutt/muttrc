@@ -12,6 +12,11 @@ set wrap=100
 set reflow_wrap=100
 set text_flowed=yes
 
+# autoview
+auto_view application/msword
+auto_view application/pdf
+auto_view text/html
+
 # sidebar
 set sidebar_divider_char='│'
 set sidebar_sort_method=alpha
