@@ -8,4 +8,4 @@ Slice=app.slice
 Restart=always
 
 EnvironmentFile=%t/xsession-env-%I
-ExecStart=%h/bin/arbtt-capture --sample-rate=20 --logfile=%h/.arbtt/capture-%I.log
+ExecStart=%h/bin/arbtt-capture +RTS -V0 -RTS --sample-rate=20 --logfile=%h/.arbtt/capture-%I.log
