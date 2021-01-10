@@ -1,5 +1,5 @@
 [Unit]
-Description=alttab DISPLAY=%I
+Description=alttab DISPLAY=%i
 PartOf=xmonad@%i.target
 
 [Service]
@@ -8,7 +8,7 @@ Slice=app.slice
 Restart=always
 RestartSec=1s
 
-EnvironmentFile=%t/xsession-env-%I
+EnvironmentFile=%t/xsession-env-%i
 ExecStartPre=bash -c 'wmctrl -m &>/dev/null && wmctrl -l &>/dev/null'
 ExecStart=alttab
 

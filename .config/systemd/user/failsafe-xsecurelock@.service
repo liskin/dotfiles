@@ -1,12 +1,12 @@
 [Unit]
-Description=failsafe-xsecurelock DISPLAY=%I
+Description=failsafe-xsecurelock DISPLAY=%i
 
 [Service]
 Slice=session.slice
 
 Restart=on-failure
 
-EnvironmentFile=%t/xsession-env-%I
+EnvironmentFile=%t/xsession-env-%i
 EnvironmentFile=%h/.config/xsecurelock
 ExecCondition=/bin/sh -c "/usr/bin/xset q >/dev/null 2>&1"
 ExecStart=xsecurelock

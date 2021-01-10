@@ -1,5 +1,5 @@
 [Unit]
-Description=arbtt-capture DISPLAY=%I
+Description=arbtt-capture DISPLAY=%i
 PartOf=xmonad@%i.target
 
 [Service]
@@ -7,5 +7,5 @@ Slice=app.slice
 
 Restart=always
 
-EnvironmentFile=%t/xsession-env-%I
-ExecStart=%h/bin/arbtt-capture +RTS -V0 -RTS --sample-rate=20 --logfile=%h/.arbtt/capture-%I.log
+EnvironmentFile=%t/xsession-env-%i
+ExecStart=%h/bin/arbtt-capture +RTS -V0 -RTS --sample-rate=20 --logfile=%h/.arbtt/capture-%i.log

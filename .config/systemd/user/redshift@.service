@@ -1,5 +1,5 @@
 [Unit]
-Description=redshift DISPLAY=%I
+Description=redshift DISPLAY=%i
 PartOf=xmonad@%i.target
 
 [Service]
@@ -7,5 +7,5 @@ Slice=app.slice
 
 Restart=always
 
-EnvironmentFile=%t/xsession-env-%I
+EnvironmentFile=%t/xsession-env-%i
 ExecStart=/usr/bin/redshift

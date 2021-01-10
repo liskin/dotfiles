@@ -1,5 +1,5 @@
 [Unit]
-Description=xss-lock DISPLAY=%I
+Description=xss-lock DISPLAY=%i
 PartOf=xmonad@%i.target
 OnFailure=failsafe-xsecurelock@%i.service
 
@@ -8,7 +8,7 @@ Slice=session.slice
 
 Restart=always
 
-EnvironmentFile=%t/xsession-env-%I
+EnvironmentFile=%t/xsession-env-%i
 EnvironmentFile=%h/.config/xsecurelock
 ExecStart=xss-lock --ignore-sleep --session=${XDG_SESSION_ID} --notifier=/usr/libexec/xsecurelock/dimmer /usr/bin/xsecurelock
 ExecStartPost=-sudo /usr/local/sbin/liskin-xsecurelock-oom ${MAINPID}

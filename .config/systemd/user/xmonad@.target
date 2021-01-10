@@ -1,5 +1,5 @@
 [Unit]
-Description=xmonad DISPLAY=%I
+Description=xmonad DISPLAY=%i
 RefuseManualStart=yes
 StopWhenUnneeded=yes
 
