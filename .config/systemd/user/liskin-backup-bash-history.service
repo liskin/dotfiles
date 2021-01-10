@@ -1,6 +1,0 @@
-[Unit]
-Description=liskin-backup-bash-history
-
-[Service]
-Type=oneshot
-ExecStart=%h/bin/liskin-backup-bash-history

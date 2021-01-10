@@ -1,8 +1,9 @@
 [Unit]
-Description=liskin-backup-bash-history timer
+Description=hourly timer
 
 [Timer]
-OnCalendar=daily
+Unit=liskin-timer@%i.service
+OnCalendar=hourly
 RandomizedDelaySec=5m
 Persistent=true
 

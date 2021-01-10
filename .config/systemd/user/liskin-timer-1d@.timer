@@ -1,8 +1,9 @@
 [Unit]
-Description=taskwiki-commit timer
+Description=daily timer
 
 [Timer]
-OnCalendar=hourly
+Unit=liskin-timer@%i.service
+OnCalendar=daily
 RandomizedDelaySec=5m
 Persistent=true
 

@@ -1,6 +1,0 @@
-[Unit]
-Description=taskwiki-commit
-
-[Service]
-Type=oneshot
-ExecStart=%h/bin/taskwiki-commit

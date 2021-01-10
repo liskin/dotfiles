@@ -1,10 +1,11 @@
 [Unit]
-Description=mpd-snapshot timer
+Description=every 15 minutes timer
 
 [Timer]
+Unit=liskin-timer@%i.service
+OnCalendar=hourly
 OnCalendar=*-*-* *:00/15:00
 RandomizedDelaySec=30s
-AccuracySec=1m
 Persistent=true
 
 [Install]
