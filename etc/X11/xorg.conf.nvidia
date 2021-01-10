@@ -5,12 +5,6 @@ Section "Files"
 	ModulePath "/usr/lib/xorg/modules"
 EndSection
 
-Section "InputClass"
-	Identifier "trackpoint local settings"
-	MatchProduct "TPPS/2 IBM TrackPoint"
-	Option "AccelSpeed" "-0.3"
-EndSection
-
 Section "Device"
 	Identifier "nvidia"
 	Driver "nvidia"
