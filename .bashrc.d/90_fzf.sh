@@ -7,15 +7,9 @@ source /usr/share/doc/fzf/examples/key-bindings.bash
 source ~/.bashrc.d/.fzf-completion.bash
 
 function __bash_history_infinite__ {
-	local commit
-
 	{
 		builtin fc -lnr -2147483648
-
-		git --git-dir="${HOME}/backup/bash-history/.git" rev-list HEAD \
-		| while read -r commit; do
-			git --git-dir="${HOME}/backup/bash-history/.git" show "${commit}:.bash_history" | tac || break
-		done
+		cat "${XDG_CACHE_HOME:-$HOME/.cache}/.bash_history"
 	} \
 	| perl -n -l -e 's/^[ \t]*//; print unless $seen{$_}++'
 }

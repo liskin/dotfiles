@@ -7,7 +7,7 @@ if compgen -v | grep ^GIT_; then
 	exit 1
 fi
 
-cd ~/backup/bash-history
+cd ~/backup/local/bash-history
 
 [[ "$(git symbolic-ref HEAD)" == "refs/heads/main" ]]  # quit if doing manual maintenance
 
@@ -21,3 +21,12 @@ git commit -m "$(date --iso-8601=seconds)"
 
 # garbage collect
 git gc-auto-exact 50
+
+# refresh cache
+cache_file="${XDG_CACHE_HOME:-$HOME/.cache}/.bash_history"
+git rev-list HEAD \
+| while read -r commit; do
+	git show "${commit}:.bash_history" | tac
+done \
+| perl -n -l -e 's/^[ \t]*//; print unless $seen{$_}++' \
+> "$cache_file"
