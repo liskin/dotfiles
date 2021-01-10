@@ -5,6 +5,9 @@ let b:did_ftplugin_vimwiki_liskin_after = 1
 command! -buffer TaskWikiNote call vimwiki#liskin#TaskWikiNote()
 nnoremap <silent><buffer> <LocalLeader>n :TaskWikiNote<CR>
 
+command! -buffer TaskWikiOpen call vimwiki#liskin#TaskWikiOpen()
+nnoremap <silent><buffer> <LocalLeader>o :TaskWikiOpen<CR>
+
 nnoremap <silent><buffer> <CR> :call vimwiki#liskin#follow_link()<CR>
 nnoremap <silent><buffer> <C-]> :call vimwiki#liskin#follow_link()<CR>
 nmap <silent><buffer> <C-W><CR> <Plug>VimwikiSplitLink

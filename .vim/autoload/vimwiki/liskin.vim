@@ -106,3 +106,18 @@ function! vimwiki#liskin#TaskWikiNote() abort
 		call vimwiki#base#goto(wikifile)
 	endif
 endfunction
+
+function! vimwiki#liskin#selected_tasks_annotations() abort
+	silent return py3eval("[a['description'] for t in SelectedTasks().tasks for a in t['annotations']]")
+endfunction
+
+function! vimwiki#liskin#xdg_open(uri) abort
+	if len(a:uri) is 1
+		call vimwiki#base#system_open_link(a:uri[0])
+	endif
+endfunction
+
+function! vimwiki#liskin#TaskWikiOpen() abort
+	let annotations = vimwiki#liskin#selected_tasks_annotations()
+	call fzf#run(fzf#wrap({'source': annotations, 'sink*': function('vimwiki#liskin#xdg_open')}))
+endfunction
