@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+shopt -s lastpipe
+
+busctl get-property org.freedesktop.NetworkManager /org/freedesktop/NetworkManager org.freedesktop.NetworkManager Connectivity Metered | {
+	read -r _ connectivity
+	read -r _ metered
+}
+
+NM_CONNECTIVITY_FULL=4
+NM_METERED_YES=1
+NM_METERED_GUESS_YES=3
+
+(( connectivity == NM_CONNECTIVITY_FULL && metered != NM_METERED_YES && metered != NM_METERED_GUESS_YES ))
