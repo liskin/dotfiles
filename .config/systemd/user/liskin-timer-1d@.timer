@@ -4,7 +4,7 @@ Description=daily timer
 [Timer]
 Unit=liskin-timer@%i.service
 OnCalendar=daily
-RandomizedDelaySec=5m
+RandomizedDelaySec=1h
 Persistent=true
 
 [Install]
