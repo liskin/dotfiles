@@ -296,6 +296,7 @@ myManageHook = composeAll
     , floatNextHook
     , className =? "hl_linux" --> doFloat
     , className =? "duke3d" --> doFloat
+    , className =? "cantata" --> doFloat
     , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
     , isDialog --> doFloat
     , transience'
