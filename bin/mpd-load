@@ -3,5 +3,10 @@
 set -eu
 
 save_dir=~/.cache/mpd/save
+profile="${save_dir}/${1:-.current}"
+profile="$(readlink -f "${profile}")"
+[[ -f "${profile:?}" ]]
 
-mpload <"$save_dir/${1:?}"
+mpload <"${profile}"
+
+[[ $profile != */snapshot ]] && ln -sfr "${profile}" "${save_dir}/.current"

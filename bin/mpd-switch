@@ -2,7 +2,7 @@
 
 set -eu
 
-: "${1:?}" "${2:?}"
-
-mpd-save "$1"
-mpd-load "$2"
+case $# in
+	1) mpd-save; mpd-load "$1"; ;;
+	2) mpd-save "$1"; mpd-load "$2";;
+esac
