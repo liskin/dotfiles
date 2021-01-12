@@ -9,4 +9,4 @@ profile="$(readlink -f "${profile}")"
 
 mpload <"${profile}"
 
-[[ $profile != */snapshot ]] && ln -sfr "${profile}" "${save_dir}/.current"
+[[ $profile == */snapshot ]] || ln -sfr "${profile}" "${save_dir}/.current"

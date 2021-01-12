@@ -11,4 +11,4 @@ profile="$(readlink -f "$profile")"
 [[ -f "${profile}" ]] && cp "${profile}" "${profile}~"
 mpstore >"${profile}"
 
-[[ $profile != */snapshot ]] && ln -sfr "${profile}" "${save_dir}/.current"
+[[ $profile == */snapshot ]] || ln -sfr "${profile}" "${save_dir}/.current"
