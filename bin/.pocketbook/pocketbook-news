@@ -5,12 +5,16 @@ set -eu -o pipefail
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
 for f in "$@"; do
+	f=$(readlink -f "$f")
 	[[ -e "$f" ]]
 	b=$(basename -- "$f")
 	d=~/docs/news/"$b"
-	if [[ -e "$d" ]]; then
-		d="${d%.*}-$(date +%s).${d##*.}"
+	d=$(readlink -f "$d")
+	if [[ "$f" != "$d" ]]; then
+		if [[ -e "$d" ]]; then
+			d="${d%.*}-$(date +%s).${d##*.}"
+		fi
+		o mv "$f" "$d"
 	fi
-	o mv "$f" "$d"
 	o rclone copy "$d" dropbox:'Apps/Dropbox PocketBook/News/'
 done
