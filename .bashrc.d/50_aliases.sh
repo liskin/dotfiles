@@ -58,8 +58,6 @@ export-alias google-chrome-app-matrix-element="google-chrome --app=https://app.e
 export-alias google-chrome-app-slack-altworx="google-chrome --app=https://altworx.slack.com/"
 export-alias google-chrome-app-slack-goodalumni="google-chrome --app=https://goodalumni.slack.com/"
 
-export-alias zoom='flatpak run us.zoom.Zoom'
-
 export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
 export-alias meld='LC_MESSAGES=C /usr/bin/meld'
 export-alias google-earth-pro='LC_NUMERIC=C /usr/bin/google-earth-pro'

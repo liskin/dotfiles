@@ -3,6 +3,7 @@
 # shellcheck disable=SC2239
 
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
+export PATH=$HOME/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:$PATH
 export PATH=$HOME/bin/.aliases:$HOME/bin:$HOME/.local/bin:$PATH
 
 export MAIL=/var/mail/tomi
