@@ -3,7 +3,7 @@ Config { font     = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
        , fgColor  = "#CFCFCF"
        , position = Top
        , lowerOnStart = True
-       , commands = [ Run Date "%a %d.%m.%Y * %H:%M:%S" "theDate" 10
+       , commands = [ Run Date "%a %d.%m.%Y %H:%M:%S" "theDate" 10
                     , Run XMonadLog
                     , Run XPropertyLog "_XMOBAR_BATTERY_EXTRA"
                     , Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<icon=/home/tomi/.xmonad/icons/net-wired2.xbm/><rx>KB:<tx>KB "] 10

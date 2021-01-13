@@ -324,7 +324,7 @@ myLogHook = do
             , ppVisible = xmobarBorder "Top" "green" 1 . ppVisibleC
             , ppCurrent = xmobarBorder "Top" "yellow" 1 . ppCurrentC
             , ppUrgent = xmobarBorder "Top" "#ff0000" 1 . ppUrgentC
-            , ppSep = " | "
+            , ppSep = " │ "
             , ppOrder = \(w:_:_:s) -> w:s
             }
     workspaceNamesPP myPP >>= dynamicLogString >>= xmonadPropLog
@@ -436,7 +436,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
         let dir = shortenLeft 30 . shortenDir $ dir'
         let layout = description . W.layout $ wks
-        let logHeader = tagFmt (addWksName tag) ++ " " ++ dir ++ " | " ++ layout
+        let logHeader = unwords [tagFmt (addWksName tag), dir, layout]
 
         let winFmt w | isFocused w && isCurrent = ppFocusC
             winFmt w | w `elem` urgents         = ppUrgentC
@@ -447,18 +447,18 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let gs = map W.integrate . W.integrate' . getGroupStack myLayout $ wks
         let indices = [ i | (n, g) <- zip [1..] gs
                       , i <- primes [ show (n :: Int) | _ <- g ] ]
-        let logWins = [ winFmt w (i ++ " " ++ sanitize (show tit))
+        let logWins = [ " │ " ++ winFmt w (i ++ " " ++ sanitize (show tit))
                       | w <- wins | tit <- tits | i <- indices ]
 
-        xmobarLog scr . intercalate "  " $ logHeader : logWins
+        xmobarLog scr . concat $ logHeader : logWins
 
     where
         ppVisibleC = xmobarBorder "Bottom" "green" 1 . xmobarColor "green" ""
         ppCurrentC = xmobarBorder "Bottom" "yellow" 1 . xmobarColor "yellow" ""
 
-        ppFocusC   = xmobarColor "#ffff00" ""
+        ppFocusC   = xmobarBorder "Bottom" "#ffff00" 1 . xmobarColor "#ffff00" ""
         ppUrgentC  = xmobarColor "#ff0000" "#ffff00"
-        ppUnfocusC = xmobarColor "#808000" ""
+        ppUnfocusC = xmobarColor "#b0b040" ""
 
         sanitize t = xmobarRaw . shorten' "~" 30 . strip $ t
           where
