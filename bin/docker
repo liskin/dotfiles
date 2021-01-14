@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if [[ "${DOCKER_HOST-}" ]] || id -nG | grep -qw docker; then
+	/usr/bin/docker "$@"
+else
+	/usr/bin/podman "$@"
+fi
