@@ -22,6 +22,11 @@ if &term == "rxvt-unicode-256color" " {{{3
 	" my urxvt supports sgr mouse reporting {{{4
 	set ttymouse=sgr
 
+	if has("patch-8.2.2345")
+		" https://github.com/vim/vim/commit/681fc3fa782e99fe69ed2c83c3e29109d2d61e1a
+		echoerr "TODO: fix focus events in vimrc"
+	endif
+
 	" focus events
 	let &t_ti = &t_ti . "\<Esc>[?1004h"
 	let &t_te = "\<Esc>[?1004l" . &t_te
