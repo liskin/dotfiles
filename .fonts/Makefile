@@ -3,11 +3,11 @@ all: Fixed.otb FixedBold.otb FixedOblique.otb
 
 MISC=/usr/share/fonts/X11/misc
 
-Fixed.otb:
-	cd $(MISC) && fonttosfnt -r -o $(PWD)/$@ $(shell awk '/misc-fixed-medium-r-normal--.*-iso10646-1/ { print $$1 }' $(MISC)/fonts.dir)
+Fixed.otb: $(addprefix $(MISC)/,$(shell awk '/misc-fixed-medium-r-normal--.*-iso10646-1/ { print $$1 }' $(MISC)/fonts.dir))
+	fonttosfnt -r -o $@ $^
 
-FixedBold.otb:
-	cd $(MISC) && fonttosfnt -r -o $(PWD)/$@ $(shell awk '/misc-fixed-bold-r-normal--.*-iso10646-1/ { print $$1 }' $(MISC)/fonts.dir)
+FixedBold.otb: $(addprefix $(MISC)/,$(shell awk '/misc-fixed-bold-r-normal--.*-iso10646-1/ { print $$1 }' $(MISC)/fonts.dir))
+	fonttosfnt -r -o $@ $^
 
-FixedOblique.otb:
-	cd $(MISC) && fonttosfnt -r -o $(PWD)/$@ $(shell awk '/misc-fixed-medium-o-normal--.*-iso10646-1/ { print $$1 }' $(MISC)/fonts.dir)
+FixedOblique.otb: $(addprefix $(MISC)/,$(shell awk '/misc-fixed-medium-o-normal--.*-iso10646-1/ { print $$1 }' $(MISC)/fonts.dir))
+	fonttosfnt -r -o $@ $^
