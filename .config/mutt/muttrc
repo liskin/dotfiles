@@ -1,6 +1,7 @@
 source "~/.config/mutt/muttrc-detect.sh $mailcap_path |"
 source ~/.config/mutt/muttrc-old
 source ~/.config/mutt/muttrc-colors
+source ~/.config/mutt/muttrc-lists
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt traditional ~/.config/mutt/muttrc-traditional |"
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt neomutt ~/.config/mutt/muttrc-neomutt |"
 
