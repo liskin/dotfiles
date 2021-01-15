@@ -1,4 +1,5 @@
 #!bash
+# shellcheck disable=SC2239
 
 if [[ $(type -t export-alias) == "" ]]; then
 	function export-alias { builtin alias "$@"; }
@@ -48,6 +49,13 @@ export-alias mutt-news-kernel='neomutt -g nntp.lore.kernel.org'
 #alias mutt-lkml='mutt -f news://nntp.lore.kernel.org/org.kernel.vger.linux-kernel'
 
 export-alias wiki="vim ~/taskwiki/index.wiki"
+
+# shellcheck disable=SC2016
+export-alias git-dotfiles='git --git-dir="$HOME/src/dotfiles.git"'
+alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
+# shellcheck disable=SC2016
+export-alias git-dotfiles-root='git --git-dir="$HOME/src/dotfiles.git/worktrees/dotfiles-root"'
+alias git-dotfiles-root-export='export GIT_DIR="$HOME/src/dotfiles.git/worktrees/dotfiles-root"'
 
 export-alias livereload-make="python3 -c 'from livereload import Server, shell; server = Server(); server.watch(\".\", shell(\"make\")); server.serve();'"
 
