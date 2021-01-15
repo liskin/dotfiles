@@ -1,4 +1,5 @@
 #!bash
+# shellcheck disable=SC2239
 
 if id -nG | grep -qw docker; then
 	__docker_ps1='\[\033[01;36m\]+docker\[\033[01;32m\]'
@@ -20,6 +21,7 @@ function __col1_ps1 {
 }
 
 PROMPT_COMMAND+=(__lastexit_save_ps1)
+# shellcheck disable=SC2034
 function __lastexit_save_ps1 { __lastexit_ps1=$?; }
 
 PS1='$(__col1_ps1)\[\033[48;5;053m\033[01;$(( __lastexit_ps1 ? 31 : 32 ))m\][\u'${__docker_ps1}'@\h\[\033[01;36m\]$(__git_ps1 " ($(git repo-name):%s)")\[\033[01;33m\] \W]\$\[\033[00m\] '

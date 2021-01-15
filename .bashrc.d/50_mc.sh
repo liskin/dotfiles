@@ -1,4 +1,5 @@
 #!bash
+# shellcheck disable=SC2239
 
 unalias mc 2>/dev/null
 function mc {
@@ -14,7 +15,7 @@ function mc {
 		local MC_PWD
 		MC_PWD="$(< "$MC_PWD_FILE")"
 		if [[ $MC_PWD && -d $MC_PWD ]]; then
-			cd "$MC_PWD"
+			cd "$MC_PWD" || :
 		fi
 	fi
 	rm -f "$MC_PWD_FILE"
