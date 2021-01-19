@@ -1,6 +1,7 @@
 [Unit]
 Description=Register userspace conntrack helpers (ssdp)
-Before=conntrackd.service firewalld.service
+PartOf=firewalld.service
+Before=firewalld.service
 
 [Service]
 Type=oneshot
@@ -11,4 +12,4 @@ ExecStart=/usr/sbin/nfct add helper ssdp inet6 udp
 ExecStart=/usr/sbin/nfct add helper ssdp inet6 tcp
 
 [Install]
-WantedBy=conntrackd.service firewalld.service
+WantedBy=firewalld.service
