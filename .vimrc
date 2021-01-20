@@ -4,16 +4,7 @@ set nocompatible
 
 " term tweaks {{{2
 
-function! s:focus(focus)
-	if a:focus
-		checktime
-		silent doautocmd <nomodeline> FocusGained
-	else
-		silent doautocmd <nomodeline> FocusLost
-	endif
-endfunction
-
-for fn in range(13, 24)
+for fn in range(13, 24) " {{{3
 	exe "noremap <silent> <F" . fn . "> <Nop>"
 	exe "noremap! <silent> <F" . fn . "> <Nop>"
 endfor
@@ -21,19 +12,6 @@ endfor
 if &term == "rxvt-unicode-256color" " {{{3
 	" my urxvt supports sgr mouse reporting {{{4
 	set ttymouse=sgr
-
-	if has("patch-8.2.2345")
-		" https://github.com/vim/vim/commit/681fc3fa782e99fe69ed2c83c3e29109d2d61e1a
-		echoerr "TODO: fix focus events in vimrc"
-	endif
-
-	" focus events
-	let &t_ti = &t_ti . "\<Esc>[?1004h"
-	let &t_te = "\<Esc>[?1004l" . &t_te
-	exe "set <F15>=\<Esc>[O"
-	exe "set <F16>=\<Esc>[I"
-	nnoremap <silent> <F15> :call <SID>focus(0)<CR>
-	nnoremap <silent> <F16> :call <SID>focus(1)<CR>
 
 	" cursor shape {{{4
 	let &t_SI = "\<Esc>[5 q"
@@ -56,20 +34,16 @@ endif
 
 if &term == "tmux-256color" " {{{3
 	" tmux supports sgr mouse reporting {{{4
-	set ttymouse=sgr
-
-	" focus events
-	let &t_ti = &t_ti . "\<Esc>[?1004h"
-	let &t_te = "\<Esc>[?1004l" . &t_te
-	exe "set <F15>=\<Esc>[O"
-	exe "set <F16>=\<Esc>[I"
-	nnoremap <silent> <F15> :call <SID>focus(0)<CR>
-	nnoremap <silent> <F16> :call <SID>focus(1)<CR>
+	"set ttymouse=sgr
 
 	" cursor shape {{{4
 	let &t_SI = "\<Esc>[5 q"
 	let &t_SR = "\<Esc>[3 q"
 	let &t_EI = "\<Esc>[2 q"
+
+	" focus reporting {{{4
+	let &t_fe = "\<Esc>[?1004h"
+	let &t_fd = "\<Esc>[?1004l"
 
 	" bracketed paste {{{4
 	let &t_BE="\<Esc>[?2004h"
