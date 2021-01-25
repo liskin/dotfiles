@@ -39,6 +39,7 @@
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
 	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
+	lgmarkdown = log --reverse --pretty=format:'* [%s](../commit/%H)%n%n%w(0,2,2)%b'
 	wdiff = -c pager.diff='less -FRX' diff --word-diff=color -w
 	wshow = show --word-diff=color -w
 	puf = push --force-with-lease
