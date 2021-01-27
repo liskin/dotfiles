@@ -17,6 +17,8 @@
 	added = cyan bold
 	changed = red bold
 	untracked = yellow bold
+[color "branch"]
+	upstream = brightgreen
 [color]
 	ui = true
 [user]
