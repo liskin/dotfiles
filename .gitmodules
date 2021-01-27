@@ -67,7 +67,8 @@
 	url = https://github.com/shumphrey/fugitive-gitlab.vim.git
 [submodule ".vim/bundle/vim-boxdraw"]
 	path = .vim/bundle/vim-boxdraw
-	url = https://github.com/gyim/vim-boxdraw.git
+	#url = https://github.com/gyim/vim-boxdraw.git
+	url = https://github.com/liskin/vim-boxdraw.git
 [submodule ".vim/bundle/vader.vim"]
 	path = .vim/bundle/vader.vim
 	url = https://github.com/junegunn/vader.vim
