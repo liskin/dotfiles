@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE ParallelListComp #-}
@@ -304,6 +305,10 @@ myManageHook = composeAll
     , manageDocks
     ]
 
+myFloatConfReqManageHook = composeAll
+    [ appName =? "alarm-clock-applet" -?> doFloat
+    ]
+
 myActivateHook = composeOne
     [ className =? "Google-chrome" <||> className =? "google-chrome" -?> doAskUrgent
     , pure True -?> doFocus
@@ -386,11 +391,19 @@ trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
     mempty
 trayerDockEventHook _ = mempty
 
+floatConfReqHook :: MaybeManageHook -> Event -> X All
+floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do
+    runQuery (join <$> (isFloat -?> mh)) w >>= \case
+        Nothing -> mempty
+        Just e -> windows (appEndo e) >> pure (All False)
+floatConfReqHook _ _ = mempty
+
 myEventHook = mconcat
     [ refocusLastEventHook
     , hintsEventHook
     , randrRestartEventHook
     , trayerDockEventHook
+    , floatConfReqHook myFloatConfReqManageHook
     ]
     where
         refocusLastEventHook = refocusLastWhen isFloat
