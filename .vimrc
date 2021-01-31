@@ -34,7 +34,7 @@ endif
 
 if &term == "tmux-256color" " {{{3
 	" tmux supports sgr mouse reporting {{{4
-	"set ttymouse=sgr
+	set ttymouse=sgr
 
 	" cursor shape {{{4
 	let &t_SI = "\<Esc>[5 q"
