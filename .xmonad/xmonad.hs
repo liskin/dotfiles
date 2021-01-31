@@ -5,7 +5,7 @@
 {-# LANGUAGE ParallelListComp #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# OPTIONS_GHC -Wall -Wno-missing-signatures -Wno-orphans -Wno-unused-top-binds #-}
+{-# OPTIONS_GHC -Wall -Wno-missing-signatures -Wno-orphans #-}
 
 module Main (main) where
 
@@ -313,10 +313,6 @@ myActivateHook = composeOne
     [ className =? "Google-chrome" <||> className =? "google-chrome" -?> doAskUrgent
     , pure True -?> doFocus
     ]
-
-doLower, doRaise :: ManageHook
-doLower = ask >>= \w -> liftX $ withDisplay $ \dpy -> io (lowerWindow dpy w) >> mempty
-doRaise = ask >>= \w -> liftX $ withDisplay $ \dpy -> io (raiseWindow dpy w) >> mempty
 
 
 -- Loghook.
