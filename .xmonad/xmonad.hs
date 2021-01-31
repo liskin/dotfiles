@@ -30,6 +30,7 @@ import System.Exit
 import System.IO.Unsafe
 import System.Posix.Process
 import System.Posix.Signals
+import System.Posix.Time
 import System.Posix.Types
 
 import XMonad.Actions.CycleWS
@@ -505,17 +506,30 @@ killPid pid = try_ $ race_ (killer 50000) waiter
             threadDelay delay
             killer (delay * 2)
 
+-- Periodic backup of xmonad state
+data LastWriteState = LastWriteState EpochTime deriving (Show, Read)
+instance ExtensionClass LastWriteState where initialValue = LastWriteState 0
+
+writeStateLogHook = do
+    LastWriteState lastWrite <- XS.get
+    now <- io $ epochTime
+    when (lastWrite + 60 < now) writeStateToFile
+    XS.put $ LastWriteState now
+
+writeStateHook cfg = cfg{ logHook = logHook cfg <> writeStateLogHook }
 
 -- Startuphook.
 myStartupHook = do
     rescreenHook
 
-javaHack cfg = cfg { startupHook = startupHook cfg >> setWMName "LG3D" }
+-- Override WM name to confuse JVM into working properly
+javaHack cfg = cfg { startupHook = startupHook cfg <> setWMName "LG3D" }
 
 -- Main.
 main = do
     xmonad $
         javaHack .
+        writeStateHook .
         docks .
         ewmh' def
             { activateHook = myActivateHook
