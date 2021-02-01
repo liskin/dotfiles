@@ -28,6 +28,7 @@ function release-xrandr-smart {
 	readme=$(echo xrandr-smart.1.md | git hash-object -w --stdin)
 
 	{
+		git ls-tree --full-tree @: LICENSE
 		git ls-tree --full-tree @:bin xrandr-smart
 		git ls-tree --full-tree @:.local/share/man xrandr-smart.1.md
 		printf "100644 blob %s\txrandr-smart.1\n" "$manpage"

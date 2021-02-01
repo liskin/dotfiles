@@ -1,6 +1,6 @@
 ---
 title: 'XRANDR-SMART(1) liskin/dotfiles manpages'
-author: Tomas Janousek
+author: Tomáš Janoušek
 date: October 2020
 ---
 
@@ -60,3 +60,9 @@ Disable laptop display, use external monitor only (useful for games):
 `xrandr`(1)
 
 <https://work.lisk.in/2020/10/11/xrandr-ux.html>
+
+# COPYRIGHT
+
+Copyright © 2021 Tomáš Janoušek
+
+License: MIT. See <https://github.com/liskin/dotfiles/blob/home/LICENSE>.
