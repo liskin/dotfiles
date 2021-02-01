@@ -1,0 +1,15 @@
+#!bash
+# shellcheck disable=SC2239
+
+# drop once https://github.com/github/hub/issues/2684 is released
+
+if ! declare -F __git_complete >/dev/null; then
+	_completion_loader git
+fi
+
+function _git { __git_wrap__git_main "$@"; }
+
+. /usr/share/bash-completion/completions/hub
+
+__git_compute_all_commands
+__git_all_commands=$({ __git_list_all_commands 2>/dev/null; echo "$__git_all_commands"; } | sort -u)

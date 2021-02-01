@@ -1,4 +1,9 @@
 #!bash
+# shellcheck disable=SC2239
 
-. /usr/share/bash-completion/completions/git
-complete -F _git git-dotfiles
+if ! declare -F __git_complete >/dev/null; then
+	_completion_loader git
+fi
+
+# FIXME: "git" instead of "__git_main" once https://github.com/git/git/commit/5a067ba9d04eebc92ad77f101b785219238f4f1e is released
+__git_complete git-dotfiles __git_main
