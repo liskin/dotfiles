@@ -17,7 +17,6 @@ import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_, mapConcurrently_)
 import Control.Exception (handle, SomeException)
 import Control.Monad
-import Control.Monad.Fix
 import Data.List (intercalate, isPrefixOf, nub)
 import Data.List.Split
 import qualified Data.Map as M
@@ -44,6 +43,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers hiding (pid)
 import XMonad.Hooks.Place (placeHook, fixed)
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
+import XMonad.Hooks.Rescreen
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
@@ -159,7 +159,7 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask,               xK_v     ), renameWorkspace def)
     , ((modMask,               xK_g     ), changeDirRofiGit >> curDirToWorkspacename)
 
-    , ((modMask .|. shiftMask               , xK_q), rescreenHook)
+    , ((modMask .|. shiftMask               , xK_q), myAfterRescreenHook)
     , ((modMask                             , xK_q), restart (myHome ++ "/bin/xmonad") True)
     , ((modMask .|. mod1Mask .|. controlMask, xK_q), io (exitWith ExitSuccess))
     ]
@@ -363,18 +363,6 @@ myLogHook = do
 isWeechatTitle = ("t[N] " `isPrefixOf`)
 
 
-randrRestartEventHook (ConfigureEvent {ev_window = w}) = do
-    r <- asks theRoot
-    if w == r
-        then do
-            clearTypedWindowEvents w configureNotify
-            rescreen
-            rescreenHook
-            return $ All False
-        else
-            return $ All True
-randrRestartEventHook _ = mempty
-
 trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
     -- when trayer is lowered to the bottom of stack, put all xmobars that
     -- are above it below
@@ -398,28 +386,28 @@ floatConfReqHook _ _ = mempty
 myEventHook = mconcat
     [ refocusLastEventHook
     , hintsEventHook
-    , randrRestartEventHook
     , trayerDockEventHook
     , floatConfReqHook myFloatConfReqManageHook
     ]
     where
         refocusLastEventHook = refocusLastWhen isFloat
 
--- | clearEvents.  Remove all events of a given type from the event queue.
-clearTypedWindowEvents :: Window -> EventType -> X ()
-clearTypedWindowEvents w t = withDisplay $ \d -> io $ do
-    sync d False
-    allocaXEvent $ \p -> fix $ \again -> do
-        more <- checkTypedWindowEvent d w t p
-        when more again -- beautiful
-
-rescreenHook :: X ()
-rescreenHook = do
+-- Rescreen hook
+myAfterRescreenHook = do
     let mainxmobar = sequence [ spawnJournalPid "xmobar -x 0" ]
     let trayer = sequence [ spawnJournalPid "trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l" ]
     killPids
     savePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer ]
     spawnExec "~/bin/.xlayout/post.sh"
+
+myRandrChangeHook = do
+    spawnExec "if-session-unlocked layout-auto"
+
+rescreenHook' = rescreenHook hCfg . rescreenAtStart
+  where
+    hCfg = def{ afterRescreenHook = myAfterRescreenHook
+              , randrChangeHook = myRandrChangeHook }
+    rescreenAtStart = \cfg -> cfg{ startupHook = startupHook cfg <> myAfterRescreenHook }
 
 xmobarScreens :: X [ ProcessID ]
 xmobarScreens = do
@@ -518,10 +506,6 @@ writeStateLogHook = do
 
 writeStateHook cfg = cfg{ logHook = logHook cfg <> writeStateLogHook }
 
--- Startuphook.
-myStartupHook = do
-    rescreenHook
-
 -- Override WM name to confuse JVM into working properly
 javaHack cfg = cfg { startupHook = startupHook cfg <> setWMName "LG3D" }
 
@@ -530,6 +514,7 @@ main = do
     xmonad $
         javaHack .
         writeStateHook .
+        rescreenHook' .
         docks .
         ewmh' def
             { activateHook = myActivateHook
@@ -552,6 +537,5 @@ main = do
             , layoutHook         = myLayout
             , manageHook         = myManageHook
             , logHook            = myLogHook
-            , startupHook        = myStartupHook
             , handleEventHook    = myEventHook
             }

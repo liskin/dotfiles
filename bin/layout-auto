@@ -5,6 +5,10 @@ shopt -s nullglob lastpipe
 
 export LC_ALL=C
 
+# avoid concurrent executions
+exec {lock_fd}>"${XDG_RUNTIME_DIR:?}/liskin-layout-auto.lock"
+flock --nonblock "$lock_fd" || exit
+
 function fingerprint-outputs {
 	local out h
 
