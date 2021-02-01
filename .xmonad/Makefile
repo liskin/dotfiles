@@ -28,4 +28,8 @@ build-deps:
 		stack exec -- ghc --make xmobar/examples/xmonadpropwrite.hs && \
 		cp xmobar/examples/xmonadpropwrite .bin/
 
+.PHONY: build-doc
+build-doc:
+	$(MAKE) -C ~/src-haskell build-doc BUILD_TARGETS="xmobar xmonad xmonad-contrib split"
+
 .PHONY: _phony
