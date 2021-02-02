@@ -1,11 +1,3 @@
-*.o
-*.dyn_o
-*.p_o
-*.hi
-*.dyn_hi
-*.p_hi
-*.orig
-*.zal*
-
-/history
+/.build/
+/prompt-history
 /xmonad-*-linux
