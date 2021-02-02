@@ -1,1 +1,22 @@
-.xmonad/.xmobarrc
+Config { font     = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
+       , bgColor  = "#200000"
+       , fgColor  = "#CFCFCF"
+       , position = Top
+       , lowerOnStart = True
+       , overrideRedirect = False
+       , commands = [ Run Date "%a %d.%m.%Y %H:%M:%S" "theDate" 10
+                    , Run XMonadLog
+                    , Run XPropertyLog "_XMOBAR_BATTERY_EXTRA"
+                    , Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<icon=.xmobar/icons/net-wired2.xbm/><rx>KB:<tx>KB "] 10
+                    , Run Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t","<icon=.xmobar/icons/net-wifi.xbm/><rx>KB|<tx>KB "] 10
+                    , Run BatteryN ["BAT0"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","<acstatus><left>%|<watts>W","--","-O","<icon=.xmobar/icons/power-ac.xbm/>","-i","<icon=.xmobar/icons/power-ac.xbm/>","-o","<icon=.xmobar/icons/power-bat.xbm/>"] 50 "battery0"
+                    , Run BatteryN ["BAT1"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","|<left>%|<watts>W","--","-O","<icon=.xmobar/icons/power-ac.xbm/>","-i","<icon=.xmobar/icons/power-ac.xbm/>","-o","<icon=.xmobar/icons/power-bat.xbm/>"] 50 "battery1"
+                    , Run CoreTemp ["-t","<icon=.xmobar/icons/temp.xbm/><core0>C"] 50
+                    , Run MultiCpu ["-H","95","--high","red","-t","<icon=.xmobar/icons/cpu.xbm/>(<autovbar>)","--","--contiguous-icons"] 10
+                    , Run Com "bash" ["-c", "[[ \"$(< /proc/modules)\" == *nvidia* ]] && echo \" <fc=red>nvidia</fc>\" || :"] "nvidia" 600
+                    , Run Com "bash" ["-c", "[[ \"$(/usr/local/sbin/liskin-gvt-g list)\" ]] && echo \" <fc=red>gvt</fc>\" || :"] "gvt" 600
+                    ]
+       , sepChar  = "%"
+       , alignSep = ""
+       , template = "%XMonadLog% %gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
+       }
