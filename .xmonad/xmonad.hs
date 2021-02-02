@@ -64,8 +64,7 @@ import qualified XMonad.Util.PureX as P
 
 import Xmobar.X11.Actions (stripActions)
 
-
-up = updatePointer (0.5, 0.5) (0, 0)
+myHome = unsafePerformIO $ getEnv "HOME"
 
 cmdLogJournal =
     [ "systemd-cat"
@@ -85,7 +84,7 @@ spawnTerm s = spawn . unwords $ cmdXCwd ++ ["exec"] ++ cmdLogJournal ++ cmdAppSc
 
 cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 
--- Bindings.
+-- Bindings
 myKeys conf@(XConfig{modMask}) = M.fromList $
     -- running apps
     [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawnTerm "urxvt")
@@ -194,6 +193,8 @@ myMouseBindings (XConfig{modMask}) = M.fromList $
     , ((modMask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
     ]
 
+up = updatePointer (0.5, 0.5) (0, 0)
+
 curDirToWorkspacename = do
     name <- getCurrentWorkspaceName
     when (isNothing name) $ do
@@ -246,8 +247,7 @@ focusNth n swap = P.withFocii $ \_ focused -> do
                  | x == b = a
                  | otherwise = x
 
-
--- Layouts.
+-- Layouts
 myLayout = dir . refocusLastLayoutHook . trackFloating $
     named "tiled" (fixl $ sub $ tiled) |||
     named "mtiled" (fixl $ sub $ Mirror $ tiled) |||
@@ -277,18 +277,10 @@ laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
               , "spiral"
               , "full" ]
 
-myHome = unsafePerformIO $ getEnv "HOME"
-
-shortenDir :: String -> String
-shortenDir s | (myHome ++ "/") `isPrefixOf` s = '~' : drop (length myHome) s
-             | myHome == s                    = "~"
-             | otherwise                      = s
-
 instance Shrinker CustomShrink where
     shrinkIt _ _ = []
 
-
--- Managehook.
+-- Manage hook
 myManageHook = composeAll
     [ isFullscreen --> doFullFloat
     , placeHook (fixed (0.5, 0.5))
@@ -311,8 +303,24 @@ myActivateHook = composeOne
     , pure True -?> doFocus
     ]
 
+-- Event hook
+myEventHook = mconcat
+    [ refocusLastEventHook
+    , hintsEventHook
+    , trayerDockEventHook
+    , floatConfReqHook myFloatConfReqManageHook
+    ]
+    where
+        refocusLastEventHook = refocusLastWhen isFloat
 
--- Loghook.
+floatConfReqHook :: MaybeManageHook -> Event -> X All
+floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do
+    runQuery (join <$> (isFloat -?> mh)) w >>= \case
+        Nothing -> mempty
+        Just e -> windows (appEndo e) >> pure (All False)
+floatConfReqHook _ _ = mempty
+
+-- Log hook, status bars, tray
 myLogHook = do
     let myPP = xmobarPP
             { ppExtras =
@@ -356,56 +364,6 @@ myLogHook = do
                 , w <- W.integrate' (W.stack wks) ]
         isWeechat w = (isWeechatTitle . show) `fmap` getName w
 
-isWeechatTitle = ("t[N] " `isPrefixOf`)
-
-
-trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
-    -- when trayer is lowered to the bottom of stack, put all xmobars that
-    -- are above it below
-    whenX (runQuery (className =? "trayer") w) $ do
-        withDisplay $ \dpy -> do
-            rootw <- asks theRoot
-            (_, _, ws) <- io $ queryTree dpy rootw
-            let aboveTrayerWs = dropWhile (w /=) ws
-            xmobarWs <- filterM (runQuery (appName =? "xmobar")) aboveTrayerWs
-            mapM_ (io . lowerWindow dpy) xmobarWs
-    mempty
-trayerDockEventHook _ = mempty
-
-floatConfReqHook :: MaybeManageHook -> Event -> X All
-floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do
-    runQuery (join <$> (isFloat -?> mh)) w >>= \case
-        Nothing -> mempty
-        Just e -> windows (appEndo e) >> pure (All False)
-floatConfReqHook _ _ = mempty
-
-myEventHook = mconcat
-    [ refocusLastEventHook
-    , hintsEventHook
-    , trayerDockEventHook
-    , floatConfReqHook myFloatConfReqManageHook
-    ]
-    where
-        refocusLastEventHook = refocusLastWhen isFloat
-
--- Rescreen hook
-myAfterRescreenHook respawn = do
-    spawnExec "~/bin/.xlayout/post.sh"
-    if respawn
-        then respawnOnlyManaged =<< xmobarCommands
-        else spawnOnlyManaged =<< xmobarCommands
-
-myRandrChangeHook = do
-    spawnExec "if-session-unlocked layout-auto"
-
-rescreenHook' = rescreenHook hCfg . rescreenAtStart
-  where
-    hCfg = def{ afterRescreenHook = myAfterRescreenHook False
-              , randrChangeHook = myRandrChangeHook }
-    rescreenAtStart = \cfg -> cfg{
-        startupHook = startupHook cfg <> myAfterRescreenHook True }
-
--- Status bars and tray
 xmobarCommands :: X [String]
 xmobarCommands = do
     xmobarScreens <- gets (map (xmobarScreen . W.screen) . W.screens . windowset)
@@ -470,6 +428,42 @@ xmobarWindowLists = withWindowSet $ \ws -> do
 
         primes [n] = [n]
         primes ns = [ n ++ [p] | n <- ns | p <- "⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..] ]
+
+        shortenDir s | (myHome ++ "/") `isPrefixOf` s = '~' : drop (length myHome) s
+                     | myHome == s                    = "~"
+                     | otherwise                      = s
+
+isWeechatTitle = ("t[N] " `isPrefixOf`)
+
+trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
+    -- when trayer is lowered to the bottom of stack, put all xmobars that
+    -- are above it below
+    whenX (runQuery (className =? "trayer") w) $ do
+        withDisplay $ \dpy -> do
+            rootw <- asks theRoot
+            (_, _, ws) <- io $ queryTree dpy rootw
+            let aboveTrayerWs = dropWhile (w /=) ws
+            xmobarWs <- filterM (runQuery (appName =? "xmobar")) aboveTrayerWs
+            mapM_ (io . lowerWindow dpy) xmobarWs
+    mempty
+trayerDockEventHook _ = mempty
+
+-- Rescreen hook
+myAfterRescreenHook respawn = do
+    spawnExec "~/bin/.xlayout/post.sh"
+    if respawn
+        then respawnOnlyManaged =<< xmobarCommands
+        else spawnOnlyManaged =<< xmobarCommands
+
+myRandrChangeHook = do
+    spawnExec "if-session-unlocked layout-auto"
+
+rescreenHook' = rescreenHook hCfg . rescreenAtStart
+  where
+    hCfg = def{ afterRescreenHook = myAfterRescreenHook False
+              , randrChangeHook = myRandrChangeHook }
+    rescreenAtStart = \cfg -> cfg{
+        startupHook = startupHook cfg <> myAfterRescreenHook True }
 
 -- Periodic backup of xmonad state
 data LastWriteState = LastWriteState EpochTime deriving (Show, Read)
