@@ -64,24 +64,26 @@ import qualified XMonad.Util.PureX as P
 
 import Xmobar.X11.Actions (stripActions)
 
+myHome :: String
 myHome = unsafePerformIO $ getEnv "HOME"
 
+cmdLogJournal, cmdAppScope, cmdXCwd :: [String]
 cmdLogJournal =
     [ "systemd-cat"
     , "--priority=info", "--stderr-priority=warning", "--level-prefix=false"
     , "--" ]
-
 cmdAppScope =
     [ "systemd-run", "--quiet", "--collect"
     , "--user" , "--scope", "--slice=app.slice", "--unit=\"app-$$.scope\""
     , "--" ]
-
 cmdXCwd = [ "D=\"$(xcwd)\" || D=;", "${D:+cd \"$D\"};" ]
 
+spawnExec, spawnApp, spawnTerm :: String -> X ()
 spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
 spawnTerm s = spawn . unwords $ cmdXCwd ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
 
+cmdExecJournal :: String -> String
 cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 
 -- Bindings
@@ -193,8 +195,10 @@ myMouseBindings (XConfig{modMask}) = M.fromList $
     , ((modMask, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
     ]
 
+up :: X ()
 up = updatePointer (0.5, 0.5) (0, 0)
 
+curDirToWorkspacename :: X ()
 curDirToWorkspacename = do
     name <- getCurrentWorkspaceName
     when (isNothing name) $ do
@@ -269,6 +273,7 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
          activeBorderColor = "#000000", inactiveBorderColor = "#000000", urgentBorderColor = "#ff0000"
      }
 
+laySels :: [(String, X ())]
 laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
     where l = [ "tiled"
               , "mtiled"
@@ -281,6 +286,7 @@ instance Shrinker CustomShrink where
     shrinkIt _ _ = []
 
 -- Manage hook
+myManageHook :: ManageHook
 myManageHook = composeAll
     [ isFullscreen --> doFullFloat
     , placeHook (fixed (0.5, 0.5))
@@ -294,16 +300,19 @@ myManageHook = composeAll
     , transience'
     ]
 
+myFloatConfReqManageHook :: MaybeManageHook
 myFloatConfReqManageHook = composeAll
     [ appName =? "alarm-clock-applet" -?> doFloat
     ]
 
+myActivateHook :: ManageHook
 myActivateHook = composeOne
     [ className =? "Google-chrome" <||> className =? "google-chrome" -?> doAskUrgent
     , pure True -?> doFocus
     ]
 
 -- Event hook
+myEventHook :: Event -> X All
 myEventHook = mconcat
     [ refocusLastEventHook
     , hintsEventHook
@@ -321,6 +330,7 @@ floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do
 floatConfReqHook _ _ = mempty
 
 -- Log hook, status bars, tray
+myLogHook :: X ()
 myLogHook = do
     let myPP = xmobarPP
             { ppExtras =
@@ -433,8 +443,10 @@ xmobarWindowLists = withWindowSet $ \ws -> do
                      | myHome == s                    = "~"
                      | otherwise                      = s
 
+isWeechatTitle :: String -> Bool
 isWeechatTitle = ("t[N] " `isPrefixOf`)
 
+trayerDockEventHook :: Event -> X All
 trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
     -- when trayer is lowered to the bottom of stack, put all xmobars that
     -- are above it below
@@ -449,15 +461,18 @@ trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
 trayerDockEventHook _ = mempty
 
 -- Rescreen hook
+myAfterRescreenHook :: Bool -> X ()
 myAfterRescreenHook respawn = do
     spawnExec "~/bin/.xlayout/post.sh"
     if respawn
         then respawnOnlyManaged =<< xmobarCommands
         else spawnOnlyManaged =<< xmobarCommands
 
+myRandrChangeHook :: X ()
 myRandrChangeHook = do
     spawnExec "if-session-unlocked layout-auto"
 
+rescreenHook' :: XConfig a -> XConfig a
 rescreenHook' = rescreenHook hCfg . rescreenAtStart
   where
     hCfg = def{ afterRescreenHook = myAfterRescreenHook False
@@ -469,15 +484,18 @@ rescreenHook' = rescreenHook hCfg . rescreenAtStart
 data LastWriteState = LastWriteState EpochTime deriving (Show, Read)
 instance ExtensionClass LastWriteState where initialValue = LastWriteState 0
 
+writeStateLogHook :: X ()
 writeStateLogHook = do
     LastWriteState lastWrite <- XS.get
     now <- io $ epochTime
     when (lastWrite + 60 < now) writeStateToFile
     XS.put $ LastWriteState now
 
+writeStateHook :: XConfig a -> XConfig a
 writeStateHook cfg = cfg{ logHook = logHook cfg <> writeStateLogHook }
 
 -- Override WM name to confuse JVM into working properly
+javaHack :: XConfig a -> XConfig a
 javaHack cfg = cfg { startupHook = startupHook cfg <> setWMName "LG3D" }
 
 -- Main.
