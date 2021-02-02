@@ -5,7 +5,7 @@
 {-# LANGUAGE ParallelListComp #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# OPTIONS_GHC -Wall -Wno-missing-signatures -Wno-orphans #-}
+{-# OPTIONS_GHC -Wno-missing-signatures -Wno-orphans #-}
 
 module Main (main) where
 

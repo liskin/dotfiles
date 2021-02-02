@@ -4,7 +4,7 @@ XMONAD_BINARY := xmonad-$(ARCH)-$(OS)
 
 $(XMONAD_BINARY): build-deps
 	cd ~/src-haskell && \
-		stack exec -- ghc --make $(CURDIR)/xmonad.hs -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o $(CURDIR)/$@.tmp
+		stack exec -- ghc -Wall -i -i$(CURDIR) -fforce-recomp -rtsopts -threaded -with-rtsopts="-V0" -o $(CURDIR)/$@.tmp $(CURDIR)/xmonad.hs
 	mv -f $@.tmp $@
 
 .PHONY: ghcid
@@ -15,7 +15,7 @@ ghcid:
 .PHONY: ghci
 ghci: build-deps
 	cd ~/src-haskell && \
-		stack exec -- ghci $(CURDIR)/xmonad.hs
+		stack exec -- ghci -Wall -i -i$(CURDIR) $(CURDIR)/xmonad.hs
 
 ghci-%: build-deps _phony
 	cd ~/src-haskell && \
