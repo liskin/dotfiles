@@ -13,9 +13,6 @@ import XMonad hiding ((|||))
 import qualified XMonad.StackSet as W
 
 import Codec.Binary.UTF8.String (encodeString)
-import Control.Concurrent (threadDelay)
-import Control.Concurrent.Async (race_, mapConcurrently_)
-import Control.Exception (handle, SomeException)
 import Control.Monad
 import Data.List (intercalate, isPrefixOf, nub)
 import Data.List.Split
@@ -27,8 +24,6 @@ import System.Directory ( getCurrentDirectory )
 import System.Environment
 import System.Exit
 import System.IO.Unsafe
-import System.Posix.Process
-import System.Posix.Signals
 import System.Posix.Time
 import System.Posix.Types
 
@@ -62,6 +57,7 @@ import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.NamedWindows
 import XMonad.Util.Run
+import XMonad.Util.SpawnManager
 import XMonad.Util.Ungrab
 import qualified XMonad.Util.ExtensibleState as XS
 import qualified XMonad.Util.PureX as P
@@ -86,7 +82,8 @@ cmdXCwd = [ "D=\"$(xcwd)\" || D=;", "${D:+cd \"$D\"};" ]
 spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
 spawnTerm s = spawn . unwords $ cmdXCwd ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
-spawnJournalPid s = spawnPID . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
+
+cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 
 -- Bindings.
 myKeys conf@(XConfig{modMask}) = M.fromList $
@@ -159,7 +156,7 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask,               xK_v     ), renameWorkspace def)
     , ((modMask,               xK_g     ), changeDirRofiGit >> curDirToWorkspacename)
 
-    , ((modMask .|. shiftMask               , xK_q), myAfterRescreenHook)
+    , ((modMask .|. shiftMask               , xK_q), myAfterRescreenHook True)
     , ((modMask                             , xK_q), restart (myHome ++ "/bin/xmonad") True)
     , ((modMask .|. mod1Mask .|. controlMask, xK_q), io (exitWith ExitSuccess))
     ]
@@ -303,7 +300,6 @@ myManageHook = composeAll
     , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
     , isDialog --> doFloat
     , transience'
-    , manageDocks
     ]
 
 myFloatConfReqManageHook = composeAll
@@ -393,30 +389,35 @@ myEventHook = mconcat
         refocusLastEventHook = refocusLastWhen isFloat
 
 -- Rescreen hook
-myAfterRescreenHook = do
-    let mainxmobar = sequence [ spawnJournalPid "xmobar -x 0" ]
-    let trayer = sequence [ spawnJournalPid "trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l" ]
-    killPids
-    savePids . concat =<< sequence [ xmobarScreens, mainxmobar, trayer ]
+myAfterRescreenHook respawn = do
     spawnExec "~/bin/.xlayout/post.sh"
+    if respawn
+        then respawnOnlyManaged =<< xmobarCommands
+        else spawnOnlyManaged =<< xmobarCommands
 
 myRandrChangeHook = do
     spawnExec "if-session-unlocked layout-auto"
 
 rescreenHook' = rescreenHook hCfg . rescreenAtStart
   where
-    hCfg = def{ afterRescreenHook = myAfterRescreenHook
+    hCfg = def{ afterRescreenHook = myAfterRescreenHook False
               , randrChangeHook = myRandrChangeHook }
-    rescreenAtStart = \cfg -> cfg{ startupHook = startupHook cfg <> myAfterRescreenHook }
+    rescreenAtStart = \cfg -> cfg{
+        startupHook = startupHook cfg <> myAfterRescreenHook True }
 
-xmobarScreens :: X [ ProcessID ]
-xmobarScreens = do
-    ws <- gets windowset
-    forM (W.screens ws) $ \scr -> do
-        let S num = W.screen scr
-            n = show num
-            prop = "_XMONAD_LOG_SCREEN_" ++ n
-        spawnJournalPid $ "xmobar -b -x " ++ n ++ " -c '[Run XPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
+-- Status bars and tray
+xmobarCommands :: X [String]
+xmobarCommands = do
+    xmobarScreens <- gets (map (xmobarScreen . W.screen) . W.screens . windowset)
+    pure $ map cmdExecJournal $ xmobarMain : trayer : xmobarScreens
+  where
+    xmobarMain = "xmobar -x 0"
+    xmobarScreen (S num) = "xmobar -b -x " ++ n ++
+        " -c '[Run XPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
+      where
+        n = show num
+        prop = "_XMONAD_LOG_SCREEN_" ++ n
+    trayer = "trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l"
 
 xmobarWindowLists :: X ()
 xmobarWindowLists = withWindowSet $ \ws -> do
@@ -469,30 +470,6 @@ xmobarWindowLists = withWindowSet $ \ws -> do
 
         primes [n] = [n]
         primes ns = [ n ++ [p] | n <- ns | p <- "⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..] ]
-
-data KillPids = KillPids [ ProcessID ] deriving (Show, Read)
-
-instance ExtensionClass KillPids where
-    initialValue = KillPids []
-    extensionType = PersistentExtension
-
-savePids :: [ ProcessID ] -> X ()
-savePids = XS.put . KillPids
-
-killPids :: X ()
-killPids = do
-    KillPids pids <- XS.get
-    io $ mapConcurrently_ killPid pids
-
-killPid :: ProcessID -> IO ()
-killPid pid = try_ $ race_ (killer 50000) waiter
-    where
-        try_ = handle (\(_ :: SomeException) -> pure ())
-        waiter = getProcessStatus True False pid
-        killer delay = do
-            signalProcess (if delay < 1000000 then sigTERM else sigKILL) pid
-            threadDelay delay
-            killer (delay * 2)
 
 -- Periodic backup of xmonad state
 data LastWriteState = LastWriteState EpochTime deriving (Show, Read)
