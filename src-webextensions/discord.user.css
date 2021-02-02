@@ -1,0 +1,23 @@
+/* ==UserStyle==
+@name           Discord high contrast
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document url-prefix("https://discord.com/") {
+
+.theme-dark {
+    --background-primary: #000;
+    --background-secondary: #111;
+    --background-secondary-alt: #222;
+    --background-tertiary: #222;
+    --channeltextarea-background: #222;
+    --text-normal: #ddd;
+}
+
+body {
+    font-family: "Noto Sans";
+}
+
+}
