@@ -7,8 +7,8 @@ endif
 let g:loaded_canon_filename = 1
 
 function! s:canon_filename() abort
-	let f = expand("%")
-	let f_canon = fnamemodify(fnamemodify(resolve(f), ":~"), ":.")
+	let f = fnamemodify(expand("%"), ":~:.")
+	let f_canon = fnamemodify(resolve(f), ":~:.")
 
 	" try to detect if the buffer is in any way special: plugins that rely on
 	" BufWriteCmd should set buftype=acwrite, but not all do, so test the
