@@ -5,7 +5,7 @@ Config { font     = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
        , lowerOnStart = True
        , overrideRedirect = False
        , commands = [ Run Date "%a %d.%m.%Y %H:%M:%S" "theDate" 10
-                    , Run XMonadLog
+                    , Run UnsafeXMonadLog
                     , Run XPropertyLog "_XMOBAR_BATTERY_EXTRA"
                     , Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<icon=.xmobar/icons/net-wired2.xbm/><rx>KB:<tx>KB "] 10
                     , Run Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t","<icon=.xmobar/icons/net-wifi.xbm/><rx>KB|<tx>KB "] 10
@@ -18,5 +18,5 @@ Config { font     = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
                     ]
        , sepChar  = "%"
        , alignSep = ""
-       , template = "%XMonadLog% %gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
+       , template = "%UnsafeXMonadLog% %gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
        }

@@ -55,6 +55,7 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
+import XMonad.Util.ClickableWorkspaces.Integrations
 import XMonad.Util.NamedWindows
 import XMonad.Util.Run
 import XMonad.Util.SpawnManager
@@ -267,9 +268,9 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
 
      sub = addTabs CustomShrink decoTheme . subLayout [] Simplest
      decoTheme = def{
-         decoHeight = 6,
+         decoHeight = 4,
          activeColor = "#ff0000", inactiveColor = "#dddddd", urgentColor = "#ffff00",
-         activeBorderWidth = 1, inactiveBorderWidth = 1, urgentBorderWidth = 1,
+         activeBorderWidth = 0, inactiveBorderWidth = 1, urgentBorderWidth = 1,
          activeBorderColor = "#000000", inactiveBorderColor = "#000000", urgentBorderColor = "#ff0000"
      }
 
@@ -344,19 +345,19 @@ myLogHook = do
             , ppSep = " │ "
             , ppOrder = \(w:_:_:s) -> w:s
             }
-    workspaceNamesPP myPP >>= dynamicLogString >>= xmonadPropLog
+    xmonadPropLog =<< dynamicLogString =<< clickableWorkspaceNamesPP myPP
     xmobarWindowLists
     where
         ppVisibleC = xmobarColor "green" ""
         ppCurrentC = xmobarColor "yellow" ""
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
-        shortenUrgent t | isWeechatTitle t = stripActions t
-                        | otherwise = xmobarRaw $ shorten' "~" 30 t
+        shortenUrgent pp t | isWeechatTitle t = stripActions t
+                           | otherwise = pp $ xmobarRaw $ shorten' "~" 30 t
         ppUrgentExtra urgents w = do
             nw <- getName w
             let pp = if w `elem` urgents then ppUrgentC else ppNormalC
-            pure $ pp . shortenUrgent $ show nw
+            pure $ clickableWindow w . shortenUrgent pp $ show nw
         urgentsExtras = do
             weechat <- weechatWins
             urgents <- readUrgents
@@ -381,7 +382,7 @@ xmobarCommands = do
   where
     xmobarMain = "xmobar -x 0"
     xmobarScreen (S num) = "xmobar -b -x " ++ n ++
-        " -c '[Run XPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
+        " -c '[Run UnsafeXPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
       where
         n = show num
         prop = "_XMONAD_LOG_SCREEN_" ++ n
@@ -409,13 +410,14 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let winFmt w | isFocused w && isCurrent = ppFocusC
             winFmt w | w `elem` urgents         = ppUrgentC
                      | otherwise                = ppUnfocusC
+        let clickWinFmt w = clickableWindow w . winFmt w
 
         let wins = W.integrate' stack
         tits <- mapM getName wins
         let gs = map W.integrate . W.integrate' . getGroupStack myLayout $ wks
         let indices = [ i | (n, g) <- zip [1..] gs
                       , i <- primes [ show (n :: Int) | _ <- g ] ]
-        let logWins = [ " │ " ++ winFmt w (i ++ " " ++ sanitize (show tit))
+        let logWins = [ " │ " ++ clickWinFmt w (i ++ " " ++ sanitize (show tit))
                       | w <- wins | tit <- tits | i <- indices ]
 
         xmobarLog scr . concat $ logHeader : logWins
@@ -445,6 +447,9 @@ xmobarWindowLists = withWindowSet $ \ws -> do
 
 isWeechatTitle :: String -> Bool
 isWeechatTitle = ("t[N] " `isPrefixOf`)
+
+clickableWindow :: Window -> String -> String
+clickableWindow w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
 
 trayerDockEventHook :: Event -> X All
 trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
@@ -507,7 +512,7 @@ main = do
         docks .
         ewmh' def
             { activateHook = myActivateHook
-            , workspaceListTransform = workspaceNamesListTransform
+            , workspaceRename = workspaceNamesRenameWS
             , fullscreen = True
             } .
         withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
