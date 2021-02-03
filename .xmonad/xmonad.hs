@@ -380,9 +380,10 @@ xmobarCommands = do
     xmobarScreens <- gets (map (xmobarScreen . W.screen) . W.screens . windowset)
     pure $ map cmdExecJournal $ xmobarMain : trayer : xmobarScreens
   where
-    xmobarMain = "xmobar -x 0"
-    xmobarScreen (S num) = "xmobar -b -x " ++ n ++
-        " -c '[Run UnsafeXPropertyLog \"" ++ prop ++ "\"]' -t '%" ++ prop ++ "%'"
+    xmobarIconRoot = ["-i", myHome ++ "/.xmobar/icons"]
+    xmobarMain = unwords $ ["xmobar"] ++ xmobarIconRoot ++ ["-x", "0"]
+    xmobarScreen (S num) = unwords $ ["xmobar"] ++ xmobarIconRoot ++ ["-b", "-x", n] ++
+        ["-c", "'[Run UnsafeXPropertyLog \"" ++ prop ++ "\"]'", "-t", "'%" ++ prop ++ "%'"]
       where
         n = show num
         prop = "_XMONAD_LOG_SCREEN_" ++ n
