@@ -439,52 +439,47 @@ autocmd BufNewFile,BufRead */.config/git/include/* setf gitconfig
 
 " key maps {{{1
 
-nnoremap <silent> <F2> :w!<CR>
-inoremap <silent> <F2> <C-O>:w!<CR>
+nnoremap <silent> <F2> <Cmd>:w!<CR>
+inoremap <silent> <F2> <Cmd>:w!<CR>
 
-nnoremap <silent> <F3> :IndentGuidesToggle<CR>
-inoremap <silent> <F3> <C-O>:IndentGuidesToggle<CR>
+nnoremap <silent> <F3> <Cmd>:IndentGuidesToggle<CR>
+inoremap <silent> <F3> <Cmd>:IndentGuidesToggle<CR>
 
-nnoremap <silent> <F4> :cprevious<CR>
-inoremap <silent> <F4> <C-O>:cprevious<CR>
-nnoremap <silent> <F5> :cnext<CR>
-inoremap <silent> <F5> <C-O>:cnext<CR>
+nnoremap <silent> <F4> <Cmd>:cprevious<CR>
+inoremap <silent> <F4> <Cmd>:cprevious<CR>
+nnoremap <silent> <F5> <Cmd>:cnext<CR>
+inoremap <silent> <F5> <Cmd>:cnext<CR>
 
-nnoremap <silent> <F6> :lprevious<CR>
-inoremap <silent> <F6> <C-O>:lprevious<CR>
-nnoremap <silent> <F7> :lnext<CR>
-inoremap <silent> <F7> <C-O>:lnext<CR>
+nnoremap <silent> <F6> <Cmd>:lprevious<CR>
+inoremap <silent> <F6> <Cmd>:lprevious<CR>
+nnoremap <silent> <F7> <Cmd>:lnext<CR>
+inoremap <silent> <F7> <Cmd>:lnext<CR>
 
-nnoremap <silent> <F8> :TagbarToggle<CR>
-inoremap <silent> <F8> <C-O>:TagbarToggle<CR>
-
-" nnoremap <silent> <F8> :Vista!!<CR>
-" inoremap <silent> <F8> <C-O>:Vista!!<CR>
-
-" nnoremap <silent> <F9> :Vista ale<CR>
-" inoremap <silent> <F9> <C-O>:Vista ale<CR>
+nnoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
+inoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
 
 if has('gui_running')
-	nnoremap <silent> <F10> :ToggleMenu<CR>
-	inoremap <silent> <F10> <C-O>:ToggleMenu<CR>
+	nnoremap <silent> <F10> <Cmd>:ToggleMenu<CR>
+	inoremap <silent> <F10> <Cmd>:ToggleMenu<CR>
 	command ToggleMenu if &go=~'m'|set go-=m|else|set go+=m|endif
 endif
 
-nnoremap <silent> <F11> :NERDTreeToggle<CR>
-inoremap <silent> <F11> <C-O>:NERDTreeToggle<CR>
+nnoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
+inoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
 
-nnoremap <silent> <F12> :GitGutterToggle<CR>
-inoremap <silent> <F12> <C-O>:GitGutterToggle<CR>
+nnoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
+inoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
 
-nnoremap <silent> <C-P> :FzfFiles<CR>
-nnoremap <silent> <C-B> :FzfBuffers<CR>
-nnoremap <silent> <C-G> :FzfTags<CR>
-nnoremap <silent> <C-T> :FzfBTags<CR>
-nnoremap <silent> <C-X> :FzfCommands<CR>
+nnoremap <silent> <C-P> <Cmd>:FzfFiles<CR>
+nnoremap <silent> <C-B> <Cmd>:FzfBuffers<CR>
+nnoremap <silent> <C-G> <Cmd>:FzfTags<CR>
+nnoremap <silent> <C-T> <Cmd>:FzfBTags<CR>
+nnoremap <silent> <C-X> <Cmd>:FzfCommands<CR>
+
 nnoremap <C-J> :FzfRg<space>
 
-nnoremap <silent> <C-_> :FzfSnippets<CR>
-inoremap <silent> <C-_> <C-\><C-O>:FzfSnippets<CR>
+nnoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
+inoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
 
 nmap <C-]> <Plug>(ale_tags_fallback_go_to_definition)
 nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
@@ -494,6 +489,7 @@ imap <C-H> <C-\><C-O><C-H>
 nnoremap <silent> <C-W>S :CloneBufTmp<CR>
 nnoremap <silent> <C-W>C :tabclose<CR>
 
+" C-X is commands, remap decrement to C-Q
 nnoremap <silent> <C-Q> <C-X>
 vnoremap <silent> <C-Q> <C-X>
 
@@ -506,7 +502,7 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 vnoremap <silent> j gj
 vnoremap <silent> k gk
-inoremap <silent> <Down> <C-o>gj
-inoremap <silent> <Up> <C-o>gk
+inoremap <silent> <Down> <C-O>gj
+inoremap <silent> <Up> <C-O>gk
 
 " vim:set foldenable foldmethod=marker: {{{1
