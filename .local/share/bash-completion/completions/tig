@@ -1,0 +1,11 @@
+#!bash
+# shellcheck disable=SC2239
+
+# drop once https://github.com/jonas/tig/issues/1011 and
+# https://github.com/jonas/tig/pull/1055 are released
+
+if ! declare -F __git_complete >/dev/null; then
+	_completion_loader git
+fi
+
+. /usr/share/bash-completion/completions/tig
