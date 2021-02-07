@@ -10,7 +10,6 @@ $(XMONAD_BINARY): build-deps
 			-outputdir $(CURDIR)/.build/ \
 			-threaded \
 			-rtsopts -with-rtsopts="-V0" \
-			-fforce-recomp \
 			-o $(CURDIR)/$@.tmp \
 			$(CURDIR)/xmonad.hs
 	mv -f $@.tmp $@
