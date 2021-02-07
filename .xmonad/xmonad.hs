@@ -55,7 +55,7 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
-import XMonad.Util.ClickableWorkspaces.Integrations
+import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.NamedWindows
 import XMonad.Util.Run
 import XMonad.Util.SpawnManager
