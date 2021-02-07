@@ -7,26 +7,34 @@
 
 @-moz-document domain("discord.com") {
 
-.theme-dark {
-    --background-primary: #000;
-    --background-secondary: #111;
-    --background-secondary-alt: #222;
-    --background-tertiary: #222;
-    --channeltextarea-background: #222;
-    --text-normal: #ddd;
-}
+	.theme-dark {
+		--background-primary: #000;
+		--background-secondary: #111;
+		--background-secondary-alt: #222;
+		--background-tertiary: #222;
+		--channeltextarea-background: #222;
+		--text-normal: #ddd;
+	}
 
-body {
-    font-family: "Noto Sans";
-}
+	body {
+		font-family: "Noto Sans";
+	}
 
-div.sidebar-2K8pFh {
-    width: 20px;
-    transition: width 0.3s;
-}
+	div.sidebar-2K8pFh {
+		width: 80px;
+		transition: width 0.3s;
+	}
 
-div.sidebar-2K8pFh:hover {
-    width: 240px;
-}
+	div.sidebar-2K8pFh:hover {
+		width: 240px;
+	}
+
+	div.sidebar-2K8pFh div.content-1x5b-n {
+		padding: 0;
+	}
+
+	div.sidebar-2K8pFh div.overflow-WK9Ogt {
+		text-overflow: clip;
+	}
 
 }
