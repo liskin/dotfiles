@@ -33,4 +33,7 @@
 	nav.guilds-1SWlCJ { z-index: 100; width: 10px; transition: width 0.3s; }
 	nav.guilds-1SWlCJ:hover { width: 72px; }
 
+	/* no right padding for messages */
+	div.message-2qnXI6 { padding-right: 0px !important; }
+
 }
