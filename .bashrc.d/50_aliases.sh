@@ -68,6 +68,7 @@ export-alias google-chrome-app-slack-goodalumni="google-chrome --app=https://goo
 export-alias google-chrome-app-slack-reprisma="google-chrome --app=https://reprisma.slack.com/"
 export-alias google-chrome-app-wire="google-chrome --app=https://app.wire.com/"
 export-alias google-chrome-app-discord="google-chrome --app=https://discord.com/app"
+export-alias google-chrome-app-skype="google-chrome --app=https://web.skype.com/"
 
 export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
 export-alias meld='LC_MESSAGES=C /usr/bin/meld'
