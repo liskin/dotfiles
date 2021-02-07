@@ -37,4 +37,18 @@
 		text-overflow: clip;
 	}
 
+	div.base-3dtUhz {
+		left: 10px;
+	}
+
+	nav.guilds-1SWlCJ {
+		z-index: 100;
+		width: 10px;
+		transition: width 0.3s;
+	}
+
+	nav.guilds-1SWlCJ:hover {
+		width: 72px;
+	}
+
 }
