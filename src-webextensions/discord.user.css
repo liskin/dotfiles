@@ -1,5 +1,5 @@
 /* ==UserStyle==
-@name           Discord high contrast
+@name           Discord high contrast, high density
 @namespace      github.com/openstyles/stylus
 @version        1.0.0
 @author         Tomáš Janoušek
@@ -7,6 +7,7 @@
 
 @-moz-document domain("discord.com") {
 
+	/* high contrast */
 	.theme-dark {
 		--background-primary: #000;
 		--background-secondary: #111;
@@ -16,39 +17,20 @@
 		--text-normal: #ddd;
 	}
 
-	body {
-		font-family: "Noto Sans";
-	}
+	/* font with better hinting/rendering on non-HiDPI displays */
+	body { font-family: "Noto Sans"; }
 
-	div.sidebar-2K8pFh {
-		width: 80px;
-		transition: width 0.3s;
-	}
+	/* collapse sidebar */
+	div.sidebar-2K8pFh { width: 80px; transition: width 0.3s; }
+	div.sidebar-2K8pFh:hover { width: 240px; }
 
-	div.sidebar-2K8pFh:hover {
-		width: 240px;
-	}
+	/* show as much as possible in collapsed sidebar */
+	div.sidebar-2K8pFh div.content-1x5b-n { padding: 0; }
+	div.sidebar-2K8pFh div.overflow-WK9Ogt { text-overflow: clip; }
 
-	div.sidebar-2K8pFh div.content-1x5b-n {
-		padding: 0;
-	}
-
-	div.sidebar-2K8pFh div.overflow-WK9Ogt {
-		text-overflow: clip;
-	}
-
-	div.base-3dtUhz {
-		left: 10px;
-	}
-
-	nav.guilds-1SWlCJ {
-		z-index: 100;
-		width: 10px;
-		transition: width 0.3s;
-	}
-
-	nav.guilds-1SWlCJ:hover {
-		width: 72px;
-	}
+	/* collapse guild navigation */
+	div.base-3dtUhz { left: 10px; }
+	nav.guilds-1SWlCJ { z-index: 100; width: 10px; transition: width 0.3s; }
+	nav.guilds-1SWlCJ:hover { width: 72px; }
 
 }
