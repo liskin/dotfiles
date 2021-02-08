@@ -1,0 +1,57 @@
+[global]
+	follow = mouse
+	geometry = "1000x5-20+20"
+	shrink = true
+	transparency = 10
+	padding = 4
+	horizontal_padding = 4
+	frame_width = 3
+	frame_color = "#333333"
+	separator_color = frame
+	separator_height = 3
+	corner_radius = 8
+
+	font = monospace 14
+	markup = full
+	format = "<b>%s</b>\n%b"
+	word_wrap = true
+	ignore_newline = false
+
+	icon_position = right
+	min_icon_size = 0
+	max_icon_size = 32
+	icon_path = /usr/share/icons/gnome/32x32/status/:/usr/share/icons/gnome/32x32/devices/
+
+	dmenu = /usr/bin/rofi -dmenu -p dunst:
+	browser = /usr/bin/sensible-browser
+
+	mouse_left_click = do_action, close_current
+	mouse_middle_click = close_all
+	mouse_right_click = close_current
+
+	idle_threshold = 120
+
+[urgency_low]
+	background = "#222222"
+	foreground = "#aaaaaa"
+	timeout = 10
+
+[urgency_normal]
+	background = "#222222"
+	foreground = "#ffffff"
+	timeout = 10
+
+[urgency_critical]
+	background = "#662222"
+	foreground = "#ffffff"
+	frame_color = "#ff0000"
+	timeout = 0
+
+[fullscreen_delay_everything]
+	fullscreen = delay
+
+[fullscreen_show_critical]
+	msg_urgency = critical
+	fullscreen = show
+
+# vim:set ft=cfg:
