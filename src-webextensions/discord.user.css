@@ -36,4 +36,7 @@
 	/* no right padding for messages */
 	div.message-2qnXI6 { padding-right: 0px !important; }
 
+	/* wider inbox */
+	div.recentMentionsPopout-3rCiI6 { width: 80vw; max-width: 80vw; }
+
 }
