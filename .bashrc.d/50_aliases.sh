@@ -37,12 +37,8 @@ export-alias neomutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/neomutt'
 
 export-alias mutt-nomi='mutt -F ~/.config/mutt/muttrc-nomi'
 export-alias neomutt-nomi='neomutt -F ~/.config/mutt/muttrc-nomi'
-export-alias mutt-altworx='mutt -F ~/.config/mutt/muttrc-altworx'
-export-alias neomutt-altworx='neomutt -F ~/.config/mutt/muttrc-altworx'
 
 export-alias m='mutt-nomi'
-export-alias m-altworx='mutt-altworx'
-export-alias m-tmux="tmux new-session -s m -n nomi \\; new-window -d -n altworx \\; send-keys -l \$'m\\n' \\; send-keys -t :altworx -l \$'m-altworx\\n'"
 
 export-alias mutt-news-gmane='neomutt -g news.gmane.io'
 export-alias mutt-news-kernel='neomutt -g nntp.lore.kernel.org'
@@ -65,7 +61,6 @@ export-alias google-chrome-app-fb-messenger="google-chrome --app=https://www.mes
 export-alias google-chrome-app-keep="google-chrome --app=https://keep.google.com/"
 export-alias google-chrome-app-matrix-element="google-chrome --app=https://app.element.io/"
 export-alias google-chrome-app-skype="google-chrome --app=https://web.skype.com/"
-export-alias google-chrome-app-slack-altworx="google-chrome --app=https://altworx.slack.com/"
 export-alias google-chrome-app-slack-functionalprogramming="google-chrome --app=https://functionalprogramming.slack.com/"
 export-alias google-chrome-app-slack-goodalumni="google-chrome --app=https://goodalumni.slack.com/"
 export-alias google-chrome-app-slack-reprisma="google-chrome --app=https://reprisma.slack.com/"
@@ -78,8 +73,6 @@ export-alias google-earth='google-earth-pro'
 
 export-alias nmcli-c-up-bluetooth='nmcli c up s10e.phone.lisk.in'
 export-alias nmcli-c-down-bluetooth='nmcli c down s10e.phone.lisk.in'
-export-alias nmcli-c-up-vpn-altworx='nmcli c up vpn-altworx'
-export-alias nmcli-c-down-vpn-altworx='nmcli c down vpn-altworx'
 
 export-alias rofi-emoji-menu='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-menu.sh'
 export-alias rofi-emoji-sign='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-sign.sh'

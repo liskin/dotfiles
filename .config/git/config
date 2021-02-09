@@ -92,7 +92,5 @@
 	generic = E !>tmux-new-window-or-exec vim +"%(lineno)" "fugitive://%(repo:git-dir)//%(commit)/%(file)"
 [fetch]
 	prune = true
-[includeIf "gitdir:~/work/altworx/"]
-	path = ~/work/altworx/.gitconfig
 [includeIf "gitdir:~/src-haskell/xmonad*/"]
 	path = ~/.config/git/include/xmonad
