@@ -10,9 +10,8 @@ $(XMONAD_BINARY): build-deps
 			-outputdir $(CURDIR)/.build/ \
 			-threaded \
 			-rtsopts -with-rtsopts="-V0" \
-			-o $(CURDIR)/$@.tmp \
+			-o $(CURDIR)/$@ \
 			$(CURDIR)/xmonad.hs
-	mv -f $@.tmp $@
 
 .PHONY: ghcid
 ghcid: TARGET=ghci
