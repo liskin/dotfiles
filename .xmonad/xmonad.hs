@@ -303,7 +303,8 @@ myManageHook = composeAll
 
 myFloatConfReqManageHook :: MaybeManageHook
 myFloatConfReqManageHook = composeAll
-    [ appName =? "alarm-clock-applet" -?> doFloat
+    [ appName =? "alarm-clock-applet" -?> doFloat -- prevent alarm-clock-applet from moving its floats to remebered location
+    , className =? "Steam" -?> doFloat -- prevent Steam from moving its floats to primary screen
     ]
 
 myActivateHook :: ManageHook
