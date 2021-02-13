@@ -21,6 +21,7 @@ exec \
 		--ro-bind "$XAUTHORITY"{,} \
 		--ro-bind "$HOME/.config/pulse/cookie"{,} \
 		--ro-bind "$HOME/bin/primusrun"{,} \
+		--ro-bind "$HOME/.local/share/vulkan/icd.d"{,} \
 		--ro-bind "$HOME/.local/bin/protontricks"{,} \
 		--ro-bind "$HOME/.local/pipx/venvs"{,} \
 		--ro-bind "$HOME/.local/venvs"{,} \
