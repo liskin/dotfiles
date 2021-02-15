@@ -101,15 +101,15 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask,               xK_p     ), unGrab >> spawnExec "passmenu --type")
 
     -- media keys
-    , ((0,         xF86XK_AudioMicMute    ), spawnExec "liskin-media mic-mute")
-    , ((0,         xF86XK_AudioMute       ), spawnExec "liskin-media mute")
-    , ((0,         xF86XK_AudioLowerVolume), spawnExec "liskin-media volume down")
-    , ((0,         xF86XK_AudioRaiseVolume), spawnExec "liskin-media volume up")
-    , ((0,         xF86XK_AudioPlay       ), spawnExec "liskin-media play")
-    , ((0,         xF86XK_AudioPause      ), spawnExec "liskin-media play")
-    , ((0,         xF86XK_AudioStop       ), spawnExec "liskin-media stop")
-    , ((0,         xF86XK_AudioNext       ), spawnExec "liskin-media next")
-    , ((0,         xF86XK_AudioPrev       ), spawnExec "liskin-media prev")
+    , ((0,       xF86XK_AudioMicMute    ), spawnExec "liskin-media mic-mute")
+    , ((0,       xF86XK_AudioMute       ), spawnExec "liskin-media mute")
+    , ((0,       xF86XK_AudioLowerVolume), spawnExec "liskin-media volume down")
+    , ((0,       xF86XK_AudioRaiseVolume), spawnExec "liskin-media volume up")
+    , ((0,       xF86XK_AudioPlay       ), spawnExec "liskin-media play")
+    , ((0,       xF86XK_AudioPause      ), spawnExec "liskin-media play")
+    , ((0,       xF86XK_AudioStop       ), spawnExec "liskin-media stop")
+    , ((0,       xF86XK_AudioNext       ), spawnExec "liskin-media next")
+    , ((0,       xF86XK_AudioPrev       ), spawnExec "liskin-media prev")
 
     -- other special keys
     , ((altMask,   xK_space             ), spawnExec "liskin-touchpad-toggle")
@@ -124,71 +124,76 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((0,         xF86XK_ScreenSaver   ), unGrab >> spawnExec "loginctl lock-session \"$XDG_SESSION_ID\"")
     , ((modMask,   xK_semicolon         ), unGrab >> spawnExec "loginctl lock-session \"$XDG_SESSION_ID\"")
 
-    , ((modMask,               xK_Escape), kill)
-    , ((modMask,               xK_space ), runSelectedAction "layout" laySels)
-    , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
-
+    -- focus changes
     , ((modMask,               xK_j     ), windows W.focusDown   >> up)
     , ((modMask,               xK_k     ), windows W.focusUp     >> up)
     , ((modMask,               xK_Return), windows W.swapMaster  >> up)
     , ((modMask .|. shiftMask, xK_j     ), windows W.swapDown    >> up)
     , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp      >> up)
 
+    -- workspace/screen focus changes
+    , ((modMask,               xK_n     ), toggleWS    >> up)
+    , ((modMask,               xK_Left  ), prevWS      >> up)
+    , ((modMask,               xK_Right ), nextWS      >> up)
+    , ((modMask .|. shiftMask, xK_Left  ), swapTo Prev >> up)
+    , ((modMask .|. shiftMask, xK_Right ), swapTo Next >> up)
+    , ((modMask,               xK_Tab   ), nextScreen  >> up)
+    , ((modMask .|. shiftMask, xK_Tab   ), prevScreen  >> up)
+
+    -- window actions
+    , ((modMask,               xK_Escape), kill)
+    , ((modMask,               xK_w     ), toggleFullscreen)
+    , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
+
+    -- layout changes
+    , ((modMask,               xK_space ), runSelectedAction "layout" laySels)
+    , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
     , ((modMask,               xK_h     ), sendMessage Shrink            >> up)
     , ((modMask,               xK_l     ), sendMessage Expand            >> up)
     , ((modMask,               xK_u     ), sendMessage MirrorShrink      >> up)
     , ((modMask,               xK_i     ), sendMessage MirrorExpand      >> up)
     , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX) >> up)
-
-    , ((modMask,               xK_w     ), toggleFullscreen)
-    , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
-    , ((modMask,               xK_f     ), toggleFloatNext >> runLogHook)
-    , ((modMask .|. shiftMask, xK_f     ), toggleFloatAllNew >> runLogHook)
-
     , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)    >> up)
     , ((modMask              , xK_period), sendMessage (IncMasterN (-1)) >> up)
-
     , ((modMask .|. shiftMask, xK_comma ), withFocused (sendMessage . mergeDir id) >> up)
     , ((modMask .|. shiftMask, xK_period), withFocused (sendMessage . UnMerge)     >> up)
 
+    -- toggles
+    , ((modMask,               xK_f     ), toggleFloatNext >> runLogHook)
+    , ((modMask .|. shiftMask, xK_f     ), toggleFloatAllNew >> runLogHook)
     , ((modMask              , xK_x     ), sendMessage (ToggleStrut D))
     , ((modMask              , xK_z     ), sendMessage ToggleStruts)
 
+    -- workspace dir and name
     , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
     , ((modMask,               xK_v     ), renameWorkspace def)
     , ((modMask,               xK_g     ), changeDirRofiGit >> curDirToWorkspacename)
 
-    , ((modMask .|. shiftMask               , xK_q), myAfterRescreenHook True)
-    , ((modMask                             , xK_q), restart (myHome ++ "/bin/xmonad") True)
-    , ((modMask .|. altMask .|. controlMask , xK_q), io (exitWith ExitSuccess))
-    ]
-    ++
+    -- restart/rescreen
+    , ((modMask .|. shiftMask, xK_q     ), myAfterRescreenHook True)
+    , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
 
-    [((m, k), P.defile f >> up)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, controlMask)]]
-    ++
-    [((m, k), P.defile f >> up)
-        | (i, k) <- zip (drop 12 $ XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. controlMask)]]
-    ++
-    [ ((modMask,               xK_n     ), toggleWS    >> up)
-    , ((modMask,               xK_Left  ), prevWS      >> up)
-    , ((modMask,               xK_Right ), nextWS      >> up)
-    , ((modMask .|. shiftMask, xK_Left  ), swapTo Prev >> up)
-    , ((modMask .|. shiftMask, xK_Right ), swapTo Next >> up)
-    ]
-    ++
+    -- the end
+    , ((modMask .|. altMask .|. controlMask, xK_q), io (exitWith ExitSuccess))
+    ] ++
+    -- focus changes
     [ ((modMask .|. m, k), P.defile (focusNth i swap) >> up)
         | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0])
-        , (m, swap) <- [(0, False), (shiftMask, True)] ]
-    ++
-    [ ((modMask,               xK_Tab   ), nextScreen >> up)
-    , ((modMask .|. shiftMask, xK_Tab   ), prevScreen >> up) ]
-    ++
-    [ ((modMask .|. m, k), do { Just sc <- getScreen def psc; Just w <- screenWorkspace sc; P.defile (f w); up })
-    | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
-    , (f, m) <- [(P.view, 0), (P.greedyView, shiftMask)] ]
+        , (m, swap) <- [(0, False), (shiftMask, True)]
+    ] ++
+    -- workspace/screen focus changes
+    [ ((m, k), P.defile f >> up)
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
+        , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, controlMask)]
+    ] ++
+    [ ((m, k), P.defile f >> up)
+        | (i, k) <- zip (drop 12 $ XMonad.workspaces conf) [xK_F1 .. xK_F12]
+        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. controlMask)]
+    ] ++
+    [ ((modMask .|. m, k), focusNthScreen i greedy >> up)
+        | (i, k) <- zip [0..] [xK_a, xK_s, xK_d]
+        , (m, greedy) <- [(0, False), (shiftMask, True)]
+    ]
   where
     altMask = mod1Mask
 
@@ -253,6 +258,11 @@ focusNth n swap = P.withFocii $ \_ focused -> do
       where sw x | x == a = b
                  | x == b = a
                  | otherwise = x
+
+focusNthScreen :: PhysicalScreen -> Bool -> X ()
+focusNthScreen n greedy = do
+    ws <- maybe mempty screenWorkspace =<< getScreen def n
+    whenJust ws $ P.defile . (if greedy then P.greedyView else P.view)
 
 -- Layouts
 myLayout = dir . refocusLastLayoutHook . trackFloating $
