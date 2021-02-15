@@ -13,6 +13,7 @@
 module XMonad.Util.My where
 
 import Control.Monad
+import Data.List
 import Data.List.Split (splitOneOf)
 import Data.Maybe
 import Data.Monoid
@@ -40,6 +41,10 @@ myHome = unsafePerformIO $ getEnv "HOME"
 
 jumpToLayout :: String -> X ()
 jumpToLayout = sendMessage . JumpToLayout
+
+jumpToLayout' :: WorkspaceId -> String -> X ()
+jumpToLayout' t s = withWorkspace t $ \w ->
+    P.handlingRefresh $ sendMessageWithNoRefresh (JumpToLayout s) w
 
 -- | Update workspace name (if empty) to current directory
 curDirToWorkspacename :: X ()
@@ -105,3 +110,21 @@ focusNthScreen :: PhysicalScreen -> Bool -> X ()
 focusNthScreen n greedy = do
     ws <- maybe mempty screenWorkspace =<< getScreen def n
     whenJust ws $ P.defile . (if greedy then P.greedyView else P.view)
+
+-- | Do something with a named workspace.
+withWorkspace :: WorkspaceId -> (WindowSpace -> X ()) -> X ()
+withWorkspace t f = do
+    w <- gets $ find ((t ==) . W.tag) . W.workspaces . windowset
+    whenJust w f
+
+-- | Do something with windows selected by @Query Bool@.
+withQueryWin :: Query Bool -> ([Window] -> X ()) -> WindowSpace -> X ()
+withQueryWin q f ws = filterM (runQuery q) (W.integrate' (W.stack ws)) >>= f
+
+-- | Focus first window selected by @Query Bool@.
+focusQueryWin :: Query Bool -> WindowSpace -> X ()
+focusQueryWin q ws = withQueryWin q f ws
+    where
+        f [] = mempty
+        f (w:_) = windows $ onWorkspace (W.tag ws) (W.focusWindow w)
+        onWorkspace n g s = W.view (W.currentTag s) . g . W.view n $ s

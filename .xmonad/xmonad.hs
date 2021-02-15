@@ -53,6 +53,7 @@ import XMonad.Util.NamedWindows
 import XMonad.Util.Ungrab
 import qualified XMonad.Util.PureX as P
 
+import XMonad.Actions.DoNotDisturb
 import XMonad.Hooks.WriteState
 import XMonad.Util.My
 import XMonad.Util.SpawnManager
@@ -269,7 +270,7 @@ myEventHook = mconcat
     ]
     where
         refocusLastEventHook = refocusLastWhen isFloat
-        myXmonadCtlHooks = []
+        myXmonadCtlHooks = [myCtlDnd]
 
 floatConfReqHook :: MaybeManageHook -> Event -> X All
 floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do
@@ -278,18 +279,40 @@ floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do
         Just e -> windows (appEndo e) >> pure (All False)
 floatConfReqHook _ _ = mempty
 
+-- Do Not Disturb
+myCtlDnd :: String -> X ()
+myCtlDnd "dnd-on" = do
+    setDoNotDisturb DoNotDisturb
+    withUrgents $ mapM_ myUrgencyHook
+    jumpToLayout' "1" "tab"
+    focusWiki
+myCtlDnd "dnd-off" = do
+    setDoNotDisturb Disturb
+    replayDeferredUrgents
+    jumpToLayout' "1" "tiled"
+myCtlDnd _ = mempty
+
+myUrgencyHook :: Window -> X ()
+myUrgencyHook = deferUrgencyHook $ isDND <&&> windowTag =? Just "1"
+
+focusWiki :: X ()
+focusWiki = withWorkspace "1" $ focusQueryWin $ do
+    t <- title
+    pure $ " - VIM" `isSuffixOf` t && "~/taskwiki" `isInfixOf` t
+
 -- Log hook, status bars, tray
 myLogHook :: X ()
 myLogHook = do
+    dnd <- getDoNotDisturb
     let myPP = xmobarPP
             { ppExtras =
                 [ willFloatNextPP ("Float " ++)
                 , willFloatAllNewPP ("Float " ++)
-                , urgentsExtras
+                , urgentsExtras dnd
                 ]
-            , ppVisible = xmobarBorder "Top" "green" 1 . ppVisibleC
-            , ppCurrent = xmobarBorder "Top" "yellow" 1 . ppCurrentC
-            , ppUrgent = xmobarBorder "Top" "#ff0000" 1 . ppUrgentC
+            , ppVisible = ppVisibleB . ppVisibleC
+            , ppCurrent = ppCurrentB . ppCurrentC
+            , ppUrgent = ppUrgentB . ppUrgentC
             , ppSep = " │ "
             , ppOrder = \(w:_:_:s) -> w:s
             }
@@ -297,16 +320,20 @@ myLogHook = do
     xmobarWindowLists
     where
         ppVisibleC = xmobarColor "green" ""
+        ppVisibleB = xmobarBorder "Top" "green" 1
         ppCurrentC = xmobarColor "yellow" ""
+        ppCurrentB = xmobarBorder "Top" "yellow" 1
         ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000"
+        ppUrgentB = xmobarBorder "Top" "#ff0000" 1
         shortenUrgent pp t | isWeechatTitle t = stripActions t
                            | otherwise = pp $ xmobarRaw $ shorten' "~" 30 t
         ppUrgentExtra urgents w = do
             nw <- getName w
             let pp = if w `elem` urgents then ppUrgentC else ppNormalC
             pure $ clickableWindow w . shortenUrgent pp $ show nw
-        urgentsExtras = do
+        urgentsExtras DoNotDisturb = pure $ Just "dnd"
+        urgentsExtras Disturb = do
             weechat <- weechatWins
             urgents <- readUrgents
             let ws = nub $ weechat ++ urgents
@@ -357,7 +384,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let logHeader = unwords [tagFmt (addWksName tag), dir, layout]
 
         let winFmt w | isFocused w && isCurrent = ppFocusC
-            winFmt w | w `elem` urgents         = ppUrgentC
+                     | w `elem` urgents         = ppUrgentC
                      | otherwise                = ppUnfocusC
         let clickWinFmt w = clickableWindow w . winFmt w
 
@@ -376,7 +403,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         ppCurrentC = xmobarBorder "Bottom" "yellow" 1 . xmobarColor "yellow" ""
 
         ppFocusC   = xmobarBorder "Bottom" "#ffff00" 1 . xmobarColor "#ffff00" ""
-        ppUrgentC  = xmobarColor "#ff0000" "#ffff00"
+        ppUrgentC  = xmobarColor "#ffff00" "#800000"
         ppUnfocusC = xmobarColor "#b0b040" ""
 
         sanitize t = xmobarRaw . shorten' "~" 30 . strip $ t
@@ -450,7 +477,7 @@ main = do
             , workspaceRename = workspaceNamesRenameWS
             , fullscreen = True
             } .
-        withUrgencyHookC NoUrgencyHook urgencyConfig{ suppressWhen = Focused } $
+        withUrgencyHookC myUrgencyHook urgencyConfig{ suppressWhen = Focused } $
             def
             { terminal           = "urxvt"
             , focusFollowsMouse  = True
