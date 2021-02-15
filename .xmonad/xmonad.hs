@@ -15,8 +15,6 @@ import Data.Maybe
 import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
 import System.Exit
-import System.Posix.Time
-import System.Posix.Types
 import qualified Data.Map as M
 
 import XMonad hiding ((|||))
@@ -53,9 +51,9 @@ import XMonad.Layout.WorkspaceDir
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.NamedWindows
 import XMonad.Util.Ungrab
-import qualified XMonad.Util.ExtensibleState as XS
 import qualified XMonad.Util.PureX as P
 
+import XMonad.Hooks.WriteState
 import XMonad.Util.My
 import XMonad.Util.SpawnManager
 
@@ -435,21 +433,6 @@ rescreenHook' = rescreenHook hCfg . rescreenAtStart
               , randrChangeHook = myRandrChangeHook }
     rescreenAtStart = \cfg -> cfg{
         startupHook = startupHook cfg <> myAfterRescreenHook True }
-
--- Periodic backup of xmonad state
-data LastWriteState = LastWriteState EpochTime deriving (Show, Read)
-instance ExtensionClass LastWriteState where initialValue = LastWriteState 0
-
-writeStateLogHook :: X ()
-writeStateLogHook = do
-    LastWriteState lastWrite <- XS.get
-    now <- io $ epochTime
-    when (lastWrite + 60 < now) $ do
-        writeStateToFile
-        XS.put $ LastWriteState now
-
-writeStateHook :: XConfig a -> XConfig a
-writeStateHook cfg = cfg{ logHook = logHook cfg <> writeStateLogHook }
 
 -- Override WM name to confuse JVM into working properly
 javaHack :: XConfig a -> XConfig a
