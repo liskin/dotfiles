@@ -39,6 +39,7 @@ import XMonad.Hooks.ManageHelpers hiding (pid)
 import XMonad.Hooks.Place (placeHook, fixed)
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
 import XMonad.Hooks.Rescreen
+import XMonad.Hooks.ServerMode
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
@@ -332,9 +333,11 @@ myEventHook = mconcat
     , hintsEventHook
     , trayerDockEventHook
     , floatConfReqHook myFloatConfReqManageHook
+    , serverModeEventHookF "_XMONAD_CTL" (mconcat myXmonadCtlHooks)
     ]
     where
         refocusLastEventHook = refocusLastWhen isFloat
+        myXmonadCtlHooks = []
 
 floatConfReqHook :: MaybeManageHook -> Event -> X All
 floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do

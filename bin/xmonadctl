@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if (( ! $# )); then
+	exec xmonadctl.real -h
+else
+	xmonadctl.real -a _XMONAD_CTL "$@"
+fi

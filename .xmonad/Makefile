@@ -34,7 +34,7 @@ ghci-%: build-deps _phony
 build-deps:
 	$(MAKE) -C ~/src-haskell \
 		BUILD_TARGETS="xmobar xmonad xmonad-contrib split" \
-		build .bin/xmonadpropread .bin/xmonadpropwrite
+		build .bin/xmonadctl .bin/xmonadpropread .bin/xmonadpropwrite
 
 .PHONY: build-doc
 build-doc:
