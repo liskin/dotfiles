@@ -3,32 +3,26 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE ParallelListComp #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-missing-signatures -Wno-orphans #-}
 
 module Main (main) where
 
-import XMonad hiding ((|||))
-import qualified XMonad.StackSet as W
-
 import Codec.Binary.UTF8.String (encodeString)
 import Control.Monad
-import Data.List (intercalate, isPrefixOf, nub)
-import Data.List.Split
-import qualified Data.Map as M
+import Data.List
 import Data.Maybe
 import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
-import System.Directory ( getCurrentDirectory )
-import System.Environment
 import System.Exit
-import System.IO.Unsafe
 import System.Posix.Time
 import System.Posix.Types
+import qualified Data.Map as M
+
+import XMonad hiding ((|||))
+import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
-import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
@@ -58,16 +52,14 @@ import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.NamedWindows
-import XMonad.Util.Run
-import XMonad.Util.SpawnManager
 import XMonad.Util.Ungrab
 import qualified XMonad.Util.ExtensibleState as XS
 import qualified XMonad.Util.PureX as P
 
-import Xmobar.X11.Actions (stripActions)
+import XMonad.Util.My
+import XMonad.Util.SpawnManager
 
-myHome :: String
-myHome = unsafePerformIO $ getEnv "HOME"
+import Xmobar.X11.Actions (stripActions)
 
 cmdLogJournal, cmdAppScope, cmdXCwd :: [String]
 cmdLogJournal =
@@ -178,7 +170,7 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask .|. altMask .|. controlMask, xK_q), io (exitWith ExitSuccess))
     ] ++
     -- focus changes
-    [ ((modMask .|. m, k), P.defile (focusNth i swap) >> up)
+    [ ((modMask .|. m, k), P.defile (focusNth myLayout i swap) >> up)
         | (i, k) <- zip [0..9] ([xK_1 .. xK_9] ++ [xK_0])
         , (m, swap) <- [(0, False), (shiftMask, True)]
     ] ++
@@ -207,64 +199,6 @@ myMouseBindings (XConfig{modMask}) = M.fromList $
 up :: X ()
 up = updatePointer (0.5, 0.5) (0, 0)
 
-curDirToWorkspacename :: X ()
-curDirToWorkspacename = do
-    name <- getCurrentWorkspaceName
-    when (isNothing name) $ do
-        dir <- io getCurrentDirectory
-        when (dir /= myHome) $ do
-            setCurrentWorkspaceName $ last $ splitOneOf "/" dir
-
-runSelectedAction :: String -> [(String, X ())] -> X ()
-runSelectedAction prompt actions = do
-    unGrab
-    out <- lines <$> runProcessWithInput "rofi" ["-dmenu", "-p", prompt] (unlines $ map fst actions)
-    case out of
-        [sel] -> maybe (pure ()) id (sel `lookup` actions)
-        _ -> pure ()
-
-changeDirRofiGit :: X ()
-changeDirRofiGit = do
-    unGrab
-    out <- lines <$> runProcessWithInput "rofi-git-all-repos" [] ""
-    case out of
-        [sel] -> sendMessage (Chdir sel)
-        _ -> pure ()
-
-toggleFullscreen :: X ()
-toggleFullscreen =
-    withWindowSet $ \ws ->
-    withFocused $ \w -> do
-        let fullRect = W.RationalRect 0 0 1 1
-        let isFullFloat = w `M.lookup` W.floating ws == Just fullRect
-        windows $ if isFullFloat then W.sink w else W.float w fullRect
-
-focusNth :: Int -> Bool -> P.PureX Any
-focusNth n swap = P.withFocii $ \_ focused -> do
-    focusFrom focused <> if swap then swapWith focused else mempty
-  where
-    focusFrom focused = do
-        ws <- P.curWorkspace
-        case drop n (W.integrate' . getGroupStack myLayout $ ws) of
-            [] -> mempty -- index out of bounds
-            (g : _) | W.focus g /= focused -> P.focusWindow (W.focus g)
-                    | otherwise -> P.focusWindow (W.focus . W.focusDown' $ g)
-
-    swapWith _ | not swap = mempty
-    swapWith oldFocused = P.withFocii $ \_ newFocused -> do
-        P.putStack . fmap (swapStack oldFocused newFocused) =<< P.getStack
-        P.focusWindow newFocused <> pure (Any $ oldFocused /= newFocused)
-
-    swapStack a b (W.Stack f u d) = W.Stack (sw f) (map sw u) (map sw d)
-      where sw x | x == a = b
-                 | x == b = a
-                 | otherwise = x
-
-focusNthScreen :: PhysicalScreen -> Bool -> X ()
-focusNthScreen n greedy = do
-    ws <- maybe mempty screenWorkspace =<< getScreen def n
-    whenJust ws $ P.defile . (if greedy then P.greedyView else P.view)
-
 -- Layouts
 myLayout = dir . refocusLastLayoutHook . trackFloating $
     named "tiled" (fixl $ sub $ tiled) |||
@@ -288,7 +222,7 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
      }
 
 laySels :: [(String, X ())]
-laySels = [ (s, sendMessage $ JumpToLayout s) | s <- l ]
+laySels = [ (s, jumpToLayout s) | s <- l ]
     where l = [ "tiled"
               , "mtiled"
               , "tab"
