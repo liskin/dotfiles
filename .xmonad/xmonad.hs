@@ -444,8 +444,9 @@ writeStateLogHook :: X ()
 writeStateLogHook = do
     LastWriteState lastWrite <- XS.get
     now <- io $ epochTime
-    when (lastWrite + 60 < now) writeStateToFile
-    XS.put $ LastWriteState now
+    when (lastWrite + 60 < now) $ do
+        writeStateToFile
+        XS.put $ LastWriteState now
 
 writeStateHook :: XConfig a -> XConfig a
 writeStateHook cfg = cfg{ logHook = logHook cfg <> writeStateLogHook }
