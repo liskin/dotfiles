@@ -90,9 +90,9 @@ cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 -- Bindings
 myKeys conf@(XConfig{modMask}) = M.fromList $
     -- running apps
-    [ ((mod1Mask .|. controlMask, xK_r  ), unGrab >> spawnTerm "urxvt")
+    [ ((altMask .|. hyperMask, xK_r     ), unGrab >> spawnTerm "urxvt")
     , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
-    , ((controlMask,           xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
+    , ((hyperMask,             xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
     -- various rofi tools
     , ((modMask,               xK_Menu  ), unGrab >> spawnExec "rofi -show window")
@@ -112,7 +112,7 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((0,         xF86XK_AudioPrev       ), spawnExec "liskin-media prev")
 
     -- other special keys
-    , ((mod1Mask,  xK_space             ), spawnExec "liskin-touchpad-toggle")
+    , ((altMask,   xK_space             ), spawnExec "liskin-touchpad-toggle")
     , ((0,         xF86XK_TouchpadToggle), spawnExec "liskin-touchpad-toggle")
     , ((0,         xF86XK_WebCam        ), spawnExec "liskin-touchscreen-toggle")
     , ((0,         xF86XK_Display       ), spawnExec "layout-auto layout-vertical")
@@ -160,17 +160,17 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
 
     , ((modMask .|. shiftMask               , xK_q), myAfterRescreenHook True)
     , ((modMask                             , xK_q), restart (myHome ++ "/bin/xmonad") True)
-    , ((modMask .|. mod1Mask .|. controlMask, xK_q), io (exitWith ExitSuccess))
+    , ((modMask .|. altMask .|. hyperMask, xK_q), io (exitWith ExitSuccess))
     ]
     ++
 
     [((m, k), P.defile f >> up)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, mod1Mask), (P.shift i <> P.view i, controlMask)]]
+        , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, hyperMask)]]
     ++
     [((m, k), P.defile f >> up)
         | (i, k) <- zip (drop 12 $ XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. controlMask)]]
+        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. hyperMask)]]
     ++
     [ ((modMask,               xK_n     ), toggleWS    >> up)
     , ((modMask,               xK_Left  ), prevWS      >> up)
@@ -189,6 +189,9 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     [ ((modMask .|. m, k), do { Just sc <- getScreen def psc; Just w <- screenWorkspace sc; P.defile (f w); up })
     | (k, psc) <- zip [xK_a, xK_s, xK_d] [0..]
     , (f, m) <- [(P.view, 0), (P.greedyView, shiftMask)] ]
+  where
+    altMask = mod1Mask
+    hyperMask = mod3Mask
 
 myMouseBindings (XConfig{modMask}) = M.fromList $
     [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
