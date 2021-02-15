@@ -90,9 +90,9 @@ cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 -- Bindings
 myKeys conf@(XConfig{modMask}) = M.fromList $
     -- running apps
-    [ ((altMask .|. hyperMask, xK_r     ), unGrab >> spawnTerm "urxvt")
+    [ ((altMask .|. controlMask, xK_r   ), unGrab >> spawnTerm "urxvt")
     , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
-    , ((hyperMask,             xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
+    , ((controlMask,           xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
     -- various rofi tools
     , ((modMask,               xK_Menu  ), unGrab >> spawnExec "rofi -show window")
@@ -160,17 +160,17 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
 
     , ((modMask .|. shiftMask               , xK_q), myAfterRescreenHook True)
     , ((modMask                             , xK_q), restart (myHome ++ "/bin/xmonad") True)
-    , ((modMask .|. altMask .|. hyperMask, xK_q), io (exitWith ExitSuccess))
+    , ((modMask .|. altMask .|. controlMask , xK_q), io (exitWith ExitSuccess))
     ]
     ++
 
     [((m, k), P.defile f >> up)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, hyperMask)]]
+        , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, controlMask)]]
     ++
     [((m, k), P.defile f >> up)
         | (i, k) <- zip (drop 12 $ XMonad.workspaces conf) [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. hyperMask)]]
+        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. controlMask)]]
     ++
     [ ((modMask,               xK_n     ), toggleWS    >> up)
     , ((modMask,               xK_Left  ), prevWS      >> up)
@@ -191,7 +191,6 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , (f, m) <- [(P.view, 0), (P.greedyView, shiftMask)] ]
   where
     altMask = mod1Mask
-    hyperMask = mod3Mask
 
 myMouseBindings (XConfig{modMask}) = M.fromList $
     [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
