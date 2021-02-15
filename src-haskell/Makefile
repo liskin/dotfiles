@@ -12,14 +12,12 @@ build:
 build-doc: STACK_BUILDFLAGS=--haddock --no-haddock-deps --no-haddock-hyperlink-source
 build-doc: build
 
-.bin/xmonadpropread: | build
+.bin/xmonadpropread: xmonad-contrib/scripts/xmonadpropread.hs | build
 	stack exec -- ghc \
 		-outputdir ~/.xmonad/.build/xmonadpropread/ \
-		-o .bin/xmonadpropread \
-		xmonad-contrib/scripts/xmonadpropread.hs
+		-o .bin/xmonadpropread $<
 
-.bin/xmonadpropwrite: | build
+.bin/xmonadpropwrite: xmobar/examples/xmonadpropwrite.hs | build
 	stack exec -- ghc \
 		-outputdir ~/.xmonad/.build/xmonadpropwrite/ \
-		-o .bin/xmonadpropwrite \
-		xmobar/examples/xmonadpropwrite.hs
+		-o .bin/xmonadpropwrite $<
