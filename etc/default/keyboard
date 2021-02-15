@@ -1,0 +1,10 @@
+# KEYBOARD CONFIGURATION FILE
+
+# Consult the keyboard(5) manual page.
+
+XKBMODEL="pc105"
+XKBLAYOUT="us,cz"
+XKBVARIANT=""
+XKBOPTIONS="grp:switch,grp:lalt_lshift_toggle,grp_led:caps,caps:escape"
+
+BACKSPACE="guess"
