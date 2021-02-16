@@ -2,7 +2,6 @@ Config { font     = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
        , bgColor  = "#200000"
        , fgColor  = "#CFCFCF"
        , position = Top
-       , lowerOnStart = True
        , overrideRedirect = False
        , commands = [ Run Date "%a %d.%m.%Y %H:%M:%S" "theDate" 10
                     , Run UnsafeXMonadLog
