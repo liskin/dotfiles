@@ -8,7 +8,6 @@
 
 module Main (main) where
 
-import Codec.Binary.UTF8.String (encodeString)
 import Control.Monad
 import Data.List
 import Data.Maybe
@@ -413,7 +412,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
             strip | isWeechatTitle t = xmobarStrip
                   | otherwise        = id
 
-        xmobarLog (W.screen -> S n) = xmonadPropLog' prop . encodeString
+        xmobarLog (W.screen -> S n) = xmonadPropLog' prop
           where prop = "_XMONAD_LOG_SCREEN_" ++ show n
 
         primes [n] = [n]
