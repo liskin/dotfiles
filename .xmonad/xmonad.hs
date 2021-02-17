@@ -381,8 +381,8 @@ xmobarWindowLists = withWindowSet $ \ws -> do
 
         let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
         let dir = shortenLeft 30 . shortenDir $ dir'
-        let layout = description . W.layout $ wks
-        let logHeader = unwords [tagFmt (addWksName tag), dir, layout]
+        let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
+        let logHeader = unwords [tagFmt (addWksName tag), layout, dir]
 
         let winFmt w | isFocused w && isCurrent = ppFocusC
                      | w `elem` urgents         = ppUrgentC
