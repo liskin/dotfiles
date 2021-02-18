@@ -54,4 +54,8 @@
 	msg_urgency = critical
 	fullscreen = show
 
+[fullscreen_show_pasystray]
+	appname = pasystray
+	fullscreen = show
+
 # vim:set ft=cfg:
