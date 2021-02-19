@@ -5,7 +5,7 @@ $idle > 60 && current window $program == "google-chrome" && current window $titl
 
 -- generic, for filtering purposes
 tag Program:$current.program,
-tag Desktop:$desktop,
+any window $active ==> tag Desktop:$desktop,
 
 -- unambiguous activities (general)
 $desktop == "1:irc" && current window $title =~ /^t\[N\] / ==> tag Activity:Chat,
@@ -28,8 +28,8 @@ current window $program == "gl" ==> {
 current window $program == ["app.element.io", "discord.com__app", "www.messenger.com"] ==> tag Activity:Chat,
 current window $program =~ /\.slack\.com$/ ==> tag Activity:Chat,
 current window $program == "zoom" ==> tag Activity:Call,
-$desktop =~ /:steam$/ ==> tag Activity:Games,
-$desktop == ["1", "11"] && any window $program == "Steam" ==> tag Activity:Games,
+any window $active && $desktop =~ /:steam$/ ==> tag Activity:Games,
+any window $active && $desktop == ["1", "11"] && any window $program == "Steam" ==> tag Activity:Games,
 
 include(`categorize-priv.m4')dnl
 
@@ -38,13 +38,13 @@ current window $program == "google-chrome" ==> {
 	current window $title =~ m|:: https?://github.*/xmonad| ==> tag Activity:Proj-XMonad,
 	current window $title =~ m|:: https?://.*reddit.*/xmonad| ==> tag Activity:Proj-XMonad,
 },
-$desktop =~ /:\.?xmonad/ ==> tag Activity:Proj-XMonad,
+any window $active && $desktop =~ /:\.?xmonad/ ==> tag Activity:Proj-XMonad,
 
 -- possibly ambiguous fallback activities
 current window $program == "google-chrome" ==> {
 	current window $title =~ m|:: https?://github| ==> tag Activity:Web-GitHub-Fallback,
 	$desktop == "2:web" ==> tag Activity:Web-Fallback,
 },
-!( $desktop == ["1:irc", "2:web", "12:_watch"] ) && $desktop =~ m|:(.*)$| ==> tag Activity:Proj-$1-Fallback,
+any window $active && !( $desktop == ["1:irc", "2:web", "12:_watch"] ) && $desktop =~ m|:(.*)$| ==> tag Activity:Proj-$1-Fallback,
 
 -- vim:set ft=haskell noet:
