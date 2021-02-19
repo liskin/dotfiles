@@ -28,8 +28,11 @@ function details {
 
 function uncategorized-dump-samples {
 	date-range "$@"
+	grep -P -o '\bActivity:[\w_-]+' ~/.arbtt/categorize.cfg | sort -u \
+		| grep -v '[-]Fallback$' \
+		| readarray -t excludes
 	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --dump-samples --exclude=Activity:
+		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --dump-samples "${excludes[@]/#/--exclude=}"
 	done
 }
 
