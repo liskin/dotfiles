@@ -17,7 +17,6 @@ current window $program == "google-chrome" ==> {
 	current window $title =~ m|:: https?://.*muni.*/discussion/| ==> tag Activity:Web-Plkarna,
 	current window $title =~ m|:: https?://news\.ycombinator| ==> tag Activity:Web-HN,
 	current window $title =~ m!( / Twitter|\bFacebook) (::|-) ! ==> tag Activity:Web-Social,
-	current window $title =~ m!:: https?://.*(freevid|porn|xvideos|xhamster)! ==> tag Activity:Watch-Porn,
 	current window $title =~ m!\bYouTube (::|-) ! ==> tag Activity:Watch,
 	current window $title =~ m|:: https?://www\.tesco\.com| ==> tag Activity:Web-Shopping,
 	current window $title =~ m|^shopping list - Google Sheets| ==> tag Activity:Web-Shopping,
@@ -31,6 +30,8 @@ current window $program =~ /\.slack\.com$/ ==> tag Activity:Chat,
 current window $program == "zoom" ==> tag Activity:Call,
 $desktop =~ /:steam$/ ==> tag Activity:Games,
 $desktop == ["1", "11"] && any window $program == "Steam" ==> tag Activity:Games,
+
+include(`categorize-priv.m4')dnl
 
 -- unambiguous activities (projects)
 current window $program == "google-chrome" ==> {
