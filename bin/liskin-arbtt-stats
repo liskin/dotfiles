@@ -6,13 +6,12 @@ shopt -s lastpipe
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
 function date-range {
-	d="${1:-yesterday}"
-	d1=$(date -d "$d" +%F)
-	d2=$(date -d "$d + 1 day" +%F)
+	d1=$(date -d "${1:-yesterday}" +%F)
+	d2=$(date -d "${2:-$d1 + 1 day}" +%F)
 }
 
 function activity {
-	date-range "${1-}"
+	date-range "$@"
 	for log in ~/.arbtt/capture-:?.log; do
 		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --min-percentage=0 --category=Activity
 		echo
@@ -20,7 +19,7 @@ function activity {
 }
 
 function uncategorized-dump-samples {
-	date-range "${1-}"
+	date-range "$@"
 	grep -P -o '\bActivity:[\w_-]+' ~/.arbtt/categorize.cfg | sort -u | readarray -t excludes
 	for log in ~/.arbtt/capture-:?.log; do
 		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --dump-samples "${excludes[@]/#/--exclude=}"
@@ -28,7 +27,7 @@ function uncategorized-dump-samples {
 }
 
 function uncategorized-current-window {
-	uncategorized-dump-samples "${1-}" | grep -F '(*)' | sort | uniq --count | sort -n
+	uncategorized-dump-samples "$@" | grep -F '(*)' | sort | uniq --count | sort -n
 }
 
 (( $# )) || set -- activity
