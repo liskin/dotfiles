@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
 liskin-arbtt-stats activity yesterday | mail -s arbtt-stats tomi@localhost
+
+# avoid killing forked exim4 trying to deliver results
+sleep 2
