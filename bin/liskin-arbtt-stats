@@ -18,6 +18,14 @@ function activity {
 	done
 }
 
+function details {
+	date-range "$@"
+	for log in ~/.arbtt/capture-:?.log; do
+		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --each-category
+		echo
+	done
+}
+
 function uncategorized-dump-samples {
 	date-range "$@"
 	for log in ~/.arbtt/capture-:?.log; do
