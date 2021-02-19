@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+liskin-arbtt-stats activity yesterday | mail -s arbtt-stats tomi@localhost
