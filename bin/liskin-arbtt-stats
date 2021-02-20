@@ -13,7 +13,7 @@ function date-range {
 function activity {
 	date-range "$@"
 	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --min-percentage=0 --category=Activity
+		o arbtt-stats --logfile="$log" --filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00" --min-percentage=0 --category=Activity
 		echo
 	done
 }
@@ -21,7 +21,7 @@ function activity {
 function details {
 	date-range "$@"
 	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --each-category
+		o arbtt-stats --logfile="$log" --filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00" --each-category
 		echo
 	done
 }
@@ -32,7 +32,7 @@ function uncategorized-dump-samples {
 		| grep -v '[-]Fallback$' \
 		| readarray -t excludes
 	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" --filter="\$date >= $d1 && \$date < $d2" --dump-samples "${excludes[@]/#/--exclude=}"
+		o arbtt-stats --logfile="$log" --filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00" --dump-samples "${excludes[@]/#/--exclude=}"
 	done
 }
 
