@@ -54,7 +54,7 @@ function with-uncategorized {
 function with-uncategorized-nofallback {
 	local -a activity_categories
 	grep -P -o '\bActivity:[\w_-]+' ~/.arbtt/categorize.cfg | sort -u \
-		| grep -v '[-]Fallback$' \
+		| grep -v 'ⁱ$' \
 		| readarray -t activity_categories
 	exclude+=("${activity_categories[@]/#/--exclude=}")
 	"$@"
