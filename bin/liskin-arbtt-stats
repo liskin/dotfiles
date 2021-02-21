@@ -21,6 +21,12 @@ function arbtt-stats-foreach {
 	done
 }
 
+function activity-chart {
+	date-range "$@"
+	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity --output-format=csv \
+		| liskin-arbtt-chart.py
+}
+
 function activity {
 	date-range "$@"
 	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity

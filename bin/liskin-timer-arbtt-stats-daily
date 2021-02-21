@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-liskin-arbtt-stats activity yesterday | mail -s arbtt-stats tomi@localhost
+COLUMNS=100 liskin-arbtt-stats activity-chart yesterday \
+	| mail -s arbtt-stats -a "From: $USER@localhost" "$USER"@localhost
 
 # avoid killing forked exim4 trying to deliver results
 sleep 2
