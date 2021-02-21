@@ -3,41 +3,55 @@
 set -eu -o pipefail
 shopt -s lastpipe
 
+filter=()
+exclude=()
+
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
 function date-range {
 	d1=$(date -d "${1:-yesterday}" +%F)
 	d2=$(date -d "${2:-$d1 + 1 day}" +%F)
+	filter+=(--filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00")
+}
+
+function arbtt-stats-foreach {
+	for log in ~/.arbtt/capture-:?.log; do
+		o arbtt-stats --logfile="$log" "$@"
+		echo
+	done
 }
 
 function activity {
 	date-range "$@"
-	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" --filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00" --min-percentage=0 --category=Activity
-		echo
-	done
+	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity
 }
 
 function details {
 	date-range "$@"
-	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" --filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00" --each-category
-		echo
-	done
+	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --each-category
 }
 
-function uncategorized-dump-samples {
+function dump-samples {
 	date-range "$@"
+	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --dump-samples
+}
+
+function dump-current-window {
+	dump-samples "$@" | grep -F '(*)' | sort | uniq --count | sort -n
+}
+
+function with-uncategorized {
+	exclude+=(--exclude=Activity:)
+	"$@"
+}
+
+function with-uncategorized-nofallback {
+	local -a activity_categories
 	grep -P -o '\bActivity:[\w_-]+' ~/.arbtt/categorize.cfg | sort -u \
 		| grep -v '[-]Fallback$' \
-		| readarray -t excludes
-	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" --filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00" --dump-samples "${excludes[@]/#/--exclude=}"
-	done
-}
-
-function uncategorized-current-window {
-	uncategorized-dump-samples "$@" | grep -F '(*)' | sort | uniq --count | sort -n
+		| readarray -t activity_categories
+	exclude+=("${activity_categories[@]/#/--exclude=}")
+	"$@"
 }
 
 make --silent -C ~/.arbtt
