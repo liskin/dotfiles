@@ -21,37 +21,37 @@ function arbtt-stats-foreach {
 	done
 }
 
-function activity-chart {
+function activity-chart { #complete
 	date-range "$@"
 	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity --output-format=csv \
 		| liskin-arbtt-chart.py
 }
 
-function activity {
+function activity { #complete
 	date-range "$@"
 	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity
 }
 
-function details {
+function details { #complete
 	date-range "$@"
 	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --each-category
 }
 
-function dump-samples {
+function dump-samples { #complete
 	date-range "$@"
 	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --dump-samples
 }
 
-function dump-current-window {
+function dump-current-window { #complete
 	dump-samples "$@" | grep -F '(*)' | sort | uniq --count | sort -n
 }
 
-function with-uncategorized {
+function with-uncategorized { #complete
 	exclude+=(--exclude=Activity:)
 	"$@"
 }
 
-function with-uncategorized-nofallback {
+function with-uncategorized-nofallback { #complete
 	local -a activity_categories
 	grep -P -o '\bActivity:[\w_-]+' ~/.arbtt/categorize.cfg | sort -u \
 		| grep -v 'ⁱ$' \
