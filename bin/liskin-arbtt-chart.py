@@ -27,7 +27,7 @@ def output_table(width, table, stacked):
     time_col = table['Time'].map(lambda x: strfdelta(x, "{hours:02}:{minutes:02}:{seconds:02}"))
     width -= table.index.str.len().max() + time_col.str.len().max() + 4
     bar_col = table.apply(lambda r: bar(width, r.PartsAbove, r.Part, r.name, stacked), axis=1)
-    return pd.DataFrame({'': bar_col, 'Time': time_col})
+    return pd.DataFrame({'Time': time_col, '': bar_col})
 
 
 def setup_width():
@@ -47,10 +47,8 @@ def strfdelta(tdelta, fmt):
 
 
 def bar(width, left_pad_frac, bar_frac, name, stacked):
-    width -= 2
-
     if name == "(total time)":
-        return f"▏{width * '▒'}▕"
+        return width * '▒'
 
     left_pad_width = left_pad_frac * width
     bar_width = bar_frac * width
@@ -58,7 +56,7 @@ def bar(width, left_pad_frac, bar_frac, name, stacked):
     if stacked:
         left_pad_width_full = int(left_pad_width)
         left_pad_width_sub = int((left_pad_width - left_pad_width_full) * 8)
-        left_pad = left_pad_width_full * " "
+        left_pad = left_pad_width_full * "·"  # "—"
 
         if left_pad_width_sub > 3:
             if bar_width > 0.5:
@@ -80,11 +78,11 @@ def bar(width, left_pad_frac, bar_frac, name, stacked):
     bar += bar_width_full * "█" + (bar_subchars[bar_width_sub] if bar_width_sub > 0 else "")
 
     right_pad_width = width - len(left_pad) - len(bar)
-    right_pad = right_pad_width * " "
+    right_pad = right_pad_width * "·"
 
     # TODO: hour markers
 
-    return f"▏{left_pad}{bar}{right_pad}▕"
+    return left_pad + bar + right_pad
 
 
 print(output_table(setup_width(), preprocess(read_blank_sep_csvs_from_stdin()), stacked=True))
