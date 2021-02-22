@@ -1,4 +1,5 @@
 #!bash
+# shellcheck disable=SC2239
 
 type -t _completion_cache >/dev/null || source "${BASH_SOURCE[0]%/*}"/../helpers/completion_cache
 
