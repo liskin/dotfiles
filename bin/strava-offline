@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+. ~/.config/strava_offline/private.sh
+exec ~/.local/bin/strava-offline "$@"
