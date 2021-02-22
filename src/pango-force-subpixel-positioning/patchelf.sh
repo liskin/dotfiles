@@ -2,7 +2,7 @@
 
 set -eux
 
-if [[ "$(ldd "$1")" =~ (libpango[^[:space:]]*)" => "(/[^[:space:]]*/libpango[^[:space:]]*) ]]; then
+if [[ "$(ldd "$1")" =~ (libpango[^[:space:]]*)" => "(/usr/[^[:space:]]*/libpango[^[:space:]]*) ]]; then
 	soname="${BASH_REMATCH[1]}"
 	lib="${BASH_REMATCH[2]}"
 
