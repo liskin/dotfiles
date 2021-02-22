@@ -3,4 +3,4 @@ Description=liskin timer service template
 
 [Service]
 Type=oneshot
-ExecStart=%h/bin/liskin-timer-%i
+ExecStart=%h/bin/liskin-timerwrapper %h/bin/liskin-timer-%i
