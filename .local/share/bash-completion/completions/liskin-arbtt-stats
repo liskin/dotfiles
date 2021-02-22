@@ -2,5 +2,6 @@
 # shellcheck disable=SC2239
 
 complete \
-	-W "$(grep -P -o '^function \K\S+(?= \{ #complete)' -- "$(type -p liskin-arbtt-stats)")" \
+	-W "yesterday today \
+	    $(grep -P -o '^function \K\S+(?= \{ #complete)' -- "$(type -p liskin-arbtt-stats)")" \
 	liskin-arbtt-stats
