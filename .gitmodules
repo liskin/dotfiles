@@ -118,6 +118,10 @@
 [submodule "src/git-filter-repo"]
 	path = src/git-filter-repo
 	url = https://github.com/newren/git-filter-repo.git
+[submodule "src/pandoc-plantuml-filter"]
+	path = src/pandoc-plantuml-filter
+	#url = https://github.com/timofurrer/pandoc-plantuml-filter.git
+	url = https://github.com/liskin/pandoc-plantuml-filter.git
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
