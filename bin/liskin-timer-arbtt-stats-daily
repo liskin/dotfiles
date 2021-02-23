@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+if nmcli-online || { sleep 30; nmcli-online; }; then
+	strava-offline sqlite
+fi
+
 COLUMNS=100 liskin-arbtt-stats activity-chart yesterday \
 	| mail -s arbtt-stats -a "From: $USER@localhost" "$USER"@localhost
 

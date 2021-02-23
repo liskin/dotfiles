@@ -2,7 +2,7 @@
 
 set -eu
 
-: "${TIMER_WRAPPER_TIMEOUT=60}"
+: "${TIMER_WRAPPER_TIMEOUT=120}"
 
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 

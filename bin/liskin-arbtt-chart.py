@@ -7,27 +7,48 @@ from sys import stdin
 import pandas as pd
 
 
-def read_blank_sep_csvs_from_stdin():
-    return (pd.read_csv(StringIO(i), index_col='Tag', usecols=['Tag', 'Time'], converters={'Time': pd.to_timedelta})
-            for i in stdin.read().split("\n\n")
-            if i)
+def read_blank_separated_stdin():
+    return filter(None, (s.lstrip("\n") for s in stdin.read().split("\n\n")))
 
 
-def preprocess(tables):
+def read_csv(inp):
+    def convert_time(t):
+        if t.isdigit():
+            return pd.to_timedelta(int(t), unit='s')
+        else:
+            return pd.to_timedelta(t)
+
+    return pd.read_csv(
+        StringIO(inp),
+        index_col='Tag',
+        usecols=['Tag', 'Time'],
+        converters={'Time': convert_time}
+    )
+
+
+def preprocess(tables, stacked):
     table = reduce(lambda a, b: a.add(b, fill_value=0), tables)
+
+    def ren(s):
+        s = s.rpartition(":")[2]  # strip category
+        return '(screen time)' if s == '(total time)' else s
+
+    table = table.rename(index=ren)
     table = table.sort_values('Time', ascending=False)
-    table = table.reindex(table.index[1:].append(table.index[0:1]))  # total to end
-    table = table.rename(index=lambda s: s.rpartition(":")[2])  # strip category
-    table['Part'] = table['Time'] / table['Time']['(total time)']
-    table['PartsAbove'] = table['Part'].shift(1, fill_value=0).cumsum()
+    table = table.drop('(screen time)').append(table.loc['(screen time)'])
+    table['Part'] = table['Time'] / table['Time'].drop('(screen time)').sum()
+    table['PartsAbove'] = table['Part'].shift(1, fill_value=0).cumsum() if stacked else 0
+    table.loc['(screen time)', 'PartsAbove'] = 0
     return table
 
 
-def output_table(width, table, stacked):
+def output_table(width, table):
     time_col = table['Time'].map(lambda x: strfdelta(x, "{hours:02}:{minutes:02}:{seconds:02}"))
     width -= table.index.str.len().max() + time_col.str.len().max() + 4
-    bar_col = table.apply(lambda r: bar(width, r.PartsAbove, r.Part, r.name, stacked), axis=1)
-    return pd.DataFrame({'Time': time_col, '': bar_col})
+    bar_col = table.apply(lambda r: bar(width, r.PartsAbove, r.Part, r.name), axis=1)
+    out = pd.DataFrame({'Time': time_col, '': bar_col})
+    blank = pd.DataFrame({'Time': '', '': ''}, index=[''])
+    return pd.concat([out.iloc[:-1], blank, out.iloc[-1:]])
 
 
 def setup_width():
@@ -46,29 +67,22 @@ def strfdelta(tdelta, fmt):
     return fmt.format(**d)
 
 
-def bar(width, left_pad_frac, bar_frac, name, stacked):
-    if name == "(total time)":
-        return width * '▒'
-
+def bar(width, left_pad_frac, bar_frac, name):
     left_pad_width = left_pad_frac * width
     bar_width = bar_frac * width
 
-    if stacked:
-        left_pad_width_full = int(left_pad_width)
-        left_pad_width_sub = int((left_pad_width - left_pad_width_full) * 8)
-        left_pad = left_pad_width_full * "·"  # "—"
+    left_pad_width_full = int(left_pad_width)
+    left_pad_width_sub = int((left_pad_width - left_pad_width_full) * 8)
+    left_pad = left_pad_width_full * "·"
 
-        if left_pad_width_sub > 3:
-            if bar_width > 0.5:
-                bar = "▐"
-                bar_width -= 0.5
-            else:
-                bar = "▕"
-                bar_width -= 0.25
+    if left_pad_width_sub > 3:
+        if bar_width > 0.5:
+            bar = "▐"
+            bar_width -= 0.5
         else:
-            bar = ""
+            bar = "▕"
+            bar_width -= 0.25
     else:
-        left_pad = ""
         bar = ""
 
     bar_width = bar_width if bar_width > 0 and len(left_pad) + len(bar) < width else 0
@@ -85,4 +99,5 @@ def bar(width, left_pad_frac, bar_frac, name, stacked):
     return left_pad + bar + right_pad
 
 
-print(output_table(setup_width(), preprocess(read_blank_sep_csvs_from_stdin()), stacked=True))
+inputs = map(read_csv, read_blank_separated_stdin())
+print(output_table(setup_width(), preprocess(inputs, stacked=True)))

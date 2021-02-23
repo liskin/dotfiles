@@ -11,7 +11,9 @@ function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 function date-range {
 	d1=$(date -d "${1:-yesterday}" +%F)
 	d2=$(date -d "${2:-$d1 + 1 day}" +%F)
-	filter+=(--filter="\$date >= ${d1}03:00 && \$date < ${d2}03:00")
+	t1="03:00"
+	t2="03:00"
+	filter+=(--filter="\$date >= ${d1}${t1} && \$date < ${d2}${t2}")
 }
 
 function arbtt-stats-foreach {
@@ -23,8 +25,14 @@ function arbtt-stats-foreach {
 
 function activity-chart { #complete
 	date-range "$@"
-	arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity --output-format=csv \
-		| liskin-arbtt-chart.py
+	{
+		arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity --output-format=csv
+		o sqlite3 ~/.local/share/strava_offline/strava.sqlite \
+			".mode csv" ".headers on" \
+			"SELECT 'Sport-' || type as Tag, SUM(moving_time) as Time FROM activity \
+			 WHERE datetime(start_date,'localtime') BETWEEN '${d1} ${t1}' AND '${d2} ${t2}' \
+			 GROUP BY 1"
+	} | liskin-arbtt-chart.py
 }
 
 function activity { #complete
