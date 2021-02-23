@@ -153,3 +153,6 @@
 	path = src-haskell/arbtt
 	#url = https://github.com/nomeata/arbtt
 	url = https://github.com/liskin/arbtt
+[submodule "src-elixir/elixir"]
+	path = src-elixir/elixir
+	url = https://github.com/elixir-lang/elixir.git
