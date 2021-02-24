@@ -37,18 +37,18 @@ def preprocess(tables, stacked):
     table_noscreen = table.drop(('(screen)', ''))
     table = table_noscreen.append(table.loc[('(screen)', '')])
     total = table_noscreen['Time'].sum()
-    table['Part'] = table['Time'] / total
-    table['PartsAbove'] = table['Part'].shift(1, fill_value=0).cumsum() if stacked else 0
-    table.loc[('(screen)', ''), 'PartsAbove'] = 0
-    hour_part = pd.to_timedelta('01:00:00') / total
-    return table, hour_part
+    table['Frac'] = table['Time'] / total
+    table['FracAbove'] = table['Frac'].shift(1, fill_value=0).cumsum() if stacked else 0
+    table.loc[('(screen)', ''), 'FracAbove'] = 0
+    hour_frac = pd.to_timedelta('01:00:00') / total
+    return table, hour_frac
 
 
 def output_table(width, table, hour_frac):
     time_col = table['Time'].map(lambda x: strfdelta(x, "{hours:02}:{minutes:02}:{seconds:02}"))
     width -= table.index.levels[0].str.len().max() + 1 + table.index.levels[1].str.len().max() + 2
     width -= time_col.str.len().max() + 2
-    bar_col = table.apply(lambda r: bar(width, r.PartsAbove, r.Part, hour_frac), axis=1)
+    bar_col = table.apply(lambda r: bar(width, r.FracAbove, r.Frac, hour_frac), axis=1)
     out = pd.DataFrame({'Time': time_col, '': bar_col})
     out.index.names = [None, None]
     blank = pd.DataFrame({'Time': '', '': ''}, index=[('', '')])
