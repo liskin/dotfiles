@@ -33,3 +33,8 @@ macro pager \eb '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
 bind index,pager \CP sidebar-prev
 bind index,pager \CN sidebar-next
 bind index,pager \CO sidebar-open
+
+# show message-id
+unignore message-id
+unhdr_order *
+hdr_order message-id date from to cc subject
