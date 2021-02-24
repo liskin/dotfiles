@@ -100,4 +100,5 @@ def bar(width, left_pad_frac, bar_frac, name):
 
 
 inputs = map(read_csv, read_blank_separated_stdin())
-print(output_table(setup_width(), preprocess(inputs, stacked=True)))
+output = output_table(setup_width(), preprocess(inputs, stacked=True))
+print(output.to_string(header=False))
