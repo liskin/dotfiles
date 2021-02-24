@@ -1,2 +1,0 @@
-#!/bin/sh
-systemctl --user stop rclone-dropbox.service

@@ -76,6 +76,9 @@ export-alias google-earth='google-earth-pro'
 export-alias nmcli-c-up-bluetooth='nmcli c up s10e.phone.lisk.in'
 export-alias nmcli-c-down-bluetooth='nmcli c down s10e.phone.lisk.in'
 
+export-alias mount-dropbox='systemctl --user start rclone-dropbox.service'
+export-alias umount-dropbox='systemctl --user stop rclone-dropbox.service'
+
 export-alias rofi-emoji-menu='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-menu.sh'
 export-alias rofi-emoji-sign='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-sign.sh'
 
