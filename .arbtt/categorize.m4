@@ -43,8 +43,8 @@ any window $active && $desktop =~ /^\d+:\.?xmonad/ ==> tag Activity:Proj-XMonad,
 -- possibly ambiguous fallback activities
 any window $active && !( $desktop == ["1:irc", "2:web", "12:_watch"] ) && $desktop =~ m|^\d+:([^:]*)| ==> tag Activity:Proj-$1ⁱ,
 current window $program == "google-chrome" ==> {
-	current window $title =~ m|:: https?://github| ==> tag Activity:Web-GitHubⁱ,
-	$desktop == "2:web" ==> tag Activity:Webⁱ,
+	current window $title =~ m|:: https?://github| ==> tag Activity:Web-githubⁱ,
+	$desktop == "2:web" ==> tag Activity:Web-otherⁱ,
 },
 
 -- vim:set ft=haskell noet:

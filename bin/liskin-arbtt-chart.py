@@ -28,20 +28,27 @@ def read_csv(inp):
 
 def preprocess(tables, stacked):
     table = reduce(lambda a, b: a.add(b, fill_value=0), tables)
-    table = table.sort_values('Time', ascending=False)
-    table = table.drop('(screen time)').append(table.loc['(screen time)'])
-    table['Part'] = table['Time'] / table['Time'].drop('(screen time)').sum()
+    table = table.set_index(pd.MultiIndex.from_frame(
+        table.index.str.extract(r'^(\(.*\)$|[A-Za-z]+)-?(.*)'),
+        names=['Category', 'Detail']))
+    table['TimeCategory'] = table.groupby(level='Category').transform('sum')
+    table.sort_values(['TimeCategory', 'Time'], ascending=False, inplace=True)
+    table_noscreen = table.drop(('(screen)', ''))
+    table = table_noscreen.append(table.loc[('(screen)', '')])
+    table['Part'] = table['Time'] / table_noscreen['Time'].sum()
     table['PartsAbove'] = table['Part'].shift(1, fill_value=0).cumsum() if stacked else 0
-    table.loc['(screen time)', 'PartsAbove'] = 0
+    table.loc[('(screen)', ''), 'PartsAbove'] = 0
     return table
 
 
 def output_table(width, table):
     time_col = table['Time'].map(lambda x: strfdelta(x, "{hours:02}:{minutes:02}:{seconds:02}"))
-    width -= table.index.str.len().max() + time_col.str.len().max() + 4
+    width -= table.index.levels[0].str.len().max() + 1 + table.index.levels[1].str.len().max() + 2
+    width -= time_col.str.len().max() + 2
     bar_col = table.apply(lambda r: bar(width, r.PartsAbove, r.Part, r.name), axis=1)
     out = pd.DataFrame({'Time': time_col, '': bar_col})
-    blank = pd.DataFrame({'Time': '', '': ''}, index=[''])
+    out.index.names = [None, None]
+    blank = pd.DataFrame({'Time': '', '': ''}, index=[('', '')])
     return pd.concat([out.iloc[:-1], blank, out.iloc[-1:]])
 
 
