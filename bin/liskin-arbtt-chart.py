@@ -74,8 +74,7 @@ def strfdelta(tdelta, fmt):
 def bar(width, left_pad_frac, bar_frac, hour_frac):
     # characters
     bar_char_pad = "·"
-    bar_char_full = "█"
-    bar_chars_left = " ▏▎▍▌▋▊▉"
+    bar_chars_left = "▏▎▍▌▋▊▉█"
     bar_chars_right = "▕▐"
 
     left_pad_width = left_pad_frac * width
@@ -101,7 +100,7 @@ def bar(width, left_pad_frac, bar_frac, hour_frac):
     bar_width = bar_width if bar_width > 0 and len(left_pad) + len(bar) < width else 0
     bar_width_full = int(bar_width)
     bar_width_sub = int((bar_width - bar_width_full) * 8)
-    bar += bar_width_full * bar_char_full + (bar_chars_left[bar_width_sub] if bar_width_sub > 0 else "")
+    bar += bar_width_full * bar_chars_left[7] + (bar_chars_left[bar_width_sub] if bar_width_sub > 0 else "")
 
     # right pad
     right_pad_width = width - len(left_pad) - len(bar)
@@ -115,7 +114,7 @@ def bar(width, left_pad_frac, bar_frac, hour_frac):
         if hour_col < len(bar):
             if bar[hour_col] == bar_char_pad:
                 bar = bar[:hour_col] + '÷' + bar[hour_col+1:]
-            elif bar[hour_col] == bar_char_full:
+            elif bar[hour_col] == bar_chars_left[7]:
                 bar = bar[:hour_col] + '▓' + bar[hour_col+1:]
 
     return bar
