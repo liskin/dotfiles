@@ -19,6 +19,7 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
+# extend some commands with extra functionality
 alias ssh=ssh-tweaks
 alias task=task-local
 
@@ -80,3 +81,5 @@ export-alias rofi-emoji-sign='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoj
 
 export-alias steam='bwrap-steam /usr/games/steam'
 export-alias protontricks='bwrap-steam ~/.local/bin/protontricks'
+
+alias arbtt=liskin-arbtt-stats
