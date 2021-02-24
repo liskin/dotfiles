@@ -28,12 +28,6 @@ def read_csv(inp):
 
 def preprocess(tables, stacked):
     table = reduce(lambda a, b: a.add(b, fill_value=0), tables)
-
-    def ren(s):
-        s = s.rpartition(":")[2]  # strip category
-        return '(screen time)' if s == '(total time)' else s
-
-    table = table.rename(index=ren)
     table = table.sort_values('Time', ascending=False)
     table = table.drop('(screen time)').append(table.loc['(screen time)'])
     table['Part'] = table['Time'] / table['Time'].drop('(screen time)').sum()
