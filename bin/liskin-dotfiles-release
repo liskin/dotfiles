@@ -6,33 +6,55 @@ shopt -s lastpipe
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
 function release-tree {
-	: "${1:?name expected}"
-	: "${2:?version expected}"
+	: "${1:?name}"
+	: "${2:?version}"
 
 	ref="refs/heads/standalone/$1"
 	tag="${1}-${2}"
 
 	ref_head="$(git rev-parse --verify --quiet "$ref" || :)"
 
-	tree="$(o git mktree)"
+	tree="$(git mktree)"
 	commit="$(o git commit-tree ${ref_head:+-p "$ref_head"} -p @ "$tree" -m "$tag" </dev/tty)"
 	o git update-ref "$ref" "$commit"
 	o git tag -s "$tag" "$commit" </dev/tty
 }
 
+function mktree-add-from-head {
+	: "${1:?filename}"
+	git ls-tree --full-tree @:"$(dirname "$1" | grep -vxF .)" "$(basename "$1")"
+}
+
+function mktree-add-file {
+	: "${1:?filename}"
+	local blob; blob=$(git hash-object -w "$1")
+	printf "100${2:-644} blob %s\t%s\n" "$blob" "$(basename "$1")"
+}
+
+function mktree-add-symlink {
+	: "${1:?target}"
+	: "${2:?linkname}"
+	local blob; blob=$(git hash-object -w --stdin <<<"$1")
+	printf "120000 blob %s\t%s\n" "$blob" "$2"
+}
+
+function mktree-add-subdir {
+	: "${1:?subdir}"
+	local tree; tree=$(git mktree)
+	printf "040000 tree %s\t%s\n" "$tree" "$1"
+}
+
 function release-xrandr-smart {
-	: "${1:?version expected}"
+	: "${1:?version}"
 
 	make -C .local/share/man man1/xrandr-smart.1
-	manpage=$(o git hash-object -w .local/share/man/man1/xrandr-smart.1)
-	readme=$(echo xrandr-smart.1.md | git hash-object -w --stdin)
 
 	{
-		git ls-tree --full-tree @: LICENSE
-		git ls-tree --full-tree @:bin xrandr-smart
-		git ls-tree --full-tree @:.local/share/man xrandr-smart.1.md
-		printf "100644 blob %s\txrandr-smart.1\n" "$manpage"
-		printf "120000 blob %s\tREADME.md\n" "$readme"
+		mktree-add-from-head LICENSE
+		mktree-add-from-head bin/xrandr-smart
+		mktree-add-from-head .local/share/man/xrandr-smart.1.md
+		mktree-add-file .local/share/man/man1/xrandr-smart.1
+		mktree-add-symlink xrandr-smart.1.md README.md
 	} | release-tree xrandr-smart "$1"
 }
 
