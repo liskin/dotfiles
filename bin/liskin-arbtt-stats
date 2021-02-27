@@ -30,7 +30,7 @@ function activity-chart { #complete
 			| sed 's/^Activity://; s/^(total time)/(screen)/; s/^(unmatched time)/(???)/;'
 		o sqlite3 ~/.local/share/strava_offline/strava.sqlite \
 			".mode csv" ".headers on" \
-			"SELECT 'Sport-' || type as Tag, SUM(moving_time) as Time FROM activity \
+			"SELECT 'Sport-' || type as Tag, SUM(elapsed_time) as Time FROM activity \
 			 WHERE datetime(start_date,'localtime') BETWEEN '${d1} ${t1}' AND '${d2} ${t2}' \
 			 GROUP BY 1"
 	} | liskin-arbtt-chart.py
