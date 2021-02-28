@@ -115,9 +115,6 @@
 [submodule "src/urxvt-aAtt"]
 	path = src/urxvt-aAtt
 	url = https://github.com/Vifon/autocomplete-ALL-the-things
-[submodule "src/git-filter-repo"]
-	path = src/git-filter-repo
-	url = https://github.com/newren/git-filter-repo.git
 [submodule "src/pandoc-plantuml-filter"]
 	path = src/pandoc-plantuml-filter
 	#url = https://github.com/timofurrer/pandoc-plantuml-filter.git
