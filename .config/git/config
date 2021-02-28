@@ -63,6 +63,8 @@
 	colorMoved = default
 	colorMovedWS = allow-indentation-change
 	noprefix = true
+[diff "hex"]
+	textconv = hexdump -v -C
 [interactive]
 	diffFilter = diff-highlight
 [core]
