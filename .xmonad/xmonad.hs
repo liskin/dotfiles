@@ -31,7 +31,6 @@ import XMonad.Hooks.Place (placeHook, fixed)
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
 import XMonad.Hooks.Rescreen
 import XMonad.Hooks.ServerMode
-import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutCombinators
@@ -462,14 +461,9 @@ rescreenHook' = rescreenHook hCfg . rescreenAtStart
     rescreenAtStart = \cfg -> cfg{
         startupHook = startupHook cfg <> myAfterRescreenHook True }
 
--- Override WM name to confuse JVM into working properly
-javaHack :: XConfig a -> XConfig a
-javaHack cfg = cfg { startupHook = startupHook cfg <> setWMName "LG3D" }
-
 -- Main.
 main = do
     xmonad $
-        javaHack .
         writeStateHook .
         rescreenHook' .
         docks .
