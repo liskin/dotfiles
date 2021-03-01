@@ -37,6 +37,8 @@ def preprocess(tables, stacked):
     table_noscreen = table.drop(('(screen)', ''))
     table = table_noscreen.append(table.loc[('(screen)', '')])
     total = table_noscreen['Time'].sum()
+    if pd.isna(total) or total.total_seconds() == 0:
+        return None, None
     table['Frac'] = table['Time'] / total
     table['FracAbove'] = table['Frac'].shift(1, fill_value=0).cumsum() if stacked else 0
     table.loc[('(screen)', ''), 'FracAbove'] = 0
@@ -124,5 +126,7 @@ def bar(width, left_pad_frac, bar_frac, hour_frac):
 
 inputs = map(read_csv, read_blank_separated_stdin())
 table, hour_frac = preprocess(inputs, stacked=True)
+if table is None:
+    exit()
 output = output_table(setup_width(), table, hour_frac)
 print(output.to_string(header=False))
