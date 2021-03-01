@@ -9,7 +9,7 @@ exclude=()
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
 function date-range {
-	d1=$(date -d "${1:-yesterday}" +%F)
+	d1=$(date -d "${1:-today}" +%F)
 	d2=$(date -d "${2:-$d1 + 1 day}" +%F)
 	t1="03:00"
 	t2="03:00"
@@ -71,5 +71,5 @@ function with-uncategorized-nofallback { #complete
 
 make --silent -C ~/.arbtt
 
-(( $# )) || set -- activity
+(( $# )) || set -- activity-chart
 "$@"
