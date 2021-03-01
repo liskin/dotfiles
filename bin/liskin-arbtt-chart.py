@@ -113,13 +113,14 @@ def bar(width, left_pad_frac, bar_frac, hour_frac):
     bar = left_pad + bar + right_pad
 
     # hour markers
-    for hour in np.arange(hour_frac, 1, hour_frac):
-        hour_col = int(hour * width)
-        if hour_col < len(bar):
-            if bar[hour_col] == bar_char_pad:
-                bar = bar[:hour_col] + '÷' + bar[hour_col+1:]
-            elif bar[hour_col] == bar_chars_left[7]:
-                bar = bar[:hour_col] + '▓' + bar[hour_col+1:]
+    if hour_frac * width > 2:
+        for hour in np.arange(hour_frac, 1, hour_frac):
+            hour_col = int(hour * width)
+            if hour_col < len(bar):
+                if bar[hour_col] == bar_char_pad:
+                    bar = bar[:hour_col] + '÷' + bar[hour_col+1:]
+                elif bar[hour_col] == bar_chars_left[7]:
+                    bar = bar[:hour_col] + '▓' + bar[hour_col+1:]
 
     return bar
 
