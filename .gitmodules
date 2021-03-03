@@ -119,6 +119,9 @@
 	path = src/pandoc-plantuml-filter
 	#url = https://github.com/timofurrer/pandoc-plantuml-filter.git
 	url = https://github.com/liskin/pandoc-plantuml-filter.git
+[submodule "src/arbtt-chart"]
+	path = src/arbtt-chart
+	url = https://github.com/liskin/arbtt-chart.git
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title

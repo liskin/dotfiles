@@ -33,7 +33,7 @@ function activity-chart { #complete
 			"SELECT 'Activity:Sport-' || type as Tag, SUM(elapsed_time) as Time FROM activity \
 			 WHERE datetime(start_date,'localtime') BETWEEN '${d1} ${t1}' AND '${d2} ${t2}' \
 			 GROUP BY 1"
-	} | liskin-arbtt-chart.py
+	} | arbtt-chart --subtags --totals-re '^\(screen\)$'
 }
 
 function activity { #complete
