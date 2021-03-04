@@ -1,0 +1,16 @@
+/* ==UserStyle==
+@name           Element high contrast, high density
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document domain("app.element.io") {
+
+	/* font with better hinting/rendering on non-HiDPI displays */
+	body { font-family: sans-serif; }
+
+	/* high contrast */
+	.mx_MatrixChat>.mx_RoomView:not(.XXX1) { background-color: #000; }
+
+}
