@@ -10,6 +10,7 @@ $(XMONAD_BINARY): build-deps
 			-outputdir $(CURDIR)/.build/ \
 			-threaded \
 			-rtsopts -with-rtsopts="-V0" \
+			-dynamic \
 			-o $(CURDIR)/$@ \
 			$(CURDIR)/xmonad.hs
 

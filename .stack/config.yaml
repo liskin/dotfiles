@@ -7,6 +7,8 @@ templates:
 
 system-ghc: true
 install-ghc: false
-#compiler-check: newer-minor
+# compiler-check: newer-minor
 
-apply-ghc-options: everything
+# apply-ghc-options: everything
+ghc-options:
+  "$everything": -dynamic
