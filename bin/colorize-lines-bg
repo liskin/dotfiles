@@ -1,0 +1,3 @@
+#!/usr/bin/env -S perl -p
+BEGIN { $c0 = `tput sgr0`; $c1 = `tput setab 236`; $el = `tput el`; }
+s/.*/$c1$&$el$c0/ if $. % 2;
