@@ -49,7 +49,8 @@
 	rev-sort-topo-reverse = rev-list --topo-order --no-walk --reverse
 	fixes = -c core.abbrev=12 log -1 --pretty=fixes
 	co-authored-by = log -1 --pretty=co-authored-by --regexp-ignore-case --author
-	status-untracked = -c status.showUntrackedFiles=normal status
+	unstatus = -c status.showUntrackedFiles=normal status
+	unigstatus = "!git ls-files | sed -n -e 's|/\\.gitignore$||p' | xargs git unstatus"
 [mergetool]
 	keepBackup = false
 [merge]
