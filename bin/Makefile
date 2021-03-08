@@ -12,3 +12,5 @@ endif
 
 .aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)
 	.aliases/.update.sh
+
+include .gitignore.mk

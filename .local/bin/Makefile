@@ -24,3 +24,5 @@ protontricks: | pipx
 all: pandoc-plantuml
 pandoc-plantuml: | pipx
 	cd ~/src/pandoc-plantuml-filter && pipx install --system-site-packages .
+
+include ~/bin/.gitignore.mk
