@@ -75,6 +75,8 @@ class Main():
         self.refresh()
         if self.low() and not self.ac.online:
             self.notification.show()
+        else:
+            self.notification.close()
 
     def loop(self) -> None:
         while True:
