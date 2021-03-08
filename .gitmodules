@@ -122,6 +122,9 @@
 [submodule "src/arbtt-chart"]
 	path = src/arbtt-chart
 	url = https://github.com/liskin/arbtt-chart.git
+[submodule "src/mpv-mpris"]
+	path = src/mpv-mpris
+	url = https://github.com/hoyon/mpv-mpris
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
