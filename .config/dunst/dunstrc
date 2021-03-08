@@ -47,6 +47,12 @@
 	frame_color = "#ff0000"
 	timeout = 0
 
+[hide_pasystray_mic]
+	appname = pasystray
+	summary = "source *"
+	icon = "*volume*"
+	skip_display = true
+
 [fullscreen_delay_everything]
 	fullscreen = delay
 
