@@ -1,4 +1,5 @@
 /*.log
 /*.log.lck
+/.old/
 /categorize-priv.m4
 /categorize.cfg

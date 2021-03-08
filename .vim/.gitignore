@@ -1,6 +1,4 @@
-*.zal
 /bundle/.unused/
-/ftdetect/githubmsg.vim
 /session/
 /spell/
 /swap/
