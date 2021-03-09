@@ -13,6 +13,7 @@ import Data.List
 import Data.Maybe
 import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
+import System.Environment
 import System.Exit
 import qualified Data.Map as M
 
@@ -462,6 +463,14 @@ rescreenHook' = rescreenHook hCfg . rescreenAtStart
     rescreenAtStart = \cfg -> cfg{
         startupHook = startupHook cfg <> myAfterRescreenHook True }
 
+-- Startup hook
+myStartupHook :: X ()
+myStartupHook = do
+    primary <- ((Just "1") ==) <$> io (lookupEnv "_LISKIN_SESSION_PRIMARY")
+    first <- isNothing <$> getWorkspaceName "1"
+    when (primary && first) $ do
+        mapM_ (uncurry setWorkspaceName) [("1", "irc"), ("2", "web"), ("12", "_watch")]
+
 -- Main.
 main = do
     xmonad $
@@ -486,6 +495,7 @@ main = do
             , keys               = myKeys
             , mouseBindings      = myMouseBindings
 
+            , startupHook        = myStartupHook
             , layoutHook         = myLayout
             , manageHook         = myManageHook
             , logHook            = myLogHook

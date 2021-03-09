@@ -48,6 +48,7 @@ if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSIO
 		--collect --wait \
 		--user --slice="session.slice" --unit="xmonad-$XDG_SESSION_ID-$DISPLAY.service" \
 		--property="EnvironmentFile=$XDG_RUNTIME_DIR/xsession-env-$DISPLAY" \
+		--property="Environment=_LISKIN_SESSION_PRIMARY=1" \
 		--property="Requires=graphical-session-pre.target" \
 		--property="After=graphical-session-pre.target" \
 		--property="BindsTo=graphical-session.target" \
