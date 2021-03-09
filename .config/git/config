@@ -27,6 +27,8 @@
 	signingKey = 639DFD7BBFF09178
 [push]
 	default = simple
+[pull]
+	rebase = true
 [rebase]
 	autosquash = true
 	autoStash = true
