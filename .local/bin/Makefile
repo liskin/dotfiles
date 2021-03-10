@@ -25,4 +25,8 @@ all: pandoc-plantuml
 pandoc-plantuml: | pipx
 	cd ~/src/pandoc-plantuml-filter && pipx install --system-site-packages .
 
+all: pushl
+pushl: | pipx
+	pipx install --system-site-packages pushl
+
 include ~/bin/.gitignore.mk
