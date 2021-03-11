@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# list directories that are still ignored by git unigstatus
+git ls-files \
+	| xargs dirname \
+	| sort -u \
+	| sed -e 's|^|./|' \
+	| grep -P -v -f <( \
+		git ls-files \
+		| sed -n -e 's|^|./|; s|^\(.*\)/\.gitignore$|^\\Q\1\\E(/.*)?$|p' \
+		| paste -sd'|' \
+	) \
+	| sed -e 's|^./||'

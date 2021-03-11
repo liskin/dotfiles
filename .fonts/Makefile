@@ -11,3 +11,5 @@ FixedBold.otb: $(addprefix $(MISC)/,$(shell awk '/misc-fixed-bold-r-normal--.*-i
 
 FixedOblique.otb: $(addprefix $(MISC)/,$(shell awk '/misc-fixed-medium-o-normal--.*-iso10646-1/ { print $$1 }' $(MISC)/fonts.dir))
 	fonttosfnt -r -o $@ $^
+
+include ~/.gitignore.mk
