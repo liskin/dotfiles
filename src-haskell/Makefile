@@ -9,7 +9,7 @@ build:
 		$(BUILD_TARGETS)
 
 .PHONY: build-doc
-build-doc: STACK_BUILDFLAGS=--haddock --no-haddock-deps --no-haddock-hyperlink-source
+build-doc: STACK_BUILDFLAGS=--haddock --no-haddock-deps --no-haddock-hyperlink-source --haddock-arguments --optghc=-dynamic
 build-doc: build
 
 .bin/xmonadctl: xmonad-contrib/scripts/xmonadctl.hs | build
