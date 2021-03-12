@@ -29,4 +29,4 @@ all: pushl
 pushl: | pipx
 	pipx install --system-site-packages pushl
 
-include ~/.gitignore.mk
+include ~/_gitignore.mk

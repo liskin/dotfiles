@@ -13,4 +13,4 @@ all: rga rga-preproc
 rga rga-preproc &:
 	cargo install ripgrep_all
 
-include ~/.gitignore.mk
+include ~/_gitignore.mk
