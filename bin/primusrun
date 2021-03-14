@@ -6,6 +6,5 @@ else
 	unset VK_ICD_FILENAMES
 	unset __EGL_VENDOR_LIBRARY_FILENAMES
 	export LIBGL_DRI3_DISABLE=1
-	/usr/bin/primusrun "$@"
+	exec /usr/bin/primusrun "$@"
 fi
-
