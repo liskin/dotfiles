@@ -7,6 +7,9 @@
 <img alt="home workspace" src="https://user-images.githubusercontent.com/300342/111066035-3bafe280-84bd-11eb-97eb-d5abf9acf5d8.jpg" width="330">
 </p>
 
+goals: high density, high contrast, low friction, low latency;
+non-goals: eye candy
+
 ## Overview
 
 * 24 workspaces named 1…12, W1…W12, bound to Alt-F1…12, Win-F1…F2
