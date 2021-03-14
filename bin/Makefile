@@ -10,6 +10,7 @@ else
 	cp /tmp/diff-highlight/diff-highlight $@
 endif
 
+.SKIP_GITIGNORE: .aliases/.done
 .aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)
 	.aliases/.update.sh
 

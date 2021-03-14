@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+export LC_ALL=C
+
+targets=$(
+	{ make -npq .DEFAULT 2>/dev/null || :; } | sed -n -e '
+		1,/^# * Make data base/           d;        # skip any makefile output
+		/^# * Finished Make data base/,/^# * Make data base/{
+										  d;        # skip any makefile output
+		}
+		/^# * Variables/,/^# * Files/     d;        # skip until files section
+		/^# * Not a target/,/^$/          d;        # skip not target blocks
+
+		/^[^#	:%]\{1,\}:/               p;
+	'
+)
+
+all_deps=$(<<<"$targets" grep -P -o '^all: \K.*' | xargs -n1 | sort -u)
+
+phony_targets=$(
+	{
+		<<<"$targets" grep -P -o '^\.PHONY: \K.*' || :
+		<<<"$targets" grep _phony | sed -e 's/:.*//' || :
+	} | xargs -n1 | sort -u
+)
+
+skip_targets=$(<<<"$targets" grep -P -o '^\.SKIP_GITIGNORE: \K.*' | xargs -n1 | sort -u)
+
+function set-difference {
+	jq --null-input --raw-output --arg a "${1?}" --arg b "${2?}" '($a | split("\\s+";"")) - ($b | split("\\s+";"")) | .[]'
+}
+
+set-difference "$all_deps" "$phony_targets $skip_targets" | sed 's|^|/|'
