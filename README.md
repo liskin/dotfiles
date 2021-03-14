@@ -10,6 +10,10 @@ and there.
 There's also the [root](https://github.com/liskin/dotfiles/tree/root) branch,
 which I use as a separate git worktree with `core.worktree = /`.
 
+## Notable sub-READMEs
+
+* [My xmonad setup](.xmonad/)
+
 ## Sub-projects
 
 As the monorepo possibly contains stuff that'd be useful separately, there's
@@ -17,9 +21,9 @@ As the monorepo possibly contains stuff that'd be useful separately, there's
 into a separate branch (and tags). The following is currently available in
 separate form:
 
- * [xrandr-smart][] - a wrapper around xrandr which allows shell globs in
-   `--output` and automatically disables all other outputs;
-   <https://work.lisk.in/2020/10/11/xrandr-ux.html>
+* [xrandr-smart][] - a wrapper around xrandr which allows shell globs in
+  `--output` and automatically disables all other outputs;
+  <https://work.lisk.in/2020/10/11/xrandr-ux.html>
 
 [xrandr-smart]: https://github.com/liskin/dotfiles/tree/standalone/xrandr-smart
 
