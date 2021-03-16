@@ -20,7 +20,7 @@ $(XMONAD_BINARY): build-deps
 .PHONY: ghcid
 ##
 ghcid:
-	ghcid -c '$(MAKE) $(TARGET)'
+	ghcid -c '$(MAKE) ghci'
 
 ## make ghcid-xmonad; make ghcid-xmonad-contrib; …
 ghcid-%: build-deps _phony
