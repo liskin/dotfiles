@@ -2,6 +2,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE PackageImports #-}
 {-# LANGUAGE ParallelListComp #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-missing-signatures -Wno-orphans #-}
@@ -15,6 +16,7 @@ import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
 import System.Environment
 import System.Exit
+import "regex-compat-tdfa" Text.Regex
 import qualified Data.Map as M
 
 import XMonad hiding ((|||))
@@ -318,7 +320,8 @@ focusWiki = withWorkspace "1" $ focusQueryWin $ do
 myLogHook :: X ()
 myLogHook = do
     dnd <- getDoNotDisturb
-    let myPP = xmobarPP
+    myPP <- clickablePP . workspaceIconsPP =<< workspaceNamesPP
+        xmobarPP
             { ppExtras =
                 [ willFloatNextPP ("Float " ++)
                 , willFloatAllNewPP ("Float " ++)
@@ -330,22 +333,23 @@ myLogHook = do
             , ppSep = " │ "
             , ppOrder = \(w:_:_:s) -> w:s
             }
-    xmonadPropLog =<< dynamicLogString =<< clickablePP =<< workspaceNamesPP myPP
+    xmonadPropLog =<< dynamicLogString myPP
     xmobarWindowLists
     where
+        workspaceIconsPP pp = pp { ppRename = ppRename pp >=> pure . workspaceIcons }
         ppVisibleC = xmobarColor "green" ""
         ppVisibleB = xmobarBorder "Top" "green" 1
         ppCurrentC = xmobarColor "yellow" ""
         ppCurrentB = xmobarBorder "Top" "yellow" 1
         ppNormalC = xmobarColor "#cfcfcf" ""
-        ppUrgentC = xmobarColor "#ffff00" "#800000"
+        ppUrgentC = xmobarColor "#ffff00" "#800000:3,1"
         ppUrgentB = xmobarBorder "Top" "#ff0000" 1
-        shortenUrgent pp t | isWeechatTitle t = stripActions t
-                           | otherwise = pp $ xmobarRaw $ shorten' "~" 30 t
         ppUrgentExtra urgents w = do
-            nw <- getName w
-            let pp = if w `elem` urgents then ppUrgentC else ppNormalC
-            pure $ clickableWindow w . shortenUrgent pp $ show nw
+            t <- show <$> getName w
+            let pp | isWeechatTitle t = id
+                   | w `elem` urgents = ppUrgentC
+                   | otherwise        = ppNormalC
+            pure $ clickableWindow w . pp $ shortenUrgent t
         urgentsExtras DoNotDisturb = pure $ Just "dnd"
         urgentsExtras Disturb = do
             weechat <- weechatWins
@@ -392,10 +396,11 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let tagFmt | isCurrent = ppCurrentC
                    | otherwise = ppVisibleC
 
+        let tag' = tagFmt $ workspaceIcons $ addWksName tag wks
         let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
         let dir = shortenLeft 30 . shortenDir $ dir'
         let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
-        let logHeader = unwords [tagFmt (addWksName tag wks), layout, dir]
+        let logHeader = unwords [tag', layout, dir]
 
         let winFmt w | isFocused w && isCurrent = ppFocusC
                      | w `elem` urgents         = ppUrgentC
@@ -417,7 +422,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         ppCurrentC = xmobarBorder "Bottom" "yellow" 1 . xmobarColor "yellow" ""
 
         ppFocusC   = xmobarBorder "Bottom" "#ffff00" 1 . xmobarColor "#ffff00" ""
-        ppUrgentC  = xmobarColor "#ffff00" "#800000"
+        ppUrgentC  = xmobarColor "#ffff00" "#800000:3,1"
         ppUnfocusC = xmobarColor "#b0b040" ""
 
         sanitize t = xmobarRaw . shorten' "~" 30 . strip $ t
@@ -440,6 +445,22 @@ isWeechatTitle = ("t[N] " `isPrefixOf`)
 
 clickableWindow :: Window -> String -> String
 clickableWindow w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
+
+workspaceIcons :: String -> String
+workspaceIcons = s ":irc\\>" ":<fn=1>\xf198 </fn>"
+               . s ":web\\>" ":<fn=1>\xfa9e </fn>"
+               . s ":watch\\>" ":<fn=3>\xf167</fn>" -- <fn=1>\xf947 </fn>
+               . s ":steam\\>" ":<fn=1>\xf1b7 </fn>"
+  where
+    s re sub x = subRegex (mkRegex re) x sub
+
+shortenUrgent :: String -> String
+shortenUrgent t
+    | Just x <- stripPrefix "t[N] " t = "<fn=1>\xf198 </fn>:" ++ stripActions x
+    | Just x <- stripPrefix "t[m] m[N] " t = "<fn=2>\xf0e0</fn> " ++ s x
+    | otherwise = s t
+  where
+    s = xmobarRaw . shorten' "~" 30
 
 trayerDockEventHook :: Event -> X All
 trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do

@@ -1,6 +1,7 @@
 ARCH := $(shell uname -m)
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 XMONAD_BINARY := xmonad-$(ARCH)-$(OS)
+XMONAD_DEPS = xmobar xmonad xmonad-contrib split regex-compat-tdfa
 
 ## compile xmonad.hs
 xmonad: $(XMONAD_BINARY)
@@ -44,13 +45,13 @@ ghci-%: build-deps _phony
 .PHONY: build-deps
 build-deps:
 	$(MAKE) -C ~/src-haskell \
-		BUILD_TARGETS="xmobar xmonad xmonad-contrib split" \
+		BUILD_TARGETS="$(XMONAD_DEPS)" \
 		build .bin/xmonadctl .bin/xmonadpropread .bin/xmonadpropwrite
 
 .PHONY: build-doc
 ## build deps with docs
 build-doc:
-	$(MAKE) -C ~/src-haskell build-doc BUILD_TARGETS="xmobar xmonad xmonad-contrib split"
+	$(MAKE) -C ~/src-haskell build-doc BUILD_TARGETS="$(XMONAD_DEPS)"
 
 .PHONY: _phony
 
