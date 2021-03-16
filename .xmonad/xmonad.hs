@@ -47,6 +47,7 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
+import XMonad.Prompt
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.NamedWindows
 import XMonad.Util.Ungrab
@@ -158,8 +159,8 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask              , xK_z     ), sendMessage ToggleStruts)
 
     -- workspace dir and name
-    , ((modMask,               xK_c     ), changeDir def >> curDirToWorkspacename)
-    , ((modMask,               xK_v     ), renameWorkspace def)
+    , ((modMask,               xK_c     ), changeDir xpConfig  >> curDirToWorkspacename)
+    , ((modMask,               xK_v     ), renameWorkspace xpConfig)
     , ((modMask,               xK_g     ), changeDirRofiGit >> curDirToWorkspacename)
 
     -- restart/rescreen
@@ -198,6 +199,17 @@ myMouseBindings (XConfig{modMask}) = M.fromList $
 
 up :: X ()
 up = updatePointer (0.5, 0.5) (0, 0)
+
+xpConfig :: XPConfig
+xpConfig = def
+    { font = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
+    , bgColor = "#200000"
+    , fgColor = "#CFCFCF"
+    , height = 22
+    , position = CenteredAt 0.5 0.5
+    , promptBorderWidth = 2
+    , showCompletionOnTab = True
+    }
 
 -- Layouts
 myLayout = dir . refocusLastLayoutHook . trackFloating $
