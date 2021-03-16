@@ -330,7 +330,7 @@ myLogHook = do
             , ppSep = " │ "
             , ppOrder = \(w:_:_:s) -> w:s
             }
-    xmonadPropLog =<< dynamicLogString =<< clickableWorkspaceNamesPP myPP
+    xmonadPropLog =<< dynamicLogString =<< clickablePP =<< workspaceNamesPP myPP
     xmobarWindowLists
     where
         ppVisibleC = xmobarColor "green" ""
@@ -380,7 +380,7 @@ xmobarCommands = do
 
 xmobarWindowLists :: X ()
 xmobarWindowLists = withWindowSet $ \ws -> do
-    addWksName <- getWorkspaceNames
+    addWksName <- getWorkspaceNames ":"
     urgents <- readUrgents
     forM_ (W.screens ws) $ \scr -> do
         let wks = W.workspace scr
@@ -395,7 +395,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
         let dir = shortenLeft 30 . shortenDir $ dir'
         let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
-        let logHeader = unwords [tagFmt (addWksName tag), layout, dir]
+        let logHeader = unwords [tagFmt (addWksName tag wks), layout, dir]
 
         let winFmt w | isFocused w && isCurrent = ppFocusC
                      | w `elem` urgents         = ppUrgentC
