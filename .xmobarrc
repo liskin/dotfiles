@@ -7,7 +7,7 @@ Config
 , position = Top
 , overrideRedirect = False
 , commands =
-	[ Run Date "<fn=1>\xf5ef</fn>%a %d.%m.%Y %H:%M:%S" "theDate" 10
+	[ Run Date "<fn=1>\xf5ef</fn>%a <action=`date +%F | xclip -r`>%F</action> %H:%M:%S" "theDate" 10
 	, Run UnsafeXMonadLog
 	, Run XPropertyLog "_XMOBAR_BATTERY_EXTRA"
 	, Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=1>\xf6ff</fn><rx>KB:<tx>KB "] 10
