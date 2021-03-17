@@ -320,7 +320,7 @@ focusWiki = withWorkspace "1" $ focusQueryWin $ do
 myLogHook :: X ()
 myLogHook = do
     dnd <- getDoNotDisturb
-    myPP <- clickablePP . workspaceIconsPP =<< workspaceNamesPP
+    myPP <- clickablePP . workspaceIconsPP =<< workspaceNamesPP . boldPP =<< pure
         xmobarPP
             { ppExtras =
                 [ willFloatNextPP ("Float " ++)
@@ -336,7 +336,8 @@ myLogHook = do
     xmonadPropLog =<< dynamicLogString myPP
     xmobarWindowLists
     where
-        workspaceIconsPP pp = pp { ppRename = ppRename pp >=> pure . workspaceIcons }
+        boldPP pp = pp{ ppRename = ppRename pp . fnBold }
+        workspaceIconsPP pp = pp{ ppRename = ppRename pp >=> pure . workspaceIcons }
         ppVisibleC = xmobarColor "green" ""
         ppVisibleB = xmobarBorder "Top" "green" 1
         ppCurrentC = xmobarColor "yellow" ""
@@ -396,7 +397,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let tagFmt | isCurrent = ppCurrentC
                    | otherwise = ppVisibleC
 
-        let tag' = tagFmt $ workspaceIcons $ addWksName tag wks
+        let tag' = tagFmt $ workspaceIcons $ addWksName (fnBold tag) wks
         let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
         let dir = shortenLeft 30 . shortenDir $ dir'
         let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
@@ -411,7 +412,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         tits <- mapM getName wins
         let gs = map W.integrate . W.integrate' . getGroupStack myLayout $ wks
         let indices = [ i | (n, g) <- zip [1..] gs
-                      , i <- primes [ show (n :: Int) | _ <- g ] ]
+                      , i <- primes [ fnBold (show (n :: Int)) | _ <- g ] ]
         let logWins = [ " │ " ++ clickWinFmt w (i ++ " " ++ sanitize (show tit))
                       | w <- wins | tit <- tits | i <- indices ]
 

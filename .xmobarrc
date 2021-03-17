@@ -1,7 +1,9 @@
 Config
 { font = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
 , additionalFonts =
-	[ "xft:Inconsolata Nerd Font-11"
+	[ "-misc-fixed-bold-r-normal-*-13-*-*-*-*-*-*-*"
+	, "-misc-fixed-medium-o-normal-*-13-*-*-*-*-*-*-*"
+	, "xft:Inconsolata Nerd Font-11"
 	, "xft:Font Awesome 5 Free-12"
 	, "xft:Font Awesome 5 Free Solid-12"
 	, "xft:Font Awesome 5 Brands-12"
@@ -11,14 +13,14 @@ Config
 , position = Top
 , overrideRedirect = False
 , commands =
-	[ Run Date "<fn=1>\xf5ef </fn>%a <action=`date +%F | xclip -r`>%F</action> %H:%M:%S" "theDate" 10
+	[ Run Date "<fn=3>\xf5ef </fn>%a <action=`date +%F | xclip -r`>%F</action> %H:%M:%S" "theDate" 10
 	, Run UnsafeXMonadLog
 	, Run XPropertyLog "_XMOBAR_BATTERY_EXTRA"
-	, Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=1>\xf6ff </fn><rx>KB:<tx>KB "] 10
-	, Run Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=1>\xfaa8 </fn><rx>KB|<tx>KB "] 10
+	, Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=3>\xf6ff </fn><rx>KB:<tx>KB "] 10
+	, Run Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=3>\xfaa8 </fn><rx>KB|<tx>KB "] 10
 	, Run BatteryN ["BAT0"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","<acstatus><left>%|<watts>W","--","-O","<icon=power-ac.xbm/>","-i","<icon=power-ac.xbm/>","-o","<icon=power-bat.xbm/>"] 50 "battery0"
 	, Run BatteryN ["BAT1"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","|<left>%|<watts>W"] 50 "battery1"
-	, Run CoreTemp ["-t","<fn=1>\xf2c9 </fn><core0>C"] 50
+	, Run CoreTemp ["-t","<fn=3>\xf2c9 </fn><core0>C"] 50
 	, Run MultiCpu ["-H","95","--high","red","-t","<icon=cpu.xbm/><icon=l.xbm/><autovbar><icon=r.xbm/>","--","--contiguous-icons"] 10
 	, Run Com "bash" ["-c", "[[ \"$(< /proc/modules)\" == *nvidia* ]] && echo \" <fc=red>nvidia</fc>\" || :"] "nvidia" 600
 	, Run Com "bash" ["-c", "[[ \"$(/usr/local/sbin/liskin-gvt-g list)\" ]] && echo \" <fc=red>gvt</fc>\" || :"] "gvt" 600
