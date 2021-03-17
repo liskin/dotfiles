@@ -27,6 +27,7 @@ import qualified XMonad.StackSet as W
 
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.WorkspaceNames
+import XMonad.Hooks.DynamicLog
 import XMonad.Layout.Inspect
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.SubLayouts
@@ -128,3 +129,9 @@ focusQueryWin q ws = withQueryWin q f ws
         f [] = mempty
         f (w:_) = windows $ onWorkspace (W.tag ws) (W.focusWindow w)
         onWorkspace n g s = W.view (W.currentTag s) . g . W.view n $ s
+
+fnNerd, fnAweFree, fnAweFreeS, fnAweBrand :: String -> String
+fnNerd = wrap "<fn=1>" "</fn>" . concatMap (: " ")
+fnAweFree = wrap "<fn=2>" "</fn>"
+fnAweFreeS = wrap "<fn=3>" "</fn>"
+fnAweBrand = wrap "<fn=4>" "</fn>"

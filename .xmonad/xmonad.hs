@@ -447,17 +447,19 @@ clickableWindow :: Window -> String -> String
 clickableWindow w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
 
 workspaceIcons :: String -> String
-workspaceIcons = s ":irc\\>" ":<fn=1>\xf198 </fn>"
-               . s ":web\\>" ":<fn=1>\xfa9e </fn>"
-               . s ":watch\\>" ":<fn=3>\xf167</fn>" -- <fn=1>\xf947 </fn>
-               . s ":steam\\>" ":<fn=1>\xf1b7 </fn>"
+workspaceIcons = s ":irc\\>" (":" ++ fnNerd "\xf198")
+               . s ":web\\>" (":" ++ fnNerd "\xfa9e")
+               . s ":watch\\>" (":" ++ fnAweBrand "\xf167") -- fnNerd "\xf947"
+               . s ":steam\\>" (":" ++ fnNerd "\xf1b7")
+               . s "\\<xmonad\\>" ("X" ++ fnNerd "\xe61f")
+               . s "\\<strava\\>" (fnAweBrand "\xf428")
   where
     s re sub x = subRegex (mkRegex re) x sub
 
 shortenUrgent :: String -> String
 shortenUrgent t
-    | Just x <- stripPrefix "t[N] " t = "<fn=1>\xf198 </fn>:" ++ stripActions x
-    | Just x <- stripPrefix "t[m] m[N] " t = "<fn=2>\xf0e0</fn> " ++ s x
+    | Just x <- stripPrefix "t[N] " t = fnNerd "\xf198" ++ ":" ++ stripActions x
+    | Just x <- stripPrefix "t[m] m[N] " t = fnAweFree "\xf0e0" ++ " " ++ s x
     | otherwise = s t
   where
     s = xmobarRaw . shorten' "~" 30
