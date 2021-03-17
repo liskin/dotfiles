@@ -447,10 +447,10 @@ clickableWindow :: Window -> String -> String
 clickableWindow w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
 
 workspaceIcons :: String -> String
-workspaceIcons = s ":irc\\>" (":" ++ fnNerd "\xf198")
-               . s ":web\\>" (":" ++ fnNerd "\xfa9e")
-               . s ":watch\\>" (":" ++ fnAweBrand "\xf167") -- fnNerd "\xf947"
-               . s ":steam\\>" (":" ++ fnNerd "\xf1b7")
+workspaceIcons = s "\\<irc\\>" (fnNerd "\xf198")
+               . s "\\<web\\>" (fnNerd "\xfa9e")
+               . s "\\<watch\\>" (fnAweBrand "\xf167") -- fnNerd "\xf947"
+               . s "\\<steam\\>" (fnNerd "\xf1b7")
                . s "\\<xmonad\\>" ("X" ++ fnNerd "\xe61f")
                . s "\\<strava\\>" (fnAweBrand "\xf428")
   where
