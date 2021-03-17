@@ -3,7 +3,7 @@
 [xmonad]: https://xmonad.org/
 
 <p>
-<img alt="laptop screenshot" src="https://user-images.githubusercontent.com/300342/111065522-82e8a400-84ba-11eb-92e9-bf71f679151e.png" width="660">
+<img alt="laptop screenshot" src="https://user-images.githubusercontent.com/300342/111490986-c0a82f80-873b-11eb-8509-00330bfc0aa7.png" width="660">
 <img alt="home workspace" src="https://user-images.githubusercontent.com/300342/111066035-3bafe280-84bd-11eb-97eb-d5abf9acf5d8.jpg" width="330">
 </p>
 
@@ -25,7 +25,8 @@ non-goals: eye candy
 
 * top [xmobar][] on primary screen shows workspaces, [weechat][]
   notifications, urgents on the left; batteries, temperature, CPUs, net
-  throughput and datetime on the right
+  throughput and datetime on the right; commonly used words are replaced with
+  icons to increase density
 
 * bottom [xmobar][] on each screen shows layout, workdir and window titles
   (like a tmux status line or screen hardstatus); plus [trayer][] on primary
