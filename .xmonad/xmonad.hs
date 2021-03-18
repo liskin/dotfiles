@@ -505,7 +505,7 @@ myStartupHook = do
     primary <- ((Just "1") ==) <$> io (lookupEnv "_LISKIN_SESSION_PRIMARY")
     first <- isNothing <$> getWorkspaceName "1"
     when (primary && first) $ do
-        mapM_ (uncurry setWorkspaceName) [("1", "irc"), ("2", "web"), ("12", "_watch")]
+        mapM_ (uncurry setWorkspaceName) [("1", "irc"), ("2", "web"), ("12", "watch")]
 
 -- Main.
 main = do

@@ -20,6 +20,7 @@ current window $program == "google-chrome" ==> {
 	current window $title =~ m!\bYouTube (::|-) ! ==> tag Activity:Watch,
 	current window $title =~ m|:: https?://www\.tesco\.com| ==> tag Activity:Web-Shopping,
 	current window $title =~ m|^shopping list - Google Sheets| ==> tag Activity:Web-Shopping,
+	$desktop == "12:watch" ==> tag Activity:Watch,
 },
 current window $program == "gl" ==> {
 	current window $title =~ m/(?i)\bS\d\dE\d\d\b.* - mpv$/ ==> tag Activity:Watch-Series,
@@ -41,7 +42,7 @@ current window $program == "google-chrome" ==> {
 any window $active && $desktop =~ /^\d+:\.?xmonad/ ==> tag Activity:Proj-XMonad,
 
 -- possibly ambiguous fallback activities
-any window $active && !( $desktop == ["1:irc", "2:web", "12:_watch"] ) && $desktop =~ m|^\d+:([^:]*)| ==> tag Activity:Proj-$1ⁱ,
+any window $active && !( $desktop == ["1:irc", "2:web", "12:watch"] ) && $desktop =~ m|^\d+:([^:]*)| ==> tag Activity:Proj-$1ⁱ,
 current window $program == "google-chrome" ==> {
 	current window $title =~ m|:: https?://github| ==> tag Activity:Web-githubⁱ,
 	$desktop == "2:web" ==> tag Activity:Web-otherⁱ,
