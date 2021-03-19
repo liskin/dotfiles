@@ -1,0 +1,12 @@
+[Unit]
+Description=xsettingsd DISPLAY=%i
+PartOf=xmonad@%i.target
+
+[Service]
+Slice=app.slice
+
+Restart=always
+
+EnvironmentFile=%t/xsession-env-%i
+ExecStart=/usr/bin/xsettingsd
+ExecReload=kill -HUP $MAINPID

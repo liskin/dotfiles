@@ -1,0 +1,4 @@
+Xft/Antialias 1
+Xft/RGBA "rgb"
+Net/ThemeName "Adwaita"
+Gtk/KeyThemeName "Emacs"

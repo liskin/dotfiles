@@ -8,3 +8,4 @@ Wants=arbtt-capture@%i.service
 Wants=compton@%i.service
 Wants=redshift@%i.service
 Wants=xss-lock@%i.service
+Wants=xsettingsd@%i.service
