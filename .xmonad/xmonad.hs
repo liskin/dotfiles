@@ -258,7 +258,6 @@ myManageHook = composeAll
     , className =? "cantata" --> doFloat
     , appName =? "alarm-clock-applet" --> doFloat
     , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
-    , checkDock --> doLower
     , isDialog --> doFloat
     , transience'
     ]
