@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+base="$(dirname "$(readlink -f "$0")")"
+. "$base/.passlib"
+
+pass show "${1:?entry}" | extract-field "${2:?field}"

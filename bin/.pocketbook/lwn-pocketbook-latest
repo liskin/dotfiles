@@ -3,7 +3,6 @@
 set -eu -o pipefail
 
 base="$(dirname "$(readlink -f "$0")")"
-. "$base/.passlib"
 
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
