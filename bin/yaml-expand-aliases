@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+# https://stackoverflow.com/a/44969582/3407728
+# LICENSE: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>
+
+import sys
+from ruamel.yaml import YAML, SafeConstructor
+
+yaml = YAML()
+
+yaml.Constructor.flatten_mapping = SafeConstructor.flatten_mapping
+yaml.default_flow_style = False
+yaml.allow_duplicate_keys = True
+yaml.representer.ignore_aliases = lambda x: True
+
+yaml.dump(yaml.load(sys.stdin), sys.stdout)
