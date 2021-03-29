@@ -11,6 +11,7 @@
 	body { font-family: sans-serif; }
 
 	/* high contrast */
-	.mx_MatrixChat>.mx_RoomView:not(.XXX1) { background-color: #000; }
+	.mx_MatrixChat>.mx_RoomView:not(.XXX1):not(.XXX1):not(.XXX1):not(.XXX1):not(.XXX1) { background-color: #000; }
+	.mx_IRCLayout .mx_SenderProfile_hover { background-color: unset; }
 
 }
