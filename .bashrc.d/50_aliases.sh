@@ -5,13 +5,14 @@ if [[ $(type -t export-alias) == "" ]]; then
 	function export-alias { builtin alias "$@"; }
 fi
 
-# enable color support of ls and also add handy aliases
+# enable color support of some commands and also add handy aliases
 if [ "$TERM" != "dumb" ]; then
 	eval "$(dircolors -b ~/.dircolors)"
 	alias ls='ls --color=auto --group-directories-first'
 	alias dir='ls --color=auto --format=vertical'
 	alias vdir='ls --color=auto --format=long'
 	alias grep='grep --color=auto'
+	alias ncdu='ncdu --color=dark'
 fi
 
 # some more ls aliases
