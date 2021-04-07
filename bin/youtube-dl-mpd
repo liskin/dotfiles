@@ -35,7 +35,7 @@ function helper {
 	file="$(basename -- "$1")"
 	[[ -f "$file" ]] || { printf '%s\n' "$file not in cache dir"; exit 1; }
 
-	o override-metadata "$file"
+	o override-metadata "$file" || :
 	o mpc update --wait "$cache_dir_name/$file"
 	o mpc add "$cache_dir_name/$file"
 }
