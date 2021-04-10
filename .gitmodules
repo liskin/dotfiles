@@ -129,8 +129,8 @@
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
 	url = https://github.com/liskin/add-url-to-window-title
-[submodule "src-webextensions/chrome-blank-tab"]
-	path = src-webextensions/chrome-blank-tab
+[submodule "src-webextensions/empty-tab"]
+	path = src-webextensions/empty-tab
 	#url = https://github.com/karlerikjonatan/empty-tab
 	url = https://github.com/liskin/empty-tab
 [submodule "src-haskell/xmonad-contrib"]
