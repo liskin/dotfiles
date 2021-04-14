@@ -3,7 +3,7 @@ all:
 
 all: pipx
 pipx:
-	pipsi install $@
+	pipsi install pipx
 
 all: strava-offline
 strava-offline: | pipx
@@ -15,11 +15,11 @@ yq xq &: | pipx
 
 all: markdown2ctags
 markdown2ctags: | pipx
-	pipx install --system-site-packages $@
+	pipx install --system-site-packages markdown2ctags
 
 all: protontricks
 protontricks: | pipx
-	pipx install --system-site-packages $@
+	pipx install --system-site-packages protontricks
 
 all: pandoc-plantuml
 pandoc-plantuml: | pipx
@@ -27,14 +27,6 @@ pandoc-plantuml: | pipx
 
 all: pushl
 pushl: | pipx
-	pipx install --system-site-packages $@
-
-all: supermercado
-supermercado: | pipx
-	pipx install --system-site-packages $@
-
-all: geojsonio
-geojsonio: | pipx
-	pipx install --system-site-packages $@
+	pipx install --system-site-packages pushl
 
 include ~/_gitignore.mk
