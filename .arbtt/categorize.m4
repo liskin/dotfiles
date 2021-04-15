@@ -18,6 +18,7 @@ current window $program == "google-chrome" ==> {
 	current window $title =~ m|:: https?://news\.ycombinator| ==> tag Activity:Web-HN,
 	current window $title =~ m!( / Twitter|\bFacebook) (::|-) ! ==> tag Activity:Web-Social,
 	current window $title =~ m!\bYouTube (::|-) ! ==> tag Activity:Watch,
+	current window $title =~ m!\bTwitch (::|-) ! ==> tag Activity:Watch,
 	current window $title =~ m|:: https?://www\.tesco\.com| ==> tag Activity:Web-Shopping,
 	current window $title =~ m|:: https?://(www\.)?amazon\.| ==> tag Activity:Web-Shopping,
 	current window $title =~ m|^shopping list - Google Sheets| ==> tag Activity:Web-Shopping,
