@@ -258,6 +258,7 @@ myManageHook = composeAll
     , className =? "cantata" --> doFloat
     , appName =? "alarm-clock-applet" --> doFloat
     , appName =? "blueman-manager" --> doFloat
+    , appName =? "pavucontrol" --> doFloat
     , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
     , isDialog --> doFloat
     , transience'
@@ -454,6 +455,7 @@ workspaceIcons = s "\\<irc\\>" (fnNerd "\xf198")
                . s "\\<steam\\>" (fnNerd "\xf1b7")
                . s "\\<xmonad\\>" ("X" ++ fnNerd "\xe61f")
                . s "\\<strava\\>" (fnAweBrand "\xf428")
+               . s "\\<foursquare\\>" (fnAweBrand "\xf180")
   where
     s re sub x = subRegex (mkRegex re) x sub
 
