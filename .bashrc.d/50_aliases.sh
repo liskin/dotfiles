@@ -61,6 +61,7 @@ export-alias livereload-make="python3 -c 'from livereload import Server, shell; 
 export-alias google-chrome-app-diagrams="gtk-launch chrome-pebppomjfocnoigkeepgbmcifnnlndla-Default"
 export-alias google-chrome-app-discord="google-chrome --app=https://discord.com/app"
 export-alias google-chrome-app-fb-messenger="google-chrome --app=https://www.messenger.com/"
+export-alias google-chrome-app-google-chat="google-chrome --app=https://chat.google.com/"
 export-alias google-chrome-app-keep="google-chrome --app=https://keep.google.com/"
 export-alias google-chrome-app-matrix-element="google-chrome --app=https://app.element.io/"
 export-alias google-chrome-app-skype="google-chrome --app=https://web.skype.com/"
