@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 export WINEPREFIX=~/.local/share/wineprefixes/digitaleditions WINEARCH=win32
 
