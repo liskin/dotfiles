@@ -5,6 +5,8 @@ source ~/.config/mutt/muttrc-lists
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt traditional ~/.config/mutt/muttrc-traditional |"
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt neomutt ~/.config/mutt/muttrc-neomutt |"
 
+mailboxes `find ~/Mail -mindepth 2 -maxdepth 2 -type d -name 'cur' -printf '%h '` !
+
 # aliases
 set alias_file=~/.config/mutt/aliases
 source ~/.config/mutt/aliases
