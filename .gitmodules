@@ -122,6 +122,9 @@
 [submodule "src/arbtt-chart"]
 	path = src/arbtt-chart
 	url = https://github.com/liskin/arbtt-chart.git
+[submodule "src/strava-offline"]
+	path = src/strava-offline
+	url = https://github.com/liskin/strava-offline.git
 [submodule "src/mpv-mpris"]
 	path = src/mpv-mpris
 	url = https://github.com/hoyon/mpv-mpris
