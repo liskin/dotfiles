@@ -456,6 +456,7 @@ workspaceIcons = s "\\<irc\\>" (fnNerd "\xf198")
                . s "\\<xmonad\\>" ("X" ++ fnNerd "\xe61f")
                . s "\\<strava\\>" (fnAweBrand "\xf428")
                . s "\\<foursquare\\>" (fnAweBrand "\xf180")
+               . s "\\<python\\>" (fnNerd "\xf81f")
   where
     s re sub x = subRegex (mkRegex re) x sub
 
