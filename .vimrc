@@ -159,6 +159,7 @@ let maplocalleader = "\\"
 let g:NERDDefaultAlign = "left"
 let g:PHP_default_indenting = 1
 let g:fugitive_gitlab_domains = ['https://gitlab.freedesktop.org', 'https://salsa.debian.org']
+let g:fugitive_legacy_commands = 0
 let g:gitgutter_enabled = 0
 let g:gitgutter_override_sign_column_highlight = 0
 let g:markdown_folding = 1
