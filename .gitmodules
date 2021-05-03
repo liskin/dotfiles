@@ -115,16 +115,6 @@
 [submodule "src/urxvt-aAtt"]
 	path = src/urxvt-aAtt
 	url = https://github.com/Vifon/autocomplete-ALL-the-things
-[submodule "src/pandoc-plantuml-filter"]
-	path = src/pandoc-plantuml-filter
-	#url = https://github.com/timofurrer/pandoc-plantuml-filter.git
-	url = https://github.com/liskin/pandoc-plantuml-filter.git
-[submodule "src/arbtt-chart"]
-	path = src/arbtt-chart
-	url = https://github.com/liskin/arbtt-chart.git
-[submodule "src/strava-offline"]
-	path = src/strava-offline
-	url = https://github.com/liskin/strava-offline.git
 [submodule "src/mpv-mpris"]
 	path = src/mpv-mpris
 	url = https://github.com/hoyon/mpv-mpris
@@ -165,3 +155,13 @@
 [submodule "src-elixir/elixir-ls"]
 	path = src-elixir/elixir-ls
 	url = https://github.com/elixir-lsp/elixir-ls.git
+[submodule "src-python/pandoc-plantuml-filter"]
+	path = src-python/pandoc-plantuml-filter
+	#url = https://github.com/timofurrer/pandoc-plantuml-filter.git
+	url = https://github.com/liskin/pandoc-plantuml-filter.git
+[submodule "src-python/strava-offline"]
+	path = src-python/strava-offline
+	url = https://github.com/liskin/strava-offline.git
+[submodule "src-python/arbtt-chart"]
+	path = src-python/arbtt-chart
+	url = https://github.com/liskin/arbtt-chart.git

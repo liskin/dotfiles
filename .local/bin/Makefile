@@ -10,10 +10,6 @@ pipx:
 	.venvs/$@/bin/python -m pip install 'pipx == 0.16.2.0'
 	ln -srf .venvs/$@/bin/$@ $@
 
-all: strava-offline
-strava-offline: | pipx
-	cd ~/src/strava-offline && $(PIPX_INSTALL) .
-
 all: yq xq tomlq
 yq xq tomlq &: | pipx
 	$(PIPX_INSTALL) yq
@@ -26,13 +22,17 @@ all: protontricks
 protontricks: | pipx
 	$(PIPX_INSTALL) protontricks
 
-all: pandoc-plantuml
-pandoc-plantuml: | pipx
-	cd ~/src/pandoc-plantuml-filter && $(PIPX_INSTALL) .
-
 all: pushl
 pushl: | pipx
 	$(PIPX_INSTALL) pushl
+
+all: strava-offline
+strava-offline: | pipx
+	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
+
+all: pandoc-plantuml
+pandoc-plantuml: | pipx
+	cd ~/src-python/pandoc-plantuml-filter && $(PIPX_INSTALL) --editable .
 
 .PHONY: clean
 clean:
