@@ -1,4 +1,5 @@
 [Default Applications]
+application/epub+zip=calibre-ebook-viewer.desktop
 application/pdf=org.pwmt.zathura.desktop
 application/postscript=org.pwmt.zathura-ps.desktop
 audio/mpeg=mpv.desktop
