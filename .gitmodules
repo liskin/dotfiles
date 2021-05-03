@@ -67,8 +67,7 @@
 	url = https://github.com/shumphrey/fugitive-gitlab.vim.git
 [submodule ".vim/bundle/vim-boxdraw"]
 	path = .vim/bundle/vim-boxdraw
-	#url = https://github.com/gyim/vim-boxdraw.git
-	url = https://github.com/liskin/vim-boxdraw.git
+	url = https://github.com/gyim/vim-boxdraw.git
 [submodule ".vim/bundle/vader.vim"]
 	path = .vim/bundle/vader.vim
 	url = https://github.com/junegunn/vader.vim
@@ -126,6 +125,16 @@
 	path = src-webextensions/empty-tab
 	#url = https://github.com/karlerikjonatan/empty-tab
 	url = https://github.com/liskin/empty-tab
+[submodule "src-webextensions/Just-Read"]
+	path = src-webextensions/Just-Read
+	#url = https://github.com/ZachSaucier/Just-Read.git
+	url = https://github.com/liskin/Just-Read.git
+[submodule "src-webextensions/strava-map-switcher"]
+	path = src-webextensions/strava-map-switcher
+	url = git@github.com:liskin/strava-map-switcher.git
+[submodule "src-webextensions/plkfotkator"]
+	path = src-webextensions/plkfotkator
+	url = git@github.com:liskin/plkfotkator.git
 [submodule "src-haskell/xmonad-contrib"]
 	path = src-haskell/xmonad-contrib
 	#url = https://github.com/xmonad/xmonad-contrib.git
