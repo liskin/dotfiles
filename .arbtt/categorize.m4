@@ -31,7 +31,7 @@ current window $program == "gl" ==> {
 current window $program == ["app.element.io", "discord.com__app", "www.messenger.com"] ==> tag Activity:Chat,
 current window $program =~ /\.slack\.com$/ ==> tag Activity:Chat,
 current window $program == "zoom" ==> tag Activity:Call,
-any window $active && $desktop =~ /^\d+:steam$/ ==> tag Activity:Games,
+any window $active && $desktop =~ /^W?\d+:steam$/ ==> tag Activity:Games,
 any window $active && $desktop == ["1", "11"] && any window $program == "Steam" ==> tag Activity:Games,
 
 include(`categorize-priv.m4')dnl
@@ -41,10 +41,10 @@ current window $program == "google-chrome" ==> {
 	current window $title =~ m|:: https?://github.*/xmonad| ==> tag Activity:Proj-XMonad,
 	current window $title =~ m|:: https?://.*reddit.*/xmonad| ==> tag Activity:Proj-XMonad,
 },
-any window $active && $desktop =~ /^\d+:\.?xmonad/ ==> tag Activity:Proj-XMonad,
+any window $active && $desktop =~ /^W?\d+:\.?xmonad/ ==> tag Activity:Proj-XMonad,
 
 -- possibly ambiguous fallback activities
-any window $active && !( $desktop == ["1:irc", "2:web", "12:watch"] ) && $desktop =~ m|^\d+:([^:]*)| ==> tag Activity:Proj-$1ⁱ,
+any window $active && !( $desktop == ["1:irc", "2:web", "12:watch"] ) && $desktop =~ m|^W?\d+:([^:]*)| ==> tag Activity:Proj-$1ⁱ,
 current window $program == "google-chrome" && $desktop == "2:web" ==> {
 	-- assume that browsing while a project-related terminal window is visible
 	-- on another monitor means that browsing is related to that project
@@ -52,7 +52,7 @@ current window $program == "google-chrome" && $desktop == "2:web" ==> {
 		! $hidden
 		&& !( $wdesktop == ["1:irc", "2:web", "12:watch"] )
 		&& $program == ["urxvt", "x-terminal-emulator"]
-		&& $wdesktop =~ m|^\d+:([^:]*)|
+		&& $wdesktop =~ m|^W?\d+:([^:]*)|
 	) ==> tag Activity:Proj-$1ⁱ,
 	tag Activity:Web-otherⁱ,
 },
