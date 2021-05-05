@@ -26,6 +26,10 @@ all: pushl
 pushl: | pipx
 	$(PIPX_INSTALL) pushl
 
+all: timezonefinder
+timezonefinder: | pipx
+	$(PIPX_INSTALL) timezonefinder
+
 all: strava-offline
 strava-offline: | pipx
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .

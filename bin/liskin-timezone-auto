@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+location=$(curl --silent --show-error --fail --ipv4 "https://location.services.mozilla.com/v1/geolocate?key=geoclue")
+lat=$(jq -r .location.lat <<<"$location")
+lon=$(jq -r .location.lng <<<"$location")
+
+tz=$(o timezonefinder "$lon" "$lat")
+o timedatectl set-timezone "$tz"
+
+o make -B -C ~/.config/redshift LAT="$lat" LON="$lon"
+o systemctl --user restart redshift@:0.service
