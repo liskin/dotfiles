@@ -23,8 +23,9 @@ Config
 	, Run MultiCpu ["-H","95","--high","red","-t","<icon=cpu.xbm/><icon=l.xbm/><autovbar><icon=r.xbm/>","--","--contiguous-icons"] 10
 	, Run Com "bash" ["-c", "[[ \"$(< /proc/modules)\" == *nvidia* ]] && echo \" <fc=red>nvidia</fc>\" || :"] "nvidia" 600
 	, Run Com "bash" ["-c", "[[ \"$(/usr/local/sbin/liskin-gvt-g list)\" ]] && echo \" <fc=red>gvt</fc>\" || :"] "gvt" 600
+	, Run Com "bash" ["-c", "[[ \"$(xinput list \"--id-only\" \"Raydium Corporation Raydium Touch System\")\" == ?* ]] && echo \" <fc=red>touch</fc>\" || :"] "touch" 600
 	]
 , sepChar = "%"
 , alignSep = ""
-, template = "%UnsafeXMonadLog% %gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
+, template = "%UnsafeXMonadLog% %touch%%gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
 }
