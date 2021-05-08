@@ -33,7 +33,9 @@ non-goals: eye candy
   screen
 
 * [do-not-disturb mode](XMonad/Actions/DoNotDisturb.hs) that hides chat
-  notifications and defers urgency requests
+  notifications and defers urgency requests; together with an xmobar widget
+  and [a timer](../bin/liskin-xmonad-dnd-timer) (started from
+  [xmonadctl](../bin/xmonadctl)) this acts as a "pomodoro timer"
 
 * program launching, layout selection, emoji typing, password typing via
   [rofi][] (see [bindings](xmonad.hs) and scripts in [`~/bin`](../bin))

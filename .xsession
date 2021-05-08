@@ -32,6 +32,7 @@ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enab
 
 start-pulseaudio-x11
 liskin-thinkpad-battery update-xmobar
+xprop -root -f _XMOBAR_DND 8u -set _XMOBAR_DND ""
 
 {
 	echo DISPLAY="$DISPLAY"

@@ -4,6 +4,19 @@ set -eu
 
 if (( ! $# )); then
 	exec xmonadctl.real -h
-else
-	xmonadctl.real -a _XMONAD_CTL "$@"
 fi
+
+if [[ $1 == dnd-on ]]; then
+	systemd-run \
+		--quiet --collect \
+		--user --slice="session.slice" --unit="liskin-xmonad-dnd-timer@$DISPLAY.service" \
+		--property="PartOf=xmonad@$DISPLAY.target" \
+		--property="EnvironmentFile=$XDG_RUNTIME_DIR/xsession-env-$DISPLAY" \
+		-- liskin-xmonad-dnd-timer ${2+"$2"}
+fi
+
+if [[ $1 == dnd-off && ${_NO_SYSTEMCTL_STOP-} != 1 ]]; then
+	systemctl --user stop "liskin-xmonad-dnd-timer@$DISPLAY.service" 2>/dev/null || :
+fi
+
+xmonadctl.real -a _XMONAD_CTL "$@"

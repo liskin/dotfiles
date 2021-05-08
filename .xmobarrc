@@ -15,6 +15,7 @@ Config
 	[ Run Date "<fn=3>\xf5ef </fn>%a <action=`date +%F | xclip -r`>%F</action> %H:%M:%S" "theDate" 10
 	, Run UnsafeXMonadLog
 	, Run XPropertyLog "_XMOBAR_BATTERY_EXTRA"
+	, Run XPropertyLog "_XMOBAR_DND"
 	, Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=3>\xf6ff </fn><rx>KB:<tx>KB "] 10
 	, Run Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=3>\xfaa8 </fn><rx>KB|<tx>KB "] 10
 	, Run BatteryN ["BAT0"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","<acstatus><left>%|<watts>W","--","-O","<icon=power-ac.xbm/>","-i","<icon=power-ac.xbm/>","-o","<icon=power-bat.xbm/>"] 50 "battery0"
@@ -27,5 +28,5 @@ Config
 	]
 , sepChar = "%"
 , alignSep = ""
-, template = "%UnsafeXMonadLog% %touch%%gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
+, template = "%UnsafeXMonadLog% %_XMOBAR_DND%%touch%%gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
 }
