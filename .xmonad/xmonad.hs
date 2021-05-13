@@ -357,7 +357,7 @@ myLogHook = do
                    | w `elem` urgents = ppUrgentC
                    | otherwise        = ppNormalC
             pure $ clickableWindow w . pp $ shortenUrgent t
-        urgentsExtras DoNotDisturb = pure $ Just "dnd"
+        urgentsExtras DoNotDisturb = mempty
         urgentsExtras Disturb = do
             weechat <- weechatWins
             urgents <- readUrgents
