@@ -40,3 +40,6 @@ bind index,pager \CO sidebar-open
 unignore message-id
 unhdr_order *
 hdr_order message-id date from to cc subject
+
+# look & feel
+set index_format="%5C %Z %(%F %H:%M) %-15.15L %?M?▶&│? %s %*  │ %4c"
