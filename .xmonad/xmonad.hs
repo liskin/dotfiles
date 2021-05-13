@@ -53,6 +53,7 @@ import XMonad.Prompt
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.NamedWindows
 import XMonad.Util.Ungrab
+import XMonad.Util.WindowProperties
 import qualified XMonad.Util.PureX as P
 
 import XMonad.Actions.DoNotDisturb
@@ -73,10 +74,14 @@ cmdAppScope =
     , "--" ]
 cmdXCwd = [ "D=\"$(xcwd)\" || D=;", "${D:+cd \"$D\"};" ]
 
+focusedIsTerminal = focusedHasProperty (ClassName "URxvt")
+
 spawnExec, spawnApp, spawnTerm :: String -> X ()
 spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
-spawnTerm s = spawn . unwords $ cmdXCwd ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
+spawnTerm s = do
+    cmdXCwd' <- P.whenM' focusedIsTerminal (pure cmdXCwd)
+    spawn . unwords $ cmdXCwd' ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
 
 cmdExecJournal :: String -> String
 cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
