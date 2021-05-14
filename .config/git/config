@@ -47,6 +47,8 @@
 	wdiff = -c pager.diff='less -FRX' diff --word-diff=color -w
 	wshow = show --word-diff=color -w
 	puf = push --force-with-lease
+	puf-upstream = -c push.default=upstream push --force-with-lease
+	push-upstream = -c push.default=upstream push
 	dcommit = svn dcommit --rmdir --interactive
 	rev-sort-topo-reverse = rev-list --topo-order --no-walk --reverse
 	fixes = -c core.abbrev=12 log -1 --pretty=fixes
