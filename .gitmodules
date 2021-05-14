@@ -11,9 +11,6 @@
 	path = .vim/bundle/ale
 	url = https://github.com/liskin/ale.git
 	#url = https://github.com/w0rp/ale.git
-[submodule ".vim/bundle/nerdcommenter"]
-	path = .vim/bundle/nerdcommenter
-	url = https://github.com/scrooloose/nerdcommenter.git
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
@@ -174,3 +171,6 @@
 [submodule "src-python/arbtt-chart"]
 	path = src-python/arbtt-chart
 	url = https://github.com/liskin/arbtt-chart.git
+[submodule ".vim/bundle/tcomment_vim"]
+	path = .vim/bundle/tcomment_vim
+	url = https://github.com/tomtom/tcomment_vim

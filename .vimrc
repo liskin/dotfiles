@@ -156,7 +156,6 @@ set viewoptions-=options
 let mapleader = ","
 let maplocalleader = "\\"
 
-let g:NERDDefaultAlign = "left"
 let g:PHP_default_indenting = 1
 let g:fugitive_gitlab_domains = ['https://gitlab.freedesktop.org', 'https://salsa.debian.org']
 let g:fugitive_legacy_commands = 0
@@ -169,6 +168,7 @@ let g:netrw_http_xcmd = "-LSsf -o"
 let g:puppet_align_hashes = 0
 let g:scala_scaladoc_indent = 1
 let g:speeddating_no_mappings = 1
+let g:tcomment_mapleader1 = ''
 let g:tex_comment_nospell = 1
 
 " tagbar {{{2
