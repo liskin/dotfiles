@@ -289,6 +289,8 @@ let g:ale_python_pyls_config = {
 	\ }
 \ }
 
+let g:ale_haskell_ormolu_executable = 'fourmolu'
+
 function! s:ale_add_linter(ale_linters, filetype, linter) abort
 	if !has_key(a:ale_linters, a:filetype)
 		let a:ale_linters[a:filetype] = []

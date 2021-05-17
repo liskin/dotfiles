@@ -3,6 +3,7 @@ resolver: lts-16.31
 packages:
     - X11
     - arbtt
+    - fourmolu
     - ghcid
     - xmobar
     - xmonad
