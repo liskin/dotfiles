@@ -301,13 +301,14 @@ function! s:ale_add_linter(ale_linters, filetype, linter) abort
 	endif
 endfunction
 
-function! s:ale_enable_linter(filetype, linter) abort
-	if !exists('b:ale_linters')
-		let b:ale_linters = deepcopy(g:ale_linters)
+function! s:ale_enable_linter(var, filetype, linter) abort
+	if !exists('b:{a:var}')
+		let b:{a:var} = deepcopy(g:{a:var})
 	endif
-	call s:ale_add_linter(b:ale_linters, a:filetype, a:linter)
+	call s:ale_add_linter(b:{a:var}, a:filetype, a:linter)
 
 	ALELint
+	ALEFix
 endfunction
 
 function! s:ale_add_linters(ale_linters, filetype, ...) abort
@@ -316,7 +317,8 @@ function! s:ale_add_linters(ale_linters, filetype, ...) abort
 	endfor
 endfunction
 
-command! -nargs=1 -bar AleBufEnableLinter call s:ale_enable_linter(&ft, <q-args>)
+command! -nargs=1 -bar AleBufEnableLinter call s:ale_enable_linter('ale_linters', &ft, <q-args>)
+command! -nargs=1 -bar AleBufEnableFixer call s:ale_enable_linter('ale_fixers', &ft, <q-args>)
 command! -nargs=+ -bar AleAddLinter call s:ale_add_linters(g:ale_linters, <f-args>)
 command! -nargs=+ -bar AleAddFixer call s:ale_add_linters(g:ale_fixers, <f-args>)
 
