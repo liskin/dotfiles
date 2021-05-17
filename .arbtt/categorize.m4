@@ -1,19 +1,20 @@
 -- inactivity
 $screensaver ==> tag inactive,
-$idle > 60 && $desktop == "1:irc" ==> tag inactive,
-$idle > 60 && current window $program == "google-chrome" && current window $title =~ m|^chrome://newtab| ==> tag inactive,
 
 -- generic, for filtering purposes
 tag Program:$current.program,
 any window $active ==> tag Desktop:$desktop,
 
 -- unambiguous activities (general)
+any window (! $hidden && (
+	($program == "google-chrome" && $title =~ m|:: https?://meet\.google|)
+	|| $program == "zoom"
+)) ==> tag Activity:Call,
 $desktop == "1:irc" && current window $title =~ /^t\[N\] / ==> tag Activity:Chat,
 $desktop == "1:irc" && current window $title =~ /^(t\[m\]|m\[[A-Z]\])[  ]/ ==> tag Activity:Mail,
 $desktop == "1:irc" && current window $title =~ m|~/taskwiki.* - VIM$| ==> tag Activity:TaskWiki,
 current window $program == "liferea" ==> tag Activity:Web-RSS,
 current window $program == "google-chrome" ==> {
-	current window $title =~ m|:: https?://meet\.google| ==> tag Activity:Call,
 	current window $title =~ m|:: https?://.*muni.*/discussion/| ==> tag Activity:Web-Plkarna,
 	current window $title =~ m|:: https?://news\.ycombinator| ==> tag Activity:Web-HN,
 	current window $title =~ m!( / Twitter|\bFacebook) (::|-) ! ==> tag Activity:Web-Social,
@@ -29,9 +30,8 @@ current window $program == "gl" ==> {
 },
 current window $program == ["app.element.io", "discord.com__app", "www.messenger.com"] ==> tag Activity:Chat,
 current window $program =~ /\.slack\.com$/ ==> tag Activity:Chat,
-current window $program == "zoom" ==> tag Activity:Call,
 any window $active && $desktop =~ /^W?\d+:steam$/ ==> tag Activity:Games,
-any window $active && $desktop == ["1", "11"] && any window $program == "Steam" ==> tag Activity:Games,
+any window $active && $desktop == ["1", "11"] && any window ($desktop == $wdesktop && $program == "Steam") ==> tag Activity:Games,
 
 include(`categorize-priv.m4')dnl
 
