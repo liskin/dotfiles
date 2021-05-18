@@ -45,7 +45,7 @@ function action-mic-mute { pactl set-source-mute @DEFAULT_SOURCE@ toggle; }
 
 # Listen for MPRIS events and remember which player we interacted with last
 function action-mpris-daemon {
-	playerctl --all-players --follow --format '{{playerName}} {{status}}' status \
+	playerctl --all-players --follow --format '{{playerName}} {{status}}' status 2>&1 \
 	| while read -r player status; do
 		if [[ $status == @(Paused|Playing) ]]; then
 			printf "%s\n" "$player" >"${XDG_RUNTIME_DIR}/liskin-media-last"
