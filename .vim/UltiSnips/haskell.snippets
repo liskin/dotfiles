@@ -1,4 +1,4 @@
-snippet info
+snippet info "Haddock module info (short)" b
 -- |
 -- Module      :  ${1:`!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`}
 -- Copyright   :  (c) `date +%Y` `!v g:snips_name` <`!v g:snips_email`>
@@ -9,7 +9,7 @@ snippet info
 --
 endsnippet
 
-snippet info-long
+snippet info-long "Haddock module info (long w/ Stability, Portability)" b
 -- |
 -- Module      :  ${1:`!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`}
 -- Copyright   :  (c) `date +%Y` `!v g:snips_name` <`!v g:snips_email`>
@@ -21,4 +21,8 @@ snippet info-long
 --
 -- ${0:Description}
 --
+endsnippet
+
+snippet ghcid-test "$> :main --match=…" b
+-- $> :main --no-color --match=${1:`!v expand('%:t:r')`}
 endsnippet
