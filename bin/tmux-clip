@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+printf "\033]52;s;%s\a" "$(printf "%s" "$*" | base64 --wrap=0)" >/dev/tty 2>/dev/null
