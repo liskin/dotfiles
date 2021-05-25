@@ -73,6 +73,8 @@ export-alias google-chrome-app-wire="google-chrome --app=https://app.wire.com/"
 
 export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
 export-alias meld='LC_MESSAGES=C /usr/bin/meld'
+export-alias weechat='LC_MESSAGES=C /usr/bin/weechat'
+
 export-alias google-earth-pro='LC_NUMERIC=C /usr/bin/google-earth-pro'
 export-alias google-earth='google-earth-pro'
 
