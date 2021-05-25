@@ -14,10 +14,9 @@ sub on_osc_seq {
 	$data = decode('utf8', decode_base64($data));
 
 	my ($secret, $uri) = split(' ', $data, 2);
-	if (length $secret and length $uri
-			and sha256_hex($secret) eq '16b13054a650e0357f048a8bcff001f3a39955f4fdec032659a1031f95198367') {
-		$data = $uri;
-		if ($uri =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}(?:#$fragment)?$}) {
+	if (length $secret and sha256_hex($secret) eq '16b13054a650e0357f048a8bcff001f3a39955f4fdec032659a1031f95198367') {
+		$data = $uri // "";
+		if (length $uri and $uri =~ m{^$RE{URI}{HTTP}{-scheme => qr/https?/}(?:#$fragment)?$}) {
 			system("sensible-browser", $uri);
 		}
 	}
