@@ -348,32 +348,30 @@ myLogHook = do
         ppVisibleB = xmobarBorder "Top" "green" 1
         ppCurrentC = xmobarColor "yellow" ""
         ppCurrentB = xmobarBorder "Top" "yellow" 1
-        ppNormalC = xmobarColor "#cfcfcf" ""
         ppUrgentC = xmobarColor "#ffff00" "#800000:3,1"
         ppUrgentB = xmobarBorder "Top" "#ff0000" 1
-        ppUrgentExtra urgents w = do
-            t <- show <$> getName w
-            let pp | isWeechatTitle t = id
-                   | w `elem` urgents = ppUrgentC
-                   | otherwise        = ppNormalC
-            pure $ clickableWindow w . pp $ shortenUrgent t
+
         urgentsExtras DoNotDisturb = mempty
         urgentsExtras Disturb = do
-            weechat <- weechatWins
-            urgents <- readUrgents
-            let ws = nub $ weechat ++ urgents
-            if null ws
-                then pure Nothing
-                else do
-                    items <- mapM (ppUrgentExtra urgents) ws
-                    return $ Just (intercalate " " items)
+            weechatWs <- weechatWins
+            urgentsWs <- readUrgents
+            weechat <- mapM (ppUrgentExtra id) weechatWs
+            urgents <- mapM (ppUrgentExtra ppUrgentC) (urgentsWs \\ weechatWs)
+            pure $ unwordsExtras $ weechat ++ urgents
+
+        ppUrgentExtra pp w = clickableWindow w . pp . shortenUrgent . show <$> getName w
+
         weechatWins :: X [Window]
         weechatWins = do
             ws <- gets windowset
             filterM isWeechat
                 [ w | wks <- W.workspaces ws, W.tag wks == "1"
                 , w <- W.integrate' (W.stack wks) ]
+
         isWeechat w = (isWeechatTitle . show) `fmap` getName w
+
+        unwordsExtras xs | null xs   = Nothing
+                         | otherwise = Just (unwords xs)
 
 xmobarCommands :: X [String]
 xmobarCommands = do
@@ -448,7 +446,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
                      | otherwise                      = s
 
 isWeechatTitle :: String -> Bool
-isWeechatTitle = ("t[N] " `isPrefixOf`)
+isWeechatTitle t = "t[N] weechat: " `isPrefixOf` t || "weechat/matrix: " `isPrefixOf` t
 
 clickableWindow :: Window -> String -> String
 clickableWindow w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
@@ -467,7 +465,8 @@ workspaceIcons = s "\\<irc\\>" (fnNerd "\xf198")
 
 shortenUrgent :: String -> String
 shortenUrgent t
-    | Just x <- stripPrefix "t[N] " t = fnNerd "\xf198" ++ ":" ++ stripActions x
+    | Just x <- stripPrefix "t[N] weechat: " t = fnNerd "\xf198" ++ ":" ++ stripActions x
+    | Just x <- stripPrefix "weechat/matrix: " t = "M:" ++ stripActions x
     | Just x <- stripPrefix "t[m] m[N] " t = fnAweFree "\xf0e0" ++ " " ++ s x
     | otherwise = s t
   where
