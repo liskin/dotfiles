@@ -329,19 +329,21 @@ myLogHook = do
     myPP <- clickablePP . workspaceIconsPP =<< workspaceNamesPP . boldPP =<< pure
         xmobarPP
             { ppExtras =
-                [ willFloatNextPP ("Float " ++)
+                [ urgentsExtras dnd
+                , willFloatNextPP ("Float " ++)
                 , willFloatAllNewPP ("Float " ++)
-                , urgentsExtras dnd
                 ]
             , ppVisible = ppVisibleB . ppVisibleC
             , ppCurrent = ppCurrentB . ppCurrentC
             , ppUrgent = ppUrgentB . ppUrgentC
-            , ppSep = " │ "
+            , ppSep = sep
             , ppOrder = \(w:_:_:s) -> w:s
             }
     xmonadPropLog =<< dynamicLogString myPP
     xmobarWindowLists
     where
+        sep = " │ "
+
         boldPP pp = pp{ ppRename = ppRename pp . fnBold }
         workspaceIconsPP pp = pp{ ppRename = ppRename pp >=> pure . workspaceIcons }
         ppVisibleC = xmobarColor "green" ""
@@ -371,7 +373,7 @@ myLogHook = do
         isWeechat w = (isWeechatTitle . show) `fmap` getName w
 
         unwordsExtras xs | null xs   = Nothing
-                         | otherwise = Just (unwords xs)
+                         | otherwise = Just (intercalate " │ " xs)
 
 xmobarCommands :: X [String]
 xmobarCommands = do
