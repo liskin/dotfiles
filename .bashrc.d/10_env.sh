@@ -45,6 +45,9 @@ export ANDROID_HOME=/home/tomi/android/android-sdk-linux
 export DEBFULLNAME="Tomas Janousek"
 export DEBEMAIL="tomi@nomi.cz"
 
+export DEBUGINFOD_PROGRESS=1
+export DEBUGINFOD_URLS="https://debuginfod.debian.net"
+
 if [ -n "$_LISKIN_NVIDIA" ]; then
 	export VK_ICD_FILENAMES="/home/tomi/.local/share/vulkan/icd.d/nvidia_icd.json"
 	unset __EGL_VENDOR_LIBRARY_FILENAMES
