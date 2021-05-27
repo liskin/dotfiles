@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Run command with a fake $HOME and optionally tmpfs in /tmp,
 # mounting everything but $PWD read-only.
@@ -34,7 +34,7 @@ else
 fi
 
 o exec bwrap \
-	--ro-bind / / \
+	--ro-bind /{,} \
 	--dev /dev \
 	"${tmpfs_opts[@]}" \
 	--proc /proc \
