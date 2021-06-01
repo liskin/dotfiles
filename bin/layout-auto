@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
-shopt -s nullglob lastpipe
+shopt -s nullglob
 
 export LC_ALL=C
 
@@ -17,9 +17,10 @@ function fingerprint-outputs {
 			echo "$out"
 			xxd -p "$out"/edid
 		fi
-	done | md5sum -b | read -r h _
-
-	printf "%s\n" "$h"
+	done | md5sum -b | {
+		read -r h _
+		printf "%s\n" "$h"
+	}
 }
 
 fingerprint=$(fingerprint-outputs)
