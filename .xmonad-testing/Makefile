@@ -1,16 +1,41 @@
 include ~/.xmonad/Makefile
 
-XMONAD_DEPS := xmonad xmonad-contrib
+XMONAD_DEPS := X11 xmonad xmonad-contrib
 BUILD_DEPS_TARGETS := build
+BUILD_DOCS_TARGETS := build-haddock
 SRC_HASKELL := .
+STACK_BUILDFLAGS :=
 
 .PHONY: build
 build: stack.yaml
-	stack build
+	stack build $(STACK_BUILDFLAGS)
 
-stack.yaml: ~/src-haskell/stack.yaml Makefile
+.PHONY: build-haddock
+build-haddock: STACK_BUILDFLAGS=--haddock --no-haddock-deps --no-haddock-hyperlink-source --haddock-arguments --optghc=-dynamic
+build-haddock: build
+
+stack.yaml: ~/src-haskell/stack.yaml Makefile $(XMONAD_DEPS)
 	yq --yaml-output \
-		'def keep: . == "X11" or . == "xmonad" or . == "xmonad-contrib"; .packages |= map(select(keep)) | .flags |= with_entries(select(.key | keep)) ' \
+		'def keep: IN("$(XMONAD_DEPS)" | splits(" ")); .packages |= map(select(keep)) | .flags |= with_entries(select(.key | keep)) ' \
 		$< >$@
+
+.PHONY: clone-deps
+## clone (worktree add) deps
+clone-deps: $(XMONAD_DEPS)
+
+GIT_WORKTREE_ADD = \
+	unset GIT_DIR && \
+	git -C ~/src-haskell/$(1) worktree prune && \
+	git -C ~/src-haskell/$(1) worktree add $(CURDIR)/$(1) --detach origin/master
+$(XMONAD_DEPS):
+	$(call GIT_WORKTREE_ADD,$@)
+
+.PHONY: clean
+##
+clean:
+	$(RM) -r \
+		stack.yaml stack.yaml.lock \
+		.build .stack-work \
+		$(XMONAD_DEPS) $(XMONAD_BINARY)
 
 .DELETE_ON_ERROR:
