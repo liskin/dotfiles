@@ -1,13 +1,15 @@
 ARCH := $(shell uname -m)
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 XMONAD_BINARY := xmonad-$(ARCH)-$(OS)
-XMONAD_DEPS = xmobar xmonad xmonad-contrib split regex-compat-tdfa
+XMONAD_DEPS := xmobar xmonad xmonad-contrib split regex-compat-tdfa
+BUILD_DEPS_TARGETS := build .bin/xmonadctl .bin/xmonadpropread .bin/xmonadpropwrite
+SRC_HASKELL := ~/src-haskell
 
 ## compile xmonad.hs
 xmonad: $(XMONAD_BINARY)
 
 $(XMONAD_BINARY): build-deps
-	cd ~/src-haskell && \
+	cd $(SRC_HASKELL) && \
 		stack exec -- ghc \
 			-Wall \
 			-i -i$(CURDIR) \
@@ -19,39 +21,44 @@ $(XMONAD_BINARY): build-deps
 			$(CURDIR)/xmonad.hs
 
 .PHONY: ghcid
-##
 ghcid:
 	ghcid -c '$(MAKE) ghci'
 
-## make ghcid-xmonad; make ghcid-xmonad-contrib; …
+ghcid-X11:
+ghcid-xmonad-contrib:
+ghcid-xmonad:
 ghcid-%: build-deps _phony
-	cd ~/src-haskell && \
+	cd $(SRC_HASKELL) && \
 		ghcid --target $*:lib
 
+ghcid-test-xmonad-contrib:
+ghcid-test-%: build-deps _phony
+	cd $(SRC_HASKELL) && \
+		ghcid --target $*:test:tests --allow-eval
+
 .PHONY: ghci
-##
 ghci: build-deps
-	cd ~/src-haskell && \
+	cd $(SRC_HASKELL) && \
 		stack exec -- ghci \
 			-Wall \
 			-i -i$(CURDIR) \
 			$(CURDIR)/xmonad.hs
 
-## make ghci-xmonad; make ghci-xmonad-contrib; …
+ghci-X11:
+ghci-xmonad-contrib:
+ghci-xmonad:
 ghci-%: build-deps _phony
-	cd ~/src-haskell && \
+	cd $(SRC_HASKELL) && \
 		stack ghci $*:lib
 
 .PHONY: build-deps
 build-deps:
-	$(MAKE) -C ~/src-haskell \
-		BUILD_TARGETS="$(XMONAD_DEPS)" \
-		build .bin/xmonadctl .bin/xmonadpropread .bin/xmonadpropwrite
+	$(MAKE) -C $(SRC_HASKELL) BUILD_TARGETS="$(XMONAD_DEPS)" $(BUILD_DEPS_TARGETS)
 
 .PHONY: build-doc
 ## build deps with docs
 build-doc:
-	$(MAKE) -C ~/src-haskell build-doc BUILD_TARGETS="$(XMONAD_DEPS)"
+	$(MAKE) -C $(SRC_HASKELL) build-doc BUILD_TARGETS="$(XMONAD_DEPS)"
 
 .PHONY: _phony
 

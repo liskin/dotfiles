@@ -1,0 +1,9 @@
+/.build/
+/stack.yaml
+/stack.yaml.lock
+/xmonad-*-linux
+
+# git worktrees
+/X11/
+/xmonad-contrib/
+/xmonad/
