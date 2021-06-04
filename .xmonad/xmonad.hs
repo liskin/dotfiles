@@ -53,7 +53,6 @@ import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Hacks
 import XMonad.Util.NamedWindows
 import XMonad.Util.Ungrab
-import XMonad.Util.WindowProperties
 import qualified XMonad.Util.PureX as P
 
 import XMonad.Actions.DoNotDisturb
@@ -62,29 +61,6 @@ import XMonad.Util.My
 import XMonad.Util.SpawnManager
 
 import Xmobar.X11.Actions (stripActions)
-
-cmdLogJournal, cmdAppScope, cmdXCwd :: [String]
-cmdLogJournal =
-    [ "systemd-cat"
-    , "--priority=info", "--stderr-priority=warning", "--level-prefix=false"
-    , "--" ]
-cmdAppScope =
-    [ "systemd-run", "--quiet", "--collect"
-    , "--user" , "--scope", "--slice=app.slice", "--unit=\"app-$$.scope\""
-    , "--" ]
-cmdXCwd = [ "D=\"$(xcwd)\" || D=;", "${D:+cd \"$D\"};" ]
-
-focusedIsTerminal = focusedHasProperty (ClassName "URxvt")
-
-spawnExec, spawnApp, spawnTerm :: String -> X ()
-spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
-spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
-spawnTerm s = do
-    cmdXCwd' <- P.whenM' focusedIsTerminal (pure cmdXCwd)
-    spawn . unwords $ cmdXCwd' ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
-
-cmdExecJournal :: String -> String
-cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
 
 -- Bindings
 myKeys conf@(XConfig{modMask}) = M.fromList $
@@ -361,7 +337,7 @@ myLogHook = do
             urgents <- mapM (ppUrgentExtra ppUrgentC) (urgentsWs \\ weechatWs)
             pure $ unwordsExtras $ weechat ++ urgents
 
-        ppUrgentExtra pp w = clickableWindow w . pp . shortenUrgent . show <$> getName w
+        ppUrgentExtra pp w = ppClickableW w . pp . shortenUrgent . show <$> getName w
 
         weechatWins :: X [Window]
         weechatWins = do
@@ -412,7 +388,7 @@ xmobarWindowLists = withWindowSet $ \ws -> do
         let winFmt w | isFocused w && isCurrent = ppFocusC
                      | w `elem` urgents         = ppUrgentC
                      | otherwise                = ppUnfocusC
-        let clickWinFmt w = clickableWindow w . winFmt w
+        let clickWinFmt w = ppClickableW w . winFmt w
 
         let wins = W.integrate' stack
         tits <- mapM getName wins
@@ -449,9 +425,6 @@ xmobarWindowLists = withWindowSet $ \ws -> do
 
 isWeechatTitle :: String -> Bool
 isWeechatTitle t = "t[N] weechat: " `isPrefixOf` t || "weechat/matrix: " `isPrefixOf` t
-
-clickableWindow :: Window -> String -> String
-clickableWindow w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
 
 workspaceIcons :: String -> String
 workspaceIcons = s "\\<irc\\>" (fnNerd "\xf198")

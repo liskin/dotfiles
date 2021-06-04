@@ -33,6 +33,7 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.Run
 import XMonad.Util.Ungrab
+import XMonad.Util.WindowProperties
 import qualified XMonad.Util.PureX as P
 
 {-# NOINLINE myHome #-}
@@ -136,3 +137,30 @@ fnNerd = wrap "<fn=3>" "</fn>" . concatMap (: " ")
 fnAweFree = wrap "<fn=4>" "</fn>"
 fnAweFreeS = wrap "<fn=5>" "</fn>"
 fnAweBrand = wrap "<fn=6>" "</fn>"
+
+ppClickableW :: Window -> String -> String
+ppClickableW w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
+
+cmdLogJournal, cmdAppScope, cmdXCwd :: [String]
+cmdLogJournal =
+    [ "systemd-cat"
+    , "--priority=info", "--stderr-priority=warning", "--level-prefix=false"
+    , "--" ]
+cmdAppScope =
+    [ "systemd-run", "--quiet", "--collect"
+    , "--user" , "--scope", "--slice=app.slice", "--unit=\"app-$$.scope\""
+    , "--" ]
+cmdXCwd = [ "D=\"$(xcwd)\" || D=;", "${D:+cd \"$D\"};" ]
+
+focusedIsTerminal :: X Bool
+focusedIsTerminal = focusedHasProperty (ClassName "URxvt")
+
+spawnExec, spawnApp, spawnTerm :: String -> X ()
+spawnExec s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ [s]
+spawnApp s = spawn . unwords $ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
+spawnTerm s = do
+    cmdXCwd' <- P.whenM' focusedIsTerminal (pure cmdXCwd)
+    spawn . unwords $ cmdXCwd' ++ ["exec"] ++ cmdLogJournal ++ cmdAppScope ++ [s]
+
+cmdExecJournal :: String -> String
+cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
