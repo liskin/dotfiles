@@ -19,7 +19,7 @@ import System.Exit
 import "regex-compat-tdfa" Text.Regex
 import qualified Data.Map as M
 
-import XMonad hiding ((|||))
+import XMonad
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
@@ -36,7 +36,6 @@ import XMonad.Hooks.Rescreen
 import XMonad.Hooks.ServerMode
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
-import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.Named
@@ -51,6 +50,7 @@ import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
 import XMonad.Util.ClickableWorkspaces
+import XMonad.Util.Hacks
 import XMonad.Util.NamedWindows
 import XMonad.Util.Ungrab
 import XMonad.Util.WindowProperties
@@ -286,7 +286,7 @@ myEventHook :: Event -> X All
 myEventHook = mconcat
     [ refocusLastEventHook
     , hintsEventHook
-    , trayerDockEventHook
+    , trayerAboveXmobarEventHook
     , floatConfReqHook myFloatConfReqManageHook
     , serverModeEventHookF "_XMONAD_CTL" (mconcat myXmonadCtlHooks)
     ]
@@ -473,20 +473,6 @@ shortenUrgent t
     | otherwise = s t
   where
     s = xmobarRaw . shorten' "~" 30
-
-trayerDockEventHook :: Event -> X All
-trayerDockEventHook ConfigureEvent{ev_window = w, ev_above = a} | a == none = do
-    -- when trayer is lowered to the bottom of stack, put all xmobars that
-    -- are above it below
-    whenX (runQuery (className =? "trayer") w) $ do
-        withDisplay $ \dpy -> do
-            rootw <- asks theRoot
-            (_, _, ws) <- io $ queryTree dpy rootw
-            let aboveTrayerWs = dropWhile (w /=) ws
-            xmobarWs <- filterM (runQuery (appName =? "xmobar")) aboveTrayerWs
-            mapM_ (io . lowerWindow dpy) xmobarWs
-    mempty
-trayerDockEventHook _ = mempty
 
 -- Rescreen hook
 myAfterRescreenHook :: Bool -> X ()

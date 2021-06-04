@@ -29,7 +29,6 @@ import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
 import XMonad.Layout.Inspect
-import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.WorkspaceDir
 import XMonad.Util.Run
