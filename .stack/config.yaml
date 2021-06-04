@@ -9,6 +9,8 @@ system-ghc: true
 install-ghc: false
 # compiler-check: newer-minor
 
+recommend-stack-upgrade: false
+
 # apply-ghc-options: everything
 ghc-options:
   "$everything": -dynamic
