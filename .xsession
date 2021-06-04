@@ -17,6 +17,7 @@ if xrandr --listproviders | grep -q NVIDIA-0; then
 fi
 
 layout-normal
+~/bin/.xlayout/post.sh
 
 xset r rate 200 25
 xset b off

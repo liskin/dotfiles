@@ -25,7 +25,8 @@ import qualified XMonad.StackSet as W
 import XMonad.Actions.CycleWS
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
-import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
@@ -58,7 +59,6 @@ import qualified XMonad.Util.PureX as P
 import XMonad.Actions.DoNotDisturb
 import XMonad.Hooks.WriteState
 import XMonad.Util.My
-import XMonad.Util.SpawnManager
 
 import Xmobar.X11.Actions (stripActions)
 
@@ -147,7 +147,6 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask,               xK_g     ), changeDirRofiGit >> curDirToWorkspacename)
 
     -- restart/rescreen
-    , ((modMask .|. shiftMask, xK_q     ), myAfterRescreenHook True)
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
 
     -- the end
@@ -298,130 +297,140 @@ focusWiki = withWorkspace "1" $ focusQueryWin $ do
     t <- title
     pure $ " - VIM" `isSuffixOf` t && "~/taskwiki" `isInfixOf` t
 
--- Log hook, status bars, tray
-myLogHook :: X ()
-myLogHook = do
-    dnd <- getDoNotDisturb
-    myPP <- clickablePP . workspaceIconsPP =<< workspaceNamesPP . boldPP =<< pure
-        xmobarPP
-            { ppExtras =
-                [ urgentsExtras dnd
-                , willFloatNextPP ("Float " ++)
-                , willFloatAllNewPP ("Float " ++)
-                ]
-            , ppVisible = ppVisibleB . ppVisibleC
-            , ppCurrent = ppCurrentB . ppCurrentC
-            , ppUrgent = ppUrgentB . ppUrgentC
-            , ppSep = sep
-            , ppOrder = \(w:_:_:s) -> w:s
-            }
-    xmonadPropLog =<< dynamicLogString myPP
-    xmobarWindowLists
-    where
-        sep = " │ "
+-- Status bars, tray(er)
+myStatusBars :: ScreenId -> StatusBarConfig
+myStatusBars 0 = xmobarTop <> xmobarBottom 0 <> trayerBottom
+myStatusBars n = xmobarBottom n
 
-        boldPP pp = pp{ ppRename = ppRename pp . fnBold }
-        workspaceIconsPP pp = pp{ ppRename = ppRename pp >=> pure . workspaceIcons }
-        ppVisibleC = xmobarColor "green" ""
-        ppVisibleB = xmobarBorder "Top" "green" 1
-        ppCurrentC = xmobarColor "yellow" ""
-        ppCurrentB = xmobarBorder "Top" "yellow" 1
-        ppUrgentC = xmobarColor "#ffff00" "#800000:3,1"
-        ppUrgentB = xmobarBorder "Top" "#ff0000" 1
+xmobar :: String -> [String] -> X PP -> StatusBarConfig
+xmobar prop args pp = xmobar' prop args (dynamicLogString =<< pp)
 
-        urgentsExtras DoNotDisturb = mempty
-        urgentsExtras Disturb = do
-            weechatWs <- weechatWins
-            urgentsWs <- readUrgents
-            weechat <- mapM (ppUrgentExtra id) weechatWs
-            urgents <- mapM (ppUrgentExtra ppUrgentC) (urgentsWs \\ weechatWs)
-            pure $ unwordsExtras $ weechat ++ urgents
-
-        ppUrgentExtra pp w = ppClickableW w . pp . shortenUrgent . show <$> getName w
-
-        weechatWins :: X [Window]
-        weechatWins = do
-            ws <- gets windowset
-            filterM isWeechat
-                [ w | wks <- W.workspaces ws, W.tag wks == "1"
-                , w <- W.integrate' (W.stack wks) ]
-
-        isWeechat w = (isWeechatTitle . show) `fmap` getName w
-
-        unwordsExtras xs | null xs   = Nothing
-                         | otherwise = Just (intercalate " │ " xs)
-
-xmobarCommands :: X [String]
-xmobarCommands = do
-    xmobarScreens <- gets (map (xmobarScreen . W.screen) . W.screens . windowset)
-    pure $ map cmdExecJournal $ xmobarMain : trayer : xmobarScreens
+xmobar' :: String -> [String] -> X String -> StatusBarConfig
+xmobar' prop args pp = statusBarGeneric cmd (xmonadPropLog' prop =<< pp)
   where
-    xmobarIconRoot = ["-i", myHome ++ "/.xmobar/icons"]
-    xmobarMain = unwords $ ["xmobar"] ++ xmobarIconRoot ++ ["-x", "0"]
-    xmobarScreen (S num) = unwords $ ["xmobar"] ++ xmobarIconRoot ++ ["-b", "-x", n] ++
-        ["-c", "'[Run UnsafeXPropertyLog \"" ++ prop ++ "\"]'", "-t", "'%" ++ prop ++ "%'"]
-      where
-        n = show num
-        prop = "_XMONAD_LOG_SCREEN_" ++ n
-    trayer = "trayer --align right --height 17 --widthtype request --alpha 255 --transparent true --monitor primary -l"
+    cmd = cmdExecJournal $ unwords $ ["xmobar", "-i", myHome ++ "/.xmobar/icons"] ++ args
 
-xmobarWindowLists :: X ()
-xmobarWindowLists = withWindowSet $ \ws -> do
+xmobarTop :: StatusBarConfig
+xmobarTop = xmobar xmonadDefProp ["-x", "0"] $ do
+    dnd <- getDoNotDisturb
+    clickablePP . workspaceIconsPP =<< workspaceNamesPP . boldPP =<< pure xmobarPP
+        { ppExtras =
+            [ urgentsExtras dnd
+            , willFloatNextPP ("Float " ++)
+            , willFloatAllNewPP ("Float " ++)
+            ]
+        , ppVisible = ppVisibleB . ppVisibleC
+        , ppCurrent = ppCurrentB . ppCurrentC
+        , ppUrgent = ppUrgentB . ppUrgentC
+        , ppSep = " │ "
+        , ppOrder = \(w:_:_:s) -> w:s
+        }
+  where
+    boldPP pp = pp{ ppRename = ppRename pp . fnBold }
+    workspaceIconsPP pp = pp{ ppRename = ppRename pp >=> pure . workspaceIcons }
+    ppVisibleC = xmobarColor "green" ""
+    ppVisibleB = xmobarBorder "Top" "green" 1
+    ppCurrentC = xmobarColor "yellow" ""
+    ppCurrentB = xmobarBorder "Top" "yellow" 1
+    ppUrgentC = xmobarColor "#ffff00" "#800000:3,1"
+    ppUrgentB = xmobarBorder "Top" "#ff0000" 1
+
+    urgentsExtras DoNotDisturb = mempty
+    urgentsExtras Disturb = do
+        weechatWs <- weechatWins
+        urgentsWs <- readUrgents
+        weechat <- mapM (ppUrgentExtra id) weechatWs
+        urgents <- mapM (ppUrgentExtra ppUrgentC) (urgentsWs \\ weechatWs)
+        pure $ unwordsExtras $ weechat ++ urgents
+
+    ppUrgentExtra pp w = ppClickableW w . pp . shortenUrgent . show <$> getName w
+
+    weechatWins :: X [Window]
+    weechatWins = do
+        ws <- gets windowset
+        filterM isWeechat
+            [ w | wks <- W.workspaces ws, W.tag wks == "1"
+            , w <- W.integrate' (W.stack wks) ]
+
+    isWeechat w = (isWeechatTitle . show) `fmap` getName w
+
+    unwordsExtras xs | null xs   = Nothing
+                     | otherwise = Just (intercalate " │ " xs)
+
+xmobarBottom :: ScreenId -> StatusBarConfig
+xmobarBottom sid@(S (show -> sn)) = xmobar' prop args $ withScreen $ \scr -> do
+    currentTag <- withWindowSet $ pure . W.currentTag
     addWksName <- getWorkspaceNames ":"
     urgents <- readUrgents
-    forM_ (W.screens ws) $ \scr -> do
-        let wks = W.workspace scr
-        let tag = W.tag wks
-        let stack = W.stack wks
-        let isFocused = (W.focus <$> stack ==) . Just
-        let isCurrent = tag == W.tag (W.workspace (W.current ws))
 
-        let tagFmt | isCurrent = ppCurrentC
-                   | otherwise = ppVisibleC
+    let wks = W.workspace scr
+    let tag = W.tag wks
+    let stack = W.stack wks
+    let isFocused = (W.focus <$> stack ==) . Just
+    let isCurrent = tag == currentTag
 
-        let tag' = tagFmt $ workspaceIcons $ addWksName (fnBold tag) wks
-        let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
-        let dir = shortenLeft 30 . shortenDir $ dir'
-        let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
-        let logHeader = unwords [tag', layout, dir]
+    let tagFmt | isCurrent = ppCurrentC
+               | otherwise = ppVisibleC
 
-        let winFmt w | isFocused w && isCurrent = ppFocusC
-                     | w `elem` urgents         = ppUrgentC
-                     | otherwise                = ppUnfocusC
-        let clickWinFmt w = ppClickableW w . winFmt w
+    let tag' = tagFmt $ workspaceIcons $ addWksName (fnBold tag) wks
+    let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
+    let dir = shortenLeft 30 . shortenDir $ dir'
+    let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
+    let logHeader = unwords [tag', layout, dir]
 
-        let wins = W.integrate' stack
-        tits <- mapM getName wins
-        let gs = map W.integrate . W.integrate' . getGroupStack myLayout $ wks
-        let indices = [ i | (n, g) <- zip [1..] gs
-                      , i <- primes [ fnBold (show (n :: Int)) | _ <- g ] ]
-        let logWins = [ " │ " ++ clickWinFmt w (i ++ " " ++ sanitize (show tit))
-                      | w <- wins | tit <- tits | i <- indices ]
+    let winFmt w | isFocused w && isCurrent = ppFocusC
+                 | w `elem` urgents         = ppUrgentC
+                 | otherwise                = ppUnfocusC
+    let clickWinFmt w = ppClickableW w . winFmt w
 
-        xmobarLog scr . concat $ logHeader : logWins
+    let wins = W.integrate' stack
+    tits <- mapM getName wins
+    let gs = map W.integrate . W.integrate' . getGroupStack myLayout $ wks
+    let indices = [ i | (n, g) <- zip [1..] gs
+                  , i <- primes [ fnBold (show (n :: Int)) | _ <- g ] ]
+    let logWins = [ " │ " ++ clickWinFmt w (i ++ " " ++ sanitize (show tit))
+                  | w <- wins | tit <- tits | i <- indices ]
 
-    where
-        ppVisibleC = xmobarBorder "Bottom" "green" 1 . xmobarColor "green" ""
-        ppCurrentC = xmobarBorder "Bottom" "yellow" 1 . xmobarColor "yellow" ""
+    pure . concat $ logHeader : logWins
+  where
+    prop = "_XMONAD_LOG_SCREEN_" ++ sn
+    args = [ "-c", "'[Run UnsafeXPropertyLog \"" ++ prop ++ "\"]'"
+           , "-t", "'%" ++ prop ++ "%'", "-b", "-x", sn]
 
-        ppFocusC   = xmobarBorder "Bottom" "#ffff00" 1 . xmobarColor "#ffff00" ""
-        ppUrgentC  = xmobarColor "#ffff00" "#800000:3,1"
-        ppUnfocusC = xmobarColor "#b0b040" ""
+    withScreen f = do
+        s <- gets (find ((sid ==) . W.screen) . W.screens . windowset)
+        P.whenJust' s f
 
-        sanitize t = xmobarRaw . shorten' "~" 30 . strip $ t
-          where
-            strip | isWeechatTitle t = xmobarStrip
-                  | otherwise        = id
+    ppVisibleC = xmobarBorder "Bottom" "green" 1 . xmobarColor "green" ""
+    ppCurrentC = xmobarBorder "Bottom" "yellow" 1 . xmobarColor "yellow" ""
 
-        xmobarLog (W.screen -> S n) = xmonadPropLog' prop
-          where prop = "_XMONAD_LOG_SCREEN_" ++ show n
+    ppFocusC   = xmobarBorder "Bottom" "#ffff00" 1 . xmobarColor "#ffff00" ""
+    ppUrgentC  = xmobarColor "#ffff00" "#800000:3,1"
+    ppUnfocusC = xmobarColor "#b0b040" ""
 
-        primes [n] = [n]
-        primes ns = [ n ++ [p] | n <- ns | p <- "⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..] ]
+    sanitize t = xmobarRaw . shorten' "~" 30 . strip $ t
+      where
+        strip | isWeechatTitle t = xmobarStrip
+              | otherwise        = id
 
-        shortenDir s | (myHome ++ "/") `isPrefixOf` s = '~' : drop (length myHome) s
-                     | myHome == s                    = "~"
-                     | otherwise                      = s
+    primes [n] = [n]
+    primes ns = [ n ++ [p] | n <- ns | p <- "⠁⠃⠇⡇⡏⡟⡿⣿" ++ ['a'..] ]
+
+    shortenDir s | (myHome ++ "/") `isPrefixOf` s = '~' : drop (length myHome) s
+                 | myHome == s                    = "~"
+                 | otherwise                      = s
+
+trayerBottom :: StatusBarConfig
+trayerBottom = flip statusBarGeneric mempty $ cmdExecJournal $ unwords
+    [ "trayer"
+    , "--align", "right"
+    , "--height", "17"
+    , "--widthtype", "request"
+    , "--alpha", "255"
+    , "--transparent", "true"
+    , "--monitor", "primary"
+    , "-l"
+    ]
 
 isWeechatTitle :: String -> Bool
 isWeechatTitle t = "t[N] weechat: " `isPrefixOf` t || "weechat/matrix: " `isPrefixOf` t
@@ -447,26 +456,6 @@ shortenUrgent t
   where
     s = xmobarRaw . shorten' "~" 30
 
--- Rescreen hook
-myAfterRescreenHook :: Bool -> X ()
-myAfterRescreenHook respawn = do
-    spawnExec "~/bin/.xlayout/post.sh"
-    if respawn
-        then respawnOnlyManaged =<< xmobarCommands
-        else spawnOnlyManaged =<< xmobarCommands
-
-myRandrChangeHook :: X ()
-myRandrChangeHook = do
-    spawnExec "if-session-unlocked layout-auto"
-
-rescreenHook' :: XConfig a -> XConfig a
-rescreenHook' = rescreenHook hCfg . rescreenAtStart
-  where
-    hCfg = def{ afterRescreenHook = myAfterRescreenHook False
-              , randrChangeHook = myRandrChangeHook }
-    rescreenAtStart = \cfg -> cfg{
-        startupHook = startupHook cfg <> myAfterRescreenHook True }
-
 -- Startup hook
 myStartupHook :: X ()
 myStartupHook = do
@@ -478,17 +467,18 @@ myStartupHook = do
 -- Main.
 main = do
     xmonad $
-        writeStateHook .
-        rescreenHook' .
-        docks .
+        writeStateHook $
+        addAfterRescreenHook (spawnExec "~/bin/.xlayout/post.sh") $
+        addRandrChangeHook (spawnExec "if-session-unlocked layout-auto") $
+        dynamicSBs (pure . myStatusBars) $
+        docks $
         ewmh' def
             { activateHook = myActivateHook
             , workspaceRename = workspaceNamesRenameWS
             , fullscreen = True
-            } .
+            } $
         withUrgencyHookC myUrgencyHook urgencyConfig{ suppressWhen = Focused } $
-            def
-            { terminal           = "urxvt"
+        def { terminal           = "urxvt"
             , focusFollowsMouse  = True
             , borderWidth        = 2
             , modMask            = mod4Mask
@@ -502,6 +492,5 @@ main = do
             , startupHook        = myStartupHook
             , layoutHook         = myLayout
             , manageHook         = myManageHook
-            , logHook            = myLogHook
             , handleEventHook    = myEventHook
             }
