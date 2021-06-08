@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -ex
+
+camera=$(usbguard list-devices --allowed | awk -F: '/ name "Integrated Camera" / { print $1 }')
+if [[ $camera ]]; then
+	usbguard block-device "$camera"
+	dunstify -i camera-web "Integrated Camera blocked"
+	exit
+fi
+
+camera=$(usbguard list-devices --blocked | awk -F: '/ name "Integrated Camera" / { print $1 }')
+if [[ $camera ]]; then
+	usbguard allow-device "$camera"
+	dunstify -i camera-web "Integrated Camera allowed"
+	exit
+fi
