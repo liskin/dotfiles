@@ -3,3 +3,9 @@
 sudo /usr/local/sbin/liskin-t25-touchscreen toggle
 sleep 1
 liskin-touchscreen-post
+
+if xinput list --name-only | grep --quiet 'Raydium Corporation Raydium Touch System'; then
+	dunstify -i /usr/share/icons/breeze-dark/actions/22/tool_pen.svg "touchscreen enabled"
+else
+	dunstify -i /usr/share/icons/breeze-dark/actions/22/tool_pen.svg "touchscreen disabled"
+fi
