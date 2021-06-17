@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -eu
 
 camera=$(usbguard list-devices --allowed | awk -F: '/ name "Integrated Camera" / { print $1 }')
 if [[ $camera ]]; then
