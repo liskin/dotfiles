@@ -1,0 +1,3 @@
+Package: *
+Pin: release a=stable,l=Debian-Security
+Pin-Priority: 990

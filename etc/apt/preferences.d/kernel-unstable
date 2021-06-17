@@ -1,0 +1,7 @@
+Package: src:linux:*
+Pin: release a=unstable
+Pin-Priority: 990
+
+Package: src:linux-signed-amd64:*
+Pin: release a=unstable
+Pin-Priority: 990
