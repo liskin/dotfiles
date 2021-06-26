@@ -1,0 +1,3 @@
+Package: src:mesa:*
+Pin: release a=experimental
+Pin-Priority: 990
