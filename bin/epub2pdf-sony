@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Convert EPUB to PDF for Sony PRS-350
+#
+# Workaround for the old Adobe Digital Editions crap that never really worked,
+# doesn't allow switching fonts and chokes on many EPUBs.
+
+set -eu
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+file="${1:?}"
+if [[ $file != *.epub ]]; then
+	echo "expected *.epub"
+	exit 1
+fi
+
+CALIBRE_OVERRIDE_LANG=C \
+o ebook-convert "$file" "${file%.epub}.pdf" \
+	--output-profile=sony300 --use-profile-size \
+	--change-justification=justify --pdf-hyphenate \
+	--margin-top=0 --margin-bottom=0 --margin-left=0 --margin-right=0 \
+	--pdf-page-margin-top=2 --pdf-page-margin-bottom=2 --pdf-page-margin-left=2 --pdf-page-margin-right=2 \
+	--pdf-mono-family=Consolas --pdf-sans-family=Calibri --pdf-serif-family='PMN Caecilia LT' \
+	--pdf-mono-font-size=10 --pdf-default-font-size=12
