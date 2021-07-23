@@ -9,8 +9,8 @@
 	url = https://github.com/wesQ3/vim-windowswap.git
 [submodule ".vim/bundle/ale"]
 	path = .vim/bundle/ale
-	url = https://github.com/liskin/ale.git
-	#url = https://github.com/w0rp/ale.git
+	#url = https://github.com/liskin/ale.git
+	url = https://github.com/w0rp/ale.git
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git

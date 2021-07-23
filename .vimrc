@@ -253,10 +253,17 @@ autocmd User AirlineAfterInit call s:AirlineInit()
 " async lint engine {{{2
 let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 1
-let g:ale_fixers = {}
-let g:ale_fixers['elixir'] = ['mix_format']
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = repeat([''], 6)
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_text_changed = 0
+let g:ale_linters_explicit = 1
+let g:ale_maximum_file_size = 524288
+let g:ale_popup_menu_enabled = 1
+let g:ale_set_highlights = 0
+
+let g:ale_fixers = {}
+let g:ale_fixers['elixir'] = ['mix_format']
 let g:ale_linter_aliases = {}
 let g:ale_linter_aliases['gitcommit'] = ['mail']
 let g:ale_linters = {}
@@ -270,10 +277,6 @@ let g:ale_linters['rust'] = ['analyzer']
 let g:ale_linters['sh'] = ['shellcheck']
 let g:ale_linters['text'] = ['proselint']
 "let g:ale_linters['yaml'] = ['yamllint']
-let g:ale_linters_explicit = 1
-let g:ale_maximum_file_size = 524288
-let g:ale_popup_menu_enabled = 1
-let g:ale_set_highlights = 0
 
 let g:ale_elixir_elixir_ls_config = {
 	\ 'elixirLS': {
