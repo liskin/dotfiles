@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eu
+
 if nmcli-online || { sleep 30; nmcli-online; }; then
 	strava-offline sqlite
 fi
