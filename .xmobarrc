@@ -25,8 +25,9 @@ Config
 	, Run Com "bash" ["-c", "[[ \"$(< /proc/modules)\" == *nvidia* ]] && echo \" <fc=red>nvidia</fc>\" || :"] "nvidia" 600
 	, Run Com "bash" ["-c", "[[ \"$(/usr/local/sbin/liskin-gvt-g list)\" ]] && echo \" <fc=red>gvt</fc>\" || :"] "gvt" 600
 	, Run Com "bash" ["-c", "[[ \"$(xinput list \"--id-only\" \"Raydium Corporation Raydium Touch System\")\" == ?* ]] && echo \" <fc=red>touch</fc>\" || :"] "touch" 600
+	, Run Com "bash" ["-c", "grep -q 'Integrated Camera' /sys/class/video4linux/video*/name && echo \" <fc=red>camera</fc>\" || :"] "camera" 600
 	]
 , sepChar = "%"
 , alignSep = ""
-, template = "%UnsafeXMonadLog% %_XMOBAR_DND%%touch%%gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
+, template = "%UnsafeXMonadLog% %_XMOBAR_DND%%camera%%touch%%gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
 }
