@@ -2,6 +2,8 @@ data.location=~/taskwiki/.task
 
 weekstart=monday
 
+search.case.sensitive=no
+
 urgency.inherit=1
 urgency.active.coefficient=10.0
 urgency.annotations.coefficient=0.0
