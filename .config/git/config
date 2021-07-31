@@ -58,7 +58,7 @@
 [mergetool]
 	keepBackup = false
 [merge]
-	tool = kdiff3
+	tool = vimdiff
 	suppressDest = master
 	suppressDest = main
 [diff]
