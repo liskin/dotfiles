@@ -1,3 +1,7 @@
 Package: src:mesa:*
 Pin: release a=experimental
 Pin-Priority: 990
+
+Package: src:libx11:*
+Pin: release a=unstable
+Pin-Priority: 990
