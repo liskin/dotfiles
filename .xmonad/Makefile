@@ -52,6 +52,11 @@ ghci-%: build-deps _phony
 	cd $(SRC_HASKELL) && \
 		stack ghci $*:lib
 
+ghci-test-xmonad-contrib:
+ghci-test-%: build-deps _phony
+	cd $(SRC_HASKELL) && \
+		stack ghci $*:test:tests
+
 .PHONY: build-deps
 build-deps:
 	$(MAKE) -C $(SRC_HASKELL) BUILD_TARGETS="$(XMONAD_DEPS)" $(BUILD_DEPS_TARGETS)
