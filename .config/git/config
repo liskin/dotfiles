@@ -98,5 +98,7 @@
 	generic = E !>tmux-new-window-or-exec vim +"%(lineno)" "fugitive://%(repo:git-dir)//%(commit)/%(file)"
 [fetch]
 	prune = true
+[completion]
+	commands = ls-files absorb
 [includeIf "gitdir:~/src-haskell/xmonad*/"]
 	path = ~/.config/git/include/xmonad
