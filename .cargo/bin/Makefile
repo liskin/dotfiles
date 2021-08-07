@@ -7,7 +7,7 @@ dust:
 
 all: frece
 frece:
-	cargo install --git https://github.com/YodaEmbedding/frece
+	cargo install --path ~/src-rust/frece
 
 all: rga rga-preproc
 rga rga-preproc &:
