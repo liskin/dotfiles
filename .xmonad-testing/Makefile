@@ -14,7 +14,7 @@ build: stack.yaml
 build-haddock: STACK_BUILDFLAGS=--haddock --no-haddock-deps --no-haddock-hyperlink-source --haddock-arguments --optghc=-dynamic
 build-haddock: build
 
-stack.yaml: ~/src-haskell/stack.yaml Makefile $(XMONAD_DEPS)
+stack.yaml: ~/src-haskell/stack.yaml Makefile | $(XMONAD_DEPS)
 	yq --yaml-output \
 		'def keep: IN("$(XMONAD_DEPS)" | splits(" ")); .packages |= map(select(keep)) | .flags |= with_entries(select(.key | keep)) ' \
 		$< >$@
