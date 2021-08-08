@@ -23,10 +23,9 @@ import XMonad
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
+import XMonad.Actions.MessageFeedback
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
-import XMonad.Hooks.StatusBar
-import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
@@ -35,6 +34,8 @@ import XMonad.Hooks.Place (placeHook, fixed)
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
 import XMonad.Hooks.Rescreen
 import XMonad.Hooks.ServerMode
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.UrgencyHook
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutHints
@@ -127,8 +128,12 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
     , ((modMask,               xK_h     ), sendMessage Shrink            >> up)
     , ((modMask,               xK_l     ), sendMessage Expand            >> up)
+    , ((modMask .|. shiftMask, xK_h     ), sendMessages (replicate 5 Shrink) >> up)
+    , ((modMask .|. shiftMask, xK_l     ), sendMessages (replicate 5 Expand) >> up)
     , ((modMask,               xK_u     ), sendMessage MirrorShrink      >> up)
     , ((modMask,               xK_i     ), sendMessage MirrorExpand      >> up)
+    , ((modMask .|. shiftMask, xK_u     ), sendMessages (replicate 5 MirrorShrink) >> up)
+    , ((modMask .|. shiftMask, xK_i     ), sendMessages (replicate 5 MirrorExpand) >> up)
     , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX) >> up)
     , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)    >> up)
     , ((modMask              , xK_period), sendMessage (IncMasterN (-1)) >> up)
