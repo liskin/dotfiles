@@ -1,0 +1,16 @@
+templates:
+  params:
+    author-name: Tomáš Janoušek
+    author-email: tomi@nomi.cz
+    copyright: ! 'Copyright: (c) 2020 Tomáš Janoušek'
+    github-username: liskin
+
+system-ghc: true
+install-ghc: false
+# compiler-check: newer-minor
+
+recommend-stack-upgrade: false
+
+build:
+  library-profiling: true
+  executable-profiling: true
