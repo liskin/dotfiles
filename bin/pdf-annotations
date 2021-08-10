@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+# inspired by https://stackoverflow.com/a/59832745/3407728
+# inspired by https://stackoverflow.com/a/23367480/3407728
+# license: CC BY-SA 4.0
+
+import PyQt5
+import click
+import popplerqt5
+
+
+def annot_sort_key(annot):
+    topLeft = annot.boundary().topLeft()
+    return topLeft.y(), topLeft.x()
+
+
+def extract_annotations(fn):
+    doc = popplerqt5.Poppler.Document.load(fn)
+    for i in range(doc.numPages()):
+        page = doc.page(i)
+        for annot in sorted(page.annotations(), key=annot_sort_key):
+            contents = annot.contents()
+            if contents:
+                print(f"page: {i + 1}")
+                print(f"text: {extract_text(page, annot)}")
+                print(f"annotation: {contents}")
+                print()
+
+
+def extract_text(page, annot):
+    (pw, ph) = (page.pageSizeF().width(), page.pageSizeF().height())
+
+    if isinstance(annot, popplerqt5.Poppler.HighlightAnnotation):
+        texts = []
+        for quad in annot.highlightQuads():
+            x1 = min(point.x() for point in quad.points)
+            x2 = max(point.x() for point in quad.points)
+            y1 = min(point.y() for point in quad.points)
+            y2 = max(point.y() for point in quad.points)
+            rect = PyQt5.QtCore.QRectF()
+            rect.setCoords(x1 * pw, y1 * ph, x2 * pw, y2 * ph)
+            texts.append(page.text(rect))
+        return ' '.join(text for text in texts if text)
+    else:
+        rect = annot.boundary()
+        (x1, y1, x2, y2) = rect.getCoords()
+        rect.setCoords(x1 * pw, y1 * ph, x2 * pw, y2 * ph)
+        return page.text(rect)
+
+
+@click.command()
+@click.argument('filename', type=click.Path(exists=True))
+def main(filename):
+    extract_annotations(filename)
+
+
+if __name__ == '__main__':
+    main()
