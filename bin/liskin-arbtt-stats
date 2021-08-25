@@ -2,6 +2,7 @@
 
 set -eu -o pipefail
 shopt -s lastpipe
+shopt -u checkwinsize
 
 filter=()
 exclude=()
