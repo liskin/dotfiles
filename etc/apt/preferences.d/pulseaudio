@@ -1,3 +1,7 @@
 Package: src:pulseaudio:*
 Pin: release a=unstable
 Pin-Priority: 990
+
+Package: src:pavucontrol:*
+Pin: release a=unstable
+Pin-Priority: 990
