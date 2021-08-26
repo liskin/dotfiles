@@ -14,7 +14,7 @@ source ~/.config/mutt/aliases
 # mu integration
 set query_command="mu cfind --format=mutt-ab %s"
 macro index <F2> "<shell-escape>mu find --format=links --linksdir=~/Mail/.mu-find --clearlinks \"$(bash -c 'read -r -e -p \"Mu: \" && echo \"\$REPLY\"')\"<enter><change-folder-readonly>~/Mail/.mu-find<enter>"
-macro index <F3> "<shell-escape>mu find --format=links --linksdir=~/Mail/.mu-find --clearlinks --include-related \"$(bash -c 'read -r -e -p \"Mu: \" && echo \"\$REPLY\"')\"<enter><change-folder-readonly>~/Mail/.mu-find<enter>"
+macro index <F3> "<shell-escape>mu find --format=links --linksdir=~/Mail/.mu-find --clearlinks --include-related \"$(bash -c 'read -r -e -p \"Mu: \" && echo \"\$REPLY\"')\"<enter><change-folder-readonly>~/Mail/.mu-find<enter><enter-command>set record=!<enter>"
 
 # wrapping
 set wrap=100
