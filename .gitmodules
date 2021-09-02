@@ -161,6 +161,9 @@
 [submodule "src-haskell/fourmolu"]
 	path = src-haskell/fourmolu
 	url = https://github.com/fourmolu/fourmolu
+[submodule "src-haskell/implicit-hie"]
+	path = src-haskell/implicit-hie
+	url = https://github.com/Avi-D-coder/implicit-hie
 [submodule "src-elixir/elixir"]
 	path = src-elixir/elixir
 	url = https://github.com/elixir-lang/elixir.git

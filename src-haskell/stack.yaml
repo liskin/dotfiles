@@ -5,6 +5,7 @@ packages:
     - arbtt
     - fourmolu
     - ghcid
+    - implicit-hie
     - xmobar
     - xmonad
     - xmonad-contrib
