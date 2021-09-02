@@ -496,6 +496,8 @@ nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
 nmap <C-K> <Plug>(ale_detail)
 imap <C-K> <C-\><C-O><C-K>
+nmap <C-F> <Plug>(ale_code_action)
+imap <C-F> <C-\><C-O><C-F>
 
 nnoremap <silent> <C-W>S :CloneBufTmp<CR>
 nnoremap <silent> <C-W>C :tabclose<CR>
