@@ -494,6 +494,8 @@ nmap <C-]> <Plug>(ale_tags_fallback_go_to_definition)
 nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
 nmap <C-H> <Plug>(ale_hover)
 imap <C-H> <C-\><C-O><C-H>
+nmap <C-K> <Plug>(ale_detail)
+imap <C-K> <C-\><C-O><C-K>
 
 nnoremap <silent> <C-W>S :CloneBufTmp<CR>
 nnoremap <silent> <C-W>C :tabclose<CR>
