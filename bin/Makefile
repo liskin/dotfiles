@@ -11,12 +11,38 @@ else
 	cp /tmp/diff-highlight/diff-highlight $@
 endif
 
+define GITHUB_FETCH_RELEASE_ASSET
+	{ url="$$(gh api --jq '.assets[] | select(.name == "$(strip $(3))") | .browser_download_url' repos/"$(strip $(1))"/releases/$(strip $(2)))" \
+		&& : "$${url:?}" \
+		&& curl -LSsf "$$url"; }
+endef
+
 all: rust-analyzer
 rust-analyzer:
-	url="$$(gh api --jq '.assets[] | select(.name == "rust-analyzer-x86_64-unknown-linux-gnu.gz") | .browser_download_url' repos/rust-analyzer/rust-analyzer/releases/latest)" \
-		&& : "$${url:?}" \
-		&& curl -LSsf "$$url" | gunzip >$@ \
-		&& chmod +x $@
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		rust-analyzer/rust-analyzer,\
+		latest,\
+		rust-analyzer-x86_64-unknown-linux-gnu.gz\
+	) | gunzip >$@
+	chmod +x $@
+
+all: haskell-language-server-wrapper
+haskell-language-server-wrapper:
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		haskell/haskell-language-server,\
+		latest,\
+		haskell-language-server-wrapper-Linux.gz\
+	) | gunzip >$@
+	chmod +x $@
+
+all: haskell-language-server-8.8.4
+haskell-language-server-%:
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		haskell/haskell-language-server,\
+		latest,\
+		haskell-language-server-Linux-$*.gz\
+	) | gunzip >$@
+	chmod +x $@
 
 all: .aliases/.done
 .SKIP_GITIGNORE: .aliases/.done
