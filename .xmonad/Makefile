@@ -11,7 +11,7 @@ all: $(XMONAD_BINARY)
 
 $(XMONAD_BINARY): build-deps
 	cd $(SRC_HASKELL) && \
-		stack exec -- ghc \
+		stack ghc -- \
 			-Wall \
 			-i -i$(CURDIR) \
 			-outputdir $(CURDIR)/.build/ \
