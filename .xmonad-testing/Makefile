@@ -7,7 +7,7 @@ SRC_HASKELL := .
 STACK_BUILDFLAGS :=
 
 .PHONY: build
-build: stack.yaml
+build: stack.yaml hie.yaml
 	stack build $(STACK_BUILDFLAGS)
 
 .PHONY: build-haddock
@@ -18,6 +18,9 @@ stack.yaml: ~/src-haskell/stack.yaml Makefile | $(XMONAD_DEPS)
 	yq --yaml-output \
 		'def keep: IN("$(XMONAD_DEPS)" | splits(" ")); .packages |= map(select(keep)) | .flags |= with_entries(select(.key | keep)) ' \
 		$< >$@
+
+hie.yaml: stack.yaml
+	gen-hie >$@
 
 .PHONY: clone-deps
 ## clone (worktree add) deps

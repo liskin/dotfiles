@@ -1,0 +1,1 @@
+AleAddLinter haskell hls
