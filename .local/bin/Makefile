@@ -24,6 +24,10 @@ all: timezonefinder
 timezonefinder:
 	$(PIPX_INSTALL) timezonefinder
 
+all: isort
+isort:
+	$(PIPX_INSTALL) 'isort ~= 5.9'
+
 all: strava-offline
 strava-offline:
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
