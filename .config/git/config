@@ -59,9 +59,11 @@
 	keepBackup = false
 [merge]
 	tool = vimdiff
+	guitool = kdiff3
 	suppressDest = master
 	suppressDest = main
 [diff]
+	tool = meld
 	algorithm = histogram
 	compactionHeuristic = true
 	indentHeuristic = true
