@@ -180,6 +180,9 @@
 [submodule "src-python/arbtt-chart"]
 	path = src-python/arbtt-chart
 	url = https://github.com/liskin/arbtt-chart.git
+[submodule "src-python/strava-gear"]
+	path = src-python/strava-gear
+	url = https://github.com/liskin/strava-gear.git
 [submodule "src-rust/frece"]
 	path = src-rust/frece
 	url = https://github.com/YodaEmbedding/frece/

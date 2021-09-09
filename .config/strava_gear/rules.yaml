@@ -1,0 +1,386 @@
+aliases:
+  city: b167437
+  gravel: b2564785
+  road: b7429965
+  ss-yellow: b2471193
+  ss-cx: b6468714
+  ss-uk: b6537590
+
+components:
+  # frames ----------------------------
+  agang-sin-city: "Agang Sin City 2010"
+  specialized-diverge: {name: "Specialized Diverge Comp Carbon 2015", hours: 100, kms: 2000}
+  masi-yellow: "MASI yellow track"
+  8bar-tflsberg-v2: "8bar TFLSBERG v2"
+  trek-5th-district: "Trek 5th District"
+  isaac-element: "Isaac Element"
+
+  # wheels ----------------------------
+  wheel-front-agang: "ACO ARGON CROSS CNC/HB-M590"
+  wheel-rear-agang: "ACO ARGON CROSS CNC/FH-M590"
+
+  wheel-front-axis: {name: "Specialized Axis 4.0 Disc TA 15mm", hours: 100, kms: 2000}
+  wheel-rear-axis: {name: "Specialized Axis 4.0 Disc SCS TA 12mm", hours: 100, kms: 2000}
+
+  wheel-front-dt-hope: "Hope SP24 Front, DT RR 411 db asymmetric, Sapim CX-RAY"
+  wheel-rear-dt-hope: "Hope SP24 SCS Rear, DT RR 411 db asymmetric, Sapim CX-RAY"
+
+  wheel-front-fulcrum-ss: "Fulcrum old"
+  wheel-front-fulcrum-ss-relace1: "Fulcrum old (relace Dec 2017)"
+  wheel-rear-mavic-ss: "Mavic old"
+  wheel-rear-mwave-ss: "Novatec 32h hub, M-Wave rim, 16T fixed cog"
+
+  # tyres ----------------------------
+  cxcomp-2010-front: "Schwalbe CX Comp 35-622"
+  cxcomp-2010-rear: "Schwalbe CX Comp 35-622"
+  marathon-2014-1: "Schwalbe Marathon Racer 35-622"
+  marathon-2014-2: "Schwalbe Marathon Racer 35-622"
+  marathon-2016-3: "Schwalbe Marathon Racer 35-622"
+  marathon-2016-4: "Schwalbe Marathon Racer 35-622"
+  smartsam-2016-1: "Schwalbe Smart Sam 42-622"
+  smartsam-2016-2: "Schwalbe Smart Sam 42-622"
+
+  roubaix-2015-1: {name: "Specialized Roubaix Pro 30/32-622", hours: 100, kms: 2000}
+  roubaix-2015-2: {name: "Specialized Roubaix Pro 30/32-622", hours: 100, kms: 2000}
+  roubaix-2015-3: "Specialized Roubaix Pro 30/32-622"
+
+  racingralph-2016-1: "Schwalbe Racing Ralph 35-622 (wire)"
+  racingralph-2016-2: "Schwalbe Racing Ralph 35-622"
+
+  schwalbe-one-2017-1: "Schwalbe One Evo 2016 25-622"
+  schwalbe-one-2017-2: "Schwalbe One Evo 2016 25-622"
+  schwalbe-one-2017-3: "Schwalbe One Evo 2016 25-622"
+  schwalbe-one-2017-4: "Schwalbe One Evo 2016 25-622"
+
+  schwalbe-x-one-2018-1: "Schwalbe X-One Allround Evo 35-622"
+  schwalbe-x-one-2018-2: "Schwalbe X-One Allround Evo 35-622"
+
+  conti-ultrasport-1: "Continental Ultra Sport yellow wire"
+  conti-ultrasport-2: "Continental Ultra Sport yellow wire"
+  conti-ultrasport-3: "Continental Ultra Sport yellow folding"
+  conti-ultrasport-4: "Continental Ultra Sport yellow folding"
+  conti-ultrasport-5: "Continental Ultra Sport yellow folding"
+
+  gravelking-1: "Panaracer Gravelking 35-622"
+  gravelking-2: "Panaracer Gravelking 35-622"
+
+  schwalbe-g-one-2021-1: "Schwalbe G-One Allround 35-622"
+  schwalbe-g-one-2021-2: "Schwalbe G-One Allround 35-622"
+
+  # drivetrain ----------------------------
+  alfine-cranks: "Shimano FC-S500 (45T, single chainguard)"
+  deore-rd: "Shimano RD-M591"
+  casette9-1: "Shimano CS-HG50-9 11-34"
+  casette9-2: "Shimano CS-HG400-9 11-34"
+  chain9-1: "Shimano HG-53"
+  chain9-2: "Shimano HG-53"
+  chain9-3: "Shimano HG-53"
+  chain9-4: "Shimano HG-53"
+  chain9-5: "Shimano HG-53"
+  chain9-6: "Shimano HG-53"
+  chain9-7: "SRAM PC971"
+  chain9-8: "SRAM PC971"
+  chain9-9: "Shimano HG-53"
+
+  praxis-cranks: {name: "Praxis Works TURN Zayante cranks", hours: 100, kms: 2000}
+  praxis-chainrings1: {name: "Praxis Works TURN Zayante stock chainring set", hours: 100, kms: 2000}
+  praxis-chainrings2: "Praxis Works Buzz Road Compact chainring set"
+  rd-105: {name: "Shimano RD-5800", hours: 100, kms: 2000}
+  fd-105: {name: "Shimano FD-5800", hours: 100, kms: 2000}
+  casette11-1: {name: "Shimano CS-5800 11-32", hours: 100, kms: 2000}
+  casette11-2: "Shimano CS-5800 11-28"
+  casette11-3: "Shimano CS-6800 11-28"
+  chain11-1: {name: "KMC X11 OEM", hours: 100, kms: 2000}
+  chain11-2: "Shimano CN-HG700-11"
+  chain11-3: "Shimano CN-HG700-11"
+  chain11-4: "Shimano CN-HG700-11"
+  chain11-5: "Shimano CN-HG701-11"
+  chain11-6: "Shimano CN-HG701-11"
+  chain11-7: "Shimano CN-HG701-11"
+
+  shimano-mtb-single: "Shimano some old MTB cranks"
+  sturmey-archer-cranks: "Sturmey Archer FCT26BD"
+  chain1-1: "Campagnolo C9"
+  chain1-2: "Shimano CN-NX10"
+  chain1-3: "Shimano CN-NX10"
+  chain1-4: "KMC wide"
+  bb-sq-1: "Unknown square taper BB"
+  bb-sq-2: "Unknown square taper BB"
+
+  # brakes ----------------------------
+  tektro-front: Tektro MT-14
+  tektro-rear: Tektro MT-14
+
+  pads-front-1: Pro-T
+  pads-rear-1: Pro-T
+  pads-front-2: Pro-T
+  pads-rear-2: Pro-T
+  pads-front-3: Pro-T
+  pads-rear-3: Pro-T
+
+  rs785-front: {name: "Shimano BR-RS785", hours: 100, kms: 2000}
+  rs785-rear: {name: "Shimano BR-RS785", hours: 100, kms: 2000}
+  brifter-rs685-front: {name: "Shimano ST-RS685", hours: 100, kms: 2000}
+  brifter-rs685-rear: {name: "Shimano ST-RS685", hours: 100, kms: 2000}
+
+  disc-pads-front-1: {name: "Shimano J02A Ice-Tech", hours: 100, kms: 2000}
+  disc-pads-front-2: "Shimano J02A Ice-Tech"
+  disc-pads-front-3: "Shimano J02A Ice-Tech"
+  disc-pads-rear-1: {name: "Shimano J02A Ice-Tech", hours: 100, kms: 2000}
+  disc-pads-rear-2: "Shimano J02A Ice-Tech"
+  disc-pads-rear-3: "Shimano J02A Ice-Tech"
+  disc-rotor-front-1: {name: "Shimano SM-RT81-S", hours: 100, kms: 2000}
+  disc-rotor-rear-1: {name: "Shimano SM-RT81-S", hours: 100, kms: 2000}
+  disc-rotor-front-2: "Shimano SM-RT86-S"
+  disc-rotor-rear-2: "Shimano SM-RT86-S"
+
+  exage-front: "Shimano Exage Motion"
+  exage-rear: "Shimano Exage Motion"
+
+  # pedals ----------------------------
+  pd-author: "Author one-side pedals"
+  pd-a520: "Shimano PD-A520"
+  pd-m520: "Shimano PD-M520"
+  pd-m520-2: "Shimano PD-M520"
+  pd-m520-3: "Shimano PD-M520"
+  pd-es600: "Shimano PD-ES600"
+
+rules:
+# city ----------------------------
+- city:
+    frame: agang-sin-city
+    cranks: alfine-cranks
+    derailleur-rear: deore-rd
+    wheel-front: wheel-front-agang
+    wheel-rear: wheel-rear-agang
+    tyre-front: cxcomp-2010-front
+    tyre-rear: cxcomp-2010-rear
+    casette: casette9-1
+    chain: chain9-1
+    pedals: pd-author
+    brake-front: tektro-front
+    brake-rear: tektro-rear
+
+# city --- drivetrain
+- {since: 2015-09-02, city: {casette: casette9-2}}
+- {since: 2014-08-20, city: {chain: chain9-2}}
+- {since: 2014-11-25, city: {chain: chain9-3}}
+- {since: 2015-03-20, city: {chain: chain9-4}}
+- {since: 2015-06-08, city: {chain: chain9-5}}
+- {since: 2015-09-02, city: {chain: chain9-6}}
+- {since: 2016-03-23, city: {chain: chain9-7}}
+
+# city --- tyres
+- since: 2014-11-14
+  city:  # cx comp worn out
+    tyre-front: marathon-2014-1
+    tyre-rear: marathon-2014-2
+- since: 2016-01-05
+  city:  # winter 2016
+    tyre-front: smartsam-2016-1
+    tyre-rear: smartsam-2016-2
+- since: 2016-02-03T11:00:00+01:00
+  city:  # spring 2016
+    tyre-front: marathon-2016-3
+    tyre-rear: marathon-2014-1
+- since: 2016-10-15
+  city:  # cyclocross experiment
+    tyre-front: smartsam-2016-1
+    tyre-rear: smartsam-2016-2
+- since: 2016-11-16
+  city:  # winter commuting better with semi slick
+    tyre-front: marathon-2016-3
+    tyre-rear: marathon-2014-1
+
+# city --- pedals
+- {since: 2015-10-22, city: {pedals: pd-a520}}
+- {since: 2015-12-18, city: {pedals: pd-m520}}
+# TODO: pedals since 2019-11-01 ???
+
+# city --- brakes
+- since: 2015-03-30
+  city:
+    brake-pads-front: pads-front-1
+    brake-pads-rear: pads-rear-1
+- since: 2015-12-21
+  city:
+    brake-pads-front: pads-front-2
+    brake-pads-rear: pads-rear-2
+- since: 2017-05-03T19:00:00+02:00
+  city:
+    brake-pads-rear: pads-rear-3
+
+# gravel ----------------------------
+- gravel:
+    frame: specialized-diverge
+    cranks: praxis-cranks
+    chainrings: praxis-chainrings1
+    derailleur-rear: rd-105
+    derailleur-front: fd-105
+    wheel-front: wheel-front-axis
+    wheel-rear: wheel-rear-axis
+    tyre-front: roubaix-2015-1
+    tyre-rear: roubaix-2015-2
+    casette: casette11-1
+    chain: chain11-1
+    brake-front: rs785-front
+    brake-rear: rs785-rear
+    brake-lever-front: brifter-rs685-front
+    brake-lever-rear: brifter-rs685-rear
+    brake-pads-front: disc-pads-front-1
+    brake-pads-rear: disc-pads-rear-1
+    brake-rotor-front: disc-rotor-front-1
+    brake-rotor-rear: disc-rotor-rear-1
+- since: 2017-03-30
+  gravel:  # second wheelset
+    tyre-front: schwalbe-one-2017-2
+    tyre-rear: schwalbe-one-2017-1
+    casette: casette11-2
+    brake-rotor-front: disc-rotor-front-2
+    brake-rotor-rear: disc-rotor-rear-2
+    wheel-front: wheel-front-dt-hope
+    wheel-rear: wheel-rear-dt-hope
+
+# gravel --- drivetrain
+- {since: 2016-05-23, gravel: {chain: chain11-2}}
+- {since: 2017-02-25, gravel: {chain: chain11-3}}
+- {since: 2017-09-20, gravel: {chain: chain11-4}}
+- {since: 2019-06-15, gravel: {chain: chain11-5}}
+- {since: 2021-09-04, gravel: {chain: chain11-7}}
+- {since: 2020-01-15, gravel: {chainrings: praxis-chainrings2}}
+# TODO: bb bearings 2021-04-21
+
+# gravel --- pedals
+- {since: 2016-01-12, gravel: {pedals: pd-a520}}  # road season
+- {since: 2016-11-11, gravel: {pedals: pd-m520-2}}  # cyclocross season
+- {since: 2017-03-30T19:00:00+02:00, gravel: {pedals: pd-a520}}  # road season
+
+# gravel --- brakes
+- since: 2017-01-18
+  gravel:
+    brake-pads-rear: disc-pads-rear-2
+- since: 2017-03-30
+  gravel:
+    brake-pads-front: disc-pads-front-2
+- since: 2019-10-07
+  gravel:
+    brake-pads-front: disc-pads-front-3
+    brake-pads-rear: disc-pads-rear-3
+
+# gravel --- tyres
+- since: 2021-04-15
+  gravel:
+    tyre-front: gravelking-1
+    tyre-rear: gravelking-2
+- since: 2021-08-10
+  gravel:
+    tyre-front: schwalbe-one-2017-2
+    tyre-rear: schwalbe-one-2017-1
+- since: 2021-08-26
+  gravel:
+    tyre-front: schwalbe-x-one-2018-1
+    tyre-rear: schwalbe-g-one-2021-1
+- since: 2021-08-28
+  gravel:
+    tyre-front: schwalbe-g-one-2021-2
+
+# gravel --- wheelsets
+- since: 2017-03-30
+  "#graveldiverge":
+    casette: casette11-1
+    brake-rotor-front: disc-rotor-front-1
+    brake-rotor-rear: disc-rotor-rear-1
+    wheel-front: wheel-front-axis
+    wheel-rear: wheel-rear-axis
+    tyre-front: roubaix-2015-1
+    tyre-rear: roubaix-2015-2
+- since: 2019-01-04
+  "#graveldiverge":
+    tyre-front: schwalbe-x-one-2018-1
+    tyre-rear: schwalbe-x-one-2018-2
+- since: 2019-06-17
+  "#graveldiverge":
+    tyre-front: roubaix-2015-1
+    tyre-rear: roubaix-2015-2
+- since: 2016-10-18
+  "#cxdiverge":
+    tyre-front: smartsam-2016-1
+    tyre-rear: racingralph-2016-2
+    pedals: pd-m520
+- since: 2016-10-20
+  "#cxdiverge":
+    tyre-front: null
+    tyre-rear: null
+    pedals: null
+- since: 2016-11-08
+  "#cxdiverge":
+    tyre-front: racingralph-2016-2
+    tyre-rear: racingralph-2016-1
+- since: 2017-03-30
+  "#cxdiverge":
+    casette: casette11-1
+    brake-rotor-front: disc-rotor-front-1
+    brake-rotor-rear: disc-rotor-rear-1
+    wheel-front: wheel-front-axis
+    wheel-rear: wheel-rear-axis
+
+# ss-yellow ----------------------------
+- ss-yellow:
+    frame: masi-yellow
+    cranks: shimano-mtb-single
+    bb: bb-sq-1
+    wheel-front: wheel-front-fulcrum-ss
+    wheel-rear: wheel-rear-mavic-ss
+    tyre-front: conti-ultrasport-1
+    tyre-rear: conti-ultrasport-2
+    chain: chain1-1
+    brake-front: exage-front
+    brake-rear: exage-rear
+- since: 2017-05-04
+  ss-yellow:  # rebuild as fixed-gear
+    cranks: sturmey-archer-cranks
+    bb: bb-sq-2
+    chain: chain1-2
+    wheel-rear: wheel-rear-mwave-ss
+- since: 2017-12-01
+  ss-yellow:
+    chain: chain1-3
+    wheel-front: wheel-front-fulcrum-ss-relace1
+- since: 2018-05-03
+  ss-yellow:
+    chain: chain1-4
+
+# ss-yellow --- tyres
+- since: 2018-06-30T19:00:00+02:00
+  ss-yellow: {tyre-rear: conti-ultrasport-3}
+- since: 2019-06-04T19:30:00+02:00
+  ss-yellow: {tyre-front: conti-ultrasport-4}
+- since: 2020-02-15
+  ss-yellow: {tyre-rear: conti-ultrasport-5}
+
+# ss-yellow --- pedals
+- {since: 2015-10-22, ss-yellow: {pedals: pd-author}}
+- {since: 2016-05-23T19:30:00+02:00, ss-yellow: {pedals: pd-m520-2}}  # author is rubbish
+- {since: 2016-11-11, ss-yellow: {pedals: pd-a520}}  # M520 to Diverge for CX
+- {since: 2017-03-30T19:00:00+02:00, ss-yellow: {pedals: pd-m520-2}}  # M520 back from diverge
+
+# ss-cx ----------------------------
+- ss-cx:
+    frame: 8bar-tflsberg-v2
+    chain: chain9-8
+    pedals: pd-m520  # taken off city
+- {since: 2020-09-21, ss-cx: {chain: chain9-9}}
+
+# ss-uk ----------------------------
+- ss-uk:
+    frame: trek-5th-district
+    pedals: pd-m520-3
+
+# road ----------------------------
+- road:
+    frame: isaac-element
+    pedals: pd-es600
+    casette: casette11-3
+    chain: chain11-6
+    tyre-front: schwalbe-one-2017-3
+    tyre-rear: schwalbe-one-2017-4

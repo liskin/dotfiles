@@ -1,9 +1,12 @@
 /isort
+/isort-identify-imports
 /markdown2ctags
 /pandoc-plantuml
 /protontricks
 /pushl
 /pylsp
+/strava-gear
+/strava-gear-sync
 /strava-offline
 /timezonefinder
 /tomlq

@@ -24,8 +24,8 @@ all: timezonefinder
 timezonefinder:
 	$(PIPX_INSTALL) timezonefinder
 
-all: isort
-isort:
+all: isort isort-identify-imports
+isort isort-identify-imports &:
 	$(PIPX_INSTALL) 'isort ~= 5.9'
 
 all: pylsp
@@ -35,6 +35,10 @@ pylsp:
 all: strava-offline
 strava-offline:
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
+
+all: strava-gear strava-gear-sync
+strava-gear strava-gear-sync &:
+	cd ~/src-python/strava-gear && $(PIPX_INSTALL) --editable .
 
 all: pandoc-plantuml
 pandoc-plantuml:
