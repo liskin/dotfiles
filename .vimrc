@@ -271,7 +271,7 @@ let g:ale_linters['elixir'] = []
 let g:ale_linters['gitcommit'] = ['proselint']
 let g:ale_linters['mail'] = ['proselint']
 let g:ale_linters['markdown'] = ['proselint']
-let g:ale_linters['python'] = ['flake8', 'pyls']
+let g:ale_linters['python'] = ['flake8', 'pylsp']
 let g:ale_linters['rst'] = ['proselint']
 let g:ale_linters['rust'] = ['analyzer']
 let g:ale_linters['sh'] = ['shellcheck']
@@ -287,8 +287,8 @@ let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/elixir-ls/rel"
 
 let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
 
-let g:ale_python_pyls_config = {
-	\ 'pyls': {
+let g:ale_python_pylsp_config = {
+	\ 'pylsp': {
 		\ 'configurationSources': ['flake8']
 	\ }
 \ }
