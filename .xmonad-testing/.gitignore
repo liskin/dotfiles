@@ -1,4 +1,5 @@
 /.build/
+/hie.yaml
 /stack.yaml
 /stack.yaml.lock
 /xmonad-*-linux
