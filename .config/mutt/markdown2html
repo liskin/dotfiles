@@ -14,7 +14,7 @@
 #     set send_multipart_alternative=yes
 #     set send_multipart_alternative_filter=/path/to/markdown2html.py
 #
-# Optionally, Custom CSS styles will be read from `~/.mutt/markdown2html.css`,
+# Optionally, Custom CSS styles will be read from `~/.config/mutt/markdown2html.css`,
 # if present.
 #
 # Requirements:
@@ -48,18 +48,21 @@ except ImportError:
 
 
 DEFAULT_CSS += '''
-.quote {
+.block {
+    padding: 0 0.5em;
+    margin: 0;
+    border-left: 2px solid #eee;
+}
+.quote, blockquote {
     padding: 0 0.5em;
     margin: 0;
     font-style: italic;
-    border-left: 2px solid #ccc;
-    color: #999;
+    border-left: 2px solid #666;
+    color: #666;
     font-size: 80%;
 }
 .quotelead {
-    font-style: italic;
     margin-bottom: -1em;
-    color: #999;
     font-size: 80%;
 }
 .quotechar { display: none; }
@@ -80,6 +83,19 @@ th, td { padding: 0.5em; }
     background: #eee;
 }
 .even { background: #eee; }
+h1, h2, h3, h4, h5, h6 {
+    color: #666;
+    background-color: #eee;
+    padding-left: 0.5em
+}
+h1 { font-size: 130%; }
+h2 { font-size: 120%; }
+h3 { font-size: 110%; }
+h4 { font-size: 107%; }
+h5 { font-size: 103%; }
+h6 { font-size: 100%; }
+p { padding: 0 0.5em; }
+pre { padding: 0 1em; }
 '''
 
 STYLESHEET = os.path.join(os.path.expanduser('~/.config/mutt'),
@@ -87,20 +103,15 @@ STYLESHEET = os.path.join(os.path.expanduser('~/.config/mutt'),
 if os.path.exists(STYLESHEET):
     DEFAULT_CSS += open(STYLESHEET).read()
 
-HTML_DOCUMENT = '''<!DOCTYPE html>
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
-<title>HTML E-Mail</title>
-</head><body class="email">
-{htmlbody}
-</body></html>'''
-
-
 SIGNATURE_HTML = \
         '<div class="signature"><span class="leader">-- </span>{sig}</div>'
 
+
+def _preprocess_signature(sig):
+    '''
+    Preprocess the signature before markdown processing.
+    '''
+    return sig
 
 def _preprocess_markdown(mdwn):
     '''
@@ -118,6 +129,13 @@ def _preprocess_markdown(mdwn):
     # to actually hide it from display. However, this does not work with the
     # text-mode HTML2text converters, and so it's left commented for now.
     #ret = re.sub(r'\n>', r'  \n>[>]{.quotechar}', ret, flags=re.MULTILINE)
+
+    # With the autolink_bare_uris extension, we do not need to put links into
+    # angle brackets to have them converted, so let's conserve the brackets
+    # when used around email addresses. Note that this needs a postprocessing
+    # hack because the pandoc autolink converted includes the ambersand
+    # (https://github.com/jgm/pandoc/issues/7398).
+    ret = re.sub(r'<([^@]+@.+\.[^>]+)>', r'&lt;\g<1> -PANDOC_BUG_7398-&gt;', ret)
 
     return ret
 
@@ -160,7 +178,7 @@ def _identify_quotes_for_later(mdwn):
         # The lead-in to a quote is a single line immediately preceding the
         # quote, and ending with ':'. Note that there could be multiple of
         # these:
-        if re.match(r'^.+:\s*$', cur) and nxt.startswith('>'):
+        if re.match(r'^[^>]+.*:\s*$', cur) and nxt.startswith('>'):
             ret.append(f'{{.quotelead}}{cur.strip()}')
             # pandoc needs an empty line before the blockquote, so
             # we enter one for the purpose of HTML rendition:
@@ -169,7 +187,7 @@ def _identify_quotes_for_later(mdwn):
 
         # The first blockquote after such a lead-in gets marked as the
         # "initial" quote:
-        elif prev and re.match(r'^.+:\s*$', prev) and cur.startswith('>'):
+        elif prev and re.match(r'^[^>]+.*:\s*$', prev) and cur.startswith('>'):
             ret.append(re.sub(r'^(\s*>\s*)+(.+)',
                               r'\g<1>{.quoteinitial}\g<2>',
                               cur, flags=re.MULTILINE))
@@ -200,7 +218,7 @@ def _reformat_quotes(html):
 
 def _convert_with_pandoc(mdwn, inputfmt='markdown', outputfmt='html5',
                          ext_enabled=None, ext_disabled=None,
-                         standalone=True, title="HTML E-Mail"):
+                         standalone=True, selfcontained=True, title=None):
     '''
     Invoke pandoc to do the actual conversion of Markdown to HTML5.
     '''
@@ -243,6 +261,8 @@ def _convert_with_pandoc(mdwn, inputfmt='markdown', outputfmt='html5',
     args = []
     if standalone:
         args.append('--standalone')
+    if selfcontained:
+        args.append('--self-contained')
     if title:
         args.append(f'--metadata=pagetitle:"{title}"')
 
@@ -261,6 +281,10 @@ def _postprocess_html(html):
     '''
     Postprocess the generated and styled HTML.
     '''
+
+    # Preprocessing leaves a sentinel to work around
+    # https://github.com/jgm/pandoc/issues/7398, and so we need to remove it:
+    html = html.replace('</a> -PANDOC_BUG_7398-&gt;', '</a>&gt;')
     return html
 
 
@@ -280,14 +304,19 @@ def convert_markdown_to_html(mdwn):
     if body:
         body = _preprocess_markdown(body)
         body = _identify_quotes_for_later(body)
-        html = _convert_with_pandoc(body, standalone=False)
+        html = _convert_with_pandoc(body, standalone=True, selfcontained=True,
+                                    title=None)
+        html = html.replace('<title>Untitled</title>\n','')
         html = _reformat_quotes(html)
 
     if sig:
+        sig = _preprocess_signature(sig)
         sig = _preprocess_markdown(sig)
-        html += SIGNATURE_HTML.format(sig='<br/>'.join(sig.splitlines()))
+        sig = _convert_with_pandoc(sig, standalone=False, selfcontained=False)
+        sig = SIGNATURE_HTML.format(sig='<br/>'.join(sig.splitlines()))
+        eob = html.find('</body>')
+        html = f'{html[:eob]}{sig}\n{html[eob:]}'
 
-    html = HTML_DOCUMENT.format(htmlbody=html)
     html = _apply_styling(html)
     html = _postprocess_html(html)
 
