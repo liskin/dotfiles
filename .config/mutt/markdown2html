@@ -304,7 +304,7 @@ def convert_markdown_to_html(mdwn):
     if body:
         body = _preprocess_markdown(body)
         body = _identify_quotes_for_later(body)
-        html = _convert_with_pandoc(body, standalone=True, selfcontained=True,
+        html = _convert_with_pandoc(body, standalone=True, selfcontained=False,
                                     title=None)
         html = html.replace('<title>Untitled</title>\n','')
         html = _reformat_quotes(html)
