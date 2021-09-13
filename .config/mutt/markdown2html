@@ -51,6 +51,7 @@ DEFAULT_CSS += '''
 .block {
     padding: 0 0.5em;
     margin: 0;
+    font-style: italic;
     border-left: 2px solid #eee;
 }
 .quote, blockquote {
@@ -104,14 +105,17 @@ if os.path.exists(STYLESHEET):
     DEFAULT_CSS += open(STYLESHEET).read()
 
 SIGNATURE_HTML = \
-        '<div class="signature"><span class="leader">-- </span>{sig}</div>'
+"""
+<div class="signature"><span class="leader">-- </span><br/>
+{sig}</div>
+"""
 
 
 def _preprocess_signature(sig):
     '''
     Preprocess the signature before markdown processing.
     '''
-    return sig
+    return f"```\n{sig}\n```"
 
 def _preprocess_markdown(mdwn):
     '''
@@ -217,53 +221,54 @@ def _reformat_quotes(html):
 
 def _convert_with_pandoc(mdwn, inputfmt='markdown', outputfmt='html5',
                          ext_enabled=None, ext_disabled=None,
-                         standalone=True, selfcontained=True, title=None):
+                         standalone=True, selfcontained=True, title='Untitled'):
     '''
     Invoke pandoc to do the actual conversion of Markdown to HTML5.
     '''
     if not ext_enabled:
         ext_enabled = [ 'backtick_code_blocks',
-                       'line_blocks',
-                       'fancy_lists',
-                       'startnum',
-                       'definition_lists',
-                       'example_lists',
-                       'table_captions',
-                       'simple_tables',
-                       'multiline_tables',
-                       'grid_tables',
-                       'pipe_tables',
-                       'all_symbols_escapable',
-                       'intraword_underscores',
-                       'strikeout',
-                       'superscript',
-                       'subscript',
-                       'fenced_divs',
-                       'bracketed_spans',
-                       'footnotes',
-                       'inline_notes',
-                       'emoji',
-                       'tex_math_double_backslash',
-                       'autolink_bare_uris'
-                      ]
+                        'line_blocks',
+                        'fancy_lists',
+                        'startnum',
+                        'definition_lists',
+                        'example_lists',
+                        'table_captions',
+                        'simple_tables',
+                        'multiline_tables',
+                        'grid_tables',
+                        'pipe_tables',
+                        'all_symbols_escapable',
+                        'intraword_underscores',
+                        'strikeout',
+                        'superscript',
+                        'subscript',
+                        'fenced_divs',
+                        'bracketed_spans',
+                        'footnotes',
+                        'inline_notes',
+                        'emoji',
+                        'tex_math_double_backslash',
+                        'autolink_bare_uris'
+                        ]
     if not ext_disabled:
         ext_disabled = [ 'tex_math_single_backslash',
                          'tex_math_dollars',
                          'smart',
-                         'raw_html'
+                         'raw_html',
+                         'yaml_metadata_block'
                        ]
 
     enabled = '+'.join(ext_enabled)
     disabled = '-'.join(ext_disabled)
     inputfmt = f'{inputfmt}+{enabled}-{disabled}'
 
-    args = []
+    args = ['--metadata=document-css:false']
     if standalone:
         args.append('--standalone')
     if selfcontained:
         args.append('--self-contained')
     if title:
-        args.append(f'--metadata=pagetitle:"{title}"')
+        args.append(f'--metadata=title:{title}')
 
     return pypandoc.convert_text(mdwn, format=inputfmt, to=outputfmt,
                                  extra_args=args)
@@ -309,13 +314,13 @@ def convert_markdown_to_html(mdwn):
         body = _identify_quotes_for_later(body)
         html = _convert_with_pandoc(body, standalone=True, selfcontained=False,
                                     title=None)
-        html = html.replace('<title>Untitled</title>\n','')
         html = _reformat_quotes(html)
 
     if sig:
         sig = _preprocess_signature(sig)
         sig = _preprocess_markdown(sig)
-        sig = _convert_with_pandoc(sig, standalone=False, selfcontained=False)
+        sig = _convert_with_pandoc(sig, standalone=False, selfcontained=False,
+                                   title=None)
         sig = SIGNATURE_HTML.format(sig=sig)
         eob = html.find('</body>')
         html = f'{html[:eob]}{sig}\n{html[eob:]}'
@@ -331,10 +336,11 @@ def main():
     Convert text on stdin to HTML, and print it to stdout, like mutt would
     expect.
     '''
-    html = convert_markdown_to_html(sys.stdin.read())
-    if html:
-        # mutt expects the content type in the first line, so:
-        print(f'text/html\n\n{html}')
+    with open(sys.argv[1], 'r') if len(sys.argv) > 1 else sys.stdin as f:
+        html = convert_markdown_to_html(f.read())
+        if html:
+            # mutt expects the content type in the first line, so:
+            print(f'text/html\n\n{html}')
 
 
 if __name__ == '__main__':
