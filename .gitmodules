@@ -183,6 +183,9 @@
 [submodule "src-python/strava-gear"]
 	path = src-python/strava-gear
 	url = https://github.com/liskin/strava-gear.git
+[submodule "src-python/foursquare-swarm-ical"]
+	path = src-python/foursquare-swarm-ical
+	url = https://github.com/liskin/foursquare-swarm-ical.git
 [submodule "src-rust/frece"]
 	path = src-rust/frece
 	url = https://github.com/YodaEmbedding/frece/

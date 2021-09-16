@@ -44,6 +44,10 @@ all: pandoc-plantuml
 pandoc-plantuml:
 	cd ~/src-python/pandoc-plantuml-filter && $(PIPX_INSTALL) --editable .
 
+all: foursquare-swarm-ical
+foursquare-swarm-ical:
+	cd ~/src-python/foursquare-swarm-ical && $(PIPX_INSTALL) --editable .
+
 .PHONY: clean
 clean:
 	-pipx uninstall-all
