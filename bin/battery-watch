@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from typing import Any, List
-import notify2
+import notify2  # type: ignore [import]
 import os
 import time
 
