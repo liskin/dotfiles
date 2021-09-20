@@ -28,10 +28,6 @@ all: isort isort-identify-imports
 isort isort-identify-imports &:
 	$(PIPX_INSTALL) 'isort ~= 5.9'
 
-all: pylsp
-pylsp:
-	$(PIPX_INSTALL) 'python-lsp-server[all] ~= 1.2.2'
-
 all: strava-offline
 strava-offline:
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
