@@ -1,9 +1,8 @@
 [Unit]
-Description=every 15 minutes timer
+Description=every 15 minutes timer - %i
 
 [Timer]
 Unit=liskin-timer@%i.service
-OnCalendar=hourly
 OnCalendar=*-*-* *:00/15:00
 RandomizedDelaySec=30s
 Persistent=true

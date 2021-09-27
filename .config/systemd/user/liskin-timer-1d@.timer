@@ -1,5 +1,5 @@
 [Unit]
-Description=daily timer
+Description=daily timer - %i
 
 [Timer]
 Unit=liskin-timer@%i.service

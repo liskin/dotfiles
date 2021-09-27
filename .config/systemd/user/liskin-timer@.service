@@ -1,5 +1,5 @@
 [Unit]
-Description=liskin timer service template
+Description=liskin timer service template - %i
 
 [Service]
 Type=oneshot
