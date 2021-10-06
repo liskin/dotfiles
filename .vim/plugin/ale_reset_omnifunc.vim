@@ -34,5 +34,5 @@ endfunction
 
 augroup ALEResetOmnifunc
 	autocmd!
-	autocmd User ALELintPre call s:ale_lint_post()
+	autocmd User ALELSPStarted call s:ale_lint_post()
 augroup END

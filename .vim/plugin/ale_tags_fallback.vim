@@ -35,7 +35,7 @@ endfunction
 
 augroup ALETagsFallback
 	autocmd!
-	autocmd User ALELintPre call s:ale_lint_post()
+	autocmd User ALELSPStarted call s:ale_lint_post()
 augroup END
 
 function! s:execute(lsp_has_definition, fallback) abort
