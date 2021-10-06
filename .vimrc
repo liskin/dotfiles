@@ -98,7 +98,7 @@ set tabstop=4
 " line wrap {{{2
 set breakat=\ \	!@*-+;:,./?_
 set breakindent
-set breakindentopt=sbr
+set breakindentopt=sbr,shift:2,list:-1
 set linebreak
 set showbreak=\\
 set wrap
