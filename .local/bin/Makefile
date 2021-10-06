@@ -12,8 +12,8 @@ all: markdown2ctags
 markdown2ctags:
 	$(PIPX_INSTALL) markdown2ctags
 
-all: protontricks
-protontricks:
+all: protontricks protontricks-desktop-install protontricks-launch
+protontricks protontricks-desktop-install protontricks-launch &:
 	$(PIPX_INSTALL) protontricks
 
 all: pushl
