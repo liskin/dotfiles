@@ -1,0 +1,12 @@
+[Unit]
+Description=liskin-battery-watch
+PartOf=graphical-session.target
+Wants=dunst.service
+After=dunst.service
+
+[Service]
+ExecStart=%h/bin/liskin-battery-watch
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target

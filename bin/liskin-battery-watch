@@ -85,5 +85,5 @@ class Main():
 
 
 if __name__ == '__main__':
-    notify2.init('battery-watch')
+    notify2.init('liskin-battery-watch')
     Main().loop()
