@@ -22,7 +22,10 @@ function log {
 }
 
 function check-nvidia {
-	[[ "$(< /proc/modules)" == *nvidia* || "$(< /sys/bus/pci/devices/0000:02:00.0/power/runtime_status)" == active ]]
+	local power
+	set -- /sys/module/nvidia*
+	read -r power </sys/bus/pci/devices/0000:02:00.0/power/runtime_status
+	(( $# )) || [[ "$power" == active ]]
 }
 
 function check-gvt {
@@ -31,15 +34,19 @@ function check-gvt {
 }
 
 function check-touchscreen {
-	for name in /sys/class/input/input*/name; do
-		[[ "$(< "$name")" == "Raydium Corporation Raydium Touch System" ]] && return 0
+	local name
+	for f in /sys/class/input/input*/name; do
+		read -r name <"$f"
+		[[ "$name" == "Raydium Corporation Raydium Touch System" ]] && return 0
 	done
 	return 1
 }
 
 function check-camera {
-	for name in /sys/class/video4linux/video*/name; do
-		[[ "$(< "$name")" == *"Integrated Camera"* ]] && return 0
+	local name
+	for f in /sys/class/video4linux/video*/name; do
+		read -r name <"$f"
+		[[ "$name" == *"Integrated Camera"* ]] && return 0
 	done
 	return 1
 }
