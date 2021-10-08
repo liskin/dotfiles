@@ -50,3 +50,5 @@ all: .aliases/.done
 	.aliases/.update.sh
 
 include ~/_gitignore.mk
+
+.DELETE_ON_ERROR:

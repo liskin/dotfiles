@@ -11,3 +11,5 @@ nerd-fonts-releases.json:
 .%.unzip: %
 	unzip $< -x "*Windows Compatible*" "*.otf"
 	touch $@
+
+.DELETE_ON_ERROR:

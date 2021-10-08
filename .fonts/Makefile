@@ -13,3 +13,5 @@ FixedOblique.otb: $(addprefix $(MISC)/,$(shell awk '/misc-fixed-medium-o-normal-
 	fonttosfnt -r -o $@ $^
 
 include ~/_gitignore.mk
+
+.DELETE_ON_ERROR:

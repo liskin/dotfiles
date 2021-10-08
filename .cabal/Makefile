@@ -8,3 +8,5 @@ config:
 	sed -i -e '/^password-command:/s/~/ /g' $@
 
 include ~/_help.mk
+
+.DELETE_ON_ERROR:

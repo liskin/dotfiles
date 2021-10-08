@@ -18,3 +18,5 @@ $(foreach MANPAGE,$(MANPAGES),$(eval $(call MANPAGE_TEMPLATE,$(MANPAGE))))
 
 man%:
 	mkdir $@
+
+.DELETE_ON_ERROR:

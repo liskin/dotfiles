@@ -29,3 +29,5 @@ build-doc: build
 		-dynamic \
 		-outputdir ~/.xmonad/.build/xmonadpropwrite/ \
 		-o .bin/xmonadpropwrite $<
+
+.DELETE_ON_ERROR:
