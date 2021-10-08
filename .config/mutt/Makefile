@@ -11,6 +11,6 @@ muttrc-lists: $(wildcard ~/.cache/mu/xapian/*)
 
 all: muttrc-nomi
 muttrc-nomi: muttrc-nomi.j2 Makefile $(HOME)/.password-store/nomi/imap.gpg
-	pass-extract-yaml nomi/imap | j2 -f yaml $< - > $@
+	pass-extract-yaml-j2 nomi/imap | j2 -f yaml $< - > $@
 
 .DELETE_ON_ERROR:

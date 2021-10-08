@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+# jinja2 cannot work with dashes in keys because it evaluates as Python
+pass-extract-yaml "$@" | jq 'to_entries | map(.key = (.key | gsub("-"; "_"))) | from_entries'
