@@ -1,0 +1,35 @@
+set my_ts_prefix='m[N] '
+source ~/.config/mutt/muttrc
+unmailboxes *
+
+source "~/.config/mutt/muttrc-source-if.sh $my_mutt traditional ~/.config/mutt/muttrc-nomi-traditional |"
+
+# IMAP connection
+set folder={{url}}
+set imap_user={{user}}
+set imap_pass="{{password}}"
+
+# IMAP folders
+set spoolfile="=INBOX"
+set mbox="=READ"
+set postponed="=POSTPONED"
+set trash="=Trash"
+set move=yes
+set record='^'
+
+# don't record when sending to myself
+fcc-hook ^tomi@nomi\\.cz$ /dev/null
+
+# folder defaults/overrides
+folder-hook . "set from='tomi@nomi.cz'"
+folder-hook . "reset signature"
+folder-hook . "set hostname='nomi.cz'"
+folder-hook IN-janouch@mail_muni_cz "set from='pivnik@mail.muni.cz'"
+folder-hook IN-janouch@mail_muni_cz "set signature='~/.signature-muni'"
+folder-hook IN-janouch@mail_muni_cz "set hostname='mail.muni.cz'"
+
+# message-hook defaults/overrides
+message-hook . "unalternative_order *"
+message-hook . "alternative_order text/plain"
+message-hook '~s "mBank – Email Push"' "unalternative_order *"
+message-hook '~s "mBank – Email Push"' "alternative_order text/html"

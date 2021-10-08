@@ -1,5 +1,5 @@
 #!bash
-# shellcheck disable=SC2239
+# shellcheck disable=SC2239,SC2016
 
 shopt -s nullglob globstar
 
@@ -17,5 +17,6 @@ function password-files {
 function extract-field { if [[ $1 == password ]]; then extract-password; else extract-other "$1"; fi; }
 function extract-password { head -1; }
 function extract-yaml { sed -n -e '/^---$/,/^\.\.\.$/p'; }
+function extract-yaml-standalone { local p; read -r p; extract-yaml | yq --arg p "$p" -e '.password = $p'; }
 function extract-fields { { extract-yaml | yq -r -e 'keys[]'; echo password; } | sort -u; }
 function extract-other { extract-yaml | yq -r -e ".\"${1:?}\""; }
