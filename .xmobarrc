@@ -16,18 +16,15 @@ Config
 	, Run UnsafeXMonadLog
 	, Run XPropertyLog "_XMOBAR_BATTERY_EXTRA"
 	, Run XPropertyLog "_XMOBAR_DND"
+	, Run XPropertyLog "_XMOBAR_DEVICES"
 	, Run Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=3>\xf6ff </fn><rx>KB:<tx>KB "] 10
 	, Run Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t","<fn=3>\xfaa8 </fn><rx>KB|<tx>KB "] 10
 	, Run BatteryN ["BAT0"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","<acstatus><left>%|<watts>W","--","-O","<icon=power-ac.xbm/>","-i","<icon=power-ac.xbm/>","-o","<icon=power-bat.xbm/>"] 50 "battery0"
 	, Run BatteryN ["BAT1"] ["-L","5","-H","70","--high","green","--low","red","-d","1","-t","|<left>%|<watts>W"] 50 "battery1"
 	, Run CoreTemp ["-t","<fn=3>\xf2c9 </fn><core0>C"] 50
 	, Run MultiCpu ["-H","95","--high","red","-t","<icon=cpu.xbm/><icon=l.xbm/><autovbar><icon=r.xbm/>","--","--contiguous-icons"] 10
-	, Run Com "bash" ["-c", "[[ \"$(< /proc/modules)\" == *nvidia* || \"$(< /sys/bus/pci/devices/0000:02:00.0/power/runtime_status)\" == active ]] && echo \" <fc=red>nvidia</fc>\" || :"] "nvidia" 600
-	, Run Com "bash" ["-c", "[[ \"$(/usr/local/sbin/liskin-gvt-g list)\" ]] && echo \" <fc=red>gvt</fc>\" || :"] "gvt" 600
-	, Run Com "bash" ["-c", "[[ \"$(xinput list \"--id-only\" \"Raydium Corporation Raydium Touch System\")\" == ?* ]] && echo \" <fc=red>touch</fc>\" || :"] "touch" 600
-	, Run Com "bash" ["-c", "grep -q 'Integrated Camera' /sys/class/video4linux/video*/name && echo \" <fc=red>camera</fc>\" || :"] "camera" 600
 	]
 , sepChar = "%"
 , alignSep = ""
-, template = "%UnsafeXMonadLog% %_XMOBAR_DND%%camera%%touch%%gvt%%nvidia% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
+, template = "%UnsafeXMonadLog% %_XMOBAR_DND%%_XMOBAR_DEVICES% %battery0%%battery1%%_XMOBAR_BATTERY_EXTRA% %coretemp% %multicpu% %eth0%%wlan1%<fc=white>%theDate%</fc>"
 }

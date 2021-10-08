@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# Indicator of powered-on devices for xmobar. This notifies me that devices
+# like nvidia, touchscreen or USB camera are active so that I can disable them
+# as soon as I don't need them any more.
+
+set -eu -o pipefail
+shopt -s nullglob
+
+poll_frequency=30
+debounce_read_timeout=0.5
+debounce_loop_timeout=5
+
+function xmobar-proplog {
+	xprop -root -f "${1:?prop}" 8u -set "$1" "${2?text}"
+}
+
+function log {
+	if [[ -v last_log && "$last_log" == "$1" ]]; then return; fi
+	xmobar-proplog _XMOBAR_DEVICES "$1"
+	last_log="$1"
+}
+
+function check-nvidia {
+	[[ "$(< /proc/modules)" == *nvidia* || "$(< /sys/bus/pci/devices/0000:02:00.0/power/runtime_status)" == active ]]
+}
+
+function check-gvt {
+	set -- /sys/class/mdev_bus/*/mdev_supported_types/*/devices/*
+	(( $# ))
+}
+
+function check-touchscreen {
+	for name in /sys/class/input/input*/name; do
+		[[ "$(< "$name")" == "Raydium Corporation Raydium Touch System" ]] && return 0
+	done
+	return 1
+}
+
+function check-camera {
+	for name in /sys/class/video4linux/video*/name; do
+		[[ "$(< "$name")" == *"Integrated Camera"* ]] && return 0
+	done
+	return 1
+}
+
+function refresh {
+	log=""
+	check-nvidia && log="$log <fn=3>"$'\ue266'" </fn>"
+	check-gvt && log="$log v<fn=3>"$'\ue266'" </fn>"
+	check-touchscreen && log="$log <fn=5>"$'\uf25a'"</fn>"
+	check-camera && log="$log <fn=3>"$'\uf03d'" </fn>"
+	log "${log:+<fc=red>$log</fc>}"
+}
+
+{
+	echo force initial refresh
+	udevadm monitor -k
+} | while :; do
+	if read -r -t $poll_frequency _; then
+		debounce_start=$SECONDS
+		while read -r -t $debounce_read_timeout _ && (( debounce_start + debounce_loop_timeout > SECONDS )); do :; done
+	elif (( $? <= 128 )); then
+		break  # not a timeout, exit
+	fi
+
+	refresh
+done
