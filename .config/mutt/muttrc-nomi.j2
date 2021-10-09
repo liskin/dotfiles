@@ -15,7 +15,7 @@ set mbox="=READ"
 set postponed="=POSTPONED"
 set trash="=Trash"
 set move=yes
-set record='^'
+set record='!'
 
 # don't record when sending to myself
 fcc-hook ^tomi@nomi\\.cz$ /dev/null
@@ -24,6 +24,7 @@ fcc-hook ^tomi@nomi\\.cz$ /dev/null
 folder-hook . "set from='tomi@nomi.cz'"
 folder-hook . "reset signature"
 folder-hook . "set hostname='nomi.cz'"
+folder-hook . "set record='^'"
 folder-hook IN-janouch@mail_muni_cz "set from='pivnik@mail.muni.cz'"
 folder-hook IN-janouch@mail_muni_cz "set signature='~/.signature-muni'"
 folder-hook IN-janouch@mail_muni_cz "set hostname='mail.muni.cz'"
