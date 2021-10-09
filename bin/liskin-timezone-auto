@@ -11,5 +11,5 @@ lon=$(jq -r .location.lng <<<"$location")
 tz=$(o timezonefinder "$lon" "$lat")
 o timedatectl set-timezone "$tz"
 
-o make -B -C ~/.config/redshift LAT="$lat" LON="$lon"
+o make -B -C ~/.config/redshift redshift.conf LAT="$lat" LON="$lon"
 o systemctl --user restart redshift@:0.service

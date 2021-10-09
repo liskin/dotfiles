@@ -13,4 +13,6 @@ all: muttrc-nomi
 muttrc-nomi: muttrc-nomi.j2 Makefile $(HOME)/.password-store/nomi/imap.gpg
 	pass-extract-yaml-j2 nomi/imap | j2 -f yaml $< - > $@
 
+include ~/_gitignore.mk
+
 .DELETE_ON_ERROR:

@@ -1,3 +1,7 @@
+.PHONY:
+all:
+
+all: config
 ## generate global config
 config:
 	cabal user-config init \
@@ -7,6 +11,7 @@ config:
 		-f
 	sed -i -e '/^password-command:/s/~/ /g' $@
 
+include ~/_gitignore.mk
 include ~/_help.mk
 
 .DELETE_ON_ERROR:
