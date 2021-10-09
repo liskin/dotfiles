@@ -1,25 +1,27 @@
 snippet info "Haddock module info (short)" b
 -- |
 -- Module      :  ${1:`!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`}
+-- Description :  ${2:Short description}
 -- Copyright   :  (c) `date +%Y` `!v g:snips_name` <`!v g:snips_email`>
--- License     :  ${2:BSD3}
+-- License     :  ${3:BSD3}
 -- Maintainer  :  `!v g:snips_name` <`!v g:snips_email`>
 --
--- ${0:Description}
+-- ${0:Long description}
 --
 endsnippet
 
 snippet info-long "Haddock module info (long w/ Stability, Portability)" b
 -- |
 -- Module      :  ${1:`!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`}
+-- Description :  ${2:Short description}
 -- Copyright   :  (c) `date +%Y` `!v g:snips_name` <`!v g:snips_email`>
--- License     :  ${2:BSD3}
+-- License     :  ${3:BSD3}
 --
 -- Maintainer  :  `!v g:snips_name` <`!v g:snips_email`>
--- Stability   :  ${3:experimental}
--- Portability :  ${4:unknown}
+-- Stability   :  ${4:experimental}
+-- Portability :  ${5:unknown}
 --
--- ${0:Description}
+-- ${0:Long description}
 --
 endsnippet
 
