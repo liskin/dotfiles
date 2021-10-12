@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# workaround to make pylsp see modules in --system-site-packages virtualenvs
+# where there's no binstub for pylsp
+#
+# (mypy would need this too had it not been for its mypy.python_executable
+# option in setup.cfg)
+
+set -eu
+
+if [[ -x .venv/bin/python3 ]] && .venv/bin/python3 -m pylsp --version &>/dev/null; then
+	exec .venv/bin/python3 -m pylsp "$@"
+fi
+
+exec /usr/bin/pylsp "$@"
