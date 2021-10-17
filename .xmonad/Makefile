@@ -2,6 +2,7 @@ ARCH := $(shell uname -m)
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 XMONAD_BINARY := xmonad-$(ARCH)-$(OS)
 XMONAD_DEPS := xmobar xmonad xmonad-contrib split regex-compat-tdfa
+BUILD_TARGETS = $(XMONAD_DEPS)
 BUILD_DEPS_TARGETS := build .bin/xmonadctl .bin/xmonadpropread .bin/xmonadpropwrite
 BUILD_DOCS_TARGETS := build-doc
 SRC_HASKELL := ~/src-haskell
@@ -59,12 +60,12 @@ ghci-test-%: build-deps _phony
 
 .PHONY: build-deps
 build-deps:
-	$(MAKE) -C $(SRC_HASKELL) BUILD_TARGETS="$(XMONAD_DEPS)" $(BUILD_DEPS_TARGETS)
+	$(MAKE) -C $(SRC_HASKELL) BUILD_TARGETS="$(BUILD_TARGETS)" $(BUILD_DEPS_TARGETS)
 
 .PHONY: build-doc
 ## build deps with docs
 build-doc:
-	$(MAKE) -C $(SRC_HASKELL) BUILD_TARGETS="$(XMONAD_DEPS)" $(BUILD_DOCS_TARGETS)
+	$(MAKE) -C $(SRC_HASKELL) BUILD_TARGETS="$(BUILD_TARGETS)" $(BUILD_DOCS_TARGETS)
 
 .PHONY: _phony
 

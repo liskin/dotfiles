@@ -8,7 +8,7 @@ STACK_BUILDFLAGS :=
 
 .PHONY: build
 build: stack.yaml hie.yaml
-	stack build $(STACK_BUILDFLAGS)
+	stack build $(STACK_BUILDFLAGS) $(BUILD_TARGETS)
 
 .PHONY: build-haddock
 build-haddock: STACK_BUILDFLAGS=--haddock --no-haddock-deps --no-haddock-hyperlink-source --haddock-arguments --optghc=-dynamic
