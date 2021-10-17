@@ -37,7 +37,7 @@ $(XMONAD_DEPS):
 ##
 clean:
 	$(RM) -r \
-		stack.yaml stack.yaml.lock \
+		stack.yaml stack.yaml.lock hie.yaml \
 		.build .stack-work \
 		$(XMONAD_DEPS) $(XMONAD_BINARY)
 
