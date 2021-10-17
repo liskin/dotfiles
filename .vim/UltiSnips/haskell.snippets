@@ -1,9 +1,9 @@
 snippet info "Haddock module info (short)" b
 -- |
--- Module      :  ${1:`!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`}
--- Description :  ${2:Short description}
+-- Module      :  `!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`
+-- Description :  ${1:Short description}
 -- Copyright   :  (c) `date +%Y` `!v g:snips_name` <`!v g:snips_email`>
--- License     :  ${3:BSD3}
+-- License     :  ${2:BSD3}
 -- Maintainer  :  `!v g:snips_name` <`!v g:snips_email`>
 --
 -- ${0:Long description}
@@ -12,17 +12,24 @@ endsnippet
 
 snippet info-long "Haddock module info (long w/ Stability, Portability)" b
 -- |
--- Module      :  ${1:`!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`}
--- Description :  ${2:Short description}
+-- Module      :  `!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')`
+-- Description :  ${1:Short description}
 -- Copyright   :  (c) `date +%Y` `!v g:snips_name` <`!v g:snips_email`>
--- License     :  ${3:BSD3}
+-- License     :  ${2:BSD3}
 --
 -- Maintainer  :  `!v g:snips_name` <`!v g:snips_email`>
--- Stability   :  ${4:experimental}
--- Portability :  ${5:unknown}
+-- Stability   :  ${3:experimental}
+-- Portability :  ${4:unknown}
 --
 -- ${0:Long description}
 --
+endsnippet
+
+clearsnippets mod
+snippet module "module A.B.C (…) where" b
+module `!v substitute(substitute(expand('%:r'), '[/\\]','.','g'),'^\.\?\%(\l[^\.]*\.\)*','','g')` (
+	$0
+	) where
 endsnippet
 
 snippet ghcid-test "$> :main --match=…" b
