@@ -41,4 +41,12 @@ clean:
 		.build .stack-work \
 		$(XMONAD_DEPS) $(XMONAD_BINARY)
 
+.sub/xmonad-: # tab-completion
+## prepare sub-workspace
+.sub/xmonad-%:
+	mkdir -p $@
+	ln -fsr Makefile $@/Makefile
+	git-dotfiles show @:.xmonad-testing/xmonad.hs >$@/xmonad.hs
+	make -C $@
+
 .DELETE_ON_ERROR:
