@@ -37,6 +37,7 @@ import XMonad.Hooks.ServerMode
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.UrgencyHook
+import XMonad.Hooks.WindowSwallowing
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MultiToggle
@@ -269,6 +270,7 @@ myEventHook = mconcat
     , hintsEventHook
     , trayerAboveXmobarEventHook
     , floatConfReqHook myFloatConfReqManageHook
+    , swallowEventHookSub (className =? "URxvt") (pure True)
     , serverModeEventHookF "_XMONAD_CTL" (mconcat myXmonadCtlHooks)
     ]
     where
