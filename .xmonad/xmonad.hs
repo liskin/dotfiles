@@ -478,11 +478,10 @@ main = do
         addRandrChangeHook (spawnExec "if-session-unlocked layout-auto") $
         dynamicSBs (pure . myStatusBars) $
         docks $
-        ewmh' def
-            { activateHook = myActivateHook
-            , workspaceRename = workspaceNamesRenameWS
-            , fullscreen = True
-            } $
+        workspaceNamesEwmh $
+        setEwmhActivateHook myActivateHook $
+        ewmhFullscreen $
+        ewmh $
         withUrgencyHookC myUrgencyHook urgencyConfig{ suppressWhen = Focused } $
         def { terminal           = "urxvt"
             , focusFollowsMouse  = True
