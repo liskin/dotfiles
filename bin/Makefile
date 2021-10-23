@@ -44,6 +44,16 @@ haskell-language-server-%:
 	) | gunzip >$@
 	chmod +x $@
 
+all: .pandoc
+.pandoc: PANDOC_VERSION=2.14.2
+.pandoc:
+	mkdir -p $@
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		jgm/pandoc,\
+		tags/$(PANDOC_VERSION),\
+		pandoc-$(PANDOC_VERSION)-linux-amd64.tar.gz\
+	) | tar -x -z -C $@ --strip-components=1
+
 all: .aliases/.done
 .SKIP_GITIGNORE: .aliases/.done
 .aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)
