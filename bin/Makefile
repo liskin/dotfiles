@@ -45,7 +45,7 @@ haskell-language-server-%:
 	chmod +x $@
 
 all: .pandoc
-.pandoc: PANDOC_VERSION=2.14.2
+.pandoc: PANDOC_VERSION=2.15
 .pandoc:
 	mkdir -p $@
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
