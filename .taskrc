@@ -26,10 +26,10 @@ color.uda.priority.H=
 color.uda.priority.M=
 color.uda.priority.L=
 
-context.today=( ( ( scheduled<tomorrow or due<tomorrow or +next or +ACTIVE ) and status:pending ) or end>=today )
-context.tomorrow=( ( ( scheduled>=tomorrow and scheduled<tomorrow+1d ) or ( due>=tomorrow and due<tomorrow+1d ) ) and status:pending )
-context.soon=( ( scheduled>=tomorrow+1d or due>=tomorrow+1d or ( scheduled.none: and due.none: and -later ) ) and status:pending )
-context.later=( +later and status:pending )
+context.today=( ( ( scheduled<tomorrow or due<tomorrow or +next or +ACTIVE ) and status:pending and -WAITING ) or end>=today )
+context.tomorrow=( ( ( scheduled>=tomorrow and scheduled<tomorrow+1d ) or ( due>=tomorrow and due<tomorrow+1d ) ) and status:pending and -WAITING )
+context.soon=( ( scheduled>=tomorrow+1d or due>=tomorrow+1d or ( scheduled.none: and due.none: and -later ) ) and status:pending and -WAITING )
+context.later=( +later and status:pending and -WAITING )
 
 context.todo+recent=(-COMPLETED or end>=yesterday)
 
@@ -45,6 +45,6 @@ report._reviewed.sort=reviewed+,modified+
 report._reviewed.filter=( +PENDING and ( reviewed.none: or reviewed.before:now-14days ) ) or ( +WAITING and ( reviewed.none: or reviewed.before:now-60days ) )
 
 report.all.columns=id,status.short,uuid.short,start.active,entry.age,end.age,depends.indicator,priority,project,tags,recur.indicator,wait.remaining,scheduled.remaining,due,until.remaining,description
-report.list.filter=status:pending or status:waiting
-report.long.filter=status:pending or status:waiting
-report.next.filter=status:pending -BLOCKING limit:page
+report.list.filter=status:pending or +WAITING
+report.long.filter=status:pending or +WAITING
+report.next.filter=status:pending -WAITING -BLOCKING limit:page

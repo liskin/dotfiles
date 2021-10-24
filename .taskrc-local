@@ -1,0 +1,8 @@
+include ~/.taskrc
+
+# see ~/bin/task-local
+context=local
+context.local.read=proj:$TASK_PROJECT
+context.local.write=proj:$TASK_PROJECT
+
+report.next.filter=( status:pending or +WAITING ) and limit:page

@@ -5,19 +5,8 @@
 set -eu -o pipefail
 shopt -s lastpipe
 
-git config --get taskwarrior.project | read -r project \
-|| exec task "$@"
-
-function gen-config {
-	cat <<-END
-		include ~/.taskrc
-
-		context=local
-		context.local=proj:$project
-		default.project=$project
-
-		report.next.filter=( status:pending or status:waiting ) and limit:page
-	END
-}
-
-TASKRC=<(gen-config) exec task "$@"
+if git config --get taskwarrior.project | read -r project; then
+	TASK_PROJECT="$project" TASKRC=~/.taskrc-local exec task "$@"
+else
+	exec task "$@"
+fi
