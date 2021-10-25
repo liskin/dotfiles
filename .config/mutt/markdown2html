@@ -274,6 +274,10 @@ def _apply_styling(html):
     '''
     Inline all styles defined and used into the individual HTML tags.
     '''
+
+    # workaround for new pandoc using CSS pynliner doesn't parse
+    html = re.sub(r'(?s)#TOC[^{]*{.*?}', '', html)
+
     return pynliner.Pynliner().from_string(html).with_cssString(DEFAULT_CSS).run()
 
 
