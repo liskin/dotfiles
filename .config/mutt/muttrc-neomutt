@@ -5,6 +5,9 @@ set nntp_listgroup=no
 set nntp_load_description=no
 set save_unsubscribed=yes
 
+# workaround for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996765
+account-hook news\.gmane\.io set ssl_verify_dates=no
+
 bind index,pager i change-newsgroup
 bind compose o edit-followup-to
 bind compose N edit-newsgroups
