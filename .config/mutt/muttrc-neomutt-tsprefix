@@ -1,0 +1,1 @@
+set my_ts_prefix=`echo "$my_ts_prefix"`
