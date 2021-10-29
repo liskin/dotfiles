@@ -164,6 +164,9 @@
 [submodule "src-haskell/implicit-hie"]
 	path = src-haskell/implicit-hie
 	url = https://github.com/Avi-D-coder/implicit-hie
+[submodule "src-haskell-cabal/haskell-ci"]
+	path = src-haskell-cabal/haskell-ci
+	url = https://github.com/haskell-CI/haskell-ci
 [submodule "src-elixir/elixir"]
 	path = src-elixir/elixir
 	url = https://github.com/elixir-lang/elixir.git
