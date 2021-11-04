@@ -54,6 +54,16 @@ all: .ext-pandoc
 		pandoc-$(PANDOC_VERSION)-linux-amd64.tar.gz\
 	) | tar -x -z -C $@ --strip-components=1
 
+all: .ext-hlint
+.ext-hlint: HLINT_VERSION=3.3.4
+.ext-hlint:
+	mkdir -p $@
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		ndmitchell/hlint,\
+		tags/v$(HLINT_VERSION),\
+		hlint-$(HLINT_VERSION)-x86_64-linux.tar.gz\
+	) | tar -x -z -C $@ --strip-components=1
+
 all: .aliases/.done
 .SKIP_GITIGNORE: .aliases/.done
 .aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)
