@@ -44,9 +44,9 @@ haskell-language-server-%:
 	) | gunzip >$@
 	chmod +x $@
 
-all: .pandoc
-.pandoc: PANDOC_VERSION=2.15
-.pandoc:
+all: .ext-pandoc
+.ext-pandoc: PANDOC_VERSION=2.16.1
+.ext-pandoc:
 	mkdir -p $@
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
 		jgm/pandoc,\

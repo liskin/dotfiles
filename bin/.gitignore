@@ -1,6 +1,6 @@
 /.aliases/
+/.ext-pandoc
 /.old/
-/.pandoc
 /diff-highlight
 /haskell-language-server-8.8.4
 /haskell-language-server-wrapper
