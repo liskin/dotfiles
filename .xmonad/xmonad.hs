@@ -4,6 +4,7 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE PackageImports #-}
 {-# LANGUAGE ParallelListComp #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-missing-signatures -Wno-orphans #-}
 
@@ -65,9 +66,10 @@ import XMonad.Util.My
 import Xmobar.X11.Actions (stripActions)
 
 -- Bindings
-myKeys conf@(XConfig{modMask}) = M.fromList $
+myKeys XConfig{..} = M.fromList $
     -- running apps
-    [ ((altMask .|. controlMask, xK_r   ), unGrab >> spawnTerm "urxvt")
+    [ ((altMask .|. controlMask, xK_r   ), unGrab >> spawnTerm terminal)
+    , ((altMask,               xK_Menu  ), unGrab >> spawnTerm terminal)
     , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
     , ((controlMask,           xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
@@ -126,7 +128,7 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
 
     -- layout changes
     , ((modMask,               xK_space ), runSelectedAction "layout" laySels)
-    , ((modMask .|. shiftMask, xK_space ), setLayout (XMonad.layoutHook conf) >> setCurrentWorkspaceName "")
+    , ((modMask .|. shiftMask, xK_space ), setLayout layoutHook >> setCurrentWorkspaceName "")
     , ((modMask,               xK_h     ), sendMessage Shrink            >> up)
     , ((modMask,               xK_l     ), sendMessage Expand            >> up)
     , ((modMask .|. shiftMask, xK_h     ), sendMessages (replicate 5 Shrink) >> up)
@@ -165,11 +167,11 @@ myKeys conf@(XConfig{modMask}) = M.fromList $
     ] ++
     -- workspace/screen focus changes
     [ ((m, k), P.defile f >> up)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_F1 .. xK_F12]
+        | (i, k) <- zip workspaces [xK_F1 .. xK_F12]
         , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, controlMask)]
     ] ++
     [ ((m, k), P.defile f >> up)
-        | (i, k) <- zip (drop 12 $ XMonad.workspaces conf) [xK_F1 .. xK_F12]
+        | (i, k) <- zip (drop 12 workspaces) [xK_F1 .. xK_F12]
         , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. controlMask)]
     ] ++
     [ ((modMask .|. m, k), focusNthScreen i greedy >> up)
