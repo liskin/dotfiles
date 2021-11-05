@@ -1,0 +1,12 @@
+[Unit]
+Description=xcape DISPLAY=%i
+PartOf=xmonad@%i.target
+
+[Service]
+Slice=app.slice
+
+Type=forking
+Restart=always
+
+EnvironmentFile=%t/xsession-env-%i
+ExecStart=/usr/bin/xcape -t 300 -e Control_L=Escape

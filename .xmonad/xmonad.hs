@@ -71,7 +71,7 @@ myKeys XConfig{..} = M.fromList $
     [ ((altMask .|. controlMask, xK_r   ), unGrab >> spawnTerm terminal)
     , ((altMask,               xK_Menu  ), unGrab >> spawnTerm terminal)
     , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
-    , ((controlMask,           xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
+    , ((hyperMask,             xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
     -- various rofi tools
     , ((modMask,               xK_Menu  ), unGrab >> spawnExec "rofi -show window")
@@ -158,7 +158,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
 
     -- the end
-    , ((modMask .|. altMask .|. controlMask, xK_q), io (exitWith ExitSuccess))
+    , ((modMask .|. altMask .|. hyperMask, xK_q), io (exitWith ExitSuccess))
     ] ++
     -- focus changes
     [ ((modMask .|. m, k), P.defile (focusNth myLayout i swap) >> up)
@@ -168,11 +168,11 @@ myKeys XConfig{..} = M.fromList $
     -- workspace/screen focus changes
     [ ((m, k), P.defile f >> up)
         | (i, k) <- zip workspaces [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, controlMask)]
+        , (f, m) <- [(P.view i, altMask), (P.shift i <> P.view i, hyperMask)]
     ] ++
     [ ((m, k), P.defile f >> up)
         | (i, k) <- zip (drop 12 workspaces) [xK_F1 .. xK_F12]
-        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. controlMask)]
+        , (f, m) <- [(P.view i, modMask), (P.shift i <> P.view i, modMask .|. hyperMask)]
     ] ++
     [ ((modMask .|. m, k), focusNthScreen i greedy >> up)
         | (i, k) <- zip [0..] [xK_a, xK_s, xK_d]
@@ -180,6 +180,7 @@ myKeys XConfig{..} = M.fromList $
     ]
   where
     altMask = mod1Mask
+    hyperMask = mod3Mask
 
 myMouseBindings (XConfig{modMask}) = M.fromList $
     [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))

@@ -8,5 +8,6 @@ Wants=arbtt-capture@%i.service
 Wants=compton@%i.service
 Wants=liskin-xmobar-devices@%i.service
 Wants=redshift@%i.service
+Wants=xcape@%i.service
 Wants=xsettingsd@%i.service
 Wants=xss-lock@%i.service
