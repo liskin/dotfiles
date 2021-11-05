@@ -69,12 +69,12 @@ import Xmobar.X11.Actions (stripActions)
 myKeys XConfig{..} = M.fromList $
     -- running apps
     [ ((altMask .|. controlMask, xK_r   ), unGrab >> spawnTerm terminal)
-    , ((altMask,               xK_Menu  ), unGrab >> spawnTerm terminal)
+    , ((modMask,               xK_Menu  ), unGrab >> spawnTerm terminal)
     , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
     , ((hyperMask,             xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
     -- various rofi tools
-    , ((modMask,               xK_Menu  ), unGrab >> spawnExec "rofi -show window")
+    , ((altMask,               xK_Menu  ), unGrab >> spawnExec "rofi -show window")
     , ((modMask,               xK_e     ), unGrab >> spawnExec "rofi-emoji-menu")
     , ((modMask .|. shiftMask, xK_e     ), unGrab >> spawnExec "rofi-emoji-sign")
     , ((modMask,               xK_p     ), unGrab >> spawnExec "passmenu")
