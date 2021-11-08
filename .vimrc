@@ -112,7 +112,12 @@ set showcmd
 
 " keep windows equally tiled {{{2
 set equalalways
-autocmd VimResized * exe "normal \<C-W>="
+function s:equal_windows() abort
+	let save_pos = getpos(".")
+	execute "normal \<C-W>="
+	call setpos('.', save_pos)
+endfunction
+autocmd VimResized * call s:equal_windows()
 
 " search {{{2
 set hlsearch
