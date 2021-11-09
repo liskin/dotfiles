@@ -68,6 +68,7 @@ export-alias google-chrome-app-skype="google-chrome --app=https://web.skype.com/
 export-alias google-chrome-app-slack-functionalprogramming="google-chrome --app=https://functionalprogramming.slack.com/"
 export-alias google-chrome-app-slack-goodalumni="google-chrome --app=https://goodalumni.slack.com/"
 export-alias google-chrome-app-slack-haskell-foundation="google-chrome --app=https://haskell-foundation.slack.com/"
+export-alias google-chrome-app-slack-opencollective="google-chrome --app=https://opencollective.slack.com/"
 export-alias google-chrome-app-slack-reprisma="google-chrome --app=https://reprisma.slack.com/"
 export-alias google-chrome-app-wire="google-chrome --app=https://app.wire.com/"
 
