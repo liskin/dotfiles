@@ -2,6 +2,7 @@ resolver: lts-16.31
 
 packages:
     - X11
+    - X11-xft
     - arbtt
     - fourmolu
     - ghcid

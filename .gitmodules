@@ -151,6 +151,9 @@
 	path = src-haskell/X11
 	#url = https://github.com/xmonad/X11
 	url = https://github.com/liskin/X11
+[submodule "src-haskell/X11-xft"]
+	path = src-haskell/X11-xft
+	url = https://github.com/xmonad/X11-xft
 [submodule "src-haskell/ghcid"]
 	path = src-haskell/ghcid
 	url = https://github.com/ndmitchell/ghcid

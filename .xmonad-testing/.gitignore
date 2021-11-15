@@ -6,5 +6,6 @@
 
 # git worktrees
 /X11/
+/X11-xft/
 /xmonad-contrib/
 /xmonad/

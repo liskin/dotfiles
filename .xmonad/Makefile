@@ -27,6 +27,7 @@ ghcid:
 	ghcid -c '$(MAKE) ghci'
 
 ghcid-X11:
+ghcid-X11-xft:
 ghcid-xmonad-contrib:
 ghcid-xmonad:
 ghcid-%: build-deps _phony
@@ -47,6 +48,7 @@ ghci: build-deps
 			$(CURDIR)/xmonad.hs
 
 ghci-X11:
+ghci-X11-xft:
 ghci-xmonad-contrib:
 ghci-xmonad:
 ghci-%: build-deps _phony

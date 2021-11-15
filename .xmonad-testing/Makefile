@@ -1,6 +1,6 @@
 include ~/.xmonad/Makefile
 
-XMONAD_DEPS := X11 xmonad xmonad-contrib
+XMONAD_DEPS := X11 X11-xft xmonad xmonad-contrib
 BUILD_DEPS_TARGETS := build
 BUILD_DOCS_TARGETS := build-haddock
 SRC_HASKELL := .
