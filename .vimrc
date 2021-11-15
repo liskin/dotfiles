@@ -149,7 +149,6 @@ set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
 set formatoptions+=r
 set hidden
-set omnifunc=ale#completion#OmniFunc
 set scrolloff=10
 set sessionoptions-=options
 set spelllang=en
@@ -509,6 +508,20 @@ nmap <C-K> <Plug>(ale_detail)
 imap <C-K> <C-\><C-O><C-K>
 nmap <C-F> <Plug>(ale_code_action)
 imap <C-F> <C-\><C-O><C-F>
+
+function! LiskinTabComplete() abort
+	if pumvisible()
+		return "\<C-N>"
+	elseif strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
+		return "\<Tab>"
+	elseif &omnifunc != ''
+		return "\<C-X>\<C-O>"
+	else
+		return "\<C-N>"
+	endif
+endfunction
+inoremap <silent> <Tab> <C-R>=LiskinTabComplete()<CR>
+inoremap <silent> <S-Tab> <Tab>
 
 nnoremap <silent> <C-W>S :CloneBufTmp<CR>
 nnoremap <silent> <C-W>C :tabclose<CR>
