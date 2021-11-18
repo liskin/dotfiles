@@ -523,16 +523,20 @@ endfunction
 inoremap <silent> <Tab> <C-R>=LiskinTabComplete()<CR>
 inoremap <silent> <S-Tab> <Tab>
 
-nnoremap <silent> <C-W>S :CloneBufTmp<CR>
-nnoremap <silent> <C-W>C :tabclose<CR>
+nnoremap <silent> <C-W>S <Cmd>:CloneBufTmp<CR>
+nnoremap <silent> <C-W>C <Cmd>:tabclose<CR>
+
+" git (fugitive) shortcuts
+nnoremap <silent> <Leader>gg <Cmd>:tab G<CR>
+nnoremap <silent> <Leader>gv <Cmd>:Gvdiffsplit<CR>
 
 " C-X is commands, remap decrement to C-Q
 nnoremap <silent> <C-Q> <C-X>
 vnoremap <silent> <C-Q> <C-X>
 
 " prevent x from overriding what's in the clipboard. {{{2
-noremap x "_x
-noremap X "_X
+noremap <silent> x "_x
+noremap <silent> X "_X
 
 " seamlessly treat visual lines as actual lines when moving around. {{{2
 nnoremap <silent> j gj
