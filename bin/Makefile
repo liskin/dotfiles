@@ -26,21 +26,22 @@ rust-analyzer:
 	) | gunzip >$@
 	chmod +x $@
 
+all: haskell-language-server-8.8.4
+haskell-language-server-%: HASKELL_LANGUAGE_SERVER_VERSION=1.5.0
+haskell-language-server-%:
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		haskell/haskell-language-server,\
+		tags/$(HASKELL_LANGUAGE_SERVER_VERSION),\
+		haskell-language-server-Linux-$*.gz\
+	) | gunzip >$@
+	chmod +x $@
+
 all: haskell-language-server-wrapper
 haskell-language-server-wrapper:
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
 		haskell/haskell-language-server,\
-		latest,\
+		tags/$(HASKELL_LANGUAGE_SERVER_VERSION),\
 		haskell-language-server-wrapper-Linux.gz\
-	) | gunzip >$@
-	chmod +x $@
-
-all: haskell-language-server-8.8.4
-haskell-language-server-%:
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		haskell/haskell-language-server,\
-		latest,\
-		haskell-language-server-Linux-$*.gz\
 	) | gunzip >$@
 	chmod +x $@
 
