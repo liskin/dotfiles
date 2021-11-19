@@ -8,10 +8,7 @@ export LANG=C
 function volume-bluetooth {
 	local method
 	[[ $1 == up ]] && method=VolumeUp || method=VolumeDown
-	dbus-send \
-		--print-reply --type=method_call \
-		--system --dest=org.bluez \
-		/org/bluez/hci0/dev_"$2" org.bluez.MediaControl1."$method" >/dev/null
+	busctl call org.bluez /org/bluez/hci0/dev_"$2" org.bluez.MediaControl1 "$method"
 }
 
 function volume-pulseaudio {
