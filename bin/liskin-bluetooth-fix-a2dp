@@ -1,0 +1,2 @@
+#!/bin/sh
+exec ~/bin/.venv-pulsectl/bin/python3 ~/bin/liskin-bluetooth-fix-a2dp.py

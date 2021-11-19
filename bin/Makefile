@@ -65,6 +65,11 @@ all: .ext-hlint
 		hlint-$(HLINT_VERSION)-x86_64-linux.tar.gz\
 	) | tar -x -z -C $@ --strip-components=1
 
+all: .venv-pulsectl
+.venv-pulsectl:
+	python3 -m venv --system-site-packages --without-pip $@
+	$@/bin/python3 -m pip install pulsectl-asyncio
+
 all: .aliases/.done
 .SKIP_GITIGNORE: .aliases/.done
 .aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)
