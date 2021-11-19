@@ -46,6 +46,19 @@ function action-volume {
 function action-mute     { pactl set-sink-mute   @DEFAULT_SINK@   toggle; }
 function action-mic-mute { pactl set-source-mute @DEFAULT_SOURCE@ toggle; }
 
+function action-toggle-handsfree {
+	local info
+	info=$(pactl info)
+
+	if [[ $info =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
+		bt_addr="${BASH_REMATCH[1]}"
+		pactl set-card-profile bluez_card."$bt_addr" handsfree_head_unit
+	elif [[ $info =~ "Default Sink: bluez_sink."([0-9A-F_]*)".handsfree_head_unit" ]]; then
+		bt_addr="${BASH_REMATCH[1]}"
+		pactl set-card-profile bluez_card."$bt_addr" a2dp_sink
+	fi
+}
+
 # Listen for MPRIS events and remember which player we interacted with last
 function action-mpris-daemon {
 	playerctl --all-players --follow --format '{{playerName}} {{status}}' status 2>&1 \
