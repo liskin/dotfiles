@@ -8,6 +8,7 @@ any window $active ==> tag Desktop:$desktop,
 -- unambiguous activities (general)
 any window (! $hidden && (
 	($program == "google-chrome" && $title =~ m|:: https?://meet\.google|)
+	|| ($program == "google-chrome" && $title =~ m|:: https?://[^/]*zoom\.us/|)
 	|| $program == "zoom"
 )) ==> tag Activity:Call,
 $desktop == "1:irc" && current window $title =~ /^(t\[N\] |weechat\S+: )/ ==> tag Activity:Chat,
