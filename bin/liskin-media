@@ -21,11 +21,12 @@ function volume-pulseaudio {
 }
 
 # Volume up/down via:
-#  - bluetooth AVRCP (if avilable and default sink)
+#  - bluetooth AVRCP (if default sink and my old BT headphones are connected)
 #  - pulseaudio (otherwise)
 #
-# Motivation: lowering volume in software degrades quality as the upper
-# bits are unused.
+# Motivation: lowering volume in software degrades quality as the upper bits
+# are unused. Pulseaudio handles this itself for most headphones but not for my
+# old Sony MDR-XB950BT.
 function action-volume {
 	if [[ ${1-} != @(up|down) ]]; then
 		echo 'up|down expected'
@@ -34,7 +35,9 @@ function action-volume {
 
 	if [[ $(pactl info) =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
 		bt_addr="${BASH_REMATCH[1]}"
-		volume-bluetooth "$1" "$bt_addr" && exit 0
+		if [[ $bt_addr == 10_4F_A8_72_7D_67 ]]; then
+			volume-bluetooth "$1" "$bt_addr" && exit 0
+		fi
 	fi
 
 	volume-pulseaudio "$1"
