@@ -117,6 +117,9 @@
 [submodule "src/mpv-mpris"]
 	path = src/mpv-mpris
 	url = https://github.com/hoyon/mpv-mpris
+[submodule "src/pandoc-lua-filters"]
+	path = src/pandoc-lua-filters
+	url = https://github.com/pandoc/lua-filters
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
