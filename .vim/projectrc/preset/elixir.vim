@@ -1,0 +1,1 @@
+AleAddLinter elixir elixir-ls
