@@ -69,7 +69,7 @@ define(set_boldItalicFont, _set_font(713, `$1'))dnl
 define(set_default_fonts, `set_font(`default_font')set_boldFont(`default_boldFont')set_italicFont(`default_italicFont')set_boldItalicFont(`default_boldItalicFont')')dnl
 define(set_big_fonts, `set_font(`big_font')set_boldFont(`big_boldFont')set_italicFont(`big_italicFont')set_boldItalicFont(`big_boldItalicFont')')dnl
 define(set_mono_fonts, `set_font(`scalable_font')set_boldFont(`scalable_boldFont')set_italicFont(`scalable_italicFont')set_boldItalicFont(`scalable_boldItalicFont')')dnl
-define(meta_key, `M-C')dnl
+define(meta_key, `M-3')dnl
 dnl
 URxvt.keysym.meta_key-Home: command:set_default_fonts
 URxvt.keysym.meta_key-End: command:set_mono_fonts
