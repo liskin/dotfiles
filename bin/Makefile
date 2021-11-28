@@ -65,6 +65,18 @@ all: .ext-hlint
 		hlint-$(HLINT_VERSION)-x86_64-linux.tar.gz\
 	) | tar -x -z -C $@ --strip-components=1
 
+all: .ext-languagetool
+.ext-languagetool: LANGUAGETOOL_VERSION=5.5
+.ext-languagetool: .ext-languagetool.zip
+	mkdir -p $@
+	unzip -d $@ .ext-languagetool.zip
+	mv -T $@/LanguageTool-$(LANGUAGETOOL_VERSION) $@.tmp
+	mv -T $@.tmp $@
+
+.INTERMEDIATE: .ext-languagetool.zip
+.ext-languagetool.zip:
+	curl -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION).zip
+
 all: .venv-pulsectl
 .venv-pulsectl:
 	python3 -m venv --system-site-packages --without-pip $@
