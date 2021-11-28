@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+import click
+import popplerqt5
+import shutil
+import subprocess
+
+
+def non_blank_pages(filename):
+    doc = popplerqt5.Poppler.Document.load(filename)
+    for i in range(doc.numPages()):
+        page = doc.page(i)
+        if page.textList():
+            yield i
+
+
+@click.command()
+@click.argument('filename', type=click.Path(exists=True))
+def main(filename):
+    pages = non_blank_pages(filename)
+    args = [
+        shutil.which("qpdf"),
+        "--replace-input",
+        filename,
+        "--pages",
+        ".",
+        ",".join(str(p + 1) for p in pages),
+        "--",
+    ]
+    subprocess.run(args)
+
+
+if __name__ == '__main__':
+    main()

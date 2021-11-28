@@ -1,0 +1,76 @@
+/* fonts */
+html { font-size: 16px; font-family: sans; }
+:root { --print-fonts: Noto Serif, Times New Roman, serif; }
+@media print { html { font-family: var(--print-fonts); line-height: 1.4; } body { font-size: 11pt; } }
+/* .chrome-load-fonts { position: absolute; top: 0; visibility: hidden; font-family: var(--print-fonts); } */
+
+/* colors */
+:root {
+	--header-color: #0074a3;
+	--link-underline-color: #aaa;
+}
+
+/* wider body */
+body { max-width: 55em; }
+
+/* print page layout */
+@media print { @page { size: A4; margin: 1cm; @bottom-center { content: counter(page); } } }
+
+/* main header style (columns if wide enough) */
+header { margin-bottom: 2em; }
+header img { vertical-align: middle; }
+@media print, (min-width: 900px) {
+	header { display: flex; justify-content: space-evenly; align-items: flex-end; }
+	header .title { flex: 2; }
+	header .subtitle { flex: 3; }
+}
+
+/* link styling */
+header a, footer a, a.ul { text-decoration: underline var(--link-underline-color); }
+header a:hover, footer a:hover, a.ul:hover { text-decoration: none; }
+a { text-decoration: none; color: unset; }
+a:hover { text-decoration: underline var(--link-underline-color); }
+
+/* section header style, horizontal rules */
+h1 { color: var(--header-color); }
+h3 { display: flex; align-items: center; color: var(--header-color); }
+h3::after { content: ""; flex: 1; margin-left: 1em; border-bottom: 2px solid var(--header-color); }
+
+/* spacing of bullet points */
+:root { --bullet-spacing: 0.2em; }
+div > p:first-child { margin-bottom: var(--bullet-spacing); }
+div > p + ul { margin-top: var(--bullet-spacing); }
+div > p + ul li p { margin-bottom: var(--bullet-spacing); margin-top: var(--bullet-spacing); }
+
+/* alignment of positions, locations, years */
+div.entry > p:first-child *:nth-child(1) { grid-area: position; }
+div.entry > p:first-child *:nth-child(2) { grid-area: location; }
+div.entry > p:first-child *:nth-child(3) { grid-area: years; }
+div.entry > p:first-child { display: grid; column-gap: 1em; }
+@media screen and (max-width: 699px) { div.entry > p:first-child { grid: "position years" "location location" / 1fr max-content; } }
+@media print, (min-width: 700px) { div.entry > p:first-child { grid: "position location years" / max(25ch, 40%) 1fr max-content; } }
+
+/* formatting of skills */
+dt { font-weight: bold; }
+@media screen and (max-width: 499px) { dd { margin-left: 1.7em; } }
+@media print, (min-width: 500px) {
+	dl { display: grid; grid-template-columns: max-content auto; }
+	dt { grid-column: 1; margin-right: 1em; }
+	dd { grid-column: 2; margin-left: 0; margin-bottom: var(--bullet-spacing); }
+}
+
+/* page breaks */
+.page-break { break-before: page; }
+div { break-inside: avoid; }
+
+/* footer */
+:root:not(.has-paged-js) footer { margin-left: auto; margin-right: auto; width: max-content; }
+:root:not(.has-paged-js) footer p { border-top: 2px solid var(--header-color); margin-top: 3em; }
+@media print {
+	:root.has-paged-js footer { position: absolute; bottom: -1cm; right: 0; }
+	:root.has-paged-js footer p { height: 1cm; margin: 0; display: table-cell; vertical-align: middle; }
+}
+
+/* block justification (needs good hyphenation) */
+/* header + p { text-align: justify; } */
+/* div.entry ul p { text-align: justify; } */
