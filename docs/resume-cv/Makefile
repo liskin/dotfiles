@@ -14,7 +14,6 @@ PANDOC_FLAGS_COMMON=\
 	--to=html \
 	--strip-comments \
 	--lua-filter=pandoc-meta-variables.lua \
-	--lua-filter=pandoc-auto-links.lua \
 	--metadata-file=meta-footer.yaml \
 	--metadata-file=meta-$(if $(PUBLIC),public,private).yaml \
 	$(PANDOC_FLAGS)
