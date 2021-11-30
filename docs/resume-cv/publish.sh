@@ -23,12 +23,12 @@ url_html="https://store.lisk.in/tmp/${purpose_hmac}/${dest_filename_html}"
 
 o mkdir -p "${pub_dir}"
 cat >"${pub_dir}/purpose.txt" <<<"${purpose}"
-cat >"${pub_dir}/meta-footer.yaml" <<-END
+cat >"${pub_dir}/meta.yaml" <<-END
 	footer: |-
 	  [HTML version](${url_html}) | [PDF version](${url_pdf})
 	END
 o touch "$filename"
-o make PANDOC_FLAGS="--metadata-file=${pub_dir}/meta-footer.yaml" "$filename_pdf" "$filename_html"
+o make PANDOC_FLAGS="--metadata-file=${pub_dir}/meta.yaml" "$filename_pdf" "$filename_html"
 o cp "${filename_pdf}" "${pub_dir}/${dest_filename_pdf}"
 o cp "${filename_html}" "${pub_dir}/${dest_filename_html}"
 o rsync "${pub_dir}/${dest_filename_pdf}" "${pub_dir}/${dest_filename_html}" "store.lisk.in:wwwtmp/${purpose_hmac}/"
