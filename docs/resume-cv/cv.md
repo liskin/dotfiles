@@ -157,7 +157,7 @@ _**sabbatical**_
 
 * Designed data structures and algorithms for efficient data storage, sorting, joining and querying.
 
-* _Tech:_ Erlang, C, x86 asm
+* _Tech:_ Erlang, C, x86 ASM
 :::
 
 ::: {.entry}
@@ -211,7 +211,7 @@ _**sabbatical**_
 
 * Shadowed the network administrator and technicians, later used the knowledge while volunteering for the [CZFree.Net community network](https://translate.google.com/translate?sl=cs&tl=en&u=https://cs.wikipedia.org/wiki/CZFree.Net).
 
-* _Tech:_ C++, PHP, iptables
+* _Tech:_ C++, PHP, Perl, iptables, Asterisk, CVS, Subversion
 
 <!-- * Developed a call pricing plugin for the Asterisk VoIP gateway. -->
 :::
