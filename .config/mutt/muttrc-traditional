@@ -1,4 +1,5 @@
 set imap_deflate=yes
+set sort_browser_mailboxes=alpha
 
 # background compose in screen/tmux
 source "~/.config/mutt/bgedit-detect-screen-tmux.sh |"
