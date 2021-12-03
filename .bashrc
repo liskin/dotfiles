@@ -11,7 +11,11 @@ case $- in
 	  *) return;;
 esac
 
-for i in ~/.bashrc.d/*.sh; do
+function __bashrc_d_get {
+	local LC_COLLATE=C
+	__bashrc_d=(~/.bashrc.d/*.sh)
+}; __bashrc_d_get; unset -f __bashrc_d_get
+for i in "${__bashrc_d[@]}"; do
 	if [[ $__bashrc_bench ]]; then
 		TIMEFORMAT="$i: %R"
 		time . "$i"
@@ -19,4 +23,4 @@ for i in ~/.bashrc.d/*.sh; do
 	else
 		. "$i"
 	fi
-done; unset i
+done; unset i; unset __bashrc_d
