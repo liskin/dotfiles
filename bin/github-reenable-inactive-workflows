@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+shopt -s lastpipe inherit_errexit
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+function github-watched-repos {
+	o gh api --paginate user/subscriptions | jq --compact-output '.[]'
+}
+
+function github-repo-workflows {
+	local repo; repo=${1:?}
+	o gh api --paginate repos/"$repo"/actions/workflows | jq --compact-output '.workflows[]'
+}
+
+function github-enable-workflow {
+	local repo; repo=${1:?}
+	local workflow; workflow=${2:?}
+	o gh api -X PUT repos/"$repo"/actions/workflows/"$workflow"/enable
+}
+
+function filter-original {
+	jq --compact-output --slurp 'map(select(.fork | not)) | .[]'
+}
+
+function filter-active {
+	jq --compact-output --slurp 'map(select(.archived | not)) | .[]'
+}
+
+function filter-admin {
+	jq --compact-output --slurp 'map(select(.permissions.admin)) | .[]'
+}
+
+function filter-state-disabled-inactivity {
+	jq --compact-output --slurp 'map(select(.state == "disabled_inactivity")) | .[]'
+}
+
+function full-names {
+	jq --raw-output '."full_name"'
+}
+
+function ids {
+	jq --raw-output '.id'
+}
+
+function reenable {
+	repos=$(github-watched-repos | filter-original | filter-active | filter-admin | full-names)
+	for repo in $repos; do
+		inactive_workflows=$(github-repo-workflows "$repo" | filter-state-disabled-inactivity | ids)
+		for workflow in $inactive_workflows; do
+			github-enable-workflow "$repo" "$workflow"
+		done
+	done
+}
+
+(( $# )) || set -- reenable
+"$@"
