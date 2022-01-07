@@ -53,7 +53,7 @@ URxvt.scrollColor: #004000
 URxvt.troughColor: #001000
 URxvt.cutchars: \\``"''&()*,;<=>?@[]{|}
 URxvt.searchable-scrollback: C-M-s
-URxvt.perl-ext-common: default,-selection,-selection-popup,-option-popup,osc-xterm-clipboard
+URxvt.perl-ext-common: default,-selection,-selection-popup,-option-popup,-confirm-paste,osc-xterm-clipboard
 URxvt.tripleclickwords: false
 URxvt.intensityStyles: true
 URxvt.urgentOnBell: true
