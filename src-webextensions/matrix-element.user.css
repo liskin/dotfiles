@@ -8,7 +8,7 @@
 @-moz-document domain("app.element.io") {
 
 	/* high contrast */
-	.mx_MatrixChat>.mx_RoomView:not(.XXX1):not(.XXX1):not(.XXX1):not(.XXX1):not(.XXX1) { background-color: #000; }
+	.mx_MatrixChat .mx_RoomView:not(.XXX1):not(.XXX1):not(.XXX1):not(.XXX1):not(.XXX1) { background-color: #000; }
 	.mx_IRCLayout .mx_SenderProfile_hover { background-color: rgba(0, 0, 0, 0.8); }
 
 }
