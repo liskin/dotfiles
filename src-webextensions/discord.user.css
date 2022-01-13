@@ -21,22 +21,21 @@
 	body { font-family: "Noto Sans"; }
 
 	/* collapse sidebar */
-	div.sidebar-2K8pFh { width: 80px; transition: width 0.3s; }
-	div.sidebar-2K8pFh:hover { width: 240px; }
+	div.sidebar-1tnWFu { width: 80px; transition: width 0.3s; }
+	div.sidebar-1tnWFu:hover { width: 240px; }
 
 	/* show as much as possible in collapsed sidebar */
-	div.sidebar-2K8pFh div.content-1x5b-n { padding: 0; }
-	div.sidebar-2K8pFh div.overflow-WK9Ogt { text-overflow: clip; }
+	div.sidebar-1tnWFu div.content-1gYQeQ { padding: 0; }
+	div.sidebar-1tnWFu div.overflow-1wOqNV * { text-overflow: clip; }
 
 	/* collapse guild navigation */
-	div.base-3dtUhz { left: 10px; }
-	nav.guilds-1SWlCJ { z-index: 100; width: 10px; transition: width 0.3s; }
-	nav.guilds-1SWlCJ:hover { width: 72px; }
+	nav.guilds-2JjMmN { z-index: 100; width: 10px; transition: width 0.3s; }
+	nav.guilds-2JjMmN:hover { width: 72px; }
 
 	/* no right padding for messages */
-	div.message-2qnXI6 { padding-right: 0px !important; }
+	div.message-2CShn3 { padding-right: 0px !important; }
 
 	/* wider inbox */
-	div.recentMentionsPopout-3rCiI6 { width: 80vw; max-width: 80vw; }
+	div.recentMentionsPopout-2bI1ZN { width: 80vw; max-width: 80vw; }
 
 }
