@@ -364,14 +364,16 @@ let g:vimwiki_conceal_pre = 1
 let g:vimwiki_emoji_enable = 0
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_global_ext = 0
+let g:vimwiki_key_mappings = {}
+let g:vimwiki_key_mappings['table_mappings'] = 0
 let g:vimwiki_list = [{}]
 let g:vimwiki_list[0].auto_tags = 1
 let g:vimwiki_list[0].links_space_char = '-'
-let g:vimwiki_list[0].name = 'taskwiki'
-let g:vimwiki_list[0].path = '~/taskwiki'
 let g:vimwiki_list[0].listsym_rejected = 'D'
 let g:vimwiki_list[0].listsyms = ' WSX'
 let g:vimwiki_list[0].listsyms_propagate = 0
+let g:vimwiki_list[0].name = 'taskwiki'
+let g:vimwiki_list[0].path = '~/taskwiki'
 
 " vim-visual-multi {{{2
 let g:VM_maps = {}
