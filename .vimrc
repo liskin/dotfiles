@@ -304,6 +304,11 @@ let g:ale_python_pylsp_config = {
 \ }
 
 let g:ale_haskell_ormolu_executable = 'fourmolu'
+let g:ale_haskell_hls_config = {
+	\ 'haskell': {
+		\ 'maxCompletions': 250,
+	\ },
+\ }
 
 function! s:ale_add_linter(ale_linters, filetype, linter) abort
 	if !has_key(a:ale_linters, a:filetype)
