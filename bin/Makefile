@@ -45,6 +45,15 @@ haskell-language-server-wrapper:
 	) | gunzip >$@
 	chmod +x $@
 
+all: tz
+tz: TZ_VERSION=0.6.1
+tz:
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		oz/tz,\
+		tags/v$(TZ_VERSION),\
+		tz-$(TZ_VERSION)-linux-amd64.tar.xz\
+	) | tar -x -J tz
+
 all: .ext-pandoc
 .ext-pandoc: PANDOC_VERSION=2.16.1
 .ext-pandoc:
