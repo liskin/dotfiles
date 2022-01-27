@@ -54,6 +54,15 @@ tz:
 		tz-$(TZ_VERSION)-linux-amd64.tar.xz\
 	) | tar -x -J tz
 
+all: delta
+delta: DELTA_VERSION=0.11.3
+delta:
+	$(call GITHUB_FETCH_RELEASE_ASSET,\
+		dandavison/delta,\
+		tags/$(DELTA_VERSION),\
+		delta-$(DELTA_VERSION)-x86_64-unknown-linux-gnu.tar.gz\
+	) | tar -x -z --strip-components=1 --wildcards "*/delta"
+
 all: .ext-pandoc
 .ext-pandoc: PANDOC_VERSION=2.16.1
 .ext-pandoc:

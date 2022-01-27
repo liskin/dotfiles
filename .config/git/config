@@ -72,12 +72,15 @@
 [diff "hex"]
 	textconv = hexdump -v -C
 [interactive]
-	diffFilter = diff-highlight
+	diffFilter = delta --color-only
 [core]
 	pager = less -FRX --tabs=1,5
 [pager]
-	diff = diff-highlight | less -FRX --tabs=1,5
-	show = diff-highlight | less -FRX --tabs=1,5
+	diff = delta
+	show = delta
+[delta]
+	color-only = true
+	diff-highlight = true
 [stash]
 	showPatch = true
 [svn]
