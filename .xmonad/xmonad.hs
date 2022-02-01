@@ -378,9 +378,9 @@ xmobarBottom sid@(S (show -> sn)) = xmobar' prop args $ withScreen $ \scr -> do
     let tag = W.tag wks
     let stack = W.stack wks
     let isFocused = (W.focus <$> stack ==) . Just
-    let isCurrent = tag == currentTag
+    let isCurTag = tag == currentTag
 
-    let tagFmt | isCurrent = ppCurrentC
+    let tagFmt | isCurTag  = ppCurrentC
                | otherwise = ppVisibleC
 
     let tag' = tagFmt $ workspaceIcons $ addWksName (fnBold tag) wks
@@ -389,9 +389,9 @@ xmobarBottom sid@(S (show -> sn)) = xmobar' prop args $ withScreen $ \scr -> do
     let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
     let logHeader = unwords [tag', layout, dir]
 
-    let winFmt w | isFocused w && isCurrent = ppFocusC
-                 | w `elem` urgents         = ppUrgentC
-                 | otherwise                = ppUnfocusC
+    let winFmt w | isFocused w && isCurTag = ppFocusC
+                 | w `elem` urgents        = ppUrgentC
+                 | otherwise               = ppUnfocusC
     let clickWinFmt w = ppClickableW w . winFmt w
 
     let wins = W.integrate' stack
