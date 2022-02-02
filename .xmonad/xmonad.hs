@@ -380,14 +380,17 @@ xmobarBottom sid@(S (show -> sn)) = xmobar' prop args $ withScreen $ \scr -> do
     let isFocused = (W.focus <$> stack ==) . Just
     let isCurTag = tag == currentTag
 
+    let tag' = addWksName (fnBold tag) wks
     let tagFmt | isCurTag  = ppCurrentC
                | otherwise = ppVisibleC
+    let warnUnnamed | isJust stack && isCurTag && null (addWksName "" wks) = (++ warningUnnamed)
+                    | otherwise = id
+    let tagHeader = warnUnnamed $ tagFmt $ workspaceIcons $ tag'
 
-    let tag' = tagFmt $ workspaceIcons $ addWksName (fnBold tag) wks
     let dir' = fromMaybe "<err>" $ getWorkspaceDir myLayout wks
     let dir = shortenLeft 30 . shortenDir $ dir'
     let layout = "<icon=layout-" ++ description (W.layout wks) ++ ".xbm/>"
-    let logHeader = unwords [tag', layout, dir]
+    let logHeader = unwords [tagHeader, layout, dir]
 
     let winFmt w | isFocused w && isCurTag = ppFocusC
                  | w `elem` urgents        = ppUrgentC
@@ -418,6 +421,9 @@ xmobarBottom sid@(S (show -> sn)) = xmobar' prop args $ withScreen $ \scr -> do
     ppFocusC   = xmobarBorder "Bottom" "#ffff00" 1 . xmobarColor "#ffff00" ""
     ppUrgentC  = xmobarColor "#ffff00" "#800000:3,1"
     ppUnfocusC = xmobarColor "#b0b040" ""
+    ppWarningC = xmobarColor "#ffff80" "#ff0000"
+
+    warningUnnamed = ' ' : ppWarningC "(unnamed)"
 
     sanitize t = xmobarRaw . shorten' "~" 30 . strip $ t
       where
