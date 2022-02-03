@@ -44,6 +44,10 @@ all: foursquare-swarm-ical
 foursquare-swarm-ical:
 	cd ~/src-python/foursquare-swarm-ical && $(PIPX_INSTALL) --editable .
 
+all: liscopridge liscopridge-cli
+liscopridge liscopridge-cli &:
+	cd ~/src-python/liscopridge && $(PIPX_INSTALL) --editable .
+
 .PHONY: clean
 clean:
 	-pipx uninstall-all

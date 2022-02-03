@@ -199,6 +199,9 @@
 [submodule "src-python/foursquare-swarm-ical"]
 	path = src-python/foursquare-swarm-ical
 	url = https://github.com/liskin/foursquare-swarm-ical.git
+[submodule "src-python/liscopridge"]
+	path = src-python/liscopridge
+	url = https://github.com/liskin/liscopridge.git
 [submodule "src-rust/frece"]
 	path = src-rust/frece
 	url = https://github.com/YodaEmbedding/frece/
