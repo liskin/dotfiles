@@ -342,6 +342,7 @@ command! -nargs=+ -bar AleAddLinter call s:ale_add_linters(g:ale_linters, <f-arg
 command! -nargs=+ -bar AleAddFixer call s:ale_add_linters(g:ale_fixers, <f-args>)
 
 " fzf {{{2
+let g:fzf_prefer_height = 1
 let g:fzf_layout = { 'down': '60%' }
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_colors = {
