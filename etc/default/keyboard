@@ -5,6 +5,6 @@
 XKBMODEL="pc105"
 XKBLAYOUT="us,cz"
 XKBVARIANT=""
-XKBOPTIONS="grp:switch,grp:lalt_lshift_toggle,grp_led:caps,ctrl:swapcaps_hyper"
+XKBOPTIONS="grp:switch,grp:lalt_lshift_toggle,grp_led:caps,ctrl:nocaps"
 
 BACKSPACE="guess"
