@@ -27,7 +27,7 @@ rust-analyzer:
 	chmod +x $@
 
 all: haskell-language-server-8.8.4
-haskell-language-server-%: HASKELL_LANGUAGE_SERVER_VERSION=1.5.0
+haskell-language-server-%: HASKELL_LANGUAGE_SERVER_VERSION=1.6.1.0
 haskell-language-server-%:
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
 		haskell/haskell-language-server,\
