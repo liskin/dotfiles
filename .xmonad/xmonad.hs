@@ -63,7 +63,7 @@ import XMonad.Actions.DoNotDisturb
 import XMonad.Hooks.WriteState
 import XMonad.Util.My
 
-import Xmobar.X11.Actions (stripActions)
+import Xmobar.Run.Actions (stripActions)
 
 -- Bindings
 myKeys XConfig{..} = M.fromList $
