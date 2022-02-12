@@ -115,9 +115,6 @@
 [submodule "src/urxvt-aAtt"]
 	path = src/urxvt-aAtt
 	url = https://github.com/Vifon/autocomplete-ALL-the-things
-[submodule "src/mpv-mpris"]
-	path = src/mpv-mpris
-	url = https://github.com/hoyon/mpv-mpris
 [submodule "src/pandoc-lua-filters"]
 	path = src/pandoc-lua-filters
 	url = https://github.com/pandoc/lua-filters
