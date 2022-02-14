@@ -236,6 +236,14 @@ _**sabbatical**_
 **2010**
 :::
 
+<!--
+::: {.entry}
+**Summer School on Bioinformatics**
+[Comenius University (Bratislava, SK)]{}
+**2011**
+:::
+-->
+
 ### Personal
 
 **[Technical blog](https://lisk.in/).**
@@ -250,7 +258,7 @@ several mid-sized projects as a (co-)maintainer.
 
 * Maintainer of the [XMonad](https://xmonad.org/) X11 window manager. Ex-committer to the [Fluxbox](https://github.com/fluxbox/fluxbox) WM.
 
-* [Prototyped](https://github.com/liskin/hybrid-screenclone) [Linux support for external monitors on dual-GPU laptops](https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel/-/commit/8067255dc9185e85b110254ffbea4d9682d3aa2d) (Nvidia Optimus.)
+* [Prototyped](https://github.com/liskin/hybrid-screenclone) [Linux support for external monitors on dual-GPU laptops](https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel/-/commit/8067255dc9185e85b110254ffbea4d9682d3aa2d) (Nvidia Optimus).
 :::
 
 ::: {}
