@@ -3,4 +3,9 @@
 # reload env on xmonad (re)start
 . ~/.bashrc.d/10_env.sh
 
-exec ~/.xmonad/xmonad-"$(uname -m)"-"$(uname -s | tr '[:upper:]' '[:lower:]')" "$@"
+xmonad=~/.xmonad/xmonad-"$(uname -m)"-"$(uname -s | tr '[:upper:]' '[:lower:]')"
+
+# rebuild if I accidentally delete some shared library deps
+"$xmonad" --version >/dev/null || make -C ~/.xmonad
+
+exec "$xmonad" "$@"
