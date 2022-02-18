@@ -123,7 +123,7 @@ myKeys XConfig{..} = M.fromList $
 
     -- window actions
     , ((modMask,               xK_Escape), kill)
-    , ((modMask,               xK_w     ), toggleFullscreen)
+    , ((modMask .|. shiftMask, xK_w     ), toggleFullscreen)
     , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
 
     -- layout changes
@@ -138,6 +138,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask .|. shiftMask, xK_u     ), sendMessages (replicate 5 MirrorShrink) >> up)
     , ((modMask .|. shiftMask, xK_i     ), sendMessages (replicate 5 MirrorExpand) >> up)
     , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX) >> up)
+    , ((modMask,               xK_w     ), toggleTabLayout)
     , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)    >> up)
     , ((modMask              , xK_period), sendMessage (IncMasterN (-1)) >> up)
     , ((modMask .|. shiftMask, xK_comma ), withFocused (sendMessage . mergeDir id) >> up)
@@ -231,6 +232,12 @@ laySels = [ (s, jumpToLayout s) | s <- l ]
               , "grid"
               , "spiral"
               , "full" ]
+
+toggleTabLayout :: X ()
+toggleTabLayout = do
+    cur <- gets $ description . W.layout . W.workspace . W.current . windowset
+    jumpToLayout $ if cur == "tab" then "tiled" else "tab"
+    -- TODO: track history of workspace layouts and use it instead of "tiled"
 
 instance Shrinker CustomShrink where
     shrinkIt _ _ = []
@@ -369,7 +376,7 @@ xmobarTop = xmobar xmonadDefProp ["-x", "0"] $ do
 
 xmobarBottom :: ScreenId -> StatusBarConfig
 xmobarBottom sid@(S (show -> sn)) = xmobar' prop args $ withScreen $ \scr -> do
-    currentTag <- withWindowSet $ pure . W.currentTag
+    currentTag <- gets $ W.currentTag . windowset
     addWksName <- getWorkspaceNames ":"
     urgents <- readUrgents
 
