@@ -1,0 +1,11 @@
+[Unit]
+Description=weekly timer - %i
+
+[Timer]
+Unit=liskin-timer@%i.service
+OnCalendar=weekly
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=default.target

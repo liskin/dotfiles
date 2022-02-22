@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+export TZ=UTC
+export LC_ALL=C
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+function with-arbtt-capture-logs {
+	local log_file
+	for log_file in ~/.arbtt/capture-:[0-9].log; do "$@"; done
+}
+
+function with-pause-arbtt {
+	local display unit ret
+	display="${log_file#*/capture-}"
+	display="${display%.log}"
+	unit="arbtt-capture@${display}.service"
+
+	if systemctl --user --quiet is-active "$unit"; then
+		o systemctl --user stop "$unit"
+		"$@" && ret=$? || ret=$?
+		o systemctl --user start "$unit"
+		return $ret
+	else
+		"$@"
+	fi
+}
+
+function rotate-logs {
+	local today
+	local first_sample_date first_sample_day first_sample_day_after
+	local rotate_month rotate_month_start rotate_month_end rotate_month_end_plus_week
+	local rotate_start rotate_end
+	today=$(date -d today +%F)
+	first_sample_date=$(arbtt-dump --logfile="$log_file" --first=1 --format=json | jq -r '.[].date')
+	first_sample_day=$(date -d "${first_sample_date}" +%F)
+	first_sample_day_after=$(date -d "${first_sample_day} + 1 day" +%F)
+	rotate_month_start=$(date -d "${first_sample_day_after}" +%+4Y-%m-01)
+
+	while :; do
+		rotate_month=$(date -d "$rotate_month_start" +%+4Y-%m)
+		rotate_month_end=$(date -d "${rotate_month_start} + 1 month" +%F)
+		rotate_month_end_plus_week=$(date -d "${rotate_month_end} + 1 week" +%F)
+		rotate_start=$(date -d "${rotate_month_start} - 1 day" +%F)
+		rotate_end=$(date -d "${rotate_month_end} + 1 day" +%F)
+		[[ $today < $rotate_month_end_plus_week ]] && break
+
+		local dest_log_file
+		dest_log_file=~/backup/local/arbtt/$(basename --suffix=.log "$log_file")-"$rotate_month".log
+		o filter-log "$log_file" "$dest_log_file" "$rotate_start" "$rotate_end"
+		o xz "$dest_log_file"
+
+		rotate_month_start=$rotate_month_end
+	done
+
+	if [[ $first_sample_date < $rotate_start ]]; then
+		with-pause-arbtt \
+			o filter-main-log "$rotate_start"
+	fi
+}
+
+function filter-main-log {
+	local tmp_log_file
+	tmp_log_file="${log_file%.log}"-tmp.log
+	o filter-log "$log_file" "$tmp_log_file" "${1:?from}" "A"
+	o mv "$log_file" "$log_file"~
+	o mv "$tmp_log_file" "$log_file"
+}
+
+function filter-log {
+	arbtt-dump --logfile="${1:?in}" --format=json \
+	| filter-log-json "${3:?from}" "${4:?to}" \
+	| arbtt-import --logfile="${2:?out}" --format=json
+	rm -f "${2:?out}".lck
+}
+
+function filter-log-json {
+	{ sed -e 's/,$/] [/' || :; } | jq -n --arg from "${1:?from}" --arg to "${2:?to}" \
+		'inputs | .[] | if .date >= $to then halt else . end | select(.date >= $from)'
+}
+
+(( $# )) || set -- with-arbtt-capture-logs rotate-logs
+"$@"
