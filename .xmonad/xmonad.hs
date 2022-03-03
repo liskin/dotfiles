@@ -60,6 +60,7 @@ import XMonad.Util.Ungrab
 import qualified XMonad.Util.PureX as P
 
 import XMonad.Actions.DoNotDisturb
+import XMonad.Hooks.LayoutHistory
 import XMonad.Hooks.WriteState
 import XMonad.Util.My
 
@@ -138,7 +139,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask .|. shiftMask, xK_u     ), sendMessages (replicate 5 MirrorShrink) >> up)
     , ((modMask .|. shiftMask, xK_i     ), sendMessages (replicate 5 MirrorExpand) >> up)
     , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX) >> up)
-    , ((modMask,               xK_w     ), toggleTabLayout)
+    , ((modMask,               xK_w     ), toggleLayout "tab")
     , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)    >> up)
     , ((modMask              , xK_period), sendMessage (IncMasterN (-1)) >> up)
     , ((modMask .|. shiftMask, xK_comma ), withFocused (sendMessage . mergeDir id) >> up)
@@ -232,12 +233,6 @@ laySels = [ (s, jumpToLayout s) | s <- l ]
               , "grid"
               , "spiral"
               , "full" ]
-
-toggleTabLayout :: X ()
-toggleTabLayout = do
-    cur <- gets $ description . W.layout . W.workspace . W.current . windowset
-    jumpToLayout $ if cur == "tab" then "tiled" else "tab"
-    -- TODO: track history of workspace layouts and use it instead of "tiled"
 
 instance Shrinker CustomShrink where
     shrinkIt _ _ = []
@@ -491,6 +486,7 @@ myStartupHook = do
 main = do
     xmonad $
         writeStateHook $
+        keepLayoutHistory $
         addAfterRescreenHook (spawnExec "~/bin/.xlayout/post.sh") $
         addRandrChangeHook (spawnExec "if-session-unlocked layout-auto") $
         dynamicSBs (pure . myStatusBars) $
