@@ -19,8 +19,10 @@ function date-range {
 
 function arbtt-stats-foreach {
 	for log in ~/.arbtt/capture-:?.log; do
-		o arbtt-stats --logfile="$log" "$@"
-		echo
+		if (( $(stat -c%s "$log") > 17 )); then
+			o arbtt-stats --logfile="$log" "$@"
+			echo
+		fi
 	done
 }
 
