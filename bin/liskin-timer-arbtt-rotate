@@ -35,7 +35,7 @@ function rotate-logs {
 	local rotate_start rotate_end
 	today=$(date -d today +%F)
 	first_sample_date=$(arbtt-dump --logfile="$log_file" --first=1 --format=json | jq -r '.[].date')
-	[[ $first_sample_date ]] || return
+	[[ $first_sample_date ]] || return 0
 	first_sample_day=$(date -d "${first_sample_date}" +%F)
 	first_sample_day_after=$(date -d "${first_sample_day} + 1 day" +%F)
 	rotate_month_start=$(date -d "${first_sample_day_after}" +%+4Y-%m-01)
