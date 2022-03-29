@@ -27,8 +27,8 @@ color.uda.priority.M=
 color.uda.priority.L=
 
 context.today=( ( ( scheduled<tomorrow or due<tomorrow or +next or +ACTIVE ) and status:pending and -WAITING ) or end>=today )
-context.tomorrow=( ( ( scheduled>=tomorrow and scheduled<tomorrow+1d ) or ( due>=tomorrow and due<tomorrow+1d ) ) and status:pending and -WAITING )
-context.soon=( ( scheduled>=tomorrow+1d or due>=tomorrow+1d or ( scheduled.none: and due.none: and -later ) ) and status:pending and -WAITING )
+context.tomorrow=( ( scheduled.none: or scheduled>=tomorrow ) and ( due.none: or due>=tomorrow ) and ( scheduled<tomorrow+1d or due<tomorrow+1d ) and -ACTIVE and status:pending and -WAITING )
+context.soon=( ( ( scheduled.none: and -later ) or scheduled>=tomorrow+1d ) and ( ( due.none: and -later ) or due>=tomorrow+1d ) and -ACTIVE and status:pending and -WAITING )
 context.later=( +later and status:pending and -WAITING )
 
 context.todo+recent=(-COMPLETED or end>=yesterday)
