@@ -128,7 +128,7 @@ _**sabbatical**_
 
 ::: {.entry}
 **Backend Software Engineer**
-[[SQLdep](https://www.sqldep.com/) (Brno, CZ)]{}
+[[SQLdep](https://sqldep.com/) (Brno, CZ)]{}
 **2015–2016**
 
 * Collaborated on a multi-dialect SQL parser and visual data flow (lineage) analyzer.
