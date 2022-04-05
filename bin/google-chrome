@@ -15,7 +15,6 @@ exec \
 	--enable-gpu-rasterization \
 	--disable-gpu-driver-bug-workarounds \
 	--enable-zero-copy \
-	--enable-features=VaapiVideoDecoder \
-	--enable-accelerated-video-decode \
+	--enable-features=VaapiVideoDecoder,VaapiVideoEncoder,VaapiLowPowerEncoderGen9x,kVaapiVp8TemporalLayerHWEncoding,Vp9kSVCHWDecoding,VaapiVp9kSVCHWEncoding \
 	--disable-font-subpixel-positioning \
 	"$@"
