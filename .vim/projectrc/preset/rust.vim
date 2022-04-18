@@ -1,0 +1,1 @@
+AleAddLinter rust analyzer
