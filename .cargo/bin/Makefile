@@ -11,6 +11,6 @@ frece:
 
 all: rga rga-preproc
 rga rga-preproc &:
-	cargo install ripgrep_all
+	cargo install --locked ripgrep_all
 
 include ~/_gitignore.mk
