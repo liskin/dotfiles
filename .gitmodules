@@ -80,13 +80,10 @@
 	path = .vim/bundle/taskwiki
 	#url = https://github.com/tbabej/taskwiki
 	url = https://github.com/liskin/taskwiki
-[submodule ".vim/bundle/vim-toml"]
-	path = .vim/bundle/vim-toml
-	url = https://github.com/cespare/vim-toml
 [submodule ".vim/bundle/vim-characterize"]
 	path = .vim/bundle/vim-characterize
-	#url = https://github.com/tpope/vim-characterize
-	url = https://github.com/liskin/vim-characterize
+	url = https://github.com/tpope/vim-characterize
+	#url = https://github.com/liskin/vim-characterize
 [submodule ".vim/bundle/vim-visual-multi"]
 	path = .vim/bundle/vim-visual-multi
 	url = https://github.com/mg979/vim-visual-multi
