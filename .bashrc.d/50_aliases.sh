@@ -84,7 +84,7 @@ export-alias rofi-emoji-menu='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoj
 export-alias rofi-emoji-sign='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-sign.sh'
 
 export-alias steam='bwrap-steam /usr/games/steam'
-export-alias protontricks='bwrap-steam ~/.local/bin/protontricks'
+export-alias protontricks='bwrap-steam /usr/bin/protontricks'
 
 alias arbtt=liskin-arbtt-stats
 
