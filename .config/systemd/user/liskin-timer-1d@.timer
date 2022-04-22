@@ -1,5 +1,6 @@
 [Unit]
 Description=daily timer - %i
+ConditionFileIsExecutable=%h/bin/liskin-timer-%i
 
 [Timer]
 Unit=liskin-timer@%i.service

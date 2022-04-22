@@ -1,5 +1,6 @@
 [Unit]
 Description=every 4 hours timer - %i
+ConditionFileIsExecutable=%h/bin/liskin-timer-%i
 
 [Timer]
 Unit=liskin-timer@%i.service
