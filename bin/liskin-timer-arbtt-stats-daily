@@ -11,6 +11,3 @@ fi
 d=$(date -d "${1:-yesterday}" +%F)
 COLUMNS=100 liskin-arbtt-stats activity-chart "$d" \
 	| mail -s "arbtt-stats $d" -a "From: $USER@localhost" "$USER"@localhost
-
-# avoid killing forked exim4 trying to deliver results
-sleep 2

@@ -1,0 +1,9 @@
+[Unit]
+Description=liskin timer failure notification template - %i
+
+[Service]
+StandardInputText=check journal
+ExecStart=mail -s "timer failed: %i" %u@localhost
+
+# avoid killing forked exim4 trying to deliver the mail
+ExitType=cgroup

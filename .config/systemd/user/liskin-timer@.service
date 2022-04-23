@@ -1,6 +1,10 @@
 [Unit]
 Description=liskin timer service template - %i
+OnFailure=liskin-timer-failed@%i.service
 
 [Service]
-Type=oneshot
-ExecStart=%h/bin/liskin-timerwrapper %h/bin/liskin-timer-%i
+RuntimeMaxSec=120
+ExecStart=%h/bin/liskin-timer-%i
+
+# avoid killing any forked exim4 possibly trying to deliver mail
+ExitType=cgroup
