@@ -21,11 +21,30 @@ function log {
 	last_log="$1"
 }
 
+function find-nvidia {
+	local vendor f
+	if [[ -v sys_nvidia_dev ]]; then return; fi
+
+	sys_nvidia_dev=""
+	for f in /sys/bus/pci/devices/*/vendor; do
+		read -r vendor <"$f"
+		if [[ "$vendor" == 0x10de ]]; then
+			sys_nvidia_dev=$(dirname "$f")
+			return
+		fi
+	done
+}
+
 function check-nvidia {
 	local power
 	set -- /sys/module/nvidia*
-	read -r power </sys/bus/pci/devices/0000:02:00.0/power/runtime_status
-	(( $# )) || [[ "$power" == active ]]
+	find-nvidia
+	if [[ "$sys_nvidia_dev" ]]; then
+		read -r power <"$sys_nvidia_dev"/power/runtime_status
+		(( $# )) || [[ "$power" == active ]]
+	else
+		return 1
+	fi
 }
 
 function check-gvt {
@@ -34,7 +53,7 @@ function check-gvt {
 }
 
 function check-touchscreen {
-	local name
+	local name f
 	for f in /sys/class/input/input*/name; do
 		read -r name <"$f"
 		[[ "$name" == "Raydium Corporation Raydium Touch System" ]] && return 0
@@ -43,7 +62,7 @@ function check-touchscreen {
 }
 
 function check-camera {
-	local name interface
+	local name interface f
 	for f in /sys/class/video4linux/video*; do
 		read -r name <"${f}/name" && [[ "$name" == *"Integrated Camera"* ]] && return 0
 		read -r interface <"${f}/device/interface" && [[ "$interface" == *"Integrated Camera"* ]] && return 0
@@ -60,16 +79,21 @@ function refresh {
 	log "${log:+<fc=red>$log</fc>}"
 }
 
-{
-	echo force initial refresh
-	udevadm monitor -k
-} | while :; do
-	if read -r -t $poll_frequency _; then
-		debounce_start=$SECONDS
-		while read -r -t $debounce_read_timeout _ && (( debounce_start + debounce_loop_timeout > SECONDS )); do :; done
-	elif (( $? <= 128 )); then
-		break  # not a timeout, exit
-	fi
+function monitor {
+	{
+		echo force initial refresh
+		udevadm monitor -k
+	} | while :; do
+		if read -r -t $poll_frequency _; then
+			debounce_start=$SECONDS
+			while read -r -t $debounce_read_timeout _ && (( debounce_start + debounce_loop_timeout > SECONDS )); do :; done
+		elif (( $? <= 128 )); then
+			break  # not a timeout, exit
+		fi
 
-	refresh
-done
+		refresh
+	done
+}
+
+(( $# )) || set -- monitor
+"$@"
