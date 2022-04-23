@@ -9,9 +9,11 @@ muttrc-lists: $(wildcard ~/.cache/mu/xapian/*)
 		| sort -u \
 		> $@
 
+ifeq "$(words $(wildcard $(HOME)/.password-store/nomi/imap.gpg))" "1"
 all: muttrc-nomi
 muttrc-nomi: muttrc-nomi.j2 Makefile $(HOME)/.password-store/nomi/imap.gpg
 	pass-extract-yaml-j2 nomi/imap | j2 -f yaml $< - > $@
+endif
 
 include ~/_gitignore.mk
 
