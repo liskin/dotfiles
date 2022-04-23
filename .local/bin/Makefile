@@ -1,8 +1,5 @@
 PYTHON = python3
-PIPX_INSTALL = pipx install --system-site-packages --python /usr/bin/python3.9
-
-# workaround for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1003252 and/or https://github.com/pypa/pip/issues/6264
-export SETUPTOOLS_USE_DISTUTILS := stdlib
+PIPX_INSTALL = pipx install --system-site-packages --python /usr/bin/python3.10
 
 .PHONY: all
 all:
