@@ -2,8 +2,13 @@
 
 sudo /usr/local/sbin/liskin-battery "$@"
 
-thresholds="|$(< /sys/class/power_supply/BAT0/charge_start_threshold)-$(< /sys/class/power_supply/BAT0/charge_stop_threshold)|$(< /sys/class/power_supply/BAT1/charge_start_threshold)-$(< /sys/class/power_supply/BAT1/charge_stop_threshold)"
-if [[ $thresholds == "|40-80|40-80" ]]; then
+thresholds=""
+for b in /sys/class/power_supply/BAT*; do
+	read -r start <"$b"/charge_start_threshold
+	read -r stop <"$b"/charge_stop_threshold
+	thresholds="${thresholds}|${start}-${stop}"
+done
+if [[ $thresholds == +("|40-80") ]]; then
 	thresholds=""
 fi
 
