@@ -21,5 +21,7 @@ endef
 SUBDIRS := $(shell git-dotfiles ls-files | sed -n -e 's|/Makefile$$||p')
 $(foreach subdir,$(SUBDIRS),$(eval $(call SUBDIR_TEMPLATE,$(subdir))))
 
+SUBDIRS_EXCLUDE := docs/resume-cv .xmonad-testing
+
 ## Invoke make for all subdirs with Makefiles
-all: $(SUBDIRS)
+all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
