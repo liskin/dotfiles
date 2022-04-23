@@ -1,0 +1,3 @@
+deb [arch=amd64 signed-by=/usr/share/keyrings/google.gpg] https://dl.google.com/linux/earth/deb/ stable main
+deb [arch=amd64 signed-by=/usr/share/keyrings/google.gpg] https://dl.google.com/linux/chrome/deb/ stable main
+deb [arch=amd64 signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main
