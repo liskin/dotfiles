@@ -9,7 +9,7 @@ fi
 
 cd ~/backup/local/browser
 
-[[ "$(git symbolic-ref HEAD)" == "refs/heads/main" ]]  # quit if doing manual maintenance
+[[ "$(git symbolic-ref HEAD)" == refs/heads/@(master|main) ]]  # quit if doing manual maintenance
 
 # setup temporary directory
 TMPDIR=$(mktemp -d)

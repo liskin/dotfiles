@@ -9,7 +9,7 @@ fi
 
 cd ~/taskwiki
 
-[[ "$(git symbolic-ref HEAD)" == "refs/heads/master" ]]  # quit if doing manual maintenance
+[[ "$(git symbolic-ref HEAD)" == refs/heads/@(master|main) ]]  # quit if doing manual maintenance
 
 symlinks -d .notes  # remove dangling links in .notes
 
