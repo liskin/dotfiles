@@ -105,5 +105,7 @@
 	prune = true
 [completion]
 	commands = ls-files absorb
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
 [includeIf "gitdir:~/src-haskell/xmonad*/"]
 	path = ~/.config/git/include/xmonad
