@@ -1,0 +1,3 @@
+[submodule "root/src/acpilight"]
+	path = root/src/acpilight
+	url = git@github.com:liskin/acpilight.git
