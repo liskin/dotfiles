@@ -1,0 +1,28 @@
+# /etc/inputrc - global inputrc for libreadline
+# See readline(3readline) and `info rluserman' for more information.
+
+# Be 8 bit clean.
+set input-meta on
+set output-meta on
+
+set enable-bracketed-paste on
+
+$if mode=emacs
+
+$if term=rxvt
+"\e[a": history-search-backward
+"\e[b": history-search-forward
+"\e[c": forward-word
+"\e[d": backward-word
+"\e[7~": beginning-of-line
+"\e[8~": end-of-line
+$endif
+
+$if term=tmux
+"\e[1;2A": history-search-backward
+"\e[1;2B": history-search-forward
+"\e[1;2C": forward-word
+"\e[1;2D": backward-word
+$endif
+
+$endif
