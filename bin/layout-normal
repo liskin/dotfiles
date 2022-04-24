@@ -2,6 +2,7 @@
 
 set -eu
 
-xrandr-smart --output 'eDP-*' --auto --pos 0x0 --panning 0x0 --dpi 96 --gamma 1.15:1.15:1.15 --primary
+liskin-dmi-product 20K7 && tp25=: && tp25=
+xrandr-smart --output 'eDP-*' --auto --pos 0x0 --panning 0x0 --dpi 96 ${tp25:+--gamma 1.15:1.15:1.15} --primary
 
 xset +dpms
