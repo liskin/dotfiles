@@ -26,6 +26,7 @@ xset dpms 600 600 600
 xsetroot -cursor_name left_ptr
 setxkbmap ${_LISKIN_NVIDIA:+-option terminate:ctrl_alt_bksp}
 xmodmap ~/.Xmodmap
+if liskin-dmi-product 20VX; then xmodmap ~/.Xmodmap-thinkpad-6row; fi
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1 || :
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled' 1 || :
