@@ -109,3 +109,5 @@
 	pushInsteadOf = https://github.com/
 [includeIf "gitdir:~/src-haskell/xmonad*/"]
 	path = ~/.config/git/include/xmonad
+[includeIf "gitdir:~/work/"]
+	path = ~/work/.gitconfig
