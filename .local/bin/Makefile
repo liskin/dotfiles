@@ -24,6 +24,10 @@ all: isort isort-identify-imports
 isort isort-identify-imports &:
 	$(PIPX_INSTALL) 'isort ~= 5.9'
 
+all: pipenv pipenv-resolver
+pipenv pipenv-resolver &:
+	$(PIPX_INSTALL) pipenv
+
 all: strava-offline
 strava-offline:
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
