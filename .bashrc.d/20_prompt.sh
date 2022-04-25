@@ -1,12 +1,26 @@
 #!bash
 # shellcheck disable=SC2239
 
-if id -nG | grep -qw docker; then
-	__docker_ps1='\[\033[01;36m\]+docker\[\033[01;32m\]'
-else
-	__docker_ps1=
+# show extra/missing groups
+function __set_diff {
+	jq --null-input --raw-output --arg a "${1?}" --arg b "${2?}" '($a | split("\\s+";"")) - ($b | split("\\s+";"")) | .[]'
+}
+__groups_user=$(id -nG "$USER")
+__groups_now=$(id -nG)
+__groups_ps1=
+for __group in $(__set_diff "$__groups_now" "$__groups_user"); do
+	__groups_ps1="${__groups_ps1}+${__group}"
+done
+for __group in $(__set_diff "$__groups_user" "$__groups_now"); do
+	__groups_ps1="${__groups_ps1}-${__group}"
+done
+if [[ ${__groups_ps1-} ]]; then
+	__groups_ps1='\[\033[01;36m\]'"$__groups_ps1"'\[\033[01;32m\]'
 fi
+unset __groups_user __groups_now
+unset -f __set_diff
 
+# newline if not in first column
 function __col1_ps1 {
 	[[ $MC_SID ]] && return
 
@@ -24,9 +38,9 @@ PROMPT_COMMAND+=(__lastexit_save_ps1)
 # shellcheck disable=SC2034
 function __lastexit_save_ps1 { __lastexit_ps1=$?; }
 
-PS1='$(__col1_ps1)\[\033[48;5;053m\033[01;$(( __lastexit_ps1 ? 31 : 32 ))m\][\u'${__docker_ps1}'@\h\[\033[01;36m\]$(__git_ps1 " ($(git repo-name):%s)")\[\033[01;33m\] \W]\$\[\033[00m\] '
+PS1='$(__col1_ps1)\[\033[48;5;053m\033[01;$(( __lastexit_ps1 ? 31 : 32 ))m\][\u'${__groups_ps1}'@\h\[\033[01;36m\]$(__git_ps1 " ($(git repo-name):%s)")\[\033[01;33m\] \W]\$\[\033[00m\] '
 
-unset __docker_ps1
+unset __groups_ps1
 
 ## If this is an xterm set the title to user@host:dir
 #case $TERM in
