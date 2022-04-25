@@ -4,8 +4,6 @@ set -eu
 
 export FONTCONFIG_FILE=~/.config/fontconfig/browser.conf
 
-# TODO: memory cgroup
-
 exec \
 	/usr/bin/google-chrome \
 	--disable-smooth-scrolling \
