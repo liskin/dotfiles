@@ -91,4 +91,8 @@ alias arbtt=liskin-arbtt-stats
 alias paste-x0at='curl -F "file=@-" https://x0.at/; echo'
 alias paste-sprungeus='curl -F "sprunge=<-" http://sprunge.us; echo'
 
-export-alias rfkill=/sbin/rfkill
+# /dev/rfkill is tagged uaccess in udev
+export-alias rfkill=/usr/sbin/rfkill
+
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=940511
+export-alias yarn=yarnpkg
