@@ -5,6 +5,7 @@ set -eu
 . ~/bin/xrandr-smart
 
 # shellcheck disable=SC2015
-out_eDP=$(find-xrandr-connected-output 'eDP-*') \
-&& xinput map-to-output 'Raydium Corporation Raydium Touch System' "$out_eDP" 2>/dev/null \
-|| :
+out_eDP=$(find-xrandr-connected-output 'eDP-*') || exit 0
+
+xinput map-to-output 'Raydium Corporation Raydium Touch System' "$out_eDP" 2>/dev/null || :
+xinput map-to-output 'ELAN901C:00 04F3:2CBD' "$out_eDP" 2>/dev/null || :
