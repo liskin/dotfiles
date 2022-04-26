@@ -137,6 +137,10 @@
 [submodule "src-webextensions/plkfotkator"]
 	path = src-webextensions/plkfotkator
 	url = git@github.com:liskin/plkfotkator.git
+[submodule "src-webextensions/retrograde-is-muni"]
+	path = src-webextensions/retrograde-is-muni
+	#url = https://github.com/adamatousek/retrograde-is-muni
+	url = git@github.com:liskin/retrograde-is-muni
 [submodule "src-haskell/xmonad-contrib"]
 	path = src-haskell/xmonad-contrib
 	#url = https://github.com/xmonad/xmonad-contrib.git
