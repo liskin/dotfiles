@@ -1,4 +1,4 @@
 #!bash
 # shellcheck disable=SC2239
 
-source <(kubectl completion bash)
+eval "$(kubectl completion bash)"
