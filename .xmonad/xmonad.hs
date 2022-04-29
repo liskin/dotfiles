@@ -80,6 +80,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask .|. shiftMask, xK_e     ), unGrab >> spawnExec "rofi-emoji-sign")
     , ((modMask,               xK_p     ), unGrab >> spawnExec "passmenu")
     , ((modMask,               xK_o     ), unGrab >> spawnExec "dunstctl context")
+    , ((modMask .|. shiftMask, xK_o     ), unGrab >> spawnExec "dunstctl close")
 
     -- media keys
     , ((0,       xF86XK_AudioMicMute    ), spawnExec "liskin-media mic-mute")
