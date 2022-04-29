@@ -12,7 +12,9 @@ any window (! $hidden && (
 	|| $program == "zoom"
 )) ==> tag Activity:Call,
 $desktop == "1:irc" && current window $title =~ /^(t\[N\] |weechat\S+: )/ ==> tag Activity:Chat,
+$desktop == "1:irc" && current window $title =~ m!:: https?://app.slack.com/! ==> tag Activity:Chat,
 $desktop == "1:irc" && current window $title =~ /^(t\[m\]|m\[[A-Z]\])[  ]/ ==> tag Activity:Mail,
+$desktop == "1:irc" && current window $title =~ m!:: https?://mail.google.com/! ==> tag Activity:Mail,
 $desktop == "1:irc" && current window $title =~ m|~/taskwiki.* - VIM$| ==> tag Activity:TaskWiki,
 current window $program == "liferea" ==> tag Activity:Web-RSS,
 current window $program == "google-chrome" ==> {
