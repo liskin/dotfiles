@@ -1,7 +1,0 @@
-xkb_keymap {
-	xkb_keycodes  { include "evdev+aliases(qwerty)+local(menu-prsc)"	};
-	xkb_types     { include "complete"	};
-	xkb_compat    { include "complete+ledcaps(group_lock)"	};
-	xkb_symbols   { include "pc+us+cz:2+inet(evdev)+group(switch)+group(lalt_lshift_toggle)+ctrl(nocaps)+compose(102)+compose(102):2"	};
-	xkb_geometry  { include "pc(pc105)"	};
-};
