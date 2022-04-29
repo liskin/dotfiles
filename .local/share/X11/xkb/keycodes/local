@@ -1,0 +1,4 @@
+partial xkb_keycodes "menu-prsc" {
+	<COMP> = 107;
+	<PRSC> = 135;
+};
