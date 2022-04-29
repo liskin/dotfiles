@@ -75,7 +75,7 @@ myKeys XConfig{..} = M.fromList $
     , ((controlMask,           xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
     -- various rofi tools
-    , ((altMask,               xK_Menu  ), unGrab >> spawnExec "rofi -show window")
+    , ((altMask,               xK_Menu  ), unGrab >> spawnExec "rofi-window")
     , ((modMask,               xK_e     ), unGrab >> spawnExec "rofi-emoji-menu")
     , ((modMask .|. shiftMask, xK_e     ), unGrab >> spawnExec "rofi-emoji-sign")
     , ((modMask,               xK_p     ), unGrab >> spawnExec "passmenu")
@@ -266,7 +266,7 @@ myFloatConfReqManageHook = composeAll
 
 myActivateHook :: ManageHook
 myActivateHook = composeOne
-    [ className =? "Google-chrome" <||> className =? "google-chrome" -?> doAskUrgent
+    [ peekQ (className =? "Liferea") <&&> (className =? "Google-chrome" <||> className =? "google-chrome") -?> doAskUrgent
     , pure True -?> doFocus
     ]
 

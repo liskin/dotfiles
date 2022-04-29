@@ -130,6 +130,15 @@ focusQueryWin q ws = withQueryWin q f ws
         f (w:_) = windows $ onWorkspace (W.tag ws) (W.focusWindow w)
         onWorkspace n g s = W.view (W.currentTag s) . g . W.view n $ s
 
+-- | Run 'Query' on currently focused window.
+peekQ :: Query Bool -> Query Bool
+peekQ q = getAny <$> peekQ' (Any <$> q)
+
+peekQ' :: Monoid a => Query a -> Query a
+peekQ' q = do
+    w <- liftX $ gets $ W.peek . windowset
+    maybe mempty (flip local q . const) w
+
 fnBold, fnOblique, fnNerd, fnAweFree, fnAweFreeS, fnAweBrand :: String -> String
 fnBold = wrap "<fn=1>" "</fn>"
 fnOblique = wrap "<fn=2>" "</fn>"

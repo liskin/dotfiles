@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+if (( $# )); then
+	busctl --user -j call org.kde.plasma.browser_integration /TabsRunner org.kde.krunner1 Run "ss" "$ROFI_INFO" ""
+else
+	# this needs https://github.com/erichgoldman/add-url-to-window-title which adds " :: $url" to all titles
+	# without that, we'd need rofi to interactively call us as the user types a query
+	busctl --user -j call org.kde.plasma.browser_integration /TabsRunner org.kde.krunner1 Match "s" " :: " \
+		| jq -r '.data[][] | "\(.[1])\u0000icon\u001f\(.[2])\u001finfo\u001f\(.[0])"'
+fi

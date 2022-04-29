@@ -82,6 +82,7 @@ export-alias umount-dropbox='systemctl --user stop rclone-dropbox.service'
 
 export-alias rofi-emoji-menu='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-menu.sh'
 export-alias rofi-emoji-sign='EMOJI_FONT="emoji mono" ~/src/emoji-rofi-menu/emoji-sign.sh'
+export-alias rofi-window='rofi -modi combi -combi-modi "window,browser:~/bin/rofi-plasma-browser-integration" -show combi'
 
 export-alias steam='bwrap-steam /usr/games/steam'
 export-alias protontricks='bwrap-steam /usr/bin/protontricks'
