@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eu
+
+toplevel="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ "$toplevel" == ~ ]]; then toplevel="~"; fi
+toplevel="$(basename "$toplevel")"
+
+superproject="$(git rev-parse --show-superproject-working-tree 2>/dev/null)"
+superproject="$(basename "$superproject")"
+
+echo "$superproject${superproject:+:}$toplevel"
