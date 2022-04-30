@@ -1,2 +1,2 @@
 event=video/brightnessdown
-action=/root/src/acpilight/xbacklight -prev
+action=/usr/local/sbin/xbacklight -prev
