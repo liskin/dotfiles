@@ -17,6 +17,14 @@ define GITHUB_FETCH_RELEASE_ASSET
 		&& curl -LSsf "$$url"; }
 endef
 
+HLS_VERSION := 1.7.0.0
+HLS_GHC_VERSION := 8.8.4
+HLINT_VERSION := 3.3.4
+TZ_VERSION := 0.6.1
+DELTA_VERSION := 0.11.3
+PANDOC_VERSION := 2.16.1
+LANGUAGETOOL_VERSION := 5.5
+
 all: rust-analyzer
 rust-analyzer:
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
@@ -26,27 +34,25 @@ rust-analyzer:
 	) | gunzip >$@
 	chmod +x $@
 
-all: haskell-language-server-8.8.4
-haskell-language-server-%: HASKELL_LANGUAGE_SERVER_VERSION=1.6.1.0
-haskell-language-server-%:
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		haskell/haskell-language-server,\
-		tags/$(HASKELL_LANGUAGE_SERVER_VERSION),\
-		haskell-language-server-Linux-$*.gz\
-	) | gunzip >$@
-	chmod +x $@
+all: .ext-hls
+.ext-hls: .ext-hls.tar.xz
+	mkdir -p $@
+	mkdir -p $@/.tmp
+	tar -C $@/.tmp -xaf $< --strip-components=1 --wildcards \
+		"*"/GNUmakefile \
+		"*"/scripts \
+		"*"/haskell-language-server-$(HLS_GHC_VERSION).in \
+		"*"/bin/haskell-language-server-wrapper \
+		"*"/bin/haskell-language-server-$(HLS_GHC_VERSION) \
+		"*"/lib/$(HLS_GHC_VERSION)
+	make -C $@/.tmp PREFIX=$(CURDIR)/$@
+	$(RM) -r $@/.tmp
 
-all: haskell-language-server-wrapper
-haskell-language-server-wrapper:
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		haskell/haskell-language-server,\
-		tags/$(HASKELL_LANGUAGE_SERVER_VERSION),\
-		haskell-language-server-wrapper-Linux.gz\
-	) | gunzip >$@
-	chmod +x $@
+.INTERMEDIATE: .ext-hls.tar.xz
+.ext-hls.tar.xz:
+	curl -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-x86_64-linux-deb10.tar.xz
 
 all: tz
-tz: TZ_VERSION=0.6.1
 tz:
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
 		oz/tz,\
@@ -55,7 +61,6 @@ tz:
 	) | tar -x -J tz
 
 all: delta
-delta: DELTA_VERSION=0.11.3
 delta:
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
 		dandavison/delta,\
@@ -64,7 +69,6 @@ delta:
 	) | tar -x -z --strip-components=1 --wildcards "*/delta"
 
 all: .ext-pandoc
-.ext-pandoc: PANDOC_VERSION=2.16.1
 .ext-pandoc:
 	mkdir -p $@
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
@@ -74,7 +78,6 @@ all: .ext-pandoc
 	) | tar -x -z -C $@ --strip-components=1
 
 all: .ext-hlint
-.ext-hlint: HLINT_VERSION=3.3.4
 .ext-hlint:
 	mkdir -p $@
 	$(call GITHUB_FETCH_RELEASE_ASSET,\
@@ -84,7 +87,6 @@ all: .ext-hlint
 	) | tar -x -z -C $@ --strip-components=1
 
 all: .ext-languagetool
-.ext-languagetool: LANGUAGETOOL_VERSION=5.5
 .ext-languagetool: .ext-languagetool.zip
 	mkdir -p $@
 	unzip -d $@ .ext-languagetool.zip

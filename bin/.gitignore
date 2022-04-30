@@ -1,12 +1,11 @@
 /.aliases/
 /.ext-hlint
+/.ext-hls
 /.ext-languagetool
 /.ext-pandoc
 /.old/
 /.venv-pulsectl
 /delta
 /diff-highlight
-/haskell-language-server-8.8.4
-/haskell-language-server-wrapper
 /rust-analyzer
 /tz
