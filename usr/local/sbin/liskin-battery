@@ -1,36 +1,26 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
+
+cd /sys/class/power_supply
+
+function set-thresholds {
+	local bat="${1:?}" start="${2:?}" stop="${3:?}" old_stop
+	read -r old_stop <"$bat/charge_stop_threshold"
+	if (( start > old_stop )); then
+		echo "$stop" > "$bat/charge_stop_threshold"
+		echo "$start" > "$bat/charge_start_threshold"
+	else
+		echo "$start" > "$bat/charge_start_threshold"
+		echo "$stop" > "$bat/charge_stop_threshold"
+	fi
+}
 
 case "$1" in
-	charge)
-		for b in /sys/class/power_supply/BAT*; do
-			echo 70 > "$b"/charge_start_threshold
-			echo 80 > "$b"/charge_stop_threshold
-		done
-		;;
-
-	normal)
-		for b in /sys/class/power_supply/BAT*; do
-			echo 40 > "$b"/charge_start_threshold
-			echo 80 > "$b"/charge_stop_threshold
-		done
-		;;
-
-	full-int)
-		echo 100 > /sys/class/power_supply/BAT0/charge_stop_threshold
-		echo 90 > /sys/class/power_supply/BAT0/charge_start_threshold
-		;;
-
-	full-ext)
-		echo 100 > /sys/class/power_supply/BAT1/charge_stop_threshold
-		echo 90 > /sys/class/power_supply/BAT1/charge_start_threshold
-		;;
-
-	full)
-		for b in /sys/class/power_supply/BAT*; do
-			echo 100 > "$b"/charge_stop_threshold
-			echo 90 > "$b"/charge_start_threshold
-		done
-		;;
+	normal) for b in BAT*; do set-thresholds "$b" 60 100; done ;;
+	charge) for b in BAT*; do set-thresholds "$b" 90 100; done ;;
+	full) for b in BAT*; do set-thresholds "$b" 96 100; done ;;
+	full-int) set-thresholds BAT0 96 100 ;;
+	full-ext) set-thresholds BAT1 96 100 ;;
 esac
