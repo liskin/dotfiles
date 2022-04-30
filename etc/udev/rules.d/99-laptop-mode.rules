@@ -1,4 +1,0 @@
-# override /lib/udev/rules.d/99-laptop-mode.rules (no lmt-udev force on usb add)
-
-ACTION=="change", SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_NAME}=="|AC|ACAD|ADP*", RUN+="lmt-udev auto"
-ACTION=="add|remove", SUBSYSTEM=="machinecheck", RUN+="lmt-udev auto"
