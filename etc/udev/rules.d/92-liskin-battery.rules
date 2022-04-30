@@ -1,5 +1,0 @@
-ACTION=="remove", GOTO="liskin-battery-end"
-
-ACTION!="change", SUBSYSTEM=="power_supply", ATTR{type}=="Battery", ATTR{present}=="1", ATTR{charge_start_threshold}="40", ATTR{charge_stop_threshold}="80"
-
-LABEL="liskin-battery-end"
