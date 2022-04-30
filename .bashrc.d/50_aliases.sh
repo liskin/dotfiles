@@ -52,9 +52,6 @@ export-alias wiki="vim ~/taskwiki/index.wiki"
 # shellcheck disable=SC2016
 export-alias git-dotfiles='git --git-dir="$HOME/src/dotfiles.git"'
 alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
-# shellcheck disable=SC2016
-export-alias git-dotfiles-root='git --git-dir="$HOME/src/dotfiles.git/worktrees/dotfiles-root"'
-alias git-dotfiles-root-export='export GIT_DIR="$HOME/src/dotfiles.git/worktrees/dotfiles-root"'
 
 export-alias livereload-make="python3 -c 'from livereload import Server, shell; server = Server(); server.watch(\".\", shell(\"make\")); server.serve();'"
 
