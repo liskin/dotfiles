@@ -103,6 +103,7 @@
 [submodule ".vim/bundle/org.vim"]
 	path = .vim/bundle/org.vim
 	url = https://github.com/axvr/org.vim
+	ignore = untracked
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
