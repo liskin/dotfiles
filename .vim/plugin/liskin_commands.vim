@@ -76,14 +76,4 @@ endfunction
 command! -nargs=? GeneratePassword call s:GeneratePassword("LCN", <f-args>)
 command! -nargs=? GeneratePasswordSpecial call s:GeneratePassword("LCNS", <f-args>)
 
-" {{{1 GhostTextStart
-
-function! s:ghost_text() abort
-	set runtimepath+=$HOME/.vim/bundle/ghost-text.vim
-	runtime! plugin/ghost-text.vim
-	GhostTextStart
-endfunction
-
-command! -bar GhostTextStart call s:ghost_text()
-
 " vim:set foldenable foldmethod=marker: {{{1

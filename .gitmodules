@@ -69,10 +69,6 @@
 [submodule ".vim/bundle/vader.vim"]
 	path = .vim/bundle/vader.vim
 	url = https://github.com/junegunn/vader.vim
-[submodule ".vim/bundle/ghost-text.vim"]
-	path = .vim/bundle/ghost-text.vim
-	url = https://github.com/pandysong/ghost-text.vim
-	ignore = untracked
 [submodule ".vim/bundle/vimwiki"]
 	path = .vim/bundle/vimwiki
 	url = https://github.com/vimwiki/vimwiki/

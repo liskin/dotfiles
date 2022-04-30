@@ -408,7 +408,7 @@ let g:snips_github = "https://github.com/liskin"
 
 " load everything: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
-let g:pathogen_disabled = ['ghost-text.vim']
+let g:pathogen_disabled = []
 call pathogen#infect()
 
 filetype plugin indent on
