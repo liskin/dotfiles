@@ -8,7 +8,7 @@ for b in /sys/class/power_supply/BAT*; do
 	read -r stop <"$b"/charge_stop_threshold
 	thresholds="${thresholds}|${start}-${stop}"
 done
-if [[ $thresholds == +("|40-80") ]]; then
+if [[ $thresholds == +("|60-100") ]]; then
 	thresholds=""
 fi
 
