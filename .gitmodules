@@ -1,3 +1,4 @@
 [submodule "usr/src/acpilight"]
 	path = usr/src/acpilight
+	#url = https://github.com/wavexx/acpilight
 	url = git@github.com:liskin/acpilight.git
