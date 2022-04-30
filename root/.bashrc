@@ -1,24 +1,26 @@
+#!bash
+# shellcheck disable=SC2239
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
 
-export PS1='\[\033[48;5;088m\033[01;$(( $? ? 31 : 32 ))m\][\u@\h \[\033[01;33m\]\W]#\[\033[00m\] '
-umask 022
-#export LESS="-c"
+# If not running interactively, don't do anything
+case $- in
+	*i*) ;;
+	  *) return;;
+esac
 
-# You may uncomment the following lines if you want `ls' to be colorized:
-export LS_OPTIONS='--color=auto'
-eval "`dircolors`"
-alias ls='ls $LS_OPTIONS'
-alias ll='ls $LS_OPTIONS -l'
-alias l='ls $LS_OPTIONS -lA'
-#
-# Some more alias to avoid making mistakes:
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-
-export HISTFILESIZE=50000
-export HISTSIZE=50000
-set +o histexpand
-
-alias git-dotfiles='git --git-dir="$HOME/src/dotfiles.git"'
-alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
+function __bashrc_d_get {
+	local LC_COLLATE=C
+	__bashrc_d=(~/.bashrc.d/*.sh)
+}; __bashrc_d_get; unset -f __bashrc_d_get
+for i in "${__bashrc_d[@]}"; do
+	if [[ $__bashrc_bench ]]; then
+		TIMEFORMAT="$i: %R"
+		time . "$i"
+		unset TIMEFORMAT
+	else
+		. "$i"
+	fi
+done; unset i; unset __bashrc_d
