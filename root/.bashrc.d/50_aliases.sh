@@ -21,7 +21,5 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-# shellcheck disable=SC2016
 alias git-dotfiles='git --git-dir="$HOME/src/dotfiles.git"'
-# shellcheck disable=SC2016
 alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
