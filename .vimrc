@@ -287,7 +287,7 @@ let g:ale_elixir_elixir_ls_config = {
 		\ 'dialyzerEnabled': v:false,
 	\ }
 \ }
-let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/elixir-ls/rel"
+let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/elixir-ls-rel"
 
 let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
 

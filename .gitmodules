@@ -185,7 +185,6 @@
 [submodule "src-elixir/elixir-ls"]
 	path = src-elixir/elixir-ls
 	url = https://github.com/elixir-lsp/elixir-ls.git
-	ignore = untracked
 [submodule "src-python/pandoc-plantuml-filter"]
 	path = src-python/pandoc-plantuml-filter
 	#url = https://github.com/timofurrer/pandoc-plantuml-filter.git
