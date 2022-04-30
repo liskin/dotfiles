@@ -39,7 +39,7 @@ clean:
 	$(RM) -r \
 		stack.yaml stack.yaml.lock hie.yaml \
 		.build .stack-work \
-		$(XMONAD_DEPS) $(XMONAD_BINARY)
+		$(XMONAD_DEPS) xmonad-$(ARCH)-$(OS)
 
 .sub/xmonad-: # tab-completion
 ## prepare sub-workspace

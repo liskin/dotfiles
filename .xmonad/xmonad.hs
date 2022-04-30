@@ -8,7 +8,7 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-missing-signatures -Wno-orphans #-}
 
-module Main (main) where
+module Mainxmonad (main) where
 
 import Control.Monad
 import Data.List
@@ -17,6 +17,7 @@ import Data.Monoid
 import Graphics.X11.ExtraTypes.XF86
 import System.Environment
 import System.Exit
+import System.Info
 import "regex-compat-tdfa" Text.Regex
 import qualified Data.Map as M
 
@@ -323,7 +324,7 @@ xmobar prop args pp = xmobar' prop args (dynamicLogString =<< pp)
 xmobar' :: String -> [String] -> X String -> StatusBarConfig
 xmobar' prop args pp = statusBarGeneric cmd (xmonadPropLog' prop =<< pp)
   where
-    cmd = cmdExecJournal $ unwords $ ["xmobar", "-i", myHome ++ "/.xmobar/icons"] ++ args
+    cmd = cmdExecJournal $ unwords $ myHome <> "/.xmonad/xmobar-" <> arch <> "-" <> os : args
 
 xmobarTop :: StatusBarConfig
 xmobarTop = xmobar xmonadDefProp ["-x", "0"] $ do

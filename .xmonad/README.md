@@ -81,7 +81,7 @@ non-goals: eye candy
 
 * [`~/.xmonad/xmonad.hs`](xmonad.hs): xmonad config main
 
-* [`~/.xmobarrc`](../.xmobarrc), [`~/.xmobar/icons/`](../.xmobar/icons/):
+* [`~/.xmonad/xmobar.hs`](xmobar.hs), [`~/.xmobar/icons/`](../.xmobar/icons/):
   xmobar configuration
 
 ## Build

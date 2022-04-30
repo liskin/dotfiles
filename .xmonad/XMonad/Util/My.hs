@@ -147,6 +147,15 @@ fnAweFree = wrap "<fn=4>" "</fn>"
 fnAweFreeS = wrap "<fn=5>" "</fn>"
 fnAweBrand = wrap "<fn=6>" "</fn>"
 
+fontNormal, fontBold, fontOblique, fontNerd, fontAweFree, fontAweFreeS, fontAweBrand :: String
+fontNormal = "-misc-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*"
+fontBold = "-misc-fixed-bold-r-normal-*-13-*-*-*-*-*-*-*"
+fontOblique = "-misc-fixed-medium-o-normal-*-13-*-*-*-*-*-*-*"
+fontNerd = "xft:Inconsolata Nerd Font-11"
+fontAweFree = "xft:Font Awesome 5 Free-12"
+fontAweFreeS = "xft:Font Awesome 5 Free Solid-12"
+fontAweBrand = "xft:Font Awesome 5 Brands-12"
+
 ppClickableW :: Window -> String -> String
 ppClickableW w = xmobarAction ("xdotool windowactivate " ++ show w) "1"
 

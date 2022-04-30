@@ -1,6 +1,5 @@
 ARCH := $(shell uname -m)
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
-XMONAD_BINARY := xmonad-$(ARCH)-$(OS)
 XMONAD_DEPS := xmobar xmonad xmonad-contrib split regex-compat-tdfa
 BUILD_TARGETS = $(XMONAD_DEPS)
 BUILD_DEPS_TARGETS := build .bin/xmonadctl .bin/xmonadpropread .bin/xmonadpropwrite
@@ -8,9 +7,9 @@ BUILD_DOCS_TARGETS := build-doc
 SRC_HASKELL := ~/src-haskell
 
 ## compile xmonad.hs
-all: $(XMONAD_BINARY)
+all: $(patsubst %.hs,%-$(ARCH)-$(OS),$(wildcard *.hs))
 
-$(XMONAD_BINARY): build-deps
+%-$(ARCH)-$(OS): %.hs build-deps
 	cd $(SRC_HASKELL) && \
 		stack ghc -- \
 			-Wall \
@@ -20,7 +19,8 @@ $(XMONAD_BINARY): build-deps
 			-rtsopts -with-rtsopts="-V0" \
 			-dynamic \
 			-o $(CURDIR)/$@ \
-			$(CURDIR)/xmonad.hs
+			-main-is Main$* \
+			$(CURDIR)/$<
 
 .PHONY: ghcid
 ghcid:
@@ -45,7 +45,7 @@ ghci: build-deps
 		stack exec -- ghci \
 			-Wall \
 			-i -i$(CURDIR) \
-			$(CURDIR)/xmonad.hs
+			$(wildcard $(CURDIR)/*.hs)
 
 ghci-X11:
 ghci-X11-xft:
