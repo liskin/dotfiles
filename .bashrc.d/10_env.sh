@@ -24,7 +24,8 @@ export DVIVIEWER=okular
 export EDITOR=vim
 export PDFVIEWER=zathura
 export PSVIEWER=zathura
-export SSH_ASKPASS=/usr/lib/ssh/x11-ssh-askpass
+export SSH_ASKPASS=/usr/bin/ssh-askpass
+export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
 export RIPGREP_CONFIG_PATH=~/.config/ripgreprc
 export FZF_DEFAULT_COMMAND='rg --files'
