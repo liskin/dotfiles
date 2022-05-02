@@ -26,8 +26,8 @@ sqlite3 "$TMPDIR"/History .dump >./chrome-history.sql
 
 # backup sessionbuddy
 mkdir "$TMPDIR"/sessionbuddy
-cp ~/.config/google-chrome/Default/databases/chrome-extension_edacconmaakjimmfgnblocblbcdcpbko_0/3* "$TMPDIR"/sessionbuddy/
-sqlite3 "$TMPDIR"/sessionbuddy/3 .dump >./chrome-sessionbuddy.sql
+cp ~/.config/google-chrome/Default/databases/chrome-extension_edacconmaakjimmfgnblocblbcdcpbko_0/* "$TMPDIR"/sessionbuddy/
+sqlite3 "$TMPDIR"/sessionbuddy/[0-9] .dump >./chrome-sessionbuddy.sql
 
 # commit
 git add .
