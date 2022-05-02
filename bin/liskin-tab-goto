@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function find-tabs {
+	busctl --user -j call org.kde.plasma.browser_integration /TabsRunner org.kde.krunner1 Match "s" "${1:?}" \
+		| jq '.data[] | sort_by(.[4]) | reverse[]'
+}
+
+function find-tab {
+	find-tabs "$@" | jq -s '.[0:1][]'
+}
+
+function activate-tab {
+	local id
+	id=$(jq -r '.[0]')
+	if [[ $id ]]; then
+		busctl --user -j call org.kde.plasma.browser_integration /TabsRunner org.kde.krunner1 Run "ss" "$id" ""
+	fi
+}
+
+function goto-slack {
+	find-tab "https://app.slack.com/client/" | activate-tab
+}
+
+function goto-gmail {
+	find-tab "https://mail.google.com/mail/" | activate-tab
+}
+
+function goto-calendar {
+	find-tab "https://calendar.google.com/calendar/" | activate-tab
+}
+
+"$@"
