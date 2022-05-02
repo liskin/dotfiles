@@ -11,8 +11,11 @@ cd ~/backup/local/liferea
 
 [[ "$(git symbolic-ref HEAD)" == refs/heads/@(master|main) ]]  # quit if doing manual maintenance
 
-# backup liferea db
+[[ -a ~/.config/liferea || -a ~/.local/share/liferea ]] || exit 0  # quit if nothing to backup
+
+# backup liferea db and feedlist
 sqlite3 ~/.local/share/liferea/liferea.db .dump >./liferea.sql
+cp -f ~/.config/liferea/feedlist.opml ./feedlist.opml
 
 # commit
 git add .
