@@ -7,6 +7,6 @@ alias poweroff='sudo poweroff'
 
 alias sudo-docker='sudo -g docker --preserve-env newgrp $(id -n -g)'
 alias sudo-libvirt='sudo -g libvirt --preserve-env newgrp $(id -n -g)'
-alias docker-stop='sudo service docker stop && sudo systemctl start docker.socket'
+alias docker-stop='sudo systemctl stop docker.service containerd.service && sudo systemctl start docker.socket'
 
 alias liskin-battery-graph='sudo /usr/local/sbin/liskin-battery-graph'
