@@ -7,12 +7,13 @@ shopt -s lastpipe
 exec {lock_fd}>"/run/liskin-suspend.lock"
 flock --nonblock "$lock_fd" || exit
 
-unlocked=$(
-	loginctl list-sessions --no-legend \
-		| awk '{ print $1 }' \
-		| xargs -n1 loginctl show-session --property=LockedHint \
-		| grep --invert-match --line-regexp --fixed-strings LockedHint=yes || :
-)
+unlocked=
+loginctl list-sessions --no-legend | awk '{ print $1 }' \
+| while read -r session; do
+	if [[ "$(loginctl show-session --property=Remote "$session")" == "Remote=no" && "$(loginctl show-session --property=LockedHint "$session")" == "LockedHint=no" ]]; then
+		unlocked=:
+	fi
+done
 
 if [[ ! $unlocked ]]; then
 	systemctl suspend
