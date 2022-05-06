@@ -1,0 +1,185 @@
+#!/usr/bin/env bash
+
+# adapted from https://github.com/openconnect/openconnect/blob/master/trojans/hipreport.sh
+# license: LGPL 2.1, <https://www.infradead.org/openconnect/licence.html>
+
+for bin in hostname sed base32 uuidgen; do
+	if ! command -v "$bin" >/dev/null 2>&1; then
+		echo "Could not find \"$bin\" in \$PATH, please install this dependency." >&2
+		exit 1
+	fi
+done
+
+# openconnect will call this script with the follow command-line
+# arguments, which are needed to populate the contents of the
+# HIP report:
+#
+#   --cookie: a URL-encoded string, as output by openconnect
+#             --authenticate --protocol=gp, which includes parameters
+#             from the /ssl-vpn/login.esp response
+#
+#   --client-ip{,v6}: IPv4/6 addresses allocated by the GlobalProtect
+#                     VPN for this client (included in
+#                     /ssl-vpn/getconfig.esp response)
+#
+#   --md5: The md5 digest to encode into this HIP report. I'm not sure
+#          exactly what this is the md5 digest *of*, but all that
+#          really matters is that the value in the HIP report
+#          submission should match the value in the HIP report check.
+#
+#   --client-os: The platform name in GlobalProtect's format (known
+#                values are 'Linux', 'Mac' or 'Windows' ). Defaults to
+#                'Windows'.
+#
+# This hipreport.sh does not work as-is on Android. The large here-doc
+# (cat <<EOF) does not appear to work with Android's /system/bin/sh,
+# likely due to an insufficient read buffer size.
+# Try hipreport-android.sh instead.
+
+# Read command line arguments into variables
+COOKIE=
+IP=
+IPv6=
+MD5=
+
+
+while [ "$1" ]; do
+    if [ "$1" = "--cookie" ];      then shift; COOKIE="$1"; fi
+    if [ "$1" = "--client-ip" ];   then shift; IP="$1"; fi
+    if [ "$1" = "--client-ipv6" ]; then shift; IPV6="$1"; fi
+    if [ "$1" = "--md5" ];         then shift; MD5="$1"; fi
+    shift
+done
+
+if [ -z "$COOKIE" -o -z "$MD5" -o -z "$IP$IPV6" ]; then
+    echo "Parameters --cookie, --md5, and --client-ip and/or --client-ipv6 are required" >&2
+    exit 1;
+fi
+
+# Extract username and domain and computer from cookie
+USER=$(echo "$COOKIE" | sed -rn 's/(.+&|^)user=([^&]+)(&.+|$)/\2/p')
+DOMAIN=$(echo "$COOKIE" | sed -rn 's/(.+&|^)domain=([^&]+)(&.+|$)/\2/p')
+COMPUTER=$(echo "$COOKIE" | sed -rn 's/(.+&|^)computer=([^&]+)(&.+|$)/\2/p')
+
+CLIENT_VERSION="5.2.6-87"
+OS="Microsoft Windows 10 Pro , 64-bit"
+OS_VENDOR="Microsoft"
+
+COMPUTER=DESKTOP-$(hostname -s | base32 | tr -d =)
+HOSTID=$(uuidgen -n @oid -s -N "HOSTID-$(< /etc/machine-id)")
+
+NETWORK_INTERFACE_NAME="{$(uuidgen -n @oid -s -N "NETWORK_INTERFACE_NAME-$(< /etc/machine-id)")}"
+NETWORK_INTERFACE_NAME="${NETWORK_INTERFACE_NAME^^}"
+NETWORK_INTERFACE_DESCRIPTION="PANGP Virtual Ethernet Adapter"
+
+# Timestamp in the format expected by GlobalProtect server
+NOW=$(date +'%m/%d/%Y %H:%M:%S')
+DAY=$(date +'%d')
+MONTH=$(date +'%m')
+YEAR=$(date +'%Y')
+
+cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<hip-report>
+	<md5-sum>$MD5</md5-sum>
+	<user-name>$USER</user-name>
+	<domain>$DOMAIN</domain>
+	<host-name>$COMPUTER</host-name>
+	<host-id>$HOSTID</host-id>
+	<ip-address>$IP</ip-address>
+	<ipv6-address>$IPV6</ipv6-address>
+	<generate-time>$NOW</generate-time>
+	<hip-report-version>4</hip-report-version>
+	<categories>
+		<entry name="host-info">
+			<client-version>$CLIENT_VERSION</client-version>
+			<os>$OS</os>
+			<os-vendor>$OS_VENDOR</os-vendor>
+			<domain></domain>
+			<host-name>$COMPUTER</host-name>
+			<host-id>$HOSTID</host-id>
+			<network-interface>
+				<entry name="$NETWORK_INTERFACE_NAME">
+					<description>$NETWORK_INTERFACE_DESCRIPTION</description>
+					<mac-address>02-50-41-00-00-01</mac-address>
+					<ip-address>
+						<entry name="$IP"/>
+					</ip-address>
+				</entry>
+			</network-interface>
+		</entry>
+		<entry name="anti-malware">
+			<list>
+				<entry>
+					<ProductInfo>
+						<Prod vendor="Microsoft Corporation" name="Windows Defender" version="4.18.2203.5" defver="1.363.1354.0" engver="1.1.19200.5" datemon="$MONTH" dateday="$DAY" dateyear="$YEAR" prodType="3" osType="1"/>
+						<real-time-protection>yes</real-time-protection>
+						<last-full-scan-time>n/a</last-full-scan-time>
+					</ProductInfo>
+				</entry>
+			</list>
+		</entry>
+		<entry name="disk-backup">
+			<list>
+				<entry>
+					<ProductInfo>
+						<Prod vendor="Microsoft Corporation" name="Windows Backup and Restore" version="10.0.19041.1"/>
+						<last-backup-time>n/a</last-backup-time>
+					</ProductInfo>
+				</entry>
+				<entry>
+					<ProductInfo>
+						<Prod vendor="Microsoft Corporation" name="Windows File History" version="10.0.19041.1"/>
+						<last-backup-time>n/a</last-backup-time>
+					</ProductInfo>
+				</entry>
+			</list>
+		</entry>
+		<entry name="disk-encryption">
+			<list>
+				<entry>
+					<ProductInfo>
+						<Prod vendor="Microsoft Corporation" name="BitLocker Drive Encryption" version="10.0.19041.1"/>
+						<drives>
+							<entry>
+								<drive-name>C:\</drive-name>
+								<enc-state>unencrypted</enc-state>
+							</entry>
+							<entry>
+								<drive-name>All</drive-name>
+								<enc-state>unencrypted</enc-state>
+							</entry>
+						</drives>
+					</ProductInfo>
+				</entry>
+			</list>
+		</entry>
+		<entry name="firewall">
+			<list>
+				<entry>
+					<ProductInfo>
+						<Prod vendor="Microsoft Corporation" name="Windows Firewall" version="10.0.19041.1"/>
+						<is-enabled>yes</is-enabled>
+					</ProductInfo>
+				</entry>
+			</list>
+		</entry>
+		<entry name="patch-management">
+			<list>
+				<entry>
+					<ProductInfo>
+						<Prod vendor="Microsoft Corporation" name="Windows Update Agent" version="10.0.19041.1503"/>
+						<is-enabled>yes</is-enabled>
+					</ProductInfo>
+				</entry>
+			</list>
+			<missing-patches>
+			</missing-patches>
+		</entry>
+		<entry name="data-loss-prevention">
+			<list>
+			</list>
+		</entry>
+	</categories>
+</hip-report>
+EOF
