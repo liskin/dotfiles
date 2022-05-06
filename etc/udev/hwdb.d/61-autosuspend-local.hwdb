@@ -9,6 +9,7 @@ pci:v000010DEd0000134D*
 pci:v00008086d000024FD*
 usb:v04F2pB5AC*
 usb:v1199p9079*
+usb:v138ap0097*
  ID_AUTOSUSPEND=1
 
 # ThinkPad P14s Gen 2i
