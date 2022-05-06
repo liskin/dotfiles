@@ -1,0 +1,25 @@
+/* ==UserStyle==
+@name           Jira compact, high density
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document domain("atlassian.net") {
+	/* thinner top bar */
+	:root * { --topNavigationHeight: 32px; }
+	body#jira header[role="banner"] { height: var(--topNavigationHeight); }
+	body#jira header[role="banner"] *[height="56px"] { height: var(--topNavigationHeight); }
+
+	/* search save space at the top */
+	body#jira form.navigator-search { margin: 0; }
+	body#jira div.contained-content > * { padding-top: 3px; padding-bottom: 0; }
+
+	/* board header */
+	body#jira div#ghx-header { padding: 0; margin: 0; }
+	body#jira div#ghx-quick-filters { margin-top: 0; margin-bottom: 0; }
+	body#jira div.sc-1vjwbf0-0 { margin-top: 0; margin-bottom: 0; }
+	body#jira div.sc-1dqealq-0 * { margin-top: 0; margin-bottom: 0; }
+}
+
+/* further inspiration, see https://github.com/Hubbitus/jira-compact.user.css/blob/6fcd535f0588f0c020d47d84accca5db6f638a5c/jira-compact.user.css */
