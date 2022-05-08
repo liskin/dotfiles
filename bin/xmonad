@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # reload env on xmonad (re)start
-. ~/.bashrc.d/10_env.sh
+. ~/.xsessionrc
 
 xmonad=~/.xmonad/xmonad-"$(uname -m)"-"$(uname -s | tr '[:upper:]' '[:lower:]')"
 
