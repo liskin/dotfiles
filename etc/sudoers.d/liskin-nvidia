@@ -1,0 +1,1 @@
+tomi	ALL=(ALL) NOPASSWD: /sbin/modprobe nvidia-drm, /sbin/modprobe -r nvidia

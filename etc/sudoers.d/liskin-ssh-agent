@@ -1,0 +1,2 @@
+# "sudo scp" or "sudo rsync" should be able to use your SSH agent.
+Defaults:%sudo env_keep += "SSH_AGENT_PID SSH_AUTH_SOCK"

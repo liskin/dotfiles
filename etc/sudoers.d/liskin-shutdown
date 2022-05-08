@@ -1,0 +1,1 @@
+tomi	ALL=(ALL) NOPASSWD: /sbin/reboot, /sbin/halt, /sbin/poweroff

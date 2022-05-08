@@ -1,0 +1,5 @@
+tomi	ALL=(ALL) NOPASSWD: /usr/local/sbin/liskin-battery
+tomi	ALL=(ALL) NOPASSWD: /usr/local/sbin/liskin-battery-graph
+tomi	ALL=(ALL) NOPASSWD: /usr/local/sbin/liskin-gvt-g
+tomi	ALL=(ALL) NOPASSWD: /usr/local/sbin/liskin-t25-touchscreen
+tomi	ALL=(ALL) NOPASSWD: /usr/local/sbin/liskin-xsecurelock-oom
