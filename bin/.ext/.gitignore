@@ -1,8 +1,12 @@
 /.ext-*
+/ctlptl
 /delta
+/hadolint
 /haskell-language-server-8.8.4
 /haskell-language-server-wrapper
 /hlint
+/kind
 /pandoc
 /rust-analyzer
+/tilt
 /tz

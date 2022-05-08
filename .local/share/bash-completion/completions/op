@@ -1,4 +1,1 @@
-#!bash
-# shellcheck disable=SC2239
-
-eval "$(op completion bash)"
+.go-cobra

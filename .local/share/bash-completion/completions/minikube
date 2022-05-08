@@ -1,4 +1,1 @@
-#!bash
-# shellcheck disable=SC2239
-
-eval "$(minikube completion bash)"
+.go-cobra
