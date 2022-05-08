@@ -1,0 +1,45 @@
+[Unit]
+Description=Docker Application Container Engine (Rootless)
+Documentation=https://docs.docker.com/go/rootless/
+
+[Service]
+Type=notify
+NotifyAccess=all
+Environment=PATH=/usr/share/docker.io/contrib:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/share/docker.io/contrib/dockerd-rootless.sh
+ExecReload=/bin/kill -s HUP $MAINPID
+TimeoutSec=0
+RestartSec=2
+Restart=always
+StartLimitBurst=3
+StartLimitInterval=60s
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+TasksMax=infinity
+Delegate=yes
+KillMode=mixed
+
+[Install]
+WantedBy=default.target
+
+# TODO: socket activation (https://github.com/moby/moby/issues/42078)
+
+; [Unit]
+; After=docker.socket
+; Requires=docker.socket
+;
+; [Service]
+; ExecStart=/usr/share/docker.io/contrib/dockerd-rootless.sh -H fd://
+
+# docker.socket
+
+; [Unit]
+; Description=Docker Socket for the API
+;
+; [Socket]
+; ListenStream=%t/docker.sock
+; SocketMode=0600
+;
+; [Install]
+; WantedBy=sockets.target
