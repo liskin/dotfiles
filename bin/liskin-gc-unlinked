@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Garbage collect paths that aren't the target of a symbolic link.
+
+set -eu -o pipefail
+export LC_ALL=C
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+declare -A reachable_objects=()
+declare -A objects=()
+
+for f in "$@"; do
+	f_canon=$(readlink -f "$f")
+	if [[ -h $f ]]; then
+		reachable_objects[$f_canon]=:
+	else
+		objects[$f_canon]=:
+	fi
+done
+
+for f in "${!objects[@]}"; do
+	if [[ ! ${reachable_objects[$f]-} ]]; then
+		o rm -rvI "$f"
+	fi
+done

@@ -1,11 +1,4 @@
 /.aliases/
-/.ext-hlint
-/.ext-hls
-/.ext-languagetool
-/.ext-pandoc
 /.old/
 /.venv-pulsectl
-/delta
 /diff-highlight
-/rust-analyzer
-/tz

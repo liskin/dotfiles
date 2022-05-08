@@ -1,2 +1,0 @@
-#!/bin/sh
-exec java -jar ~/bin/.ext-languagetool/languagetool-commandline.jar "$@"
