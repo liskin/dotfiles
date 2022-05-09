@@ -7,6 +7,9 @@ define GITHUB_FETCH_RELEASE_ASSET
 		&& curl -LSsf "$$url"; }
 endef
 
+CURL := curl -LSsf
+
+CARGO_BINSTALL_VERSION := 0.7.0
 CTLPTL_VERSION := 0.8.0
 DELTA_VERSION := 0.12.1
 HADOLINT_VERSION := 2.10.0
@@ -155,6 +158,14 @@ kind: | .ext-kind ; ln -fsT $| $@
 		kind-linux-amd64\
 	) >$@
 	chmod +x $@
+
+all: cargo-binstall
+cargo-binstall: | .ext-cargo-binstall ; ln -fsT $|/$@ $@
+.ext-cargo-binstall: .ext-cargo-binstall-$(CARGO_BINSTALL_VERSION) ; ln -fsT $< $@
+.ext-cargo-binstall-$(CARGO_BINSTALL_VERSION):
+	mkdir -p $@
+	$(CURL) https://github.com/ryankurte/cargo-binstall/releases/download/v$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
+		| tar -x -z -C $@ cargo-binstall
 
 .PHONY: gc
 gc:
