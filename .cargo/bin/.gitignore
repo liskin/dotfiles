@@ -1,5 +1,7 @@
-/*-v[0-9]*[0-9]
+/.binstall/
+/.build/
 /.old/
+/cargo-cache
 /cargo-watch
 /dust
 /frece
@@ -7,3 +9,4 @@
 /rga-fzf
 /rga-fzf-open
 /rga-preproc
+/sccache
