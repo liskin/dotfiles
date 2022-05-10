@@ -1,6 +1,13 @@
 .PHONY: all _phony
 all:
 
+# make git-dotfiles first and restart make
+ifeq ($(shell command -v git-dotfiles),)
+include bin/.aliases/.done
+bin/.aliases/.done:
+	$(MAKE) -C bin .aliases/.done
+endif
+
 include ~/_help.mk
 
 define SUBDIR_TEMPLATE
