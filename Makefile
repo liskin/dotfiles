@@ -25,3 +25,5 @@ SUBDIRS_EXCLUDE := docs/resume-cv .xmonad-testing
 
 ## Invoke make for all subdirs with Makefiles
 all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
+
+.cargo/bin: bin/.ext
