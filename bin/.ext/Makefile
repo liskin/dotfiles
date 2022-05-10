@@ -20,6 +20,7 @@ KIND_VERSION := 0.12.0
 LANGUAGETOOL_VERSION := 5.7
 PANDOC_VERSION := 2.18
 RUST_ANALYZER_VERSION := 2022-05-02
+SCCACHE_VERSION := 0.3.0
 TILT_VERSION := 0.29.0
 TZ_VERSION := 0.6.1
 
@@ -166,6 +167,15 @@ cargo-binstall: | .ext-cargo-binstall ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/ryankurte/cargo-binstall/releases/download/v$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
 		| tar -x -z -C $@ cargo-binstall
+
+all: sccache
+sccache: | .ext-sccache ; ln -fsT $|/$@ $@
+.ext-sccache: .ext-sccache-$(SCCACHE_VERSION) ; ln -fsT $< $@
+.ext-sccache-$(SCCACHE_VERSION):
+	mkdir -p $@
+	$(CURL) https://github.com/mozilla/sccache/releases/download/v$(SCCACHE_VERSION)/sccache-v$(SCCACHE_VERSION)-x86_64-unknown-linux-musl.tar.gz \
+		| tar -x -z -C $@ --strip-components=1 --wildcards "*/sccache"
+	chmod +x $@/sccache
 
 .PHONY: gc
 gc:

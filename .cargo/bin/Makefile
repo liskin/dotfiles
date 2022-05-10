@@ -4,7 +4,6 @@ all:
 DUST_VERSION := 0.8.0
 CARGO_CACHE_VERSION := 0.8.2
 CARGO_WATCH_VERSION := 8.1.1
-SCCACHE_VERSION := 0.3.0
 
 CARGO_BINSTALL := cargo binstall --no-confirm --install-path .binstall
 
@@ -36,12 +35,6 @@ frece:
 all: rga rga-preproc rga-fzf rga-fzf-open
 rga rga-preproc rga-fzf rga-fzf-open &:
 	cargo install --locked --path ~/src-rust/ripgrep-all
-
-all: sccache
-sccache: | .build/sccache ; ln -fsT $|/bin/$@ $@
-.build/sccache: .build/sccache-$(SCCACHE_VERSION) ; ln -fsrT $< $@
-.build/sccache-$(SCCACHE_VERSION):
-	cargo install --root .build/sccache-$(SCCACHE_VERSION) --version =$(SCCACHE_VERSION) sccache
 
 .PHONY: gc
 gc:

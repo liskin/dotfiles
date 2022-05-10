@@ -9,5 +9,6 @@
 /kind
 /pandoc
 /rust-analyzer
+/sccache
 /tilt
 /tz
