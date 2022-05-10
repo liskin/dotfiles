@@ -94,6 +94,13 @@ myKeys XConfig{..} = M.fromList $
     , ((0,       xF86XK_AudioNext       ), spawnExec "liskin-media next")
     , ((0,       xF86XK_AudioPrev       ), spawnExec "liskin-media prev")
 
+    -- fake media keys (stupid modern 6-row keyboards where Fn-Left/Right is
+    -- Home/End and Fn-Up/Down is nothing…)
+    , ((modMask, xK_Up   ), spawnExec "liskin-media stop")
+    , ((modMask, xK_Down ), spawnExec "liskin-media play")
+    , ((modMask, xK_Left ), spawnExec "liskin-media prev")
+    , ((modMask, xK_Right), spawnExec "liskin-media next")
+
     -- other special keys
     , ((altMask,   xK_space             ), spawnExec "liskin-touchpad-toggle")
     , ((0,         xF86XK_TouchpadToggle), spawnExec "liskin-touchpad-toggle")
@@ -118,13 +125,13 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask .|. shiftMask, xK_k     ), windows W.swapUp      >> up)
 
     -- workspace/screen focus changes
-    , ((modMask,               xK_n     ), toggleWS    >> up)
-    , ((modMask,               xK_Left  ), prevWS      >> up)
-    , ((modMask,               xK_Right ), nextWS      >> up)
-    , ((modMask .|. shiftMask, xK_Left  ), swapTo Prev >> up)
-    , ((modMask .|. shiftMask, xK_Right ), swapTo Next >> up)
-    , ((modMask,               xK_Tab   ), nextScreen  >> up)
-    , ((modMask .|. shiftMask, xK_Tab   ), prevScreen  >> up)
+    , ((modMask,                 xK_n     ), toggleWS    >> up)
+    , ((modMask .|. controlMask, xK_Left  ), prevWS      >> up)
+    , ((modMask .|. controlMask, xK_Right ), nextWS      >> up)
+    , ((modMask .|. shiftMask,   xK_Left  ), swapTo Prev >> up)
+    , ((modMask .|. shiftMask,   xK_Right ), swapTo Next >> up)
+    , ((modMask,                 xK_Tab   ), nextScreen  >> up)
+    , ((modMask .|. shiftMask,   xK_Tab   ), prevScreen  >> up)
 
     -- window actions
     , ((modMask,               xK_Escape), kill)
