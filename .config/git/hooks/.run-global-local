@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -eu
+
+hook_name=$(basename -- "$0")
+
+# execute global hook, if any
+global_hooks_path=~/.config/git/hooks/global
+if [[ -x "${global_hooks_path}/${hook_name}" ]]; then
+	"${global_hooks_path}/${hook_name}" "$@"
+fi
+
+# execute local hook, if any
+git_dir=$(git rev-parse --git-dir)
+local_hooks_path=$(git config --local --get --default "${git_dir}/hooks" core.hooksPath)
+if [[ -x "${local_hooks_path}/${hook_name}" ]]; then
+	"${local_hooks_path}/${hook_name}" "$@"
+fi

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eu
+
+function trailers-auto-jira {
+	local base_url; base_url=$(git config --get --default "" liskin.trailersJiraBase)
+	[[ $base_url ]] || return 0
+
+	for jira in $(git current-branch | grep -P -o '\b[A-Z][A-Z]+-\d+\b'); do
+		trailers+=(--trailer "Jira: ${base_url}${jira}")
+	done
+}
+
+function trailers-auto {
+	local trailers=()
+	trailers-auto-jira
+
+	if (( ${trailers[@]+${#trailers[@]}} )); then
+		git interpret-trailers --in-place --trim-empty --where after "${trailers[@]}" "$1"
+	fi
+}
+
+case "${2-}" in
+	""|message|commit) trailers-auto "$1" ;;
+esac

@@ -75,6 +75,7 @@
 	diffFilter = delta --color-only
 [core]
 	pager = less -FRX --tabs=1,5
+	hooksPath = ~/.config/git/hooks
 [pager]
 	diff = delta
 	show = delta
