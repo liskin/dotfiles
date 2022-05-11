@@ -2,8 +2,9 @@
 
 set -eu
 
-[[ -t 0 && $DISPLAY ]] || WAIT_FOR_WM=: exec x-terminal-emulator -e "$0" "$@"
-[[ ${WAIT_FOR_WM-} ]] && { unset WAIT_FOR_WM; xwaitforwindow || :; }
+[[ -t 0 && $DISPLAY ]] || _WAIT_FOR_WM=: exec x-terminal-emulator ${_XTERM_HOLD:+-hold} -e "$0" "$@"
+[[ ${_WAIT_FOR_WM-} ]] && { xwaitforwindow || :; }
+unset _WAIT_FOR_WM _XTERM_HOLD
 
 echo -ne "\033]0;$1\007"
 exec "$@"
