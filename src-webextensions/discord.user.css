@@ -26,6 +26,7 @@
 
 	/* show as much as possible in collapsed sidebar */
 	div.sidebar-1tnWFu div.content-1gYQeQ { padding: 0; }
+	div.sidebar-1tnWFu div.content-1gYQeQ:not(:hover) div.children-1MGS9G { display: none; }
 	div.sidebar-1tnWFu div.overflow-1wOqNV * { text-overflow: clip; }
 
 	/* collapse guild navigation */
