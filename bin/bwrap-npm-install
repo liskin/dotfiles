@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o "" --long prefix: -- "$@")
+eval "set -- $options"
+
+prefix=
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		--prefix) prefix=$1; shift ;;
+		--) break ;;
+	esac
+done
+
+: "${prefix:?}"
+prefix=$(readlink -f "$prefix")
+[[ -d "$prefix" ]] || o mkdir -p "$prefix"
+
+o exec bwrap \
+	--ro-bind /{,} \
+	--dev /dev \
+	--proc /proc \
+	--tmpfs /tmp \
+	--bind ~/.npm{,} \
+	--bind "$prefix"{,} \
+	-- npm install --global --prefix "$prefix" "$@"
