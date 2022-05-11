@@ -3,7 +3,7 @@ all:
 
 REDOC_CLI_VERSION := 0.13.12
 
-all: redoc-cli
+all: $(if $(filter pftp.%,$(HOSTNAME)),redoc-cli)
 redoc-cli: | .ext-redoc-cli ; ln -fsT $|/bin/$@ $@
 .ext-redoc-cli: .ext-redoc-cli-$(REDOC_CLI_VERSION) ; ln -fsT $< $@
 .ext-redoc-cli-$(REDOC_CLI_VERSION):
