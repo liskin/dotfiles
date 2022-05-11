@@ -24,6 +24,7 @@ while (( $# )); do
 	esac
 done
 
+home=$(readlink -f "$home")
 [[ -d "$home" ]] || o mkdir -p "$home"
 export HOME="$home"
 
