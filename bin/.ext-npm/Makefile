@@ -3,7 +3,7 @@ all:
 
 HOSTNAME := $(shell hostname)
 
-REDOC_CLI_VERSION := 0.13.12
+REDOC_CLI_VERSION := 0.13.13
 REDOCLY_VERSION := 1.0.0-beta.97
 
 all: $(if $(filter pftp.%,$(HOSTNAME)),redoc-cli)
