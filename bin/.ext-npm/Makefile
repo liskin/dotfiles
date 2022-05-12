@@ -1,6 +1,8 @@
 .PHONY: all
 all:
 
+HOSTNAME := $(shell hostname)
+
 REDOC_CLI_VERSION := 0.13.12
 
 all: $(if $(filter pftp.%,$(HOSTNAME)),redoc-cli)
