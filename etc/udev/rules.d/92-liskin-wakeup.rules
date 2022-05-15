@@ -1,0 +1,6 @@
+ACTION=="remove", GOTO="liskin-wakeup-end"
+
+# disable wakeup from s2idle by pressing any key
+SUBSYSTEM=="serio", ENV{DRIVER}=="atkbd", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
+
+LABEL="liskin-wakeup-end"
