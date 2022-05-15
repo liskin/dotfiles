@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # workaround for the bluetooth adapter blocking s2idle when devices are connected
+# https://bugzilla.kernel.org/show_bug.cgi?id=215768
 
 set -eu -o pipefail
 
