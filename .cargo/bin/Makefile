@@ -4,6 +4,7 @@ all:
 DUST_VERSION := 0.8.0
 CARGO_CACHE_VERSION := 0.8.2
 CARGO_WATCH_VERSION := 8.1.1
+FCLONES_VERSION := 0.24.0
 
 CARGO_BINSTALL := cargo binstall --no-confirm --install-path .binstall
 
@@ -27,6 +28,12 @@ cargo-cache: | .binstall/cargo-cache ; ln -fsT $| $@
 .binstall/cargo-cache: .binstall/cargo-cache-v$(CARGO_CACHE_VERSION)
 .binstall/cargo-cache-v$(CARGO_CACHE_VERSION): | .binstall
 	$(CARGO_BINSTALL) --version =$(CARGO_CACHE_VERSION) cargo-cache
+
+all: fclones
+fclones: | .build/fclones ; ln -fsT $|/bin/$@ $@
+.build/fclones: .build/fclones-$(FCLONES_VERSION) ; ln -fsrT $< $@
+.build/fclones-$(FCLONES_VERSION):
+	cargo install --root .build/fclones-$(FCLONES_VERSION) --version =$(FCLONES_VERSION) --locked fclones
 
 all: frece
 frece:

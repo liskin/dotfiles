@@ -21,6 +21,7 @@ redocly: | .ext-redocly ; ln -fsT $|/bin/$@ $@
 .PHONY: gc
 gc:
 	liskin-gc-unlinked $(wildcard .ext-*)
+	fclones group --no-ignore --hidden . | fclones link
 
 .PHONY: clean
 clean:
