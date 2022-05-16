@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+[[ -e /run/liskin-suspend-button ]] && button=: || button=
+rm -f /run/liskin-suspend-button
+
+if [[ $button && -x /bin/openvt && -x /lib/cryptsetup/scripts/suspend/cryptsetup-suspend-wrapper ]]; then
+	exec /bin/openvt -ws -c12 /lib/cryptsetup/scripts/suspend/cryptsetup-suspend-wrapper
+else
+	exec /lib/systemd/systemd-sleep suspend
+fi
