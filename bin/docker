@@ -3,12 +3,12 @@
 set -eu
 
 if [[ "${DOCKER_HOST-}" ]]; then
-	/usr/bin/docker "$@"
+	exec /usr/bin/docker "$@"
 elif id -nG | grep -qw docker; then
-	/usr/bin/docker "$@"
+	exec /usr/bin/docker "$@"
 elif systemctl --quiet --user is-active docker.service; then
 	export DOCKER_HOST=unix://${XDG_RUNTIME_DIR}/docker.sock
-	/usr/bin/docker "$@"
+	exec /usr/bin/docker "$@"
 else
-	/usr/bin/podman "$@"
+	exec /usr/bin/podman "$@"
 fi
