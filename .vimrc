@@ -272,6 +272,7 @@ let g:ale_fixers['elixir'] = ['mix_format']
 let g:ale_linter_aliases = {}
 let g:ale_linter_aliases['gitcommit'] = ['mail']
 let g:ale_linters = {}
+let g:ale_linters['dockerfile'] = ['hadolint']
 let g:ale_linters['elixir'] = []
 let g:ale_linters['gitcommit'] = ['proselint']
 let g:ale_linters['mail'] = ['proselint']
