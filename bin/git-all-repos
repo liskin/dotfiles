@@ -13,7 +13,11 @@ function locate-all-repos {
 			"$HOME"/.xmonad \
 			"$HOME"/.xmonad-testing* \
 			"$HOME"/.xmonad-testing/.sub/xmonad-*
-	} | grep -z -v -F '/_old/' | sort -z -u
+	} | grep -z -v -F \
+		-e "$HOME/.cache/" \
+		-e "$HOME/.cargo/" \
+		-e '/_old/' \
+	| sort -z -u
 }
 
 cache_file="${XDG_CACHE_HOME:-$HOME/.cache}/git-all-repos" cache_refresh_age=10 cache \
