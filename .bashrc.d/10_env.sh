@@ -21,7 +21,7 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export QT_QPA_PLATFORMTHEME=gtk3
 export SAL_USE_VCLPLUGIN=gtk3
 export _JAVA_AWT_WM_NONREPARENTING=1
-export LESS="--mouse --wheel-lines=3"
+export LESS="--mouse --wheel-lines=3 --LONG-PROMPT"
 
 export BROWSER=google-chrome
 export DVIVIEWER=okular

@@ -57,3 +57,11 @@ function uplfileperm {
 		echo https://store.lisk.in/tmp/perm/"$x"
 	done
 }
+
+function rg {
+	if [[ -t 0 && -t 1 && -t 2 ]]; then
+		command rg -p "$@" | less -FRX
+	else
+		command rg "$@"
+	fi
+}
