@@ -1,0 +1,11 @@
+/* ==UserStyle==
+@name           GMail CSS tweaks
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document domain("mail.google.com") {
+	/* force black text in mails */
+	.gmail_default { color: #000 !important; }
+}
