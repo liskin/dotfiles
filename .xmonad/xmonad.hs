@@ -342,21 +342,18 @@ xmobarTop = xmobar xmonadDefProp ["-x", "0"] $ do
             , willFloatNextPP ("Float " ++)
             , willFloatAllNewPP ("Float " ++)
             ]
-        , ppVisible = ppVisibleB . ppVisibleC
-        , ppCurrent = ppCurrentB . ppCurrentC
-        , ppUrgent = ppUrgentB . ppUrgentC
+        , ppVisible = ppVisibleC
+        , ppCurrent = ppCurrentC
+        , ppUrgent = ppUrgentC
         , ppSep = " │ "
         , ppOrder = \(w:_:_:s) -> w:s
         }
   where
     boldPP pp = pp{ ppRename = ppRename pp . fnBold }
     workspaceIconsPP pp = pp{ ppRename = ppRename pp >=> pure . workspaceIcons }
-    ppVisibleC = xmobarColor "green" ""
-    ppVisibleB = xmobarBorder "Top" "green" 1
-    ppCurrentC = xmobarColor "yellow" ""
-    ppCurrentB = xmobarBorder "Top" "yellow" 1
-    ppUrgentC = xmobarColor "#ffff00" "#800000:3,1"
-    ppUrgentB = xmobarBorder "Top" "#ff0000" 1
+    ppVisibleC = xmobarColor "#b0b040" ""
+    ppCurrentC = xmobarBorder "Top" "yellow" 1 . xmobarColor "yellow" ""
+    ppUrgentC = xmobarBorder "Top" "#ff0000" 1 . xmobarColor "#ffff00" "#800000:3,1"
 
     urgentsExtras DoNotDisturb = mempty
     urgentsExtras Disturb = do
@@ -427,7 +424,7 @@ xmobarBottom sid@(S (show -> sn)) = xmobar' prop args $ withScreen $ \scr -> do
         s <- gets (find ((sid ==) . W.screen) . W.screens . windowset)
         P.whenJust' s f
 
-    ppVisibleC = xmobarBorder "Bottom" "green" 1 . xmobarColor "green" ""
+    ppVisibleC = xmobarColor "#b0b040" ""
     ppCurrentC = xmobarBorder "Bottom" "yellow" 1 . xmobarColor "yellow" ""
 
     ppFocusC   = xmobarBorder "Bottom" "#ffff00" 1 . xmobarColor "#ffff00" ""
