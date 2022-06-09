@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+remote="${1:?}" || exit 0
+
+grep -q -x -F -e "$remote" < <(git config --get-all liskin.ensureSignedPush) || exit 0
+remote_head=$(git symbolic-ref -q refs/remotes/"$remote"/HEAD) || {
+	echo "$0: missing refs/remotes/${remote}/HEAD symbolic ref" >&2
+	exit 0
+}
+
+while read -r local_ref local_oid _remote_ref _remote_oid; do
+	if [[ "$local_oid" == +(0) ]]; then # delete branch
+		continue
+	fi
+
+	unsigned_commits=$(git log --pretty="tformat:%H%x09%aN%x09%s%x09%G?" "$remote_head".."$local_oid" | grep $'\tN$' || :)
+	if [[ $unsigned_commits ]]; then
+		echo "$0: preventing push of unsigned commits in $local_ref" >&2
+		echo "$unsigned_commits" >&2
+		exit 1
+	fi
+done

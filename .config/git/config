@@ -55,6 +55,7 @@
 	co-authored-by = log -1 --pretty=co-authored-by --regexp-ignore-case --author
 	unstatus = -c status.showUntrackedFiles=normal status
 	unigstatus = "!git ls-files | sed -n -e 's|^|./|; s|/\\.gitignore$||p' | xargs git unstatus"
+	resign = rebase -f -S
 [mergetool]
 	keepBackup = false
 [merge]
