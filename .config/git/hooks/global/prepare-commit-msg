@@ -16,7 +16,7 @@ function trailers-auto {
 	trailers-auto-jira
 
 	if (( ${trailers[@]+${#trailers[@]}} )); then
-		git interpret-trailers --in-place --trim-empty --where after "${trailers[@]}" "$1"
+		git interpret-trailers --in-place --trim-empty --where after --if-exists addIfDifferent "${trailers[@]}" "$1"
 	fi
 }
 
