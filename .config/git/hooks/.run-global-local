@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 hook_name=$(basename -- "$0")
 
-# execute global hook, if any
-global_hooks_path=~/.config/git/hooks/global
-if [[ -x "${global_hooks_path}/${hook_name}" ]]; then
-	"${global_hooks_path}/${hook_name}" "$@"
-fi
+# execute global hooks, if any
+for global_hook in ~/.config/git/hooks/"$hook_name".d/*; do
+	if [[ -x "$global_hook" ]]; then
+		"$global_hook" "$@"
+	fi
+done
 
 # execute local hook, if any
 git_dir=$(git rev-parse --git-dir)
