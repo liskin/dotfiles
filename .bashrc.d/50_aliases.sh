@@ -25,10 +25,13 @@ alias ssh=ssh-tweaks
 alias task=task-local
 
 alias urxvt-setfont-anonymous-pro='urxvt-setfont "Anonymous Pro"'
+alias urxvt-setfont-cascadia-mono='urxvt-setfont "Cascadia Mono"'
 alias urxvt-setfont-courier-prime='urxvt-setfont "Courier Prime Code"'
 alias urxvt-setfont-fira-code='urxvt-setfont "Fira Code"'
 alias urxvt-setfont-hack='urxvt-setfont "Hack"'
 alias urxvt-setfont-inconsolata='urxvt-setfont "Inconsolata"'
+alias urxvt-setfont-iosevka-fixed='urxvt-setfont "Iosevka Fixed SS11"'
+alias urxvt-setfont-monospace='urxvt-setfont monospace 10'
 
 export-alias nomi="ssh -C nomi.cz -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-https="ssh -C nomi.cz-https -t 'bash -l -c ~/bin/atmux'"

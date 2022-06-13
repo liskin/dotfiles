@@ -15,6 +15,12 @@ define(mono_boldFont, mono(roman,bold))dnl
 define(mono_italicFont, mono(oblique,normal))dnl
 define(mono_boldItalicFont, mono(oblique,bold))dnl
 dnl
+define(iosevka, `xft:Iosevka Fixed SS11:pixelsize=25:slant=$1:weight=$2')dnl
+define(iosevka_font, iosevka(roman,normal))dnl
+define(iosevka_boldFont, iosevka(roman,bold))dnl
+define(iosevka_italicFont, iosevka(oblique,normal))dnl
+define(iosevka_boldItalicFont, iosevka(oblique,bold))dnl
+dnl
 define(symbols_fonts, `xft:Symbola,xft:Unidings,xft:Musica')dnl
 dnl
 define(default_font, `fixed_font,symbols_fonts')dnl
@@ -27,10 +33,10 @@ define(big_boldFont, `fixedBig_boldFont,fixedBig_font,symbols_fonts')dnl
 define(big_italicFont, `fixedBig_italicFont,fixedBig_font,symbols_fonts')dnl
 define(big_boldItalicFont, `')dnl
 dnl
-define(scalable_font, `mono_font,symbols_fonts')dnl
-define(scalable_boldFont, `mono_boldFont,symbols_fonts')dnl
-define(scalable_italicFont, `mono_italicFont,symbols_fonts')dnl
-define(scalable_boldItalicFont, `mono_boldItalicFont,symbols_fonts')dnl
+define(scalable_font, `iosevka_font,symbols_fonts')dnl
+define(scalable_boldFont, `iosevka_boldFont,symbols_fonts')dnl
+define(scalable_italicFont, `iosevka_italicFont,symbols_fonts')dnl
+define(scalable_boldItalicFont, `iosevka_boldItalicFont,symbols_fonts')dnl
 dnl
 URxvt.font: default_font
 URxvt.boldFont: default_boldFont
@@ -68,11 +74,11 @@ define(set_italicFont, _set_font(712, `$1'))dnl
 define(set_boldItalicFont, _set_font(713, `$1'))dnl
 define(set_default_fonts, `set_font(`default_font')set_boldFont(`default_boldFont')set_italicFont(`default_italicFont')set_boldItalicFont(`default_boldItalicFont')')dnl
 define(set_big_fonts, `set_font(`big_font')set_boldFont(`big_boldFont')set_italicFont(`big_italicFont')set_boldItalicFont(`big_boldItalicFont')')dnl
-define(set_mono_fonts, `set_font(`scalable_font')set_boldFont(`scalable_boldFont')set_italicFont(`scalable_italicFont')set_boldItalicFont(`scalable_boldItalicFont')')dnl
+define(set_scalable_fonts, `set_font(`scalable_font')set_boldFont(`scalable_boldFont')set_italicFont(`scalable_italicFont')set_boldItalicFont(`scalable_boldItalicFont')')dnl
 define(meta_key, `M-C')dnl
 dnl
 URxvt.keysym.meta_key-Home: command:set_default_fonts
-URxvt.keysym.meta_key-End: command:set_mono_fonts
+URxvt.keysym.meta_key-End: command:set_scalable_fonts
 URxvt.keysym.meta_key-Insert: command:set_big_fonts
 URxvt.keysym.meta_key-Page_Up: font-size:increase
 URxvt.keysym.meta_key-Page_Down: font-size:decrease
