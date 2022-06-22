@@ -15,3 +15,6 @@ video/x-matroska=mpv.desktop
 video/x-msvideo=mpv.desktop
 x-scheme-handler/feed-urldecode=feed-urldecode.desktop
 x-scheme-handler/mailto=mutt-mailto.desktop
+text/html=sensible-browser.desktop
+x-scheme-handler/http=sensible-browser.desktop
+x-scheme-handler/https=sensible-browser.desktop
