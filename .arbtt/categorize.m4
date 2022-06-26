@@ -1,5 +1,5 @@
 -- inactivity
-$screensaver ==> tag inactive,
+if $screensaver then tag inactive else tag active,
 
 -- generic, for filtering purposes
 tag Program:$current.program,
