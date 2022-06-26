@@ -137,6 +137,10 @@
 	path = src-webextensions/retrograde-is-muni
 	#url = https://github.com/adamatousek/retrograde-is-muni
 	url = git@github.com:liskin/retrograde-is-muni
+[submodule "src-webextensions/reszoom"]
+	path = src-webextensions/reszoom
+	#url = https://github.com/raboof/reszoom
+	url = git@github.com:liskin/reszoom
 [submodule "src-haskell/xmonad-contrib"]
 	path = src-haskell/xmonad-contrib
 	#url = https://github.com/xmonad/xmonad-contrib.git
