@@ -13,6 +13,7 @@ exec \
 	--enable-gpu-rasterization \
 	--disable-gpu-driver-bug-workarounds \
 	--enable-zero-copy \
-	--enable-features=VaapiVideoDecoder,VaapiVideoEncoder,VaapiLowPowerEncoderGen9x,kVaapiVp8TemporalLayerHWEncoding,Vp9kSVCHWDecoding,VaapiVp9kSVCHWEncoding \
+	--enable-features=VaapiVideoDecoder,VaapiVideoEncoder,VaapiLowPowerEncoderGen9x,kVaapiVp8TemporalLayerHWEncoding,Vp9kSVCHWDecoding,VaapiVp9kSVCHWEncoding,VaapiIgnoreDriverChecks \
+	--disable-features=Vulkan,UseChromeOSDirectVideoDecoder \
 	--disable-font-subpixel-positioning \
 	"$@"
