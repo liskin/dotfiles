@@ -1,38 +1,56 @@
 .PHONY: all
 all:
 
-define GITHUB_FETCH_RELEASE_ASSET
-	{ url="$$(gh api --jq '.assets[] | select(.name == "$(strip $(3))") | .browser_download_url' repos/"$(strip $(1))"/releases/$(strip $(2)))" \
-		&& : "$${url:?}" \
-		&& curl -LSsf "$$url"; }
-endef
-
 CURL := curl -LSsf
 
-CARGO_BINSTALL_VERSION := 0.7.0
-CTLPTL_VERSION := 0.8.0
+CARGO_BINSTALL_VERSION := v0.7.0
+CTLPTL_VERSION := v0.8.0
 DELTA_VERSION := 0.12.1
-HADOLINT_VERSION := 2.10.0
-HLINT_VERSION := 3.4
+HADOLINT_VERSION := v2.10.0
+HLINT_VERSION := v3.4
 HLS_GHC_VERSION := 8.8.4
 HLS_VERSION := 1.7.0.0
-KIND_VERSION := 0.12.0
+KIND_VERSION := v0.12.0
 LANGUAGETOOL_VERSION := 5.7
 PANDOC_VERSION := 2.18
 RUST_ANALYZER_VERSION := 2022-05-02
-SCCACHE_VERSION := 0.3.0
-TILT_VERSION := 0.29.0
-TZ_VERSION := 0.6.1
+SCCACHE_VERSION := v0.3.0
+TILT_VERSION := v0.29.0
+TZ_VERSION := v0.6.1
+
+# LANGUAGETOOL_GITHUB - https://github.com/languagetool-org/languagetool/tags
+CARGO_BINSTALL_GITHUB := ryankurte/cargo-binstall
+CTLPTL_GITHUB := tilt-dev/ctlptl
+DELTA_GITHUB := dandavison/delta
+HADOLINT_GITHUB := hadolint/hadolint
+HLINT_GITHUB := ndmitchell/hlint
+HLS_GITHUB := haskell/haskell-language-server
+KIND_GITHUB := kubernetes-sigs/kind
+PANDOC_GITHUB := jgm/pandoc
+RUST_ANALYZER_GITHUB := rust-analyzer/rust-analyzer
+SCCACHE_GITHUB := mozilla/sccache
+TILT_GITHUB := tilt-dev/tilt
+TZ_GITHUB := oz/tz
+
+define GITHUB_CHECK_LATEST
+	{ \
+		v="$$(gh api --jq '.tag_name' repos/$($(1))/releases/latest)"; \
+		if [ "$$v" != "$($(2))" ]; then echo "$(2) := $$v"; fi; \
+	};
+endef
+
+.PHONY: update
+## Check for updates
+update:
+	@$(foreach repo_var,$(filter %_GITHUB,$(.VARIABLES)),\
+		$(call GITHUB_CHECK_LATEST,$(repo_var),$(repo_var:_GITHUB=_VERSION)))
 
 all: rust-analyzer
 rust-analyzer: | .ext-rust-analyzer ; ln -fsT $| $@
 .ext-rust-analyzer: .ext-rust-analyzer-$(RUST_ANALYZER_VERSION) ; ln -fsT $< $@
 .ext-rust-analyzer-$(RUST_ANALYZER_VERSION):
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		rust-analyzer/rust-analyzer,\
-		tags/$(RUST_ANALYZER_VERSION),\
-		rust-analyzer-x86_64-unknown-linux-gnu.gz\
-	) | gunzip >$@
+	$(CURL) https://github.com/$(RUST_ANALYZER_GITHUB)/releases/download/$(RUST_ANALYZER_VERSION)/rust-analyzer-x86_64-unknown-linux-gnu.gz \
+		| gunzip >$@
 	chmod +x $@
 
 all: haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper
@@ -53,51 +71,39 @@ haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .e
 
 .INTERMEDIATE: .ext-hls-$(HLS_VERSION).tar.xz
 .ext-hls-$(HLS_VERSION).tar.xz:
-	curl -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-x86_64-linux-deb10.tar.xz
+	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-x86_64-linux-deb10.tar.xz
 
 all: tz
 tz: | .ext-tz ; ln -fsT $|/$@ $@
 .ext-tz: .ext-tz-$(TZ_VERSION) ; ln -fsT $< $@
 .ext-tz-$(TZ_VERSION):
 	mkdir -p $@
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		oz/tz,\
-		tags/v$(TZ_VERSION),\
-		tz-$(TZ_VERSION)-linux-amd64.tar.xz\
-	) | tar -x -J -C $@ tz
+	$(CURL) https://github.com/$(TZ_GITHUB)/releases/download/$(TZ_VERSION)/tz-$(TZ_VERSION:v%=%)-linux-amd64.tar.xz \
+		| tar -x -J -C $@ tz
 
 all: delta
 delta: | .ext-delta ; ln -fsT $|/$@ $@
 .ext-delta: .ext-delta-$(DELTA_VERSION) ; ln -fsT $< $@
 .ext-delta-$(DELTA_VERSION):
 	mkdir -p $@
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		dandavison/delta,\
-		tags/$(DELTA_VERSION),\
-		delta-$(DELTA_VERSION)-x86_64-unknown-linux-gnu.tar.gz\
-	) | tar -x -z -C $@ --strip-components=1 --wildcards "*/delta"
+	$(CURL) https://github.com/$(DELTA_GITHUB)/releases/download/$(DELTA_VERSION)/delta-$(DELTA_VERSION)-x86_64-unknown-linux-gnu.tar.gz \
+		| tar -x -z -C $@ --strip-components=1 --wildcards "*/delta"
 
 all: pandoc
 pandoc: | .ext-pandoc ; ln -fsT $|/bin/$@ $@
 .ext-pandoc: .ext-pandoc-$(PANDOC_VERSION) ; ln -fsT $< $@
 .ext-pandoc-$(PANDOC_VERSION):
 	mkdir -p $@
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		jgm/pandoc,\
-		tags/$(PANDOC_VERSION),\
-		pandoc-$(PANDOC_VERSION)-linux-amd64.tar.gz\
-	) | tar -x -z -C $@ --strip-components=1
+	$(CURL) https://github.com/$(PANDOC_GITHUB)/releases/download/$(PANDOC_VERSION)/pandoc-$(PANDOC_VERSION)-linux-amd64.tar.gz \
+		| tar -x -z -C $@ --strip-components=1
 
 all: hlint
 hlint: | .ext-hlint ; ln -fsT $|/$@ $@
 .ext-hlint: .ext-hlint-$(HLINT_VERSION) ; ln -fsT $< $@
 .ext-hlint-$(HLINT_VERSION):
 	mkdir -p $@
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		ndmitchell/hlint,\
-		tags/v$(HLINT_VERSION),\
-		hlint-$(HLINT_VERSION)-x86_64-linux.tar.gz\
-	) | tar -x -z -C $@ --strip-components=1
+	$(CURL) https://github.com/$(HLINT_GITHUB)/releases/download/$(HLINT_VERSION)/hlint-$(HLINT_VERSION:v%=%)-x86_64-linux.tar.gz \
+		| tar -x -z -C $@ --strip-components=1
 
 all: .ext-languagetool
 .SKIP_GITIGNORE: .ext-languagetool
@@ -110,17 +116,13 @@ all: .ext-languagetool
 
 .INTERMEDIATE: .ext-languagetool-$(LANGUAGETOOL_VERSION).zip
 .ext-languagetool-$(LANGUAGETOOL_VERSION).zip:
-	curl -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION).zip
+	$(CURL) -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION).zip
 
 all: hadolint
 hadolint: | .ext-hadolint ; ln -fsT $| $@
 .ext-hadolint: .ext-hadolint-$(HADOLINT_VERSION) ; ln -fsT $< $@
 .ext-hadolint-$(HADOLINT_VERSION):
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		hadolint/hadolint,\
-		tags/v$(HADOLINT_VERSION),\
-		hadolint-Linux-x86_64\
-	) >$@
+	$(CURL) -o $@ https://github.com/$(HADOLINT_GITHUB)/releases/download/$(HADOLINT_VERSION)/hadolint-Linux-x86_64
 	chmod +x $@
 
 all: tilt
@@ -130,11 +132,8 @@ tilt: | .ext-tilt
 .ext-tilt: .ext-tilt-$(TILT_VERSION) ; ln -fsT $< $@
 .ext-tilt-$(TILT_VERSION):
 	mkdir -p $@
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		tilt-dev/tilt,\
-		tags/v$(TILT_VERSION),\
-		tilt.$(TILT_VERSION).linux.x86_64.tar.gz\
-	) | tar -x -z -C $@ tilt
+	$(CURL) https://github.com/$(TILT_GITHUB)/releases/download/$(TILT_VERSION)/tilt.$(TILT_VERSION:v%=%).linux.x86_64.tar.gz \
+		| tar -x -z -C $@ tilt
 
 all: ctlptl
 ctlptl: | .ext-ctlptl
@@ -143,21 +142,14 @@ ctlptl: | .ext-ctlptl
 .ext-ctlptl: .ext-ctlptl-$(CTLPTL_VERSION) ; ln -fsT $< $@
 .ext-ctlptl-$(CTLPTL_VERSION):
 	mkdir -p $@
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		tilt-dev/ctlptl,\
-		tags/v$(CTLPTL_VERSION),\
-		ctlptl.$(CTLPTL_VERSION).linux.x86_64.tar.gz\
-	) | tar -x -z -C $@ ctlptl
+	$(CURL) https://github.com/$(CTLPTL_GITHUB)/releases/download/$(CTLPTL_VERSION)/ctlptl.$(CTLPTL_VERSION:v%=%).linux.x86_64.tar.gz \
+		| tar -x -z -C $@ ctlptl
 
 all: kind
 kind: | .ext-kind ; ln -fsT $| $@
 .ext-kind: .ext-kind-$(KIND_VERSION) ; ln -fsT $< $@
 .ext-kind-$(KIND_VERSION):
-	$(call GITHUB_FETCH_RELEASE_ASSET,\
-		kubernetes-sigs/kind,\
-		tags/v$(KIND_VERSION),\
-		kind-linux-amd64\
-	) >$@
+	$(CURL) -o $@ https://github.com/$(KIND_GITHUB)/releases/download/$(KIND_VERSION)/kind-linux-amd64
 	chmod +x $@
 
 all: cargo-binstall
@@ -165,7 +157,7 @@ cargo-binstall: | .ext-cargo-binstall ; ln -fsT $|/$@ $@
 .ext-cargo-binstall: .ext-cargo-binstall-$(CARGO_BINSTALL_VERSION) ; ln -fsT $< $@
 .ext-cargo-binstall-$(CARGO_BINSTALL_VERSION):
 	mkdir -p $@
-	$(CURL) https://github.com/ryankurte/cargo-binstall/releases/download/v$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
+	$(CURL) https://github.com/$(CARGO_BINSTALL_GITHUB)/releases/download/$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
 		| tar -x -z -C $@ cargo-binstall
 
 all: sccache
@@ -173,18 +165,21 @@ sccache: | .ext-sccache ; ln -fsT $|/$@ $@
 .ext-sccache: .ext-sccache-$(SCCACHE_VERSION) ; ln -fsT $< $@
 .ext-sccache-$(SCCACHE_VERSION):
 	mkdir -p $@
-	$(CURL) https://github.com/mozilla/sccache/releases/download/v$(SCCACHE_VERSION)/sccache-v$(SCCACHE_VERSION)-x86_64-unknown-linux-musl.tar.gz \
+	$(CURL) https://github.com/$(SCCACHE_GITHUB)/releases/download/$(SCCACHE_VERSION)/sccache-$(SCCACHE_VERSION)-x86_64-unknown-linux-musl.tar.gz \
 		| tar -x -z -C $@ --strip-components=1 --wildcards "*/sccache"
 	chmod +x $@/sccache
 
 .PHONY: gc
+## Remove old versions
 gc:
 	liskin-gc-unlinked $(wildcard .ext-*)
 
 .PHONY: clean
+## Remove downloaded stuff
 clean:
 	$(RM) -r $(wildcard .ext-*)
 
 include ~/_gitignore.mk
+include ~/_help.mk
 
 .DELETE_ON_ERROR:
