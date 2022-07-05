@@ -11,14 +11,13 @@ HLINT_VERSION := v3.4
 HLS_GHC_VERSION := 8.8.4
 HLS_VERSION := 1.7.0.0
 KIND_VERSION := v0.14.0
-LANGUAGETOOL_VERSION := 5.8
+LANGUAGETOOL_VERSION := v5.8
 PANDOC_VERSION := 2.18
 RUST_ANALYZER_VERSION := 2022-07-04
 SCCACHE_VERSION := v0.3.0
 TILT_VERSION := v0.30.4
 TZ_VERSION := v0.6.1
 
-# LANGUAGETOOL_GITHUB - https://github.com/languagetool-org/languagetool/tags
 CARGO_BINSTALL_GITHUB := ryankurte/cargo-binstall
 CTLPTL_GITHUB := tilt-dev/ctlptl
 DELTA_GITHUB := dandavison/delta
@@ -26,24 +25,16 @@ HADOLINT_GITHUB := hadolint/hadolint
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 KIND_GITHUB := kubernetes-sigs/kind
+LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
 PANDOC_GITHUB := jgm/pandoc
 RUST_ANALYZER_GITHUB := rust-analyzer/rust-analyzer
 SCCACHE_GITHUB := mozilla/sccache
 TILT_GITHUB := tilt-dev/tilt
 TZ_GITHUB := oz/tz
 
-define GITHUB_CHECK_LATEST
-	{ \
-		v="$$(gh api --jq '.tag_name' repos/$($(1))/releases/latest)"; \
-		if [ "$$v" != "$($(2))" ]; then echo "$(2) := $$v"; fi; \
-	};
-endef
-
 .PHONY: update
 ## Check for updates
-update:
-	@$(foreach repo_var,$(filter %_GITHUB,$(.VARIABLES)),\
-		$(call GITHUB_CHECK_LATEST,$(repo_var),$(repo_var:_GITHUB=_VERSION)))
+update: update-github
 
 all: rust-analyzer
 rust-analyzer: | .ext-rust-analyzer ; ln -fsT $| $@
@@ -111,12 +102,12 @@ all: .ext-languagetool
 .ext-languagetool-$(LANGUAGETOOL_VERSION): .ext-languagetool-$(LANGUAGETOOL_VERSION).zip
 	mkdir -p $@
 	unzip -d $@ $<
-	mv -T $@/LanguageTool-$(LANGUAGETOOL_VERSION) $@.tmp
+	mv -T $@/LanguageTool-$(LANGUAGETOOL_VERSION:v%=%) $@.tmp
 	mv -T $@.tmp $@
 
 .INTERMEDIATE: .ext-languagetool-$(LANGUAGETOOL_VERSION).zip
 .ext-languagetool-$(LANGUAGETOOL_VERSION).zip:
-	$(CURL) -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION).zip
+	$(CURL) -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION:v%=%).zip
 
 all: hadolint
 hadolint: | .ext-hadolint ; ln -fsT $| $@
@@ -179,6 +170,7 @@ gc:
 clean:
 	$(RM) -r $(wildcard .ext-*)
 
+include ~/_github.mk
 include ~/_gitignore.mk
 include ~/_help.mk
 
