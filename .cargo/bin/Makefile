@@ -1,10 +1,19 @@
 .PHONY: all
 all:
 
-DUST_VERSION := 0.8.0
 CARGO_CACHE_VERSION := 0.8.2
-CARGO_WATCH_VERSION := 8.1.1
-FCLONES_VERSION := 0.24.0
+CARGO_WATCH_VERSION := v8.1.1
+DUST_VERSION := v0.8.0
+FCLONES_VERSION := v0.24.0
+
+CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
+CARGO_WATCH_GITHUB := watchexec/cargo-watch
+DUST_GITHUB := bootandy/dust
+FCLONES_GITHUB := pkolaczk/fclones
+
+.PHONY: update
+## Check for updates
+update: update-github
 
 CARGO_BINSTALL := cargo binstall --no-confirm --install-path .binstall
 
@@ -13,15 +22,15 @@ CARGO_BINSTALL := cargo binstall --no-confirm --install-path .binstall
 
 all: dust
 dust: | .binstall/dust ; ln -fsT $| $@
-.binstall/dust: .binstall/dust-v$(DUST_VERSION)
-.binstall/dust-v$(DUST_VERSION): | .binstall
-	$(CARGO_BINSTALL) --version =$(DUST_VERSION) du-dust
+.binstall/dust: .binstall/dust-$(DUST_VERSION)
+.binstall/dust-$(DUST_VERSION): | .binstall
+	$(CARGO_BINSTALL) --version =$(DUST_VERSION:v%=%) du-dust
 
 all: cargo-watch
 cargo-watch: | .binstall/cargo-watch ; ln -fsT $| $@
-.binstall/cargo-watch: .binstall/cargo-watch-v$(CARGO_WATCH_VERSION)
-.binstall/cargo-watch-v$(CARGO_WATCH_VERSION): | .binstall
-	$(CARGO_BINSTALL) --version =$(CARGO_WATCH_VERSION) cargo-watch
+.binstall/cargo-watch: .binstall/cargo-watch-$(CARGO_WATCH_VERSION)
+.binstall/cargo-watch-$(CARGO_WATCH_VERSION): | .binstall
+	$(CARGO_BINSTALL) --version =$(CARGO_WATCH_VERSION:v%=%) cargo-watch
 
 all: cargo-cache
 cargo-cache: | .binstall/cargo-cache ; ln -fsT $| $@
@@ -33,7 +42,7 @@ all: fclones
 fclones: | .build/fclones ; ln -fsT $|/bin/$@ $@
 .build/fclones: .build/fclones-$(FCLONES_VERSION) ; ln -fsrT $< $@
 .build/fclones-$(FCLONES_VERSION):
-	cargo install --root .build/fclones-$(FCLONES_VERSION) --version =$(FCLONES_VERSION) --locked fclones
+	cargo install --root .build/fclones-$(FCLONES_VERSION) --version =$(FCLONES_VERSION:v%=%) --locked fclones
 
 all: frece
 frece:
@@ -44,7 +53,10 @@ rga rga-preproc rga-fzf rga-fzf-open &:
 	cargo install --locked --path ~/src-rust/ripgrep-all
 
 .PHONY: gc
+## Remove old versions
 gc:
 	liskin-gc-unlinked $(wildcard .binstall/*) $(wildcard .build/*)
 
+include ~/_github.mk
 include ~/_gitignore.mk
+include ~/_help.mk
