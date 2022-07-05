@@ -6,6 +6,8 @@ CURL := curl -LSsf
 CARGO_BINSTALL_VERSION := v0.10.0
 CTLPTL_VERSION := v0.8.5
 DELTA_VERSION := 0.13.0
+DOCKER_BUILDX_VERSION := v0.8.2
+DOCKER_COMPOSE_VERSION := v2.6.1
 HADOLINT_VERSION := v2.10.0
 HLINT_VERSION := v3.4
 HLS_GHC_VERSION := 8.8.4
@@ -21,6 +23,8 @@ TZ_VERSION := v0.6.1
 CARGO_BINSTALL_GITHUB := ryankurte/cargo-binstall
 CTLPTL_GITHUB := tilt-dev/ctlptl
 DELTA_GITHUB := dandavison/delta
+DOCKER_BUILDX_GITHUB := docker/buildx
+DOCKER_COMPOSE_GITHUB := docker/compose
 HADOLINT_GITHUB := hadolint/hadolint
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
@@ -159,6 +163,20 @@ sccache: | .ext-sccache ; ln -fsT $|/$@ $@
 	$(CURL) https://github.com/$(SCCACHE_GITHUB)/releases/download/$(SCCACHE_VERSION)/sccache-$(SCCACHE_VERSION)-x86_64-unknown-linux-musl.tar.gz \
 		| tar -x -z -C $@ --strip-components=1 --wildcards "*/sccache"
 	chmod +x $@/sccache
+
+all: docker-buildx
+docker-buildx: | .ext-docker-buildx ; ln -fsT $| $@
+.ext-docker-buildx: .ext-docker-buildx-$(DOCKER_BUILDX_VERSION) ; ln -fsT $< $@
+.ext-docker-buildx-$(DOCKER_BUILDX_VERSION):
+	$(CURL) -o $@ https://github.com/$(DOCKER_BUILDX_GITHUB)/releases/download/$(DOCKER_BUILDX_VERSION)/buildx-$(DOCKER_BUILDX_VERSION).linux-amd64
+	chmod +x $@
+
+all: docker-compose
+docker-compose: | .ext-docker-compose ; ln -fsT $| $@
+.ext-docker-compose: .ext-docker-compose-$(DOCKER_COMPOSE_VERSION) ; ln -fsT $< $@
+.ext-docker-compose-$(DOCKER_COMPOSE_VERSION):
+	$(CURL) -o $@ https://github.com/$(DOCKER_COMPOSE_GITHUB)/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-linux-x86_64
+	chmod +x $@
 
 .PHONY: gc
 ## Remove old versions
