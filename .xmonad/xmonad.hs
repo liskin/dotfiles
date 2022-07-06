@@ -503,7 +503,7 @@ main = do
         setEwmhActivateHook myActivateHook $
         ewmhFullscreen $
         ewmh $
-        withUrgencyHookC myUrgencyHook urgencyConfig{ suppressWhen = Focused } $
+        withUrgencyHookC myUrgencyHook def{ suppressWhen = Focused } $
         def { terminal           = "urxvt"
             , focusFollowsMouse  = True
             , borderWidth        = 2

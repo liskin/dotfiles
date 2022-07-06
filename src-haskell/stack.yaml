@@ -17,7 +17,6 @@ extra-deps:
 flags:
     xmobar:
         with_xft: true
-        with_utf8: true
         with_threaded: true
     xmonad-contrib:
         use_xft: true
