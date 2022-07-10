@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# Prevent dockerd from detecting firewalld by making the dbus system bus
+# inaccessible (it doesn't seem to be needed for anything else).
+# (workaround for https://github.com/moby/moby/issues/43781
+# and https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1014631)
+mount --bind /dev/null /run/dbus/system_bus_socket
+
+exec /usr/sbin/dockerd "$@"
