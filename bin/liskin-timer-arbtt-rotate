@@ -28,10 +28,12 @@ function with-pause-arbtt {
 	fi
 }
 
+# Rotate arbtt logs monthly. Rotation happens no sooner than 2 weeks after month ended.
+# Each rotated log keeps one day (24 hours) overlap at both start and end of month (UTC).
 function rotate-logs {
 	local today
 	local first_sample_date first_sample_day first_sample_day_after
-	local rotate_month rotate_month_start rotate_month_end rotate_month_end_plus_week
+	local rotate_month rotate_month_start rotate_month_end rotate_month_end_plus_delay
 	local rotate_start rotate_end
 	today=$(date -d today +%F)
 	first_sample_date=$(arbtt-dump --logfile="$log_file" --first=1 --format=json | jq -r '.[].date')
@@ -43,10 +45,10 @@ function rotate-logs {
 	while :; do
 		rotate_month=$(date -d "$rotate_month_start" +%+4Y-%m)
 		rotate_month_end=$(date -d "${rotate_month_start} + 1 month" +%F)
-		rotate_month_end_plus_week=$(date -d "${rotate_month_end} + 1 week" +%F)
+		rotate_month_end_plus_delay=$(date -d "${rotate_month_end} + 2 week" +%F)
 		rotate_start=$(date -d "${rotate_month_start} - 1 day" +%F)
 		rotate_end=$(date -d "${rotate_month_end} + 1 day" +%F)
-		[[ $today < $rotate_month_end_plus_week ]] && break
+		[[ $today < $rotate_month_end_plus_delay ]] && break
 
 		local dest_log_file
 		dest_log_file=~/backup/local/arbtt/$(basename --suffix=.log "$log_file")-"$rotate_month".log
