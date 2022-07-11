@@ -88,7 +88,7 @@ export-alias steam='bwrap-steam /usr/games/steam'
 export-alias protontricks='bwrap-steam /usr/bin/protontricks'
 
 export-alias arbtt=liskin-arbtt-stats
-export-alias arbtt-week='arbtt activity-chart "last monday" tomorrow'
+export-alias arbtt-week='arbtt activity-chart ^sow tomorrow'
 
 alias paste-x0at='curl -F "file=@-" https://x0.at/; echo'
 alias paste-sprungeus='curl -F "sprunge=<-" http://sprunge.us; echo'

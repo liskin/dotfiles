@@ -9,9 +9,17 @@ exclude=()
 
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
 
+function parse-day {
+	if [[ ${1:?} == ^* ]]; then
+		date -d "$(task calc "${1#^}")" +%F
+	else
+		date -d "$1" +%F
+	fi
+}
+
 function date-range {
-	d1=$(date -d "${1:-today - 3 hour}" +%F)
-	d2=$(date -d "${2:-$d1 + 1 day}" +%F)
+	d1=$(parse-day "${1:-today - 3 hour}")
+	d2=$(parse-day "${2:-$d1 + 1 day}")
 	t1="03:00"
 	t2="03:00"
 	filter+=(--filter="\$date >= ${d1}${t1} && \$date < ${d2}${t2}")
