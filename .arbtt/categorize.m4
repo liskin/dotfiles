@@ -14,7 +14,7 @@ any window (! $hidden && (
 	|| ($program == "google-chrome" && $title =~ m|:: https?://[^/]*zoom\.us/|)
 	|| $program =~ /^zoom/
 )) ==> tag Activity:Call,
-$desktop == "1:irc" ==> {
+$desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	current window $title =~ /^(t\[N\] |weechat\S+: )/ ==> tag Activity:Chat,
 	current window $title =~ /^(t\[m\]|m\[[A-Z]\])[  ]/ ==> tag Activity:Mail,
 	current window $title =~ m|~/taskwiki.* - VIM$| ==> tag Activity:Org,
