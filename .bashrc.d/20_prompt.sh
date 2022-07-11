@@ -20,7 +20,7 @@ unset __group __groups_user __groups_now
 
 # newline if not in first column
 function __col1_ps1 {
-	[[ $MC_SID ]] && return
+	[[ $MC_SID || $POETRY_ACTIVE ]] && return
 
 	local termios cur_y
 	# ask the terminal for any pending (line buffered) input
