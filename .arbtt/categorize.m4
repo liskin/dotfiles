@@ -24,6 +24,7 @@ $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 		current window $title =~ m!:: https?://calendar\.google\.com/! ==> tag Activity:Org,
 		current window $title =~ m!:: https?://outlook\.office\.com/mail/! ==> tag Activity:Mail,
 		current window $title =~ m!:: https?://outlook\.office\.com/calendar/! ==> tag Activity:Org,
+		current window $title =~ m!:: https?://\S+\.atlassian\.net/! ==> tag Activity:Org,
 	},
 },
 current window $program == "liferea" ==> tag Activity:Web-RSS,
