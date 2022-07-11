@@ -2,23 +2,21 @@
 # shellcheck disable=SC2239
 
 # show extra/missing groups
-function __set_diff {
-	jq --null-input --raw-output --arg a "${1?}" --arg b "${2?}" '($a | split("\\s+";"")) - ($b | split("\\s+";"")) | .[]'
-}
-__groups_user=$(id -nG "$USER")
-__groups_now=$(id -nG)
 __groups_ps1=
-for __group in $(__set_diff "$__groups_now" "$__groups_user"); do
-	__groups_ps1="${__groups_ps1}+${__group}"
+declare -A __groups_user=()
+declare -A __groups_now=()
+for __group in $(id -nG "$USER"); do __groups_user[$__group]=:; done
+for __group in $(id -nG); do __groups_now[$__group]=:; done
+for __group in "${!__groups_now[@]}"; do
+	[[ "${__groups_user[$__group]-}" ]] || __groups_ps1="${__groups_ps1}+${__group}"
 done
-for __group in $(__set_diff "$__groups_user" "$__groups_now"); do
-	__groups_ps1="${__groups_ps1}-${__group}"
+for __group in "${!__groups_user[@]}"; do
+	[[ "${__groups_now[$__group]-}" ]] || __groups_ps1="${__groups_ps1}-${__group}"
 done
 if [[ ${__groups_ps1-} ]]; then
 	__groups_ps1='\[\033[01;36m\]'"$__groups_ps1"'\[\033[01;32m\]'
 fi
-unset __groups_user __groups_now
-unset -f __set_diff
+unset __group __groups_user __groups_now
 
 # newline if not in first column
 function __col1_ps1 {
