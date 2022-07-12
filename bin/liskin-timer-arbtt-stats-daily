@@ -10,28 +10,36 @@ if [[ -f ~/.config/strava_offline/config.yaml && -f ~/.config/strava_offline/tok
 	fi
 fi
 
-function send-stats-daily {
+function send-stats {
+	local subject_extra=
+	if (( $# == 1 )); then
+		subject_extra=$(date -d "$1" +%a)
+	elif (( $# == 2 )); then
+		subject_extra=$(date -d "$1" +"%G.%V")
+	else
+		return 1
+	fi
+
 	COLUMNS=100 liskin-arbtt-stats activity-chart "$@" \
-		| mail -s "arbtt-stats $* $(date -d "$1" +%a)" -a "From: $USER@localhost" "$USER"@localhost
+		| mail -s "arbtt-stats $* $subject_extra" -a "From: $USER@localhost" "$USER"@localhost
 }
 
-function send-stats-weekly {
-	COLUMNS=100 liskin-arbtt-stats activity-chart "$@" \
-		| mail -s "arbtt-stats $* $(date -d "$1" +"%G.%V")" -a "From: $USER@localhost" "$USER"@localhost
-}
+if (( $# )); then
+	send-stats "$@"
+else
+	today=$(date -d today +%F)
+	next_daily=$(< ~/.cache/liskin-arbtt-stats-next-daily) || next_daily=$(date -d yesterday +%F)
+	next_weekly=$(< ~/.cache/liskin-arbtt-stats-next-weekly) || next_weekly=$(date -d monday +%F)
 
-today=$(date -d today +%F)
-next_daily=$(< ~/.cache/liskin-arbtt-stats-next-daily) || next_daily=$(date -d yesterday +%F)
-next_weekly=$(< ~/.cache/liskin-arbtt-stats-next-weekly) || next_weekly=$(date -d monday +%F)
+	while [[ "$next_daily" < "$today" ]]; do
+		send-stats "$next_daily"
+		next_daily=$(date -d "$next_daily + 1 day" +%F)
+		echo "$next_daily" > ~/.cache/liskin-arbtt-stats-next-daily
+	done
 
-while [[ "$next_daily" < "$today" ]]; do
-	send-stats-daily "$next_daily"
-	next_daily=$(date -d "$next_daily + 1 day" +%F)
-	echo "$next_daily" > ~/.cache/liskin-arbtt-stats-next-daily
-done
-
-while [[ "$next_weekly" < "$today" || "$next_weekly" == "$today" ]]; do
-	send-stats-weekly "$(date -d "$next_weekly - 1 week" +%F)" "$next_weekly"
-	next_weekly=$(date -d "$next_weekly + 1 week" +%F)
-	echo "$next_weekly" > ~/.cache/liskin-arbtt-stats-next-weekly
-done
+	while [[ "$next_weekly" < "$today" || "$next_weekly" == "$today" ]]; do
+		send-stats "$(date -d "$next_weekly - 1 week" +%F)" "$next_weekly"
+		next_weekly=$(date -d "$next_weekly + 1 week" +%F)
+		echo "$next_weekly" > ~/.cache/liskin-arbtt-stats-next-weekly
+	done
+fi
