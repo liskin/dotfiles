@@ -1,0 +1,12 @@
+[Unit]
+Description=extra ssh agent instance - %i
+PartOf=graphical-session.target
+
+[Service]
+Type=forking
+Environment=SSH_AUTH_SOCK=%t/ssh-agent-%i
+ExecStart=/usr/bin/ssh-agent -a $SSH_AUTH_SOCK
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
