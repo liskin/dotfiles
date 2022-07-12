@@ -2,6 +2,8 @@
 
 set -eu
 
+export LC_ALL=C.UTF-8
+
 if [[ -f ~/.config/strava_offline/config.yaml && -f ~/.config/strava_offline/token.json ]]; then
 	if nmcli-online || { sleep 30; nmcli-online; }; then
 		strava-offline sqlite
