@@ -129,6 +129,7 @@ tilt: | .ext-tilt
 	mkdir -p $@
 	$(CURL) https://github.com/$(TILT_GITHUB)/releases/download/$(TILT_VERSION)/tilt.$(TILT_VERSION:v%=%).linux.x86_64.tar.gz \
 		| tar -x -z -C $@ tilt
+	sudo setcap cap_net_bind_service+ep $@/tilt
 
 all: ctlptl
 ctlptl: | .ext-ctlptl
