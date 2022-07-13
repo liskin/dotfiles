@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# unset env vars overridden in ~/bin/{google-chrome,firefox}
+unset FONTCONFIG_FILE
+
+exec /usr/bin/xdg-open "$@"
