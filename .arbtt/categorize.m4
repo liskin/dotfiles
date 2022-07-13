@@ -12,7 +12,7 @@ any window $active ==> tag Desktop:$desktop,
 any window (! $hidden && (
 	($program == "google-chrome" && $title =~ m|:: https?://meet\.google|)
 	|| ($program == "google-chrome" && $title =~ m|:: https?://[^/]*zoom\.us/|)
-	|| $program =~ /^zoom/
+	|| $program =~ /^zoom/ || ($program =~ /^join\?/ && $title =~ /Zoom Meeting/)
 )) ==> tag Activity:Call,
 $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	current window $title =~ /^(t\[N\] |weechat\S+: )/ ==> tag Activity:Chat,
