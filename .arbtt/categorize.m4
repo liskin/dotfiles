@@ -1,8 +1,5 @@
 -- inactivity
-if (
-	$screensaver
-	|| current window ($program == "google-chrome" && $title =~ m!^(chrome://newtab|about:blank)!)
-) then tag inactive else tag active,
+if $screensaver then tag inactive else tag active,
 
 -- generic, for filtering purposes
 tag Program:$current.program,
