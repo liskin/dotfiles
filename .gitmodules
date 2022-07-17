@@ -154,7 +154,7 @@
 	url = git@github.com:liskin/xmonad.git
 [submodule "src-haskell/xmobar"]
 	path = src-haskell/xmobar
-	#url = https://codeberg.org/jao/xmobar
+	#url = https://codeberg.org/xmobar/xmobar
 	url = git@github.com:liskin/xmobar.git
 [submodule "src-haskell/X11"]
 	path = src-haskell/X11
