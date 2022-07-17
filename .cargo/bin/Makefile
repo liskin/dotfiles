@@ -1,6 +1,11 @@
 .PHONY: all
 all:
 
+include ~/_git.mk
+include ~/_github.mk
+include ~/_gitignore.mk
+include ~/_help.mk
+
 CARGO_CACHE_VERSION := 0.8.2
 CARGO_WATCH_VERSION := v8.1.1
 DUST_VERSION := v0.8.0
@@ -39,24 +44,31 @@ cargo-cache: | .binstall/cargo-cache ; ln -fsT $| $@
 	$(CARGO_BINSTALL) --version =$(CARGO_CACHE_VERSION) cargo-cache
 
 all: fclones
-fclones: | .build/fclones ; ln -fsT $|/bin/$@ $@
-.build/fclones: .build/fclones-$(FCLONES_VERSION) ; ln -fsrT $< $@
+fclones: $(MAKEFILE_LIST) | .build/fclones ; ln -fsT $|/bin/$@ $@; touch $@
+.build/fclones: $(MAKEFILE_LIST) | .build/fclones-$(FCLONES_VERSION) ; ln -fsrT $| $@; touch $@
 .build/fclones-$(FCLONES_VERSION):
 	cargo install --root .build/fclones-$(FCLONES_VERSION) --version =$(FCLONES_VERSION:v%=%) --locked fclones
 
-all: frece
-frece:
-	cargo install --path ~/src-rust/frece
+FRECE_SRC := ~/src-rust/frece
+FRECE_VERSION := $(shell $(call GIT_DESCRIBE,$(FRECE_SRC)))
 
-all: rga rga-preproc rga-fzf rga-fzf-open
-rga rga-preproc rga-fzf rga-fzf-open &:
-	cargo install --locked --path ~/src-rust/ripgrep-all
+all: frece
+frece: $(MAKEFILE_LIST) | .build/frece ; ln -fsT $|/bin/$@ $@; touch $@
+.build/frece: $(MAKEFILE_LIST) | .build/frece-$(FRECE_VERSION) ; ln -fsrT $| $@; touch $@
+.build/frece-$(FRECE_VERSION):
+	cargo install --root .build/frece-$(FRECE_VERSION) --path ~/src-rust/frece
+
+RGA_SRC := ~/src-rust/ripgrep-all
+RGA_VERSION := $(shell $(call GIT_DESCRIBE,$(RGA_SRC)))
+
+RGA_BINS := rga rga-preproc rga-fzf rga-fzf-open
+all: $(RGA_BINS)
+$(RGA_BINS) &: $(MAKEFILE_LIST) | .build/rga ; $(foreach BIN,$(RGA_BINS),ln -fsT $|/bin/$(BIN) $(BIN); touch $(BIN);)
+.build/rga: $(MAKEFILE_LIST) | .build/rga-$(RGA_VERSION) ; ln -fsrT $| $@; touch $@
+.build/rga-$(RGA_VERSION):
+	cargo install --root .build/rga-$(RGA_VERSION) --locked --path ~/src-rust/ripgrep-all
 
 .PHONY: gc
 ## Remove old versions
 gc:
 	liskin-gc-unlinked $(wildcard .binstall/*) $(wildcard .build/*)
-
-include ~/_github.mk
-include ~/_gitignore.mk
-include ~/_help.mk
