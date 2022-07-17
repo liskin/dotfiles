@@ -1,17 +1,29 @@
 .PHONY: all
-all: elixir elixir-ls
+all:
 
-.PHONY: elixir
-elixir:
-	$(MAKE) -C $@
+include ~/_git.mk
+include ~/_help.mk
 
-.PHONY: elixir-ls
-elixir-ls: VER=$(shell unset GIT_DIR && git -C elixir-ls describe --tags)
-elixir-ls: elixir
-	[ "$(VER)" ]
-	[ "$$(readlink elixir-ls-rel)" = elixir-ls-rel-$(VER) ] || { \
-		cd elixir-ls && \
+ELIXIR_SRC := elixir
+ELIXIR_VERSION := $(shell $(call GIT_DESCRIBE,$(ELIXIR_SRC)))
+
+all: .build/elixir
+.build/elixir: $(MAKEFILE_LIST) | .build/elixir-$(ELIXIR_VERSION) ; ln -fsrT $| $@; touch $@
+.build/elixir-$(ELIXIR_VERSION):
+	mkdir -p $@
+	$(MAKE) -C $(ELIXIR_SRC) install PREFIX=$(CURDIR)/$@
+
+ELIXIR_LS_SRC := elixir-ls
+ELIXIR_LS_VERSION := $(shell $(call GIT_DESCRIBE,$(ELIXIR_LS_SRC)))
+
+all: .build/elixir-ls
+.build/elixir-ls: $(MAKEFILE_LIST) | .build/elixir-ls-$(ELIXIR_LS_VERSION) ; ln -fsrT $| $@; touch $@
+.build/elixir-ls-$(ELIXIR_LS_VERSION):
+	cd $(ELIXIR_LS_SRC) && \
 		mix deps.get && \
-		mix elixir_ls.release -o ../elixir-ls-rel-$(VER) && \
-		ln -fsT elixir-ls-rel-$(VER) ../elixir-ls-rel; \
-	}
+		mix elixir_ls.release -o $(CURDIR)/$@
+
+.PHONY: gc
+## Remove old versions
+gc:
+	liskin-gc-unlinked $(wildcard .build/*)
