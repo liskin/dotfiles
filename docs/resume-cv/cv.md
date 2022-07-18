@@ -230,12 +230,6 @@ _**sabbatical**_
 * Teaching assistant for Introduction to Functional Programming; Automata and Grammars.
 :::
 
-::: {.entry}
-**Scientific Computing**
-[Universität Wien (Vienna, AT)]{}
-**2010**
-:::
-
 <!--
 ::: {.entry}
 **Summer School on Bioinformatics**
@@ -243,6 +237,12 @@ _**sabbatical**_
 **2011**
 :::
 -->
+
+::: {.entry}
+**Scientific Computing**
+[Universität Wien (Vienna, AT)]{}
+**2010**
+:::
 
 ### Personal
 
