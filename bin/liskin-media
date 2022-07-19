@@ -43,17 +43,74 @@ function action-volume {
 function action-mute     { pactl set-sink-mute   @DEFAULT_SINK@   toggle; }
 function action-mic-mute { pactl set-source-mute @DEFAULT_SOURCE@ toggle; }
 
-function action-toggle-handsfree {
+function status-handsfree {
 	local info
 	info=$(pactl info)
 
 	if [[ $info =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
-		bt_addr="${BASH_REMATCH[1]}"
-		pactl set-card-profile bluez_card."$bt_addr" handsfree_head_unit
+		echo "${BASH_REMATCH[1]}" 0
 	elif [[ $info =~ "Default Sink: bluez_sink."([0-9A-F_]*)".handsfree_head_unit" ]]; then
-		bt_addr="${BASH_REMATCH[1]}"
+		echo "${BASH_REMATCH[1]}" 1
+	fi
+}
+
+function set-handsfree {
+	local bt_addr handsfree
+	bt_addr="${1:?}" && handsfree="${2:?}"
+
+	if (( handsfree )); then
+		pactl set-card-profile bluez_card."$bt_addr" handsfree_head_unit
+	else
 		pactl set-card-profile bluez_card."$bt_addr" a2dp_sink
 	fi
+}
+
+function status-camera {
+	local camera
+
+	camera=$(usbguard list-devices --blocked | awk -F: '/ name "Integrated Camera" / { print $1 }')
+	if [[ $camera ]]; then
+		echo "$camera" 0; exit
+	fi
+
+	camera=$(usbguard list-devices --allowed | awk -F: '/ name "Integrated Camera" / { print $1 }')
+	if [[ $camera ]]; then
+		echo "$camera" 1; exit
+	fi
+}
+
+function set-camera {
+	local usb_dev camera
+	usb_dev="${1:?}" && camera="${2:?}"
+
+	if (( camera )); then
+		usbguard allow-device "$usb_dev"
+		dunstify -i camera-web -u low -t 2000 "Integrated Camera allowed"
+	else
+		usbguard block-device "$usb_dev"
+		dunstify -i camera-web -u low -t 2000 "Integrated Camera blocked"
+	fi
+}
+
+function action-toggle-handsfree {
+	local bt_addr handsfree
+	status-handsfree | read -r bt_addr handsfree
+	set-handsfree "$bt_addr" $((!handsfree))
+}
+
+function action-toggle-camera {
+	local usb_dev camera
+	status-camera | read -r usb_dev camera
+	set-camera "$usb_dev" $((!camera))
+}
+
+function action-toggle-videocall {
+	local bt_addr handsfree
+	local usb_dev camera
+	status-handsfree | read -r bt_addr handsfree
+	status-camera | read -r usb_dev camera
+	set-handsfree "$bt_addr" $((!handsfree || !camera))
+	set-camera "$usb_dev" $((!handsfree || !camera))
 }
 
 # Listen for MPRIS events and remember which player we interacted with last

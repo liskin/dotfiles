@@ -104,7 +104,8 @@ myKeys XConfig{..} = M.fromList $
     -- other special keys
     , ((altMask,   xK_space             ), spawnExec "liskin-touchpad-toggle")
     , ((0,         xF86XK_TouchpadToggle), spawnExec "liskin-touchpad-toggle")
-    , ((0,         xF86XK_WebCam        ), spawnExec "liskin-integrated-camera-toggle")
+    , ((0,         xF86XK_WebCam        ), spawnExec "liskin-media toggle-videocall")
+    , ((0,         xF86XK_Favorites     ), spawnExec "liskin-media toggle-videocall")
     , ((controlMask, xF86XK_WebCam      ), spawnExec "liskin-touchscreen-toggle")
     , ((0,         xF86XK_Display       ), spawnExec "layout-auto layout-vertical")
     , ((0,         xF86XK_Sleep         ), spawnExec "layout-normal")
