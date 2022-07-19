@@ -1,2 +1,0 @@
-unload-module module-bluetooth-policy
-load-module module-bluetooth-policy auto_switch=2
