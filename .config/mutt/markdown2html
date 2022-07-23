@@ -135,8 +135,7 @@ def _preprocess_markdown(mdwn):
     # when used around email addresses. Note that this needs a postprocessing
     # hack because the pandoc autolink converted includes the ambersand
     # (https://github.com/jgm/pandoc/issues/7398).
-    ret = re.sub(r'<([^@]+@.+\.[^>]+)>', r'&lt;\g<1> -PANDOC_BUG_7398-&gt;', ret)
-
+    ret = re.sub(r'<([^@]+@\S+)>', r'&lt;\g<1> PANDOC_BUG_7398 &gt;', ret)
     return ret
 
 
@@ -288,7 +287,7 @@ def _postprocess_html(html):
 
     # Preprocessing leaves a sentinel to work around
     # https://github.com/jgm/pandoc/issues/7398, and so we need to remove it:
-    html = html.replace('</a> -PANDOC_BUG_7398-&gt;', '</a>&gt;')
+    html = html.replace(' PANDOC_BUG_7398 ', '')
     return html
 
 
@@ -297,7 +296,7 @@ def convert_markdown_to_html(mdwn):
     Converts the input Markdown to HTML, handling separately the body, as well
     as an optional signature.
     '''
-    parts = re.split(r'^-- $', mdwn, 1, flags=re.MULTILINE)
+    parts = re.split(r'^-- \n', mdwn, 1, flags=re.MULTILINE)
     body = parts[0]
     if len(parts) == 2:
         sig = parts[1]
@@ -317,7 +316,7 @@ def convert_markdown_to_html(mdwn):
         sig = _preprocess_signature(sig)
         sig = _preprocess_markdown(sig)
         sig = _convert_with_pandoc(sig, standalone=False, selfcontained=False)
-        sig = SIGNATURE_HTML.format(sig='<br/>'.join(sig.splitlines()))
+        sig = SIGNATURE_HTML.format(sig=sig)
         eob = html.find('</body>')
         html = f'{html[:eob]}{sig}\n{html[eob:]}'
 
