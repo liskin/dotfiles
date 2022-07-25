@@ -16,6 +16,7 @@ function locate-all-repos {
 	} | grep -z -v -F \
 		-e "$HOME/.cache/" \
 		-e "$HOME/.cargo/" \
+		-e "$HOME/.local/share/docker/" \
 		-e '/_old/' \
 	| sort -z -u
 }
