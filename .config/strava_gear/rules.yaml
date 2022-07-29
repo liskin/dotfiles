@@ -105,6 +105,8 @@ components:
   chain1-2: "Shimano CN-NX10"
   chain1-3: "Shimano CN-NX10"
   chain1-4: "KMC wide"
+  chain1-5: "unknown"
+  chain1-6: "unknown"
   bb-sq-1: "Unknown square taper BB"
   bb-sq-2: "Unknown square taper BB"
 
@@ -380,6 +382,8 @@ rules:
 - ss-uk:
     frame: trek-5th-district
     pedals: pd-m520-3
+    chain: chain1-5
+- {since: 2022-07-29T15:00:00+01:00, ss-uk: {chain: chain1-6}}
 
 # road ----------------------------
 - road:
