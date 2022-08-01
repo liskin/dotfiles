@@ -70,12 +70,25 @@ function check-camera {
 	return 1
 }
 
+function check-vpns {
+	local f
+
+	vpns=()
+	for f in /sys/devices/virtual/net/tun* /sys/devices/virtual/net/tap*; do
+		f=${f##*/}
+		f=${f##@(tun|tap)?(_)}
+		vpns+=("$f")
+	done
+	(( ${#vpns[@]} ))
+}
+
 function refresh {
 	log=""
 	check-nvidia && log="$log <fn=3>"$'\ue266'" </fn>"
 	check-gvt && log="$log v<fn=3>"$'\ue266'" </fn>"
 	check-touchscreen && log="$log <fn=5>"$'\uf25a'"</fn>"
 	check-camera && log="$log <fn=3>"$'\uf03d'" </fn>"
+	check-vpns && log="$log <fn=3>"$'\uf983'" (${vpns[*]})</fn>"
 	log "${log:+<fc=red>$log</fc>}"
 }
 
