@@ -82,6 +82,16 @@ function check-vpns {
 	(( ${#vpns[@]} ))
 }
 
+function check-sys-docker {
+	# TODO: listen for changes, don't just poll
+	systemctl is-active --quiet docker.service
+}
+
+function check-user-docker {
+	# TODO: listen for changes, don't just poll
+	systemctl --user is-active --quiet docker.service
+}
+
 function refresh {
 	log=""
 	check-nvidia && log="$log <fn=3>"$'\ue266'" </fn>"
@@ -89,6 +99,8 @@ function refresh {
 	check-touchscreen && log="$log <fn=5>"$'\uf25a'"</fn>"
 	check-camera && log="$log <fn=3>"$'\uf03d'" </fn>"
 	check-vpns && log="$log <fn=3>"$'\uf983'" (${vpns[*]})</fn>"
+	check-sys-docker && log="$log <fn=3>"$'\uf308'" </fn>"
+	check-user-docker && log="$log <fn=3>"$'\ue7b0'" </fn>"
 	log "${log:+<fc=red>$log</fc>}"
 }
 
