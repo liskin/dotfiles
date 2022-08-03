@@ -109,6 +109,8 @@ components:
   chain1-6: "unknown"
   bb-sq-1: "Unknown square taper BB"
   bb-sq-2: "Unknown square taper BB"
+  piste-chainring-1: {name: "unknown singlespeed chainring 130BCD 44T"}
+  piste-chainring-2: {name: "Plateau Alize Piste 130BCD 44T"}
 
   # brakes ----------------------------
   tektro-front: Tektro MT-14
@@ -383,7 +385,9 @@ rules:
     frame: trek-5th-district
     pedals: pd-m520-3
     chain: chain1-5
+    chainring: piste-chainring-1
 - {since: 2022-07-29T15:00:00+01:00, ss-uk: {chain: chain1-6}}
+- {since: 2022-08-01T20:00:00+01:00, ss-uk: {chainring: piste-chainring-2}}
 
 # road ----------------------------
 - road:
