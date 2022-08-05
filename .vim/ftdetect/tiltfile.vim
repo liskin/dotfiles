@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *Tiltfile* setf python
+au BufRead,BufNewFile *Tiltfile* setf bzl
