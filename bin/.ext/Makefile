@@ -3,6 +3,7 @@ all:
 
 CURL := curl -LSsf
 
+BUILDIFIER_VERSION := 5.1.0
 CARGO_BINSTALL_VERSION := v0.10.0
 CTLPTL_VERSION := v0.8.5
 DELTA_VERSION := 0.13.0
@@ -20,6 +21,7 @@ SCCACHE_VERSION := v0.3.0
 TILT_VERSION := v0.30.4
 TZ_VERSION := v0.6.1
 
+BUILDIFIER_GITHUB := bazelbuild/buildtools
 CARGO_BINSTALL_GITHUB := ryankurte/cargo-binstall
 CTLPTL_GITHUB := tilt-dev/ctlptl
 DELTA_GITHUB := dandavison/delta
@@ -118,6 +120,13 @@ hadolint: | .ext-hadolint ; ln -fsT $| $@
 .ext-hadolint: .ext-hadolint-$(HADOLINT_VERSION) ; ln -fsT $< $@
 .ext-hadolint-$(HADOLINT_VERSION):
 	$(CURL) -o $@ https://github.com/$(HADOLINT_GITHUB)/releases/download/$(HADOLINT_VERSION)/hadolint-Linux-x86_64
+	chmod +x $@
+
+all: buildifier
+buildifier: | .ext-buildifier ; ln -fsT $| $@
+.ext-buildifier: .ext-buildifier-$(BUILDIFIER_VERSION) ; ln -fsT $< $@
+.ext-buildifier-$(BUILDIFIER_VERSION):
+	$(CURL) -o $@ https://github.com/$(BUILDIFIER_GITHUB)/releases/download/$(BUILDIFIER_VERSION)/buildifier-linux-amd64
 	chmod +x $@
 
 all: tilt
