@@ -133,7 +133,9 @@ set tags+=./tags;
 set path=.,,
 
 " filename completion {{{2
-set wildmode=list:longest
+set wildmenu
+set wildmode=full:longest
+set wildoptions=fuzzy,pum
 set wildignore+=*.o,*.d,*.hi,*.beam,*.p_o,*.p_hi,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
