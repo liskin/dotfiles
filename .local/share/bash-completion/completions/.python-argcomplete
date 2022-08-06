@@ -1,0 +1,6 @@
+#!bash
+# shellcheck disable=SC2239
+
+if [[ ${BASH_SOURCE[0]} ]]; then
+	eval "$(register-python-argcomplete "${BASH_SOURCE[0]##*/}")"
+fi

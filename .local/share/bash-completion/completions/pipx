@@ -1,4 +1,1 @@
-#!bash
-# shellcheck disable=SC2239
-
-eval "$(register-python-argcomplete pipx)"
+.python-argcomplete
