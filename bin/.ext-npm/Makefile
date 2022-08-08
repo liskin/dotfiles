@@ -3,8 +3,8 @@ all:
 
 HOSTNAME := $(shell hostname)
 
-REDOCLY_VERSION := 1.0.0-beta.103
-REDOC_CLI_VERSION := 0.13.16
+REDOCLY_VERSION := 1.0.0-beta.105
+REDOC_CLI_VERSION := 0.13.17
 
 REDOCLY_NPM := @redocly/cli
 REDOC_CLI_NPM := redoc-cli
