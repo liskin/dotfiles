@@ -3,9 +3,11 @@ all:
 
 HOSTNAME := $(shell hostname)
 
+PRETTIER_VERSION := 2.7.1
 REDOCLY_VERSION := 1.0.0-beta.105
 REDOC_CLI_VERSION := 0.13.17
 
+PRETTIER_NPM := prettier
 REDOCLY_NPM := @redocly/cli
 REDOC_CLI_NPM := redoc-cli
 
@@ -33,6 +35,12 @@ redocly: | .ext-redocly ; ln -fsT $|/bin/$@ $@
 .ext-redocly: .ext-redocly-$(REDOCLY_VERSION) ; ln -fsT $< $@
 .ext-redocly-$(REDOCLY_VERSION):
 	bwrap-npm-install --prefix $@ -- --omit=dev $(REDOCLY_NPM)@$(REDOCLY_VERSION)
+
+all: prettier
+prettier: | .ext-prettier ; ln -fsT $|/bin/$@ $@
+.ext-prettier: .ext-prettier-$(PRETTIER_VERSION) ; ln -fsT $< $@
+.ext-prettier-$(PRETTIER_VERSION):
+	bwrap-npm-install --prefix $@ -- --omit=dev $(PRETTIER_NPM)@$(PRETTIER_VERSION)
 
 .PHONY: gc
 gc:
