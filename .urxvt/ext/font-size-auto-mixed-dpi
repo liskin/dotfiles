@@ -1,0 +1,118 @@
+#!/usr/bin/perl
+
+#:META:X_RESOURCE:%.lodpi.font:string:lo-dpi font
+#:META:X_RESOURCE:%.lodpi.boldFont:string:lo-dpi boldFont
+#:META:X_RESOURCE:%.lodpi.italicFont:string:lo-dpi italicFont
+#:META:X_RESOURCE:%.lodpi.boldItalicFont:string:lo-dpi boldItalicFont
+#:META:X_RESOURCE:%.hidpi.font:string:hi-dpi font
+#:META:X_RESOURCE:%.hidpi.boldFont:string:hi-dpi boldFont
+#:META:X_RESOURCE:%.hidpi.italicFont:string:hi-dpi italicFont
+#:META:X_RESOURCE:%.hidpi.boldItalicFont:string:hi-dpi boldItalicFont
+#:META:X_RESOURCE:%.width-threshold:string:hi-dpi width threshold (default 2800)
+#:META:X_RESOURCE:%.height-threshold:string:hi-dpi height threshold (default 2800)
+
+use strict;
+use warnings;
+use v5.010;
+
+use X11::Protocol;
+
+sub X {
+	my ($display) = @_;
+	state $X;
+	return $X->{$display} = $X->{$display} // X11::Protocol->new($display);
+}
+
+sub xinerama_screens {
+	my ($display) = @_;
+
+	my $X = X($display);
+	$X->init_extension('XINERAMA');
+	return () unless $X->XineramaIsActive();
+
+	return map +{x => $_->[0], y => $_->[1], width => $_->[2], height => $_->[3] }, $X->XineramaQueryScreens();
+}
+
+sub find_xinerama_screen {
+	my ($display, $x, $y) = @_;
+
+	for my $screen (xinerama_screens($display)) {
+		return $screen if
+			$x >= $screen->{x} &&
+			$x < $screen->{x} + $screen->{width} &&
+			$y >= $screen->{y} &&
+			$y < $screen->{y} + $screen->{height};
+	}
+
+	return undef;
+}
+
+sub on_start
+{
+	my ($term) = @_;
+
+	$term->{current} = "";
+	$term->{mapped} = 0;
+
+	for my $dpi (qw(hidpi lodpi)) {
+		$term->{$dpi} = { map { $_ => $term->x_resource("%.$dpi.$_") // "" } qw(font boldFont italicFont boldItalicFont) };
+	}
+
+	$term->{width_threshold} = $term->x_resource("%.width-threshold") // 2800;
+	$term->{height_threshold} = $term->x_resource("%.height-threshold") // 2800;
+}
+
+sub set_fonts {
+	my ($term, $dpi) = @_;
+
+	return if $term->{current} eq $dpi;
+	$term->{current} = $dpi;
+
+	state %escapecodes = (
+		"font"           => 710,
+		"boldFont"       => 711,
+		"italicFont"     => 712,
+		"boldItalicFont" => 713,
+	);
+
+	my $cmd = "";
+	for my $type (qw(font boldFont italicFont boldItalicFont)) {
+		my $old = $term->resource($type) // "";
+		my $new = $term->{$dpi}->{$type};
+
+		if (length $new and $new ne $old) {
+			$cmd .= "\033]$escapecodes{$type};$new\007";
+		}
+	}
+
+	$term->cmd_parse($cmd) if length $cmd;
+}
+
+sub refresh {
+	my ($term) = @_;
+
+	my ($x, $y) = $term->XTranslateCoordinates($term->vt, $term->DefaultRootWindow, 0, 0);
+	my $screen = find_xinerama_screen($term->display_id, $x, $y);
+	return unless $screen;
+
+	set_fonts($term, ($screen->{width} >= $term->{width_threshold} || $screen->{height} >= $term->{height_threshold}) ? "hidpi" : "lodpi");
+}
+
+sub on_configure_notify {
+	my ($term, $event) = @_;
+
+	refresh($term) if $term->{mapped};
+}
+
+sub on_map_notify {
+	my ($term, $event) = @_;
+
+	$term->{mapped} = 1;
+	refresh($term);
+}
+
+sub on_unmap_notify {
+	my ($term, $event) = @_;
+
+	$term->{mapped} = 0;
+}

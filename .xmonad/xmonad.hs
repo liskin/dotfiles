@@ -53,6 +53,7 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
+import XMonad.Prelude (fi)
 import XMonad.Prompt
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Hacks
@@ -271,6 +272,7 @@ myFloatConfReqManageHook :: MaybeManageHook
 myFloatConfReqManageHook = composeAll
     [ appName =? "alarm-clock-applet" -?> doFloat -- prevent alarm-clock-applet from moving its floats to remebered location
     , className =? "Steam" -?> doFloat -- prevent Steam from moving its floats to primary screen
+    , className =? "URxvt" -?> doFloat -- prevent URxvt from moving to 0, 0 when changing fonts
     ]
 
 myActivateHook :: ManageHook
@@ -294,10 +296,32 @@ myEventHook = mconcat
         myXmonadCtlHooks = [myCtlDnd]
 
 floatConfReqHook :: MaybeManageHook -> Event -> X All
-floatConfReqHook mh ConfigureRequestEvent{ev_window = w} = do
+floatConfReqHook mh ev@ConfigureRequestEvent{ev_window = w} =
     runQuery (join <$> (isFloat -?> mh)) w >>= \case
         Nothing -> mempty
-        Just e -> windows (appEndo e) >> pure (All False)
+        Just e -> do
+            windows (appEndo e)
+            sendConfWindow -- if still floating, send ConfigureWindow
+            pure (All False)
+  where
+    sendConfWindow = withWindowSet $ \ws ->
+        whenJust (M.lookup w (W.floating ws)) $ \fr ->
+            whenJust (findScreenRect ws) (confWindow fr)
+    findScreenRect ws = listToMaybe
+        [ screenRect (W.screenDetail s)
+        | s <- W.current ws : W.visible ws
+        , w `elem` W.integrate' (W.stack (W.workspace s)) ]
+    confWindow fr sr = withDisplay $ \dpy -> do
+        let r = scaleRationalRect sr fr
+        bw <- asks (borderWidth . config)
+        io $ configureWindow dpy w (ev_value_mask ev) $ WindowChanges
+            { wc_x            = fi $ rect_x r
+            , wc_y            = fi $ rect_y r
+            , wc_width        = fi $ rect_width r
+            , wc_height       = fi $ rect_height r
+            , wc_border_width = fromIntegral bw
+            , wc_sibling      = ev_above ev
+            , wc_stack_mode   = ev_detail ev }
 floatConfReqHook _ _ = mempty
 
 -- Do Not Disturb

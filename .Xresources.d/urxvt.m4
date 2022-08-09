@@ -15,6 +15,12 @@ define(mono_boldFont, mono(roman,bold))dnl
 define(mono_italicFont, mono(oblique,normal))dnl
 define(mono_boldItalicFont, mono(oblique,bold))dnl
 dnl
+define(iosevka_hidpi, `xft:Iosevka Fixed SS11:pixelsize=20:slant=$1:weight=$2')dnl
+define(iosevka_hidpi_font, iosevka_hidpi(roman,normal))dnl
+define(iosevka_hidpi_boldFont, iosevka_hidpi(roman,bold))dnl
+define(iosevka_hidpi_italicFont, iosevka_hidpi(oblique,normal))dnl
+define(iosevka_hidpi_boldItalicFont, iosevka_hidpi(oblique,bold))dnl
+dnl
 define(iosevka, `xft:Iosevka Fixed SS11:pixelsize=25:slant=$1:weight=$2')dnl
 define(iosevka_font, iosevka(roman,normal))dnl
 define(iosevka_boldFont, iosevka(roman,bold))dnl
@@ -27,6 +33,11 @@ define(default_font, `fixed_font,symbols_fonts')dnl
 define(default_boldFont, `fixed_boldFont,fixed_font,symbols_fonts')dnl
 define(default_italicFont, `fixed_italicFont,fixed_font,symbols_fonts')dnl
 define(default_boldItalicFont, `')dnl
+dnl
+define(hidpi_font, `iosevka_hidpi_font,symbols_fonts')dnl
+define(hidpi_boldFont, `iosevka_hidpi_boldFont,symbols_fonts')dnl
+define(hidpi_italicFont, `iosevka_hidpi_italicFont,symbols_fonts')dnl
+define(hidpi_boldItalicFont, `iosevka_hidpi_boldItalicFont,symbols_fonts')dnl
 dnl
 define(big_font, `fixedBig_font,symbols_fonts')dnl
 define(big_boldFont, `fixedBig_boldFont,fixedBig_font,symbols_fonts')dnl
@@ -84,6 +95,14 @@ URxvt.keysym.meta_key-Page_Up: font-size:increase
 URxvt.keysym.meta_key-Page_Down: font-size:decrease
 URxvt.keysym.meta_key-Delete: font-size:show
 URxvt.font-size.step: 2
+URxvt.font-size-auto-mixed-dpi.lodpi.font: default_font
+URxvt.font-size-auto-mixed-dpi.lodpi.boldFont: default_boldFont
+URxvt.font-size-auto-mixed-dpi.lodpi.italicFont: default_italicFont
+URxvt.font-size-auto-mixed-dpi.lodpi.boldItalicFont: default_boldItalicFont
+URxvt.font-size-auto-mixed-dpi.hidpi.font: hidpi_font
+URxvt.font-size-auto-mixed-dpi.hidpi.boldFont: hidpi_boldFont
+URxvt.font-size-auto-mixed-dpi.hidpi.italicFont: hidpi_italicFont
+URxvt.font-size-auto-mixed-dpi.hidpi.boldItalicFont: hidpi_boldItalicFont
 URxvt.keysym.4-bar: aAtt:undo
 URxvt.keysym.4-colon: aAtt:word-complete
 URxvt.keysym.4-quotedbl: aAtt:WORD-complete
