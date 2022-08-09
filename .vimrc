@@ -114,7 +114,9 @@ set showcmd
 set equalalways
 function s:equal_windows() abort
 	let save_pos = getpos(".")
-	execute "normal \<C-W>="
+	let cur_tab = tabpagenr()
+	tabdo set cmdheight=1 | wincmd =
+	execute 'tabn ' . cur_tab
 	call setpos('.', save_pos)
 endfunction
 autocmd VimResized * call s:equal_windows()
