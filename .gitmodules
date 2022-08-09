@@ -84,9 +84,6 @@
 [submodule ".vim/bundle/vim-visual-multi"]
 	path = .vim/bundle/vim-visual-multi
 	url = https://github.com/mg979/vim-visual-multi
-[submodule ".vim/bundle/editorconfig-vim"]
-	path = .vim/bundle/editorconfig-vim
-	url = https://github.com/editorconfig/editorconfig-vim
 [submodule ".vim/bundle/ultisnips"]
 	path = .vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips
@@ -102,6 +99,9 @@
 [submodule ".vim/bundle/zepl.vim"]
 	path = .vim/bundle/zepl.vim
 	url = https://github.com/axvr/zepl.vim/
+[submodule ".vim/bundle/vim-sleuth"]
+	path = .vim/bundle/vim-sleuth
+	url = https://github.com/tpope/vim-sleuth
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf

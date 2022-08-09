@@ -397,10 +397,8 @@ let g:VM_maps["Select l"] = ''
 let g:VM_maps["Select h"] = ''
 let g:VM_mouse_mappings = 1
 
-" editorconfig-vim {{{2
-let g:EditorConfig_disable_rules = ['tab_width']
-let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-autocmd FileType gitcommit let b:EditorConfig_disable = 1
+" vim-sleuth {{{2
+let g:sleuth_gitcommit_heuristics = 0
 
 " ultisnips {{{2
 let g:UltiSnipsEditSplit = 'context'
