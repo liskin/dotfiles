@@ -7,9 +7,9 @@ include ~/_gitignore.mk
 include ~/_help.mk
 
 CARGO_CACHE_VERSION := 0.8.2
-CARGO_WATCH_VERSION := v8.1.1
-DUST_VERSION := v0.8.0
-FCLONES_VERSION := v0.26.0
+CARGO_WATCH_VERSION := v8.1.2
+DUST_VERSION := v0.8.1
+FCLONES_VERSION := v0.27.0
 
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
