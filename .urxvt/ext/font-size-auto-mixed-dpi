@@ -9,7 +9,7 @@
 #:META:X_RESOURCE:%.hidpi.italicFont:string:hi-dpi italicFont
 #:META:X_RESOURCE:%.hidpi.boldItalicFont:string:hi-dpi boldItalicFont
 #:META:X_RESOURCE:%.width-threshold:string:hi-dpi width threshold (default 2800)
-#:META:X_RESOURCE:%.height-threshold:string:hi-dpi height threshold (default 2800)
+#:META:X_RESOURCE:%.height-threshold:string:hi-dpi height threshold (default 2000)
 
 use strict;
 use warnings;
@@ -47,6 +47,16 @@ sub find_xinerama_screen {
 	return undef;
 }
 
+sub is_hidpi {
+	my ($term, $screen) = @_;
+
+	if ($screen->{width} > $screen->{height}) {
+		return $screen->{width} >= $term->{width_threshold} && $screen->{height} >= $term->{height_threshold};
+	} else {
+		return $screen->{height} >= $term->{width_threshold} && $screen->{width} >= $term->{height_threshold};
+	}
+}
+
 sub on_start
 {
 	my ($term) = @_;
@@ -59,7 +69,7 @@ sub on_start
 	}
 
 	$term->{width_threshold} = $term->x_resource("%.width-threshold") // 2800;
-	$term->{height_threshold} = $term->x_resource("%.height-threshold") // 2800;
+	$term->{height_threshold} = $term->x_resource("%.height-threshold") // 2000;
 }
 
 sub set_fonts {
@@ -95,7 +105,7 @@ sub refresh {
 	my $screen = find_xinerama_screen($term->display_id, $x, $y);
 	return unless $screen;
 
-	set_fonts($term, ($screen->{width} >= $term->{width_threshold} || $screen->{height} >= $term->{height_threshold}) ? "hidpi" : "lodpi");
+	set_fonts($term, is_hidpi($term, $screen) ? "hidpi" : "lodpi");
 }
 
 sub on_configure_notify {
