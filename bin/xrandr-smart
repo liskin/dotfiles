@@ -31,6 +31,10 @@ function get-xrandr-outputs-except {
 	get-xrandr-outputs | grep -F -v -x -f <(printf "%s\n" "$@")
 }
 
+function get-xrandr-custom-monitors {
+	xrandr --listmonitors | grep -P -o '^\s*\d+:\s+\K[^+]\S+' | sed -e 's/^[+*]*//'
+}
+
 function find-one {
 	local tmp one=
 
@@ -68,6 +72,10 @@ function xrandr-auto-off {
 
 	for output in $(get-xrandr-outputs-except ${outputs[@]+"${outputs[@]}"}); do
 		args+=(--output "$output" --off)
+	done
+
+	for monitor in $(get-xrandr-custom-monitors); do
+		o xrandr --delmonitor "$monitor"
 	done
 
 	o xrandr "${args[@]}"

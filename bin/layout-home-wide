@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+. ~/bin/xrandr-smart
+
+xrandr-smart \
+	--dpi 96 \
+	--output '!(eDP-*)' --mode 3440x1440 --pos 0x0 \
+	--output 'eDP-*' --mode 1920x1080 --pos 760x1440 --primary
+
+xset -dpms
+
+out_wide=$(find-xrandr-connected-output '!(eDP-*)')
+xrandr --setmonitor "${out_wide}-l" 1720/410x1440/346+0+0 "${out_wide}"
+xrandr --setmonitor "${out_wide}-r" 1720/410x1440/346+1720+0 none
