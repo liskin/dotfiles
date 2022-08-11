@@ -109,7 +109,7 @@ myKeys XConfig{..} = M.fromList $
     , ((0,         xF86XK_Favorites     ), spawnExec "liskin-media toggle-videocall")
     , ((controlMask, xF86XK_WebCam      ), spawnExec "liskin-touchscreen-toggle")
     , ((0,         xF86XK_Display       ), spawnExec "layout-auto layout-vertical")
-    , ((0,         xF86XK_Sleep         ), spawnExec "layout-normal")
+    , ((controlMask, xF86XK_Display     ), spawnExec "layout-normal")
     , ((0,         xF86XK_Tools         ), spawn "sleep 0.5; xset dpms force off")
     , ((shiftMask, xK_Menu              ), unGrab >> spawnExec "flameshot gui")
     , ((0,         xK_Print             ), unGrab >> spawnExec "flameshot gui")
