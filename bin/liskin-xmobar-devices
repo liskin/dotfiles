@@ -5,7 +5,7 @@
 # as soon as I don't need them any more.
 
 set -eu -o pipefail
-shopt -s nullglob
+shopt -s nullglob extglob
 
 poll_frequency=30
 debounce_read_timeout=0.5
