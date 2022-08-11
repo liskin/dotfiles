@@ -34,3 +34,8 @@ SUBDIRS_EXCLUDE := docs/resume-cv .xmonad-testing
 all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
 
 .cargo/bin: bin/.ext
+
+gc: .cargo/bin%gc
+gc: bin/.ext%gc
+gc: bin/.ext-npm%gc
+gc: src-elixir%gc
