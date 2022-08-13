@@ -1,0 +1,10 @@
+[Unit]
+Description=vpnns - %i
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=vpnns --name=%i sleep infinity
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target

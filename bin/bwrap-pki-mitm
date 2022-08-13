@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Run command (a browser) with a different NSS certificate store so that I
+# don't need to trust MITM certs of evil corporations globally.
+
+set -eu
+
+# shellcheck disable=SC2174
+mkdir --mode=0700 -p "$HOME"/.pki{-mitm,}
+
+exec \
+	bwrap \
+		--bind /{,} \
+		--dev-bind /dev{,} \
+		--bind "$HOME"/.pki{-mitm,} \
+		-- \
+	${LD_LIBRARY_PATH+/usr/bin/env LD_LIBRARY_PATH="$LD_LIBRARY_PATH"} \
+	"$@"

@@ -67,6 +67,8 @@ export-alias google-chrome-app-matrix-element="google-chrome --app=https://app.e
 export-alias google-chrome-app-skype="google-chrome --app=https://web.skype.com/"
 export-alias google-chrome-app-wire="google-chrome --app=https://app.wire.com/"
 
+export-alias google-chrome-profile-mitm="bwrap-pki-mitm google-chrome-profile"
+
 export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
 export-alias meld='LC_MESSAGES=C /usr/bin/meld'
 export-alias weechat='LC_MESSAGES=C /usr/bin/weechat'

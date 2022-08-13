@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+profile=${1:?}; shift
+exec google-chrome --user-data-dir="$HOME"/.config/liskin-google-chrome-"$profile" "$@"
