@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Get realm configs for krb5.conf from SRV records in DNS to speed up operations.
+
+set -eu -o pipefail
+
+function get-srv {
+	local output
+	if output=$(host -t SRV "${1:?}"); then
+		<<<"$output" awk '{ print $NF }' | tr '[:upper:]' '[:lower:]'
+	else
+		:
+	fi
+}
+
+function get-srvs {
+	local n
+	for n in "$@"; do get-srv "$n"; done | sort -u
+}
+
+for realm in "$@"; do
+	echo $'\t'"$realm = {"
+
+	get-srvs _kerberos._udp."$realm" _kerberos._tcp."$realm" | while read -r s; do
+		echo $'\t\t'"kdc = $s"
+	done
+
+	get-srvs _kerberos-master._udp."$realm" | while read -r s; do
+		echo $'\t\t'"master_kdc = $s"
+	done
+
+	get-srvs _kerberos-adm._tcp."$realm" | while read -r s; do
+		echo $'\t\t'"admin_server = $s"
+	done
+
+	get-srvs _kpasswd._udp."$realm" | while read -r s; do
+		echo $'\t\t'"kpasswd_server = $s"
+	done
+
+	echo $'\t'"}"
+done
