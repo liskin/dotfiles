@@ -4,6 +4,9 @@ set -eu
 shopt -s nullglob
 
 # detect and break recursion
+__exec_alias_cmd="$(basename "$0")"
+__exec_alias_cmd_clean="$(tr -c 'a-zA-Z0-9_' '_' <<<"$__exec_alias_cmd")"
+declare -n __EXEC_ALIAS=__EXEC_ALIAS_"$__exec_alias_cmd_clean"
 [[ ${__EXEC_ALIAS-} ]] && exit 1; export __EXEC_ALIAS=:
 
 function __bashrc_aliases_get {
