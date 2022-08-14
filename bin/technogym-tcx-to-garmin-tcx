@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+
+# Fix TCX from Technogym SkillBike, as uploaded by their MyWellness cloud to Strava, to be valid
+# with respect to Garmin's schemas.
+
+from io import BytesIO
+
+import click
+from lxml import etree
+
+ns = 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2'
+ns_aex = 'http://www.garmin.com/xmlschemas/ActivityExtension/v2'
+
+
+def fix_xml(xml):
+    # fix namespaces
+    xml.getroot().attrib['xmlns'] = ns
+    etree.cleanup_namespaces(xml, top_nsmap={'aex': ns_aex})
+
+    # remove <Creator>, garmin chokes on it
+    for creator in xml.xpath("//Creator"):
+        creator.getparent().remove(creator)
+
+    for activity in xml.xpath("//Activities/Activity"):
+        # uppercase first letter in Sport
+        sport = activity.attrib['Sport']
+        sport = sport[0].upper() + sport[1:]
+        activity.attrib['Sport'] = sport
+
+        for lap in activity.xpath('Lap'):
+            # start_time= → StartTime= in <Lap>
+            if 'start_time' in lap.attrib:
+                start_time = lap.attrib['start_time']
+                del lap.attrib['start_time']
+                lap.attrib['StartTime'] = start_time
+
+            # convert Cadence/Watts to integers
+            for tp in lap.xpath('Track/Trackpoint'):
+                for cadence in tp.xpath('Cadence'):
+                    cadence.text = str(int(float(cadence.text)))
+                for watts in tp.xpath('Extensions/aex:TPX/aex:Watts', namespaces={'aex': ns_aex}):
+                    watts.text = str(int(float(watts.text)))
+                pass
+
+
+def parse_xml(inp):
+    xml_bytes = inp.read().lstrip()
+    parser = etree.XMLParser(remove_blank_text=True)
+    xml = etree.parse(BytesIO(xml_bytes), parser)
+    return xml
+
+
+def write_xml(xml, output):
+    xml.write(output, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+
+
+@click.command()
+@click.argument('inp', type=click.File('rb'))
+@click.option('-o', '--output', type=click.File('wb'), default='-')
+def main(inp, output):
+    xml = parse_xml(inp)
+    fix_xml(xml)
+    write_xml(xml, output)
+
+
+if __name__ == "__main__":
+    main()
