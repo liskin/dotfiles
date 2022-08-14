@@ -74,9 +74,9 @@ function check-vpns {
 	local f
 
 	vpns=()
-	for f in /sys/devices/virtual/net/tun* /sys/devices/virtual/net/tap*; do
+	for f in /sys/devices/virtual/net/{tun,tap,wg}*; do
 		f=${f##*/}
-		f=${f##@(tun|tap)?(_)}
+		f=${f##@(tun|tap|wg)?(_)}
 		vpns+=("$f")
 	done
 	(( ${#vpns[@]} ))
