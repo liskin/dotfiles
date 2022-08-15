@@ -2,6 +2,9 @@ if exists("b:did_ftplugin_vimwiki_liskin_after") | finish | endif
 if !exists(":VimwikiFollowLink") || !exists(":TaskWikiBufferLoad") | finish | endif
 let b:did_ftplugin_vimwiki_liskin_after = 1
 
+setlocal et
+let &l:wrap = fnamemodify(expand('%'), ':p:.') =~# '^notes/'
+
 command! -buffer TaskWikiNote call vimwiki#liskin#TaskWikiNote()
 nnoremap <silent><buffer> <LocalLeader>n :TaskWikiNote<CR>
 

@@ -467,7 +467,6 @@ autocmd FileType tex,lhaskell syn region texZone start="\\begin{alltt}" end="\\e
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{minted}" end="\\end{minted}\|%stopzone\>"
 autocmd FileType tex,lhaskell syn region texZone start="\\begin{ndoc}" end="\\end{ndoc}\|%stopzone\>"
 autocmd FileType text setlocal tw=78 ai
-autocmd FileType vimwiki setlocal et nowrap
 autocmd FileType xhtml setlocal indentkeys&
 autocmd FileType xml setlocal indentkeys&
 autocmd BufNewFile,BufRead *.hsc setlocal ft=haskell
