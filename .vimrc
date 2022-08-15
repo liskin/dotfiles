@@ -314,6 +314,12 @@ let g:ale_haskell_hls_config = {
 	\ },
 \ }
 
+let g:ale_rust_analyzer_config = #{
+	\ cargo: #{ 
+		\ features: 'all',
+	\ },
+\ }
+
 function! s:ale_add_linter(ale_linters, filetype, linter) abort
 	if !has_key(a:ale_linters, a:filetype)
 		let a:ale_linters[a:filetype] = []
