@@ -103,7 +103,9 @@ function! vimwiki#liskin#TaskWikiNote() abort
 	endif
 
 	if !empty(wikifile)
-		call vimwiki#base#goto(wikifile)
+		call vimwiki#base#edit_file(':tabe',
+			\ vimwiki#vars#get_wikilocal('path') . wikifile . vimwiki#vars#get_wikilocal('ext'),
+			\ '')
 	endif
 endfunction
 
