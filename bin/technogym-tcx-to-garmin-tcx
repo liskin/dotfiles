@@ -4,6 +4,7 @@
 # with respect to Garmin's schemas.
 
 from io import BytesIO
+from os import getenv
 
 import click
 from lxml import etree
@@ -11,6 +12,8 @@ from lxml import etree
 ns = 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2'
 ns_aex = 'http://www.garmin.com/xmlschemas/ActivityExtension/v2'
 ns_xsi = 'http://www.w3.org/2001/XMLSchema-instance'
+
+fake_creator = getenv('FAKE_CREATOR')
 
 
 def fix_xml(xml):
@@ -33,6 +36,11 @@ def fix_xml(xml):
                     cadence.text = str(int(float(cadence.text)))
                 for watts in tp.xpath('Extensions/aex:TPX/aex:Watts', namespaces={'aex': ns_aex}):
                     watts.text = str(int(float(watts.text)))
+
+        if fake_creator:
+            for creator in activity.xpath('Creator'):
+                activity.remove(creator)
+                activity.append(etree.XML(fake_creator))
 
         # fix <Creator>
         for creator in activity.xpath('Creator'):
