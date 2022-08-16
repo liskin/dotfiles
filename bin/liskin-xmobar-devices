@@ -5,7 +5,7 @@
 # as soon as I don't need them any more.
 
 set -eu -o pipefail
-shopt -s nullglob extglob
+shopt -s lastpipe nullglob extglob
 
 poll_frequency=30
 debounce_read_timeout=0.5
@@ -71,13 +71,16 @@ function check-camera {
 }
 
 function check-vpns {
-	local f
+	local name type
 
 	vpns=()
-	for f in /sys/devices/virtual/net/{tun,tap,wg,vpn}*; do
-		f=${f##*/}
-		f=${f##@(tun|tap|wg|vpn)?(_)}
-		vpns+=("$f")
+	# shellcheck disable=SC2162
+	nmcli --get-values NAME,TYPE c show --active \
+	| while IFS=: read name type; do
+		if [[ $type == @(vpn|tun|tap|wireguard) ]]; then
+			name=${name##@(tun|tap|wg|vpn)?(_)}
+			vpns+=("$name")
+		fi
 	done
 	(( ${#vpns[@]} ))
 }
