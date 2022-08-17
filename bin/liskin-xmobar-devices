@@ -86,12 +86,10 @@ function check-vpns {
 }
 
 function check-sys-docker {
-	# TODO: listen for changes, don't just poll
 	systemctl is-active --quiet docker.service
 }
 
 function check-user-docker {
-	# TODO: listen for changes, don't just poll
 	systemctl --user is-active --quiet docker.service
 }
 
@@ -110,7 +108,11 @@ function refresh {
 function monitor {
 	{
 		echo force initial refresh
-		udevadm monitor -k
+
+		trap 'pkill -P $BASHPID' EXIT
+		udevadm monitor -k &
+		liskin-xmobar-devices-dbus.py --systemd-unit-regex docker &
+		wait -n
 	} | while :; do
 		if read -r -t $poll_frequency _; then
 			debounce_start=$SECONDS
