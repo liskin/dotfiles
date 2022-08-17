@@ -14,6 +14,11 @@ def unit_properties_changed(interface_name, changed_properties, invalidated_prop
         print(".", flush=True)
 
 
+def nm_properties_changed(interface_name, changed_properties, invalidated_properties):
+    if 'ActiveConnections' in changed_properties:
+        print(".", flush=True)
+
+
 @click.command()
 @click.option('--systemd-unit-regex', type=str, default='')
 def main(systemd_unit_regex):
@@ -34,6 +39,13 @@ def main(systemd_unit_regex):
             arg0='org.freedesktop.systemd1.Unit',
             path_keyword='path',
         )
+
+    nm = system_bus.get_object('org.freedesktop.NetworkManager', '/org/freedesktop/NetworkManager')
+    nm.connect_to_signal(
+        'PropertiesChanged',
+        nm_properties_changed,
+        dbus_interface='org.freedesktop.DBus.Properties',
+    )
 
     GLib.MainLoop().run()
 
