@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+shopt -s lastpipe
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+function action-down {
+	local uuid type
+
+	# shellcheck disable=SC2162
+	nmcli --get-values UUID,TYPE c show --active \
+	| while IFS=: read uuid type; do
+		if [[ $type == vpn ]]; then
+			nmcli c down "$uuid"
+		fi
+	done
+}
+
+function action-up {
+	local name type
+	local names=()
+
+	# shellcheck disable=SC2162
+	nmcli --get-values NAME,TYPE c show \
+	| while IFS=: read name type; do
+		if [[ $type == vpn ]]; then
+			names+=("$name")
+		fi
+	done
+
+	local sel
+	printf "%s\n" "${names[@]}" \
+	| rofi-dmenu-frece --db ~/.cache/liskin-vpn-frece.db -- -i -p vpn \
+	| read -r sel
+
+	nmcli c up "$sel"
+}
+
+if [[ $(type -t "action-${1-}") == function ]]; then
+	"action-$1" "${@:2}"
+else
+	echo "unexpected action: ${1-}"
+fi
