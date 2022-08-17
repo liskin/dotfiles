@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 shopt -s lastpipe
 
 export LANG=C
@@ -107,10 +107,14 @@ function action-toggle-camera {
 function action-toggle-videocall {
 	local bt_addr handsfree
 	local usb_dev camera
-	status-handsfree | read -r bt_addr handsfree
-	status-camera | read -r usb_dev camera
-	set-handsfree "$bt_addr" $((!handsfree || !camera))
-	set-camera "$usb_dev" $((!handsfree || !camera))
+	status-handsfree | read -r bt_addr handsfree || :
+	status-camera | read -r usb_dev camera || :
+
+	local desired
+	[[ $handsfree == 0 || $camera == 0 ]] && desired=1 || desired=0
+
+	if [[ $bt_addr ]]; then set-handsfree "$bt_addr" $desired; fi
+	if [[ $usb_dev ]]; then set-camera "$usb_dev" $desired; fi
 }
 
 # Listen for MPRIS events and remember which player we interacted with last
