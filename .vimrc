@@ -285,6 +285,7 @@ let g:ale_linters['python'] = ['pylsp']
 let g:ale_linters['rst'] = ['proselint']
 let g:ale_linters['sh'] = ['shellcheck']
 let g:ale_linters['text'] = ['proselint']
+let g:ale_linters['tilt'] = ['tilt_lsp']
 "let g:ale_linters['yaml'] = ['yamllint']
 
 let g:ale_elixir_elixir_ls_config = {
