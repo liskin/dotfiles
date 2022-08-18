@@ -3,3 +3,4 @@
 --glob=!.git
 --smart-case
 --no-require-git
+--max-columns=500
