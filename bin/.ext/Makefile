@@ -20,6 +20,7 @@ RUST_ANALYZER_VERSION := 2022-08-08
 SCCACHE_VERSION := v0.3.0
 TILT_VERSION := v0.30.6
 TZ_VERSION := v0.6.1
+FITSDK_VERSION := 21.84.00
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
 CARGO_BINSTALL_GITHUB := cargo-bins/cargo-binstall
@@ -187,6 +188,17 @@ docker-compose: | .ext-docker-compose ; ln -fsT $| $@
 .ext-docker-compose-$(DOCKER_COMPOSE_VERSION):
 	$(CURL) -o $@ https://github.com/$(DOCKER_COMPOSE_GITHUB)/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-linux-x86_64
 	chmod +x $@
+
+all: .ext-fitsdk
+.SKIP_GITIGNORE: .ext-fitsdk
+.ext-fitsdk: .ext-fitsdk-$(FITSDK_VERSION) ; ln -fsT $< $@
+.ext-fitsdk-$(FITSDK_VERSION): .ext-fitsdk-$(FITSDK_VERSION).zip
+	mkdir -p $@
+	unzip -d $@ -j $< java/FitCSVTool.jar java/fit.jar
+
+.INTERMEDIATE: .ext-fitsdk-$(FITSDK_VERSION).zip
+.ext-fitsdk-$(FITSDK_VERSION).zip:
+	$(CURL) -C - -o $@ https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_$(FITSDK_VERSION).zip
 
 .PHONY: gc
 ## Remove old versions
