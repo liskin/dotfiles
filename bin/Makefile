@@ -12,8 +12,8 @@ else
 endif
 
 all: .venv-pulsectl
-.venv-pulsectl:
-	python3 -m venv --system-site-packages --without-pip $@
+.venv-pulsectl: /usr/bin/python3
+	python3 -m venv --clear --system-site-packages --without-pip $@
 	$@/bin/python3 -m pip install pulsectl-asyncio
 
 all: .aliases/.done
