@@ -16,3 +16,4 @@ sub-ass-force-margins=yes
 
 # other
 hr-seek=yes
+save-position-on-quit=yes
