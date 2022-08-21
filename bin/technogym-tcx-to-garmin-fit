@@ -1,0 +1,552 @@
+#!/usr/bin/env python3
+
+# Convert TCX from Technogym SkillBike, as uploaded by their MyWellness cloud to Strava,
+# to FIT for upload to Garmin Connect. Manufacturer is faked as ZWIFT to enable Physio TrueUp
+# syncing back to device and updating of training metrics.
+
+from contextlib import AbstractContextManager
+from dataclasses import dataclass
+from enum import Enum
+from functools import cached_property
+from io import BytesIO
+import os
+from typing import NewType
+
+import click
+from dateutil.parser import isoparse
+import jpype
+import jpype.imports
+from jpype.types import JFloat
+from jpype.types import JInt
+from jpype.types import JLong
+from jpype.types import JShort
+from lxml import etree
+import numpy as np
+import numpy.typing as npt
+from pint import UnitRegistry
+
+ureg = UnitRegistry()
+Q = ureg.Quantity
+jpype.startJVM(classpath=[
+    os.path.expanduser('~/bin/.ext/.ext-fitsdk/fit.jar'),
+    '/usr/share/java/org.jpype.jar',  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1017761
+])
+
+from com.garmin import fit  # noqa: E402
+import java.io.File  # noqa: E402
+
+TS = NewType('TS', float)
+
+
+class Sport(Enum):
+    IndoorCycling = (fit.Sport.CYCLING, fit.SubSport.INDOOR_CYCLING,)
+    VirtualCycling = (fit.Sport.CYCLING, fit.SubSport.VIRTUAL_ACTIVITY,)
+    IndoorRowing = (fit.Sport.ROWING, fit.SubSport.INDOOR_ROWING,)
+
+
+@dataclass(frozen=True)
+class Lap():
+    timestamp: npt.NDArray[TS]
+    _distance: Q
+    _cadence: Q
+    _speed: Q
+    _power: Q
+    _heart_rate: Q
+    total_calories: float
+
+    @cached_property
+    def distance(self) -> npt.NDArray[float]:
+        return self._distance.to(ureg.m).magnitude
+
+    @cached_property
+    def cadence(self) -> npt.NDArray[float]:
+        return self._cadence.to(ureg.rpm).magnitude
+
+    @cached_property
+    def speed(self) -> npt.NDArray[float]:
+        return self._speed.to(ureg.mps).magnitude
+
+    @cached_property
+    def power(self) -> npt.NDArray[float]:
+        return self._power.to(ureg.watt).magnitude
+
+    @cached_property
+    def heart_rate(self) -> npt.NDArray[float]:
+        return self._heart_rate.to(1 / ureg.minute).magnitude
+
+    @cached_property
+    def start_time(self) -> TS:
+        return TS(self.timestamp.min())
+
+    @cached_property
+    def stop_time(self) -> TS:
+        return TS(self.timestamp.max())
+
+    @cached_property
+    def total_elapsed_time(self) -> float:
+        return self.stop_time - self.start_time + 1
+
+    @cached_property
+    def total_timer_time(self) -> float:
+        # TODO: detect pauses somehow?
+        return self.total_elapsed_time
+
+    @cached_property
+    def total_distance(self) -> float:
+        return self.distance.max()
+
+    @cached_property
+    def avg_cadence(self) -> float:
+        return self.cadence.mean()
+
+    @cached_property
+    def max_cadence(self) -> float:
+        return self.cadence.max()
+
+    @cached_property
+    def avg_speed(self) -> float:
+        return self.speed.mean()
+
+    @cached_property
+    def max_speed(self) -> float:
+        return self.speed.max()
+
+    @cached_property
+    def avg_power(self) -> float:
+        return self.power.mean()
+
+    @cached_property
+    def max_power(self) -> float:
+        return self.power.max()
+
+    @cached_property
+    def avg_heart_rate(self) -> float:
+        return self.heart_rate.mean()
+
+    @cached_property
+    def max_heart_rate(self) -> float:
+        return self.heart_rate.max()
+
+
+@dataclass(frozen=True)
+class Session():
+    laps: list[Lap]
+
+    @cached_property
+    def start_time(self) -> TS:
+        return max(lap.start_time for lap in self.laps)
+
+    @cached_property
+    def stop_time(self) -> TS:
+        return max(lap.stop_time for lap in self.laps)
+
+    @cached_property
+    def total_elapsed_time(self) -> float:
+        return self.stop_time - self.start_time + 1
+
+    @cached_property
+    def total_timer_time(self) -> float:
+        return sum(lap.total_timer_time for lap in self.laps)
+
+    @cached_property
+    def total_distance(self) -> float:
+        return sum(lap.total_distance for lap in self.laps)
+
+    @cached_property
+    def total_calories(self) -> float:
+        return sum(lap.total_calories for lap in self.laps)
+
+    @cached_property
+    def avg_cadence(self) -> float:
+        return np.average(
+            np.fromiter((lap.avg_cadence for lap in self.laps), float),
+            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+        )
+
+    @cached_property
+    def max_cadence(self) -> float:
+        return max(lap.max_cadence for lap in self.laps)
+
+    @cached_property
+    def avg_speed(self) -> float:
+        return np.average(
+            np.fromiter((lap.avg_speed for lap in self.laps), float),
+            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+        )
+
+    @cached_property
+    def max_speed(self) -> float:
+        return max(lap.max_speed for lap in self.laps)
+
+    @cached_property
+    def avg_power(self) -> float:
+        return np.average(
+            np.fromiter((lap.avg_power for lap in self.laps), float),
+            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+        )
+
+    @cached_property
+    def max_power(self) -> float:
+        return max(lap.max_power for lap in self.laps)
+
+    @cached_property
+    def avg_heart_rate(self) -> float:
+        return np.average(
+            np.fromiter((lap.avg_heart_rate for lap in self.laps), float),
+            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+        )
+
+    @cached_property
+    def max_heart_rate(self) -> float:
+        return max(lap.max_heart_rate for lap in self.laps)
+
+
+@dataclass(frozen=True)
+class Activity():
+    sessions: list[Session]
+    sport: Sport
+
+    @cached_property
+    def start_time(self) -> TS:
+        return max(session.start_time for session in self.sessions)
+
+    @cached_property
+    def stop_time(self) -> TS:
+        return max(session.stop_time for session in self.sessions)
+
+    @cached_property
+    def total_timer_time(self) -> float:
+        return sum(session.total_timer_time for session in self.sessions)
+
+
+def parse_xml(inp):
+    xml_bytes = inp.read().lstrip()
+    parser = etree.XMLParser(remove_blank_text=True)
+    xml = etree.parse(BytesIO(xml_bytes), parser)
+    return xml
+
+
+def parse_tcx(xml) -> Activity:
+    activity = xml.find('Activities/Activity')
+    laps = list(parse_tcx_lap(lap) for lap in activity.findall('Lap'))
+
+    match activity.get('Sport'):
+        case "biking" | "Biking":
+            sport = Sport.IndoorCycling
+        case s:
+            raise Exception(f"Unknown sport: {s}")
+
+    return Activity(
+        sessions=[Session(laps)],
+        sport=sport,
+    )
+
+
+def parse_tcx_lap(xml) -> Lap:
+    timestamp = []
+    distance = []
+    cadence = []
+    speed = []
+    power = []
+    heart_rate = []
+
+    for tp in xml.find('Track').findall('Trackpoint'):
+        ext = tp.find('Extensions')
+        ext_tpx = ext.find('{*}TPX')
+        timestamp.append(TS(isoparse(tp.findtext('Time')).timestamp()))
+        distance.append(float(tp.findtext('DistanceMeters')))
+        cadence.append(float(tp.findtext('Cadence')))
+        speed.append(float(ext_tpx.findtext('{*}Speed')))
+        power.append(float(ext_tpx.findtext('{*}Watts')))
+        heart_rate.append(float(tp.findtext('HeartRateBpm/Value')))
+
+    return Lap(
+        # TODO: check if timestamp is sampled every second and interpolate everything otherwise
+        # https://numpy.org/doc/stable/reference/generated/numpy.interp.html
+        timestamp=np.asarray(timestamp),
+        _distance=Q(np.asarray(distance), ureg.m),
+        _cadence=Q(np.asarray(cadence), ureg.rpm),
+        _speed=Q(np.asarray(speed), ureg.kph),
+        _power=Q(np.asarray(power), ureg.watt),
+        _heart_rate=Q(np.asarray(heart_rate), 1 / ureg.minute),
+        total_calories=float(xml.findtext('Calories')),
+    )
+
+
+def fit_datetime(ts: TS) -> fit.DateTime:
+    return fit.DateTime(0, ts - fit.DateTime.OFFSET / 1000)
+
+
+class FitWriter(AbstractContextManager):
+    _e: fit.FileEncoder
+
+    def __init__(self, filename: str):
+        self._e = fit.FileEncoder(java.io.File(filename), fit.Fit.ProtocolVersion.V2_0)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._e.close()
+
+    def _write(self, m: fit.Mesg):
+        self._e.write(m)
+
+    def file_id(self, start_time: TS):
+        m = fit.FileIdMesg()
+        m.setTimeCreated(fit_datetime(start_time))
+        m.setManufacturer(fit.Manufacturer.ZWIFT)
+        m.setProduct(JInt(0))
+        m.setNumber(JInt(0))
+        m.setType(fit.File.ACTIVITY)
+        self._write(m)
+
+    def device_info(self):
+        m = fit.DeviceInfoMesg()
+        m.setTimestamp(fit.DateTime(789516505))
+        m.setSerialNumber(JLong(3825981698))
+        m.setCumOperatingTime(JLong(0))
+        m.setManufacturer(fit.Manufacturer.ZWIFT)
+        m.setProduct(JInt(0))
+        m.setSoftwareVersion(JFloat(5.62))
+        m.setBatteryVoltage(JFloat(0))
+        m.setDeviceIndex(JShort(0))
+        m.setDeviceType(JShort(0))
+        m.setHardwareVersion(JShort(0))
+        m.setBatteryStatus(JShort(0))
+        self._write(m)
+
+    def event_start(self, start_time: TS):
+        m = fit.EventMesg()
+        m.setTimestamp(fit_datetime(start_time))
+        m.setEvent(fit.Event.TIMER)
+        m.setEventType(fit.EventType.START)
+        m.setTimerTrigger(fit.TimerTrigger.MANUAL)
+        self._write(m)
+
+    def event_stop(self, stop_time: TS):
+        m = fit.EventMesg()
+        m.setTimestamp(fit_datetime(stop_time))
+        m.setEvent(fit.Event.TIMER)
+        m.setEventType(fit.EventType.STOP_ALL)
+        m.setTimerTrigger(fit.TimerTrigger.MANUAL)
+        self._write(m)
+
+    def record(
+        self,
+        timestamp: TS,
+        distance: float,
+        cadence: float,
+        speed: float,
+        power: float,
+        heart_rate: float,
+    ):
+        m = fit.RecordMesg()
+        m.setTimestamp(fit_datetime(timestamp))
+        m.setDistance(JFloat(distance))
+        m.setCadence(JShort(cadence))
+        m.setSpeed(JFloat(speed))
+        m.setPower(JInt(power))
+        m.setHeartRate(JShort(heart_rate))
+        self._write(m)
+
+    def lap(
+        self,
+        index: int,
+        start_time: TS,
+        stop_time: TS,
+        total_elapsed_time: float,
+        total_timer_time: float,
+
+        # TODO: optional fields
+        total_distance: float,
+        total_calories: float,
+        avg_speed: float,
+        max_speed: float,
+        avg_power: float,
+        max_power: float,
+        avg_heart_rate: float,
+        max_heart_rate: float,
+        avg_cadence: float,
+        max_cadence: float,
+
+        sport: Sport,
+    ):
+        m = fit.LapMesg()
+        m.setMessageIndex(JInt(index))
+        m.setTimestamp(fit_datetime(stop_time))
+        m.setTotalElapsedTime(JFloat(total_elapsed_time))
+        m.setTotalTimerTime(JFloat(total_timer_time))
+        m.setStartTime(fit_datetime(start_time))
+
+        # TODO: optional fields
+        m.setTotalDistance(JFloat(total_distance))
+        m.setTotalCalories(JInt(total_calories))
+        m.setAvgSpeed(JFloat(avg_speed))
+        m.setMaxSpeed(JFloat(max_speed))
+        m.setAvgPower(JInt(avg_power))
+        m.setMaxPower(JInt(max_power))
+        m.setAvgHeartRate(JShort(avg_heart_rate))
+        m.setMaxHeartRate(JShort(max_heart_rate))
+        m.setAvgCadence(JShort(avg_cadence))
+        m.setMaxCadence(JShort(max_cadence))
+
+        m.setSport(sport.value[0])
+        m.setSubSport(sport.value[1])
+        m.setEvent(fit.Event.LAP)
+        m.setEventType(fit.EventType.STOP)
+        self._write(m)
+
+    def session(
+        self,
+        index: int,
+        start_time: TS,
+        stop_time: TS,
+        total_elapsed_time: float,
+        total_timer_time: float,
+
+        # TODO: optional fields
+        total_distance: float,
+        total_calories: float,
+        avg_speed: float,
+        max_speed: float,
+        avg_power: float,
+        max_power: float,
+        avg_heart_rate: float,
+        max_heart_rate: float,
+        avg_cadence: float,
+        max_cadence: float,
+
+        first_lap_index: int,
+        num_laps: int,
+        sport: Sport,
+    ):
+        m = fit.SessionMesg()
+        m.setMessageIndex(JInt(index))
+        m.setTimestamp(fit_datetime(stop_time))
+        m.setStartTime(fit_datetime(start_time))
+        m.setTotalElapsedTime(JFloat(total_elapsed_time))
+        m.setTotalTimerTime(JFloat(total_timer_time))
+
+        # TODO: optional fields
+        m.setTotalDistance(JFloat(total_distance))
+        m.setTotalCalories(JInt(total_calories))
+        m.setAvgSpeed(JFloat(avg_speed))
+        m.setMaxSpeed(JFloat(max_speed))
+        m.setAvgPower(JInt(avg_power))
+        m.setMaxPower(JInt(max_power))
+        m.setAvgHeartRate(JShort(avg_heart_rate))
+        m.setMaxHeartRate(JShort(max_heart_rate))
+        m.setAvgCadence(JShort(avg_cadence))
+        m.setMaxCadence(JShort(max_cadence))
+
+        m.setFirstLapIndex(JInt(first_lap_index))
+        m.setNumLaps(JInt(num_laps))
+        m.setSport(sport.value[0])
+        m.setSubSport(sport.value[1])
+        m.setEvent(fit.Event.SESSION)
+        m.setEventType(fit.EventType.STOP)
+        self._write(m)
+
+    def activity(self, stop_time: TS, total_timer_time: float, num_sessions: int):
+        m = fit.ActivityMesg()
+        m.setTimestamp(fit_datetime(stop_time))
+        m.setLocalTimestamp(JLong(0))
+        m.setTotalTimerTime(JFloat(total_timer_time))
+        m.setNumSessions(JInt(num_sessions))
+        m.setType(fit.Activity.MANUAL)
+        m.setEvent(fit.Event.ACTIVITY)
+        m.setEventType(fit.EventType.STOP)
+        self._write(m)
+
+
+def activity_to_fit(f: FitWriter, activity: Activity):
+    # header
+    f.file_id(start_time=activity.start_time)
+    f.device_info()
+
+    # records
+    f.event_start(start_time=activity.start_time)
+    for session in activity.sessions:
+        for lap in session.laps:
+            for i, ts in np.ndenumerate(lap.timestamp):
+                f.record(
+                    timestamp=ts,
+                    distance=lap.distance[i],
+                    cadence=lap.cadence[i],
+                    speed=lap.speed[i],
+                    power=lap.power[i],
+                    heart_rate=lap.heart_rate[i],
+                )
+    f.event_stop(stop_time=activity.stop_time)
+
+    # laps, sessions
+    session_index = 0
+    lap_index = 0
+    for session in activity.sessions:
+        first_lap_index = lap_index
+
+        for lap in session.laps:
+            f.lap(
+                index=lap_index,
+                start_time=lap.start_time,
+                stop_time=lap.stop_time,
+                total_elapsed_time=lap.total_elapsed_time,
+                total_timer_time=lap.total_timer_time,
+
+                # TODO: optional fields
+                total_distance=lap.total_distance,
+                total_calories=lap.total_calories,
+                avg_speed=lap.avg_speed,
+                max_speed=lap.max_speed,
+                avg_power=lap.avg_power,
+                max_power=lap.max_power,
+                avg_heart_rate=lap.avg_heart_rate,
+                max_heart_rate=lap.max_heart_rate,
+                avg_cadence=lap.avg_cadence,
+                max_cadence=lap.max_cadence,
+
+                sport=activity.sport,
+            )
+            lap_index += 1
+
+        f.session(
+            index=session_index,
+            start_time=session.start_time,
+            stop_time=session.stop_time,
+            total_elapsed_time=session.total_elapsed_time,
+            total_timer_time=session.total_timer_time,
+
+            # TODO: optional fields
+            total_distance=session.total_distance,
+            total_calories=session.total_calories,
+            avg_speed=session.avg_speed,
+            max_speed=session.max_speed,
+            avg_power=session.avg_power,
+            max_power=session.max_power,
+            avg_heart_rate=session.avg_heart_rate,
+            max_heart_rate=session.max_heart_rate,
+            avg_cadence=session.avg_cadence,
+            max_cadence=session.max_cadence,
+
+            first_lap_index=first_lap_index,
+            num_laps=lap_index - first_lap_index,
+            sport=activity.sport,
+        )
+        session_index += 1
+
+    # activity
+    f.activity(
+        stop_time=activity.stop_time,
+        total_timer_time=activity.total_timer_time,
+        num_sessions=session_index,
+    )
+
+
+@click.command()
+@click.argument('inp', type=click.File('rb'))
+@click.argument('out', type=click.Path())
+def main(inp, out):
+    with FitWriter(out) as f:
+        activity_to_fit(f, parse_tcx(parse_xml(inp)))
+
+
+if __name__ == "__main__":
+    main()
