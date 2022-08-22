@@ -12,6 +12,7 @@ all: markdown2ctags
 markdown2ctags:
 	$(PIPX_INSTALL) markdown2ctags
 
+# webmention/pingback
 all: pushl
 pushl:
 	$(PIPX_INSTALL) pushl
@@ -27,6 +28,11 @@ isort isort-identify-imports &:
 all: pipenv pipenv-resolver
 pipenv pipenv-resolver &:
 	$(PIPX_INSTALL) pipenv
+
+# docker registry client
+all: dxf
+dxf:
+	$(PIPX_INSTALL) python-dxf
 
 all: strava-offline
 strava-offline:
