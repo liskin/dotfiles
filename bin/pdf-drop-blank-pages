@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import click
-import popplerqt5
 import shutil
 import subprocess
+
+import click
+import popplerqt5
 
 
 def non_blank_pages(filename):

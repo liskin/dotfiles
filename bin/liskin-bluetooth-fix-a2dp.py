@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-from contextlib import suppress
 import asyncio
+from contextlib import suppress
+import shutil
+import signal
+
 import pulsectl
 import pulsectl_asyncio
-import signal
-import shutil
-
 
 bad_devs = {'78_2B_64_A0_68_02'}
 

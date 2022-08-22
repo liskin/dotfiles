@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import re
 from functools import partial
+import re
 
 import click
 import dbus

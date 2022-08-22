@@ -3,9 +3,11 @@
 # wait for the terminal window to be resized and mapped by the window manager
 # (vim can't handle SIGWINCH during startup)
 
-from Xlib import X, display
 from os import environ
 from time import sleep
+
+from Xlib import X
+from Xlib import display
 
 if not environ['WINDOWID']:
     exit()

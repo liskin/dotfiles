@@ -4,7 +4,9 @@
 # LICENSE: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>
 
 import sys
-from ruamel.yaml import YAML, SafeConstructor
+
+from ruamel.yaml import SafeConstructor
+from ruamel.yaml import YAML
 
 yaml = YAML()
 
