@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+shopt -s lastpipe
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+function oo { printf -->&2 "%s: %s\\n" "${0##*/}" "$*"; }
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o "hn" --long dry-run,help -- "$@")
+eval "set -- $options"
+
+dry_run=
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		-h|--help)
+			echo "Usage: $0 [-n|--dry-run] [-h|--help]"
+			exit
+			;;
+
+		-n|--dry-run) dry_run=:; ;;
+		--) break ;;
+	esac
+done
+
+msgs=()
+
+find -L . -maxdepth 2 -name .git | sort \
+| while read -r repo; do
+	repo=$(realpath --relative-base=. "${repo%/.git}")
+	head=$(git -C "$repo" symbolic-ref -q refs/remotes/origin/HEAD)
+	branch=$(git -C "$repo" current-branch)
+	status=$(git -C "$repo" status --porcelain --untracked-files=no)
+	if [[ $branch != "${head##*/}" ]]; then
+		msgs+=("$repo - different branch: $branch != ${head##*/}")
+	elif [[ $status ]]; then
+		msgs+=("$repo - dirty")
+	else
+		if [[ ! $dry_run ]]; then
+			o git -C "$repo" pull
+		fi
+	fi
+done
+
+for msg in "${msgs[@]}"; do
+	oo "$msg"
+done
