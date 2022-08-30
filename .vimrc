@@ -251,8 +251,22 @@ let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#fugitiveline#enabled = 0
 let g:airline#extensions#searchcount#enabled = 0
+def! g:VimrcAirlineFileshorten(): string
+	# other airline parts have their own width heuristics and usually all fit within 35 columns…
+	const width_available = airline#util#winwidth() - 35
+	const name = bufname("%")
+
+	var short_name = name
+	var shorten_len = 5
+	while len(short_name) > width_available && shorten_len > 0
+		short_name = pathshorten(name, shorten_len)
+		--shorten_len
+	endwhile
+
+	return short_name
+enddef
 function! s:AirlineInit()
-	call airline#parts#define_raw('fileshorten', '%n:%{pathshorten(bufname("%"))}%m')
+	call airline#parts#define_raw('fileshorten', '%n:%{VimrcAirlineFileshorten()}%m')
 	let spc = g:airline_symbols.space
 	let g:airline_section_c = airline#section#create(['%<', 'fileshorten', spc, 'readonly'])
 	let g:airline_section_z = airline#section#create(['windowswap', 'obsession', '%3p%%'.spc, 'linenr', 'maxlinenr', spc.': %c%V'])
