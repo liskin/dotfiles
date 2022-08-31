@@ -72,8 +72,8 @@ function check-camera {
 
 function check-vpns {
 	local name type
-
 	vpns=()
+
 	# shellcheck disable=SC2162
 	nmcli --get-values NAME,TYPE c show --active \
 	| while IFS=: read name type; do
@@ -82,6 +82,15 @@ function check-vpns {
 			vpns+=("$name")
 		fi
 	done
+
+	# shellcheck disable=SC2162
+	systemctl --user --plain --quiet list-units 'vpnns-tun@*.service' \
+	| while read name _; do
+		name=${name#vpnns-tun@}
+		name=${name%.service}
+		vpns+=(vpnns:"$name")
+	done
+
 	(( ${#vpns[@]} ))
 }
 
@@ -111,7 +120,7 @@ function monitor {
 
 		trap 'pkill -P $BASHPID' EXIT
 		udevadm monitor -k &
-		liskin-xmobar-devices-dbus.py --systemd-unit-regex docker &
+		liskin-xmobar-devices-dbus.py --systemd-unit-regex 'docker|vpnns_2dtun' &
 		wait -n
 	} | while :; do
 		if read -r -t $poll_frequency _; then
