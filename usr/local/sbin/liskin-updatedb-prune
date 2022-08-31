@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s nullglob
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+args=(
+	--add-prunenames node_modules
+	--add-single-prunepath /var/lib/docker
+	--add-single-prunepath /var/lib/containers/storage
+	--add-single-prunepath /var/lib/flatpak
+)
+
+for p in \
+	/home/*/.cache/*google-chrome* \
+	/home/*/.local/share/docker \
+	/home/*/.local/share/containers/storage
+do
+	args+=(--add-single-prunepath "$p")
+done
+
+o exec /usr/sbin/updatedb.plocate "${args[@]}" "$@"
