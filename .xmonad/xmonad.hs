@@ -45,6 +45,7 @@ import XMonad.Layout.LayoutHints
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
+import XMonad.Layout.PerScreen
 import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Simplest(Simplest(..))
@@ -221,11 +222,12 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
     named "tiled" (fixl $ sub $ tiled) |||
     named "mtiled" (fixl $ sub $ Mirror $ tiled) |||
     named "tab" (fixl Full) |||
-    named "grid" (fixl $ sub $ GridRatio (4/3)) |||
+    named "grid" (fixl $ sub $ grid) |||
     named "spiral" (fixl $ sub $ spiral 0.618) |||
     named "full" (layoutHints $ noBorders Full)
   where
      tiled = ResizableTall 1 0.03 0.5 []
+     grid = ifWider 3000 (GridRatio (1/1)) (GridRatio (4/3))
      dir = workspaceDir myHome
      toggles = mkToggle (single REFLECTX)
      fixl = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
