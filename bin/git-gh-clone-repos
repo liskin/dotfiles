@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+function oo { printf -->&2 "%s: %s\\n" "${0##*/}" "$*"; }
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o hfnt:o: --long help,force,dry-run,type:,org: -- "$@")
+eval "set -- $options"
+
+dry_run=:
+type=
+org=
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		-h|--help)
+			echo "Usage: $0 [-h|--help] [-n|--dry-run] [-f|--force] [(-t|--type) TYPE] [(-o|--org) ORG]"
+			exit
+			;;
+
+		-f|--force) dry_run= ;;
+		-n|--dry-run) dry_run=: ;;
+		-t|--type) type=$1; shift ;;
+		-o|--org) org=$1; shift ;;
+		--) break ;;
+	esac
+done
+
+[[ $type == @(all|public|private|forks|sources|member|internal) ]] || {
+	echo "type must == @(all|public|private|forks|sources|member|internal)"
+	exit 1
+}
+
+[[ $org ]] || {
+	echo "org required"
+	exit 1
+}
+
+gh api --paginate --jq '.[].full_name' orgs/"$org"/repos?type="$type" \
+| while read -r repo; do
+	if [[ -d "${repo#*/}" ]]; then
+		oo "$repo" exists
+	else
+		o${dry_run:+o} git clone https://github.com/"$repo"
+	fi
+done
