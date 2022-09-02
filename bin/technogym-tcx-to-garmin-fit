@@ -11,6 +11,7 @@ from functools import cached_property
 from io import BytesIO
 import os
 from typing import NewType
+from typing import Optional
 
 import click
 from dateutil.parser import isoparse
@@ -40,39 +41,62 @@ TS = NewType('TS', float)
 
 class Sport(Enum):
     IndoorCycling = (fit.Sport.CYCLING, fit.SubSport.INDOOR_CYCLING,)
-    VirtualCycling = (fit.Sport.CYCLING, fit.SubSport.VIRTUAL_ACTIVITY,)
     IndoorRowing = (fit.Sport.ROWING, fit.SubSport.INDOOR_ROWING,)
+    Treadmill = (fit.Sport.RUNNING, fit.SubSport.TREADMILL,)
 
 
 @dataclass(frozen=True)
 class Lap():
     timestamp: npt.NDArray[TS]
-    _distance: Q
-    _cadence: Q
-    _speed: Q
-    _power: Q
-    _heart_rate: Q
-    total_calories: float
+    _distance: Optional[Q]
+    _altitude: Optional[Q]
+    _cadence: Optional[Q]
+    _speed: Optional[Q]
+    _power: Optional[Q]
+    _heart_rate: Optional[Q]
+    total_calories: Optional[float]
 
     @cached_property
-    def distance(self) -> npt.NDArray[float]:
-        return self._distance.to(ureg.m).magnitude
+    def distance(self) -> Optional[npt.NDArray[float]]:
+        if self._distance is None:
+            return None
+        else:
+            return self._distance.to(ureg.m).magnitude
 
     @cached_property
-    def cadence(self) -> npt.NDArray[float]:
-        return self._cadence.to(ureg.rpm).magnitude
+    def altitude(self) -> Optional[npt.NDArray[float]]:
+        if self._altitude is None:
+            return None
+        else:
+            return self._altitude.to(ureg.m).magnitude
 
     @cached_property
-    def speed(self) -> npt.NDArray[float]:
-        return self._speed.to(ureg.mps).magnitude
+    def cadence(self) -> Optional[npt.NDArray[float]]:
+        if self._cadence is None:
+            return None
+        else:
+            return self._cadence.to(ureg.rpm).magnitude
 
     @cached_property
-    def power(self) -> npt.NDArray[float]:
-        return self._power.to(ureg.watt).magnitude
+    def speed(self) -> Optional[npt.NDArray[float]]:
+        if self._speed is None:
+            return None
+        else:
+            return self._speed.to(ureg.mps).magnitude
 
     @cached_property
-    def heart_rate(self) -> npt.NDArray[float]:
-        return self._heart_rate.to(1 / ureg.minute).magnitude
+    def power(self) -> Optional[npt.NDArray[float]]:
+        if self._power is None:
+            return None
+        else:
+            return self._power.to(ureg.watt).magnitude
+
+    @cached_property
+    def heart_rate(self) -> Optional[npt.NDArray[float]]:
+        if self._heart_rate is None:
+            return None
+        else:
+            return self._heart_rate.to(1 / ureg.minute).magnitude
 
     @cached_property
     def start_time(self) -> TS:
@@ -92,40 +116,67 @@ class Lap():
         return self.total_elapsed_time
 
     @cached_property
-    def total_distance(self) -> float:
-        return self.distance.max()
+    def total_distance(self) -> Optional[float]:
+        if self._distance is None:
+            return None
+        else:
+            return self.distance.max()
 
     @cached_property
-    def avg_cadence(self) -> float:
-        return self.cadence.mean()
+    def avg_cadence(self) -> Optional[float]:
+        if self._cadence is None:
+            return None
+        else:
+            return self.cadence.mean()
 
     @cached_property
-    def max_cadence(self) -> float:
-        return self.cadence.max()
+    def max_cadence(self) -> Optional[float]:
+        if self._cadence is None:
+            return None
+        else:
+            return self.cadence.max()
 
     @cached_property
-    def avg_speed(self) -> float:
-        return self.speed.mean()
+    def avg_speed(self) -> Optional[float]:
+        if self._speed is None:
+            return None
+        else:
+            return self.speed.mean()
 
     @cached_property
-    def max_speed(self) -> float:
-        return self.speed.max()
+    def max_speed(self) -> Optional[float]:
+        if self._speed is None:
+            return None
+        else:
+            return self.speed.max()
 
     @cached_property
-    def avg_power(self) -> float:
-        return self.power.mean()
+    def avg_power(self) -> Optional[float]:
+        if self._power is None:
+            return None
+        else:
+            return self.power.mean()
 
     @cached_property
-    def max_power(self) -> float:
-        return self.power.max()
+    def max_power(self) -> Optional[float]:
+        if self._power is None:
+            return None
+        else:
+            return self.power.max()
 
     @cached_property
-    def avg_heart_rate(self) -> float:
-        return self.heart_rate.mean()
+    def avg_heart_rate(self) -> Optional[float]:
+        if self._heart_rate is None:
+            return None
+        else:
+            return self.heart_rate.mean()
 
     @cached_property
-    def max_heart_rate(self) -> float:
-        return self.heart_rate.max()
+    def max_heart_rate(self) -> Optional[float]:
+        if self._heart_rate is None:
+            return None
+        else:
+            return self.heart_rate.max()
 
 
 @dataclass(frozen=True)
@@ -149,56 +200,84 @@ class Session():
         return sum(lap.total_timer_time for lap in self.laps)
 
     @cached_property
-    def total_distance(self) -> float:
-        return sum(lap.total_distance for lap in self.laps)
+    def total_distance(self) -> Optional[float]:
+        laps_distance = list(filter(None, (lap.total_distance for lap in self.laps)))
+        if laps_distance:
+            return sum(lap.total_distance for lap in self.laps)
+        else:
+            return None
 
     @cached_property
-    def total_calories(self) -> float:
-        return sum(lap.total_calories for lap in self.laps)
+    def total_calories(self) -> Optional[float]:
+        laps_total_calories = list(filter(None, (lap.total_calories for lap in self.laps)))
+        if laps_total_calories:
+            return sum(laps_total_calories)
+        else:
+            return None
 
     @cached_property
-    def avg_cadence(self) -> float:
-        return np.average(
-            np.fromiter((lap.avg_cadence for lap in self.laps), float),
-            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
-        )
+    def avg_cadence(self) -> Optional[float]:
+        laps_avg_cadence = list(filter(None, (lap.avg_cadence for lap in self.laps)))
+        if laps_avg_cadence:
+            return np.average(
+                np.asarray(laps_avg_cadence),
+                weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+            )
+        else:
+            return None
 
     @cached_property
-    def max_cadence(self) -> float:
-        return max(lap.max_cadence for lap in self.laps)
+    def max_cadence(self) -> Optional[float]:
+        laps_max_cadence = list(filter(None, (lap.max_cadence for lap in self.laps)))
+        return max(laps_max_cadence, default=None)
 
     @cached_property
-    def avg_speed(self) -> float:
-        return np.average(
-            np.fromiter((lap.avg_speed for lap in self.laps), float),
-            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
-        )
+    def avg_speed(self) -> Optional[float]:
+        laps_avg_speed = list(filter(None, (lap.avg_speed for lap in self.laps)))
+        if laps_avg_speed:
+            return np.average(
+                np.asarray(laps_avg_speed),
+                weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+            )
+        else:
+            return None
 
     @cached_property
-    def max_speed(self) -> float:
-        return max(lap.max_speed for lap in self.laps)
+    def max_speed(self) -> Optional[float]:
+        laps_max_speed = list(filter(None, (lap.max_speed for lap in self.laps)))
+        return max(laps_max_speed, default=None)
 
     @cached_property
-    def avg_power(self) -> float:
-        return np.average(
-            np.fromiter((lap.avg_power for lap in self.laps), float),
-            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
-        )
+    def avg_power(self) -> Optional[float]:
+        laps_avg_power = list(filter(None, (lap.avg_power for lap in self.laps)))
+        if laps_avg_power:
+            return np.average(
+                np.asarray(laps_avg_power),
+                weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+            )
+        else:
+            return None
 
     @cached_property
-    def max_power(self) -> float:
-        return max(lap.max_power for lap in self.laps)
+    def max_power(self) -> Optional[float]:
+        laps_max_power = list(filter(None, (lap.max_power for lap in self.laps)))
+        return max(laps_max_power, default=None)
 
     @cached_property
-    def avg_heart_rate(self) -> float:
-        return np.average(
-            np.fromiter((lap.avg_heart_rate for lap in self.laps), float),
-            weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
-        )
+    def avg_heart_rate(self) -> Optional[float]:
+        laps_avg_heart_rate = list(filter(None, (lap.avg_heart_rate for lap in self.laps)))
+        if laps_avg_heart_rate:
+            return np.average(
+                np.asarray(laps_avg_heart_rate),
+                weights=np.fromiter((lap.total_timer_time for lap in self.laps), float),
+            )
+        else:
+            return None
 
     @cached_property
-    def max_heart_rate(self) -> float:
-        return max(lap.max_heart_rate for lap in self.laps)
+    def max_heart_rate(self) -> Optional[float]:
+        laps_max_heart_rate = list(filter(None, (lap.max_heart_rate for lap in self.laps)))
+        return max(laps_max_heart_rate, default=None)
 
 
 @dataclass(frozen=True)
@@ -233,6 +312,8 @@ def parse_tcx(xml) -> Activity:
     match activity.get('Sport'):
         case "biking" | "Biking":
             sport = Sport.IndoorCycling
+        case "running" | "Running":
+            sport = Sport.Treadmill
         case s:
             raise Exception(f"Unknown sport: {s}")
 
@@ -243,33 +324,48 @@ def parse_tcx(xml) -> Activity:
 
 
 def parse_tcx_lap(xml) -> Lap:
+    tp0 = xml.find('Track').find('Trackpoint')
+    ext0 = tp0.find('Extensions')
+    ext_tpx0 = ext0.find('{*}TPX')
+
     timestamp = []
-    distance = []
-    cadence = []
-    speed = []
-    power = []
-    heart_rate = []
+    distance = [] if tp0.findtext('DistanceMeters') is not None else None
+    altitude = [] if tp0.findtext('AltitudeMeters') is not None else None
+    cadence = [] if tp0.findtext('Cadence') is not None else None
+    speed = [] if ext_tpx0.findtext('{*}Speed') is not None else None
+    power = [] if ext_tpx0.findtext('{*}Watts') is not None else None
+    heart_rate = [] if tp0.findtext('HeartRateBpm/Value') is not None else None
 
     for tp in xml.find('Track').findall('Trackpoint'):
         ext = tp.find('Extensions')
         ext_tpx = ext.find('{*}TPX')
         timestamp.append(TS(isoparse(tp.findtext('Time')).timestamp()))
-        distance.append(float(tp.findtext('DistanceMeters')))
-        cadence.append(float(tp.findtext('Cadence')))
-        speed.append(float(ext_tpx.findtext('{*}Speed')))
-        power.append(float(ext_tpx.findtext('{*}Watts')))
-        heart_rate.append(float(tp.findtext('HeartRateBpm/Value')))
+        if distance is not None:
+            distance.append(float(tp.findtext('DistanceMeters')))
+        if altitude is not None:
+            altitude.append(float(tp.findtext('AltitudeMeters')))
+        if cadence is not None:
+            cadence.append(float(tp.findtext('Cadence')))
+        if speed is not None:
+            speed.append(float(ext_tpx.findtext('{*}Speed')))
+        if power is not None:
+            power.append(float(ext_tpx.findtext('{*}Watts')))
+        if heart_rate is not None:
+            heart_rate.append(float(tp.findtext('HeartRateBpm/Value')))
+
+    total_calories = xml.findtext('Calories')
 
     return Lap(
         # TODO: check if timestamp is sampled every second and interpolate everything otherwise
         # https://numpy.org/doc/stable/reference/generated/numpy.interp.html
         timestamp=np.asarray(timestamp),
-        _distance=Q(np.asarray(distance), ureg.m),
-        _cadence=Q(np.asarray(cadence), ureg.rpm),
-        _speed=Q(np.asarray(speed), ureg.kph),
-        _power=Q(np.asarray(power), ureg.watt),
-        _heart_rate=Q(np.asarray(heart_rate), 1 / ureg.minute),
-        total_calories=float(xml.findtext('Calories')),
+        _distance=Q(np.asarray(distance), ureg.m) if distance is not None else None,
+        _altitude=Q(np.asarray(altitude), ureg.m) if altitude is not None else None,
+        _cadence=Q(np.asarray(cadence), ureg.rpm) if cadence is not None else None,
+        _speed=Q(np.asarray(speed), ureg.kph) if speed is not None else None,
+        _power=Q(np.asarray(power), ureg.watt) if power is not None else None,
+        _heart_rate=Q(np.asarray(heart_rate), 1 / ureg.minute) if heart_rate is not None else None,
+        total_calories=float(total_calories) if total_calories is not None else None,
     )
 
 
@@ -332,19 +428,27 @@ class FitWriter(AbstractContextManager):
     def record(
         self,
         timestamp: TS,
-        distance: float,
-        cadence: float,
-        speed: float,
-        power: float,
-        heart_rate: float,
+        distance: Optional[float],
+        altitude: Optional[float],
+        cadence: Optional[float],
+        speed: Optional[float],
+        power: Optional[float],
+        heart_rate: Optional[float],
     ):
         m = fit.RecordMesg()
         m.setTimestamp(fit_datetime(timestamp))
-        m.setDistance(JFloat(distance))
-        m.setCadence(JShort(cadence))
-        m.setSpeed(JFloat(speed))
-        m.setPower(JInt(power))
-        m.setHeartRate(JShort(heart_rate))
+        if distance is not None:
+            m.setDistance(JFloat(distance))
+        if altitude is not None:
+            m.setAltitude(JFloat(altitude))
+        if cadence is not None:
+            m.setCadence(JShort(cadence))
+        if speed is not None:
+            m.setSpeed(JFloat(speed))
+        if power is not None:
+            m.setPower(JInt(power))
+        if heart_rate is not None:
+            m.setHeartRate(JShort(heart_rate))
         self._write(m)
 
     def lap(
@@ -354,19 +458,16 @@ class FitWriter(AbstractContextManager):
         stop_time: TS,
         total_elapsed_time: float,
         total_timer_time: float,
-
-        # TODO: optional fields
-        total_distance: float,
-        total_calories: float,
-        avg_speed: float,
-        max_speed: float,
-        avg_power: float,
-        max_power: float,
-        avg_heart_rate: float,
-        max_heart_rate: float,
-        avg_cadence: float,
-        max_cadence: float,
-
+        total_distance: Optional[float],
+        total_calories: Optional[float],
+        avg_speed: Optional[float],
+        max_speed: Optional[float],
+        avg_power: Optional[float],
+        max_power: Optional[float],
+        avg_heart_rate: Optional[float],
+        max_heart_rate: Optional[float],
+        avg_cadence: Optional[float],
+        max_cadence: Optional[float],
         sport: Sport,
     ):
         m = fit.LapMesg()
@@ -375,19 +476,26 @@ class FitWriter(AbstractContextManager):
         m.setTotalElapsedTime(JFloat(total_elapsed_time))
         m.setTotalTimerTime(JFloat(total_timer_time))
         m.setStartTime(fit_datetime(start_time))
-
-        # TODO: optional fields
-        m.setTotalDistance(JFloat(total_distance))
-        m.setTotalCalories(JInt(total_calories))
-        m.setAvgSpeed(JFloat(avg_speed))
-        m.setMaxSpeed(JFloat(max_speed))
-        m.setAvgPower(JInt(avg_power))
-        m.setMaxPower(JInt(max_power))
-        m.setAvgHeartRate(JShort(avg_heart_rate))
-        m.setMaxHeartRate(JShort(max_heart_rate))
-        m.setAvgCadence(JShort(avg_cadence))
-        m.setMaxCadence(JShort(max_cadence))
-
+        if total_distance is not None:
+            m.setTotalDistance(JFloat(total_distance))
+        if total_calories is not None:
+            m.setTotalCalories(JInt(total_calories))
+        if avg_speed is not None:
+            m.setAvgSpeed(JFloat(avg_speed))
+        if max_speed is not None:
+            m.setMaxSpeed(JFloat(max_speed))
+        if avg_power is not None:
+            m.setAvgPower(JInt(avg_power))
+        if max_power is not None:
+            m.setMaxPower(JInt(max_power))
+        if avg_heart_rate is not None:
+            m.setAvgHeartRate(JShort(avg_heart_rate))
+        if max_heart_rate is not None:
+            m.setMaxHeartRate(JShort(max_heart_rate))
+        if avg_cadence is not None:
+            m.setAvgCadence(JShort(avg_cadence))
+        if max_cadence is not None:
+            m.setMaxCadence(JShort(max_cadence))
         m.setSport(sport.value[0])
         m.setSubSport(sport.value[1])
         m.setEvent(fit.Event.LAP)
@@ -401,19 +509,16 @@ class FitWriter(AbstractContextManager):
         stop_time: TS,
         total_elapsed_time: float,
         total_timer_time: float,
-
-        # TODO: optional fields
-        total_distance: float,
-        total_calories: float,
-        avg_speed: float,
-        max_speed: float,
-        avg_power: float,
-        max_power: float,
-        avg_heart_rate: float,
-        max_heart_rate: float,
-        avg_cadence: float,
-        max_cadence: float,
-
+        total_distance: Optional[float],
+        total_calories: Optional[float],
+        avg_speed: Optional[float],
+        max_speed: Optional[float],
+        avg_power: Optional[float],
+        max_power: Optional[float],
+        avg_heart_rate: Optional[float],
+        max_heart_rate: Optional[float],
+        avg_cadence: Optional[float],
+        max_cadence: Optional[float],
         first_lap_index: int,
         num_laps: int,
         sport: Sport,
@@ -424,19 +529,26 @@ class FitWriter(AbstractContextManager):
         m.setStartTime(fit_datetime(start_time))
         m.setTotalElapsedTime(JFloat(total_elapsed_time))
         m.setTotalTimerTime(JFloat(total_timer_time))
-
-        # TODO: optional fields
-        m.setTotalDistance(JFloat(total_distance))
-        m.setTotalCalories(JInt(total_calories))
-        m.setAvgSpeed(JFloat(avg_speed))
-        m.setMaxSpeed(JFloat(max_speed))
-        m.setAvgPower(JInt(avg_power))
-        m.setMaxPower(JInt(max_power))
-        m.setAvgHeartRate(JShort(avg_heart_rate))
-        m.setMaxHeartRate(JShort(max_heart_rate))
-        m.setAvgCadence(JShort(avg_cadence))
-        m.setMaxCadence(JShort(max_cadence))
-
+        if total_distance is not None:
+            m.setTotalDistance(JFloat(total_distance))
+        if total_calories is not None:
+            m.setTotalCalories(JInt(total_calories))
+        if avg_speed is not None:
+            m.setAvgSpeed(JFloat(avg_speed))
+        if max_speed is not None:
+            m.setMaxSpeed(JFloat(max_speed))
+        if avg_power is not None:
+            m.setAvgPower(JInt(avg_power))
+        if max_power is not None:
+            m.setMaxPower(JInt(max_power))
+        if avg_heart_rate is not None:
+            m.setAvgHeartRate(JShort(avg_heart_rate))
+        if max_heart_rate is not None:
+            m.setMaxHeartRate(JShort(max_heart_rate))
+        if avg_cadence is not None:
+            m.setAvgCadence(JShort(avg_cadence))
+        if max_cadence is not None:
+            m.setMaxCadence(JShort(max_cadence))
         m.setFirstLapIndex(JInt(first_lap_index))
         m.setNumLaps(JInt(num_laps))
         m.setSport(sport.value[0])
@@ -469,11 +581,12 @@ def activity_to_fit(f: FitWriter, activity: Activity):
             for i, ts in np.ndenumerate(lap.timestamp):
                 f.record(
                     timestamp=ts,
-                    distance=lap.distance[i],
-                    cadence=lap.cadence[i],
-                    speed=lap.speed[i],
-                    power=lap.power[i],
-                    heart_rate=lap.heart_rate[i],
+                    distance=lap.distance[i] if lap.distance is not None else None,
+                    altitude=lap.altitude[i] if lap.altitude is not None else None,
+                    cadence=lap.cadence[i] if lap.cadence is not None else None,
+                    speed=lap.speed[i] if lap.speed is not None else None,
+                    power=lap.power[i] if lap.power is not None else None,
+                    heart_rate=lap.heart_rate[i] if lap.heart_rate is not None else None,
                 )
     f.event_stop(stop_time=activity.stop_time)
 
@@ -490,8 +603,6 @@ def activity_to_fit(f: FitWriter, activity: Activity):
                 stop_time=lap.stop_time,
                 total_elapsed_time=lap.total_elapsed_time,
                 total_timer_time=lap.total_timer_time,
-
-                # TODO: optional fields
                 total_distance=lap.total_distance,
                 total_calories=lap.total_calories,
                 avg_speed=lap.avg_speed,
@@ -502,7 +613,6 @@ def activity_to_fit(f: FitWriter, activity: Activity):
                 max_heart_rate=lap.max_heart_rate,
                 avg_cadence=lap.avg_cadence,
                 max_cadence=lap.max_cadence,
-
                 sport=activity.sport,
             )
             lap_index += 1
@@ -513,8 +623,6 @@ def activity_to_fit(f: FitWriter, activity: Activity):
             stop_time=session.stop_time,
             total_elapsed_time=session.total_elapsed_time,
             total_timer_time=session.total_timer_time,
-
-            # TODO: optional fields
             total_distance=session.total_distance,
             total_calories=session.total_calories,
             avg_speed=session.avg_speed,
@@ -525,7 +633,6 @@ def activity_to_fit(f: FitWriter, activity: Activity):
             max_heart_rate=session.max_heart_rate,
             avg_cadence=session.avg_cadence,
             max_cadence=session.max_cadence,
-
             first_lap_index=first_lap_index,
             num_laps=lap_index - first_lap_index,
             sport=activity.sport,
