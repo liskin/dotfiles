@@ -355,16 +355,18 @@ def parse_tcx_lap(xml) -> Lap:
 
     total_calories = xml.findtext('Calories')
 
+    timestamp_interp = np.arange(min(timestamp), max(timestamp) + 1)
+    timestamp = np.asarray(timestamp)
+    def interp(lst): return np.interp(timestamp_interp, timestamp, np.asarray(lst))
+
     return Lap(
-        # TODO: check if timestamp is sampled every second and interpolate everything otherwise
-        # https://numpy.org/doc/stable/reference/generated/numpy.interp.html
-        timestamp=np.asarray(timestamp),
-        _distance=Q(np.asarray(distance), ureg.m) if distance is not None else None,
-        _altitude=Q(np.asarray(altitude), ureg.m) if altitude is not None else None,
-        _cadence=Q(np.asarray(cadence), ureg.rpm) if cadence is not None else None,
-        _speed=Q(np.asarray(speed), ureg.kph) if speed is not None else None,
-        _power=Q(np.asarray(power), ureg.watt) if power is not None else None,
-        _heart_rate=Q(np.asarray(heart_rate), 1 / ureg.minute) if heart_rate is not None else None,
+        timestamp=timestamp_interp,
+        _distance=Q(interp(distance), ureg.m) if distance is not None else None,
+        _altitude=Q(interp(altitude), ureg.m) if altitude is not None else None,
+        _cadence=Q(interp(cadence), ureg.rpm) if cadence is not None else None,
+        _speed=Q(interp(speed), ureg.kph) if speed is not None else None,
+        _power=Q(interp(power), ureg.watt) if power is not None else None,
+        _heart_rate=Q(interp(heart_rate), 1 / ureg.minute) if heart_rate is not None else None,
         total_calories=float(total_calories) if total_calories is not None else None,
     )
 
