@@ -311,16 +311,18 @@ let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/.build/elixir-ls"
 
 let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
 
-let g:ale_python_pylsp_config = {
-	\ 'pylsp': {
-		\ 'configurationSources': ['flake8'],
-		\ 'plugins': {
-			\ 'pylsp_mypy': {
-				\ 'enabled': v:false,
-			\ },
-		\ },
-	\ }
-\ }
+let g:ale_python_pylsp_config = #{pylsp: {}}
+let g:ale_python_pylsp_config['pylsp']['configurationSources'] = ['flake8']
+let g:ale_python_pylsp_config['pylsp']['plugins'] = {}
+
+" disable mypy by default to prevent .mypy_cache appearing all over the filesystem
+let g:ale_python_pylsp_config['pylsp']['plugins']['pylsp_mypy'] = #{enabled: v:false}
+
+" use flake8 (covers functionality of pyflakes, pycodestyle, mccabe)
+let g:ale_python_pylsp_config['pylsp']['plugins']['flake8'] = #{enabled: v:true}
+let g:ale_python_pylsp_config['pylsp']['plugins']['pyflakes'] = #{enabled: v:false}
+let g:ale_python_pylsp_config['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false}
+let g:ale_python_pylsp_config['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
 
 let g:ale_haskell_ormolu_executable = 'fourmolu'
 let g:ale_haskell_hls_config = {
