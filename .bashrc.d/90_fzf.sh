@@ -15,7 +15,7 @@ function __bash_history_infinite__ {
 function __fzf_history__ {
 	local output
 	output=$(__bash_history_infinite__ |
-		FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" $(__fzfcmd) --query "$READLINE_LINE"
+		FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS --scheme=history --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" $(__fzfcmd) --query "$READLINE_LINE"
 	) || return
 	READLINE_LINE=${output}
 	if [ -z "$READLINE_POINT" ]; then
