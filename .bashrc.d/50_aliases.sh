@@ -72,6 +72,7 @@ export-alias google-chrome-profile-mitm="bwrap-pki-mitm google-chrome-profile"
 export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
 export-alias meld='LC_MESSAGES=C /usr/bin/meld'
 export-alias weechat='LC_MESSAGES=C /usr/bin/weechat'
+export-alias cantata='LC_COLLATE=C /usr/bin/cantata'
 
 export-alias google-earth-pro='LC_NUMERIC=C /usr/bin/google-earth-pro'
 export-alias google-earth='google-earth-pro'
