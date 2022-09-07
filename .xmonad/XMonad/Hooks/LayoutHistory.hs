@@ -32,6 +32,7 @@ import Data.Maybe
 import qualified Data.Map.Strict as M
 
 import XMonad
+import XMonad.Prelude (delete, isPrefixOf)
 import qualified XMonad.StackSet as W
 import qualified XMonad.Util.ExtensibleConf as XC
 import qualified XMonad.Util.ExtensibleState as XS
@@ -87,7 +88,7 @@ recordCurrentLayoutHistory = do
 -- (May be useful when switching layouts on non-current workspaces.)
 recordWorkspaceLayoutHistory :: WindowSpace -> X ()
 recordWorkspaceLayoutHistory w =
-    updateWorkspaceLayoutHistory (W.tag w) $ \h -> if l `elem` h then h else l : h
+    updateWorkspaceLayoutHistory (W.tag w) $ \h -> if [l] `isPrefixOf` h then h else l : l `delete` h
   where
     l = description . W.layout $ w
 
