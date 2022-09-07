@@ -7,8 +7,10 @@ BUILDIFIER_VERSION := 5.1.0
 CARGO_BINSTALL_VERSION := v0.12.0
 CTLPTL_VERSION := v0.8.5
 DELTA_VERSION := 0.13.0
+DIVE_VERSION := v0.10.0
 DOCKER_BUILDX_VERSION := v0.8.2
 DOCKER_COMPOSE_VERSION := v2.9.0
+FITSDK_VERSION := 21.84.00
 HADOLINT_VERSION := v2.10.0
 HLINT_VERSION := v3.4.1
 HLS_GHC_VERSION := 8.8.4
@@ -20,12 +22,12 @@ RUST_ANALYZER_VERSION := 2022-08-08
 SCCACHE_VERSION := v0.3.0
 TILT_VERSION := v0.30.6
 TZ_VERSION := v0.6.1
-FITSDK_VERSION := 21.84.00
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
 CARGO_BINSTALL_GITHUB := cargo-bins/cargo-binstall
 CTLPTL_GITHUB := tilt-dev/ctlptl
 DELTA_GITHUB := dandavison/delta
+DIVE_GITHUB := wagoodman/dive
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
 HADOLINT_GITHUB := hadolint/hadolint
@@ -199,6 +201,14 @@ all: .ext-fitsdk
 .INTERMEDIATE: .ext-fitsdk-$(FITSDK_VERSION).zip
 .ext-fitsdk-$(FITSDK_VERSION).zip:
 	$(CURL) -C - -o $@ https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_$(FITSDK_VERSION).zip
+
+all: dive
+dive: | .ext-dive ; ln -fsT $|/$@ $@
+.ext-dive: .ext-dive-$(DIVE_VERSION) ; ln -fsT $< $@
+.ext-dive-$(DIVE_VERSION):
+	mkdir -p $@
+	$(CURL) https://github.com/$(DIVE_GITHUB)/releases/download/$(DIVE_VERSION)/dive_$(DIVE_VERSION:v%=%)_linux_amd64.tar.gz \
+		| tar -x -z -C $@ dive
 
 .PHONY: gc
 ## Remove old versions
