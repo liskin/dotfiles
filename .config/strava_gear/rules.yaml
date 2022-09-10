@@ -111,6 +111,8 @@ components:
   bb-sq-2: "Unknown square taper BB"
   piste-chainring-1: {name: "unknown singlespeed chainring 130BCD 44T"}
   piste-chainring-2: {name: "Plateau Alize Piste 130BCD 44T"}
+  cog1-1: "On-One CNC Chromoly Screw-on Track Cog 18in 17t"
+  cog1-2: "On-One CNC Chromoly Screw-on Track Cog 18in 17t"
 
   # brakes ----------------------------
   tektro-front: Tektro MT-14
@@ -386,8 +388,10 @@ rules:
     pedals: pd-m520-3
     chain: chain1-5
     chainring: piste-chainring-1
+    cog: cog1-1
 - {since: 2022-07-29T15:00:00+01:00, ss-uk: {chain: chain1-6}}
 - {since: 2022-08-01T20:00:00+01:00, ss-uk: {chainring: piste-chainring-2}}
+- {since: 2022-08-25, ss-uk: {cog: cog1-2}}
 
 # road ----------------------------
 - road:
