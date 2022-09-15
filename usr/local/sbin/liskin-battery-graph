@@ -11,7 +11,7 @@ import tempfile
 def parse_date(d):
     cmd = ["date", '-d', d, '+%s']
     ts = int(subprocess.check_output(cmd, encoding='utf-8').rstrip())
-    return datetime.datetime.fromtimestamp(ts)
+    return datetime.datetime.fromtimestamp(ts, tz=datetime.timezone.utc)
 
 
 def gnuplot_fakeutc(d):
