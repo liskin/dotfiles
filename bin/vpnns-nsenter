@@ -22,10 +22,13 @@ done
 
 pid=$(< ~/.vpnns-"$name"/vpnns.pid)
 
+needsterminal=; [[ -t 0 && $DISPLAY ]] || needsterminal=:
+
 # shellcheck disable=SC2016
-o sudo --preserve-env \
+o ${needsterminal:+needsterminal} sudo --preserve-env \
 	nsenter --target "$pid" --net \
 	sudo --preserve-env -u "$USER" \
+	${needsterminal:+setsid} \
 	bwrap \
 		--bind /{,} \
 		--dev-bind /dev{,} \
