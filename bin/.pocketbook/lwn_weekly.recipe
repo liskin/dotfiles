@@ -27,6 +27,7 @@ class WeeklyLWN(BasicNewsRecipe):
                    DIV.BigQuote,SPAN,blockquote { font-style:oblique }
                    DIV.FeatureByline,DIV.GaByline { background-color:#EEE }
                    DIV.tlr { background-color:#EED; border-style:groove; }
+                   .calibre_navbar { display: none; }
                    * { color: black }'''
 
     cover_url = site_url + '/images/lcorner.png'
