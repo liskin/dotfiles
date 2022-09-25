@@ -42,7 +42,7 @@ current window $program == "gl" ==> {
 current window $program == ["app.element.io", "discord.com__app", "www.messenger.com"] ==> tag Activity:Chat,
 current window $program =~ /\.slack\.com$/ ==> tag Activity:Chat,
 any window $active && $desktop =~ /^W?\d+:steam$/ ==> tag Activity:Games,
-any window $active && $desktop == ["1", "11"] && any window ($desktop == $wdesktop && $program == "Steam") ==> tag Activity:Games,
+any window $active && $desktop =~ /^W?\d+$/ && any window ($desktop == $wdesktop && $program == ["Steam", "lutris"]) ==> tag Activity:Games,
 
 include(`categorize-priv.m4')dnl
 
