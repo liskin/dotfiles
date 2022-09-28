@@ -340,7 +340,7 @@ let g:ale_haskell_hls_config = {
 \ }
 
 let g:ale_rust_analyzer_config = #{
-	\ cargo: #{ 
+	\ cargo: #{
 		\ features: 'all',
 	\ },
 \ }

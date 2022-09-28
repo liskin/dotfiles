@@ -5,7 +5,7 @@
 " screwing up folding when switching between windows.
 "
 " Also, perhaps more importantly, avoid the performance penalty of recomputing
-" fold after every inserted characted.
+" fold after every inserted character.
 
 if &cp || exists('g:loaded_fastfold') | finish | endif
 let g:loaded_fastfold = 1
