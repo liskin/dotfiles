@@ -1,4 +1,19 @@
-if &t_Co == 256 || has('gui_running')
+" Set 'background' back to the default.  The value can't always be estimated
+" and is then guessed.
+hi clear Normal
+set bg&
+
+" Remove all existing highlighting and set the defaults.
+hi clear
+
+" Load the syntax highlighting defaults, if it's enabled.
+if exists("syntax_on")
+	syntax reset
+endif
+
+let colors_name = "liskin"
+
+if &t_Co >= 256 || has('gui_running')
 	hi ColorColumn ctermbg=235 guibg=#080808
 	hi Comment cterm=bold ctermfg=45 gui=bold guifg=#00d7ff
 	hi Conceal ctermbg=242 guibg=#6c6c6c
@@ -25,6 +40,7 @@ if &t_Co == 256 || has('gui_running')
 	hi SignColumn ctermbg=233
 	hi Special cterm=bold ctermfg=208 gui=bold guifg=#ff8700
 	hi SpecialKey cterm=bold ctermfg=239 gui=NONE guifg=#4e4e4e
+	hi link Whitespace SpecialKey
 	hi SpellBad cterm=underline,bold ctermfg=9 ctermbg=NONE
 	hi SpellCap cterm=underline,bold ctermfg=87 ctermbg=NONE
 	hi SpellLocal cterm=underline,bold ctermfg=39 ctermbg=NONE

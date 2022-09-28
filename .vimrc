@@ -439,6 +439,7 @@ call pathogen#infect()
 
 filetype plugin indent on
 syntax on
+colors liskin
 
 " autocmds {{{1
 
