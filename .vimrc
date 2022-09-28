@@ -128,7 +128,9 @@ set incsearch
 " fsync / swap {{{2
 set dir=~/.vim/swap//
 set nofsync
-set swapsync=
+if exists('&swapsync')
+	set swapsync=
+endif
 
 " location of tags, includes {{{2
 set tags+=./tags;
@@ -137,7 +139,10 @@ set path=.,,
 " filename completion {{{2
 set wildmenu
 set wildmode=full:longest
-set wildoptions=fuzzy,pum
+set wildoptions=pum
+if has('patch-8.2.4608')
+	set wildoptions+=fuzzy
+endif
 set wildignore+=*.o,*.d,*.hi,*.beam,*.p_o,*.p_hi,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
@@ -147,7 +152,10 @@ set grepformat=%f:%l:%c:%m,%f:%l:%m
 
 " other {{{2
 set backspace=indent,eol,start
-set completeopt=menu,menuone,longest,popup
+set completeopt=menu,menuone,longest,preview
+if has('textprop')
+	set completeopt-=preview completeopt+=popup
+endif
 set diffopt+=indent-heuristic,algorithm:histogram
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
@@ -251,20 +259,20 @@ let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#fugitiveline#enabled = 0
 let g:airline#extensions#searchcount#enabled = 0
-def! g:VimrcAirlineFileshorten(): string
-	# other airline parts have their own width heuristics and usually all fit within 35 columns…
-	const width_available = airline#util#winwidth() - 35
-	const name = bufname("%")
+function! VimrcAirlineFileshorten()
+	" other airline parts have their own width heuristics and usually all fit within 35 columns…
+	let width_available = airline#util#winwidth() - 35
+	let name = bufname("%")
 
-	var short_name = name
-	var shorten_len = 5
+	let short_name = name
+	let shorten_len = 5
 	while len(short_name) > width_available && shorten_len > 0
-		short_name = pathshorten(name, shorten_len)
-		--shorten_len
+		let short_name = pathshorten(name, shorten_len)
+		let shorten_len -= 1
 	endwhile
 
 	return short_name
-enddef
+endfunction
 function! s:AirlineInit()
 	call airline#parts#define_raw('fileshorten', '%n:%{VimrcAirlineFileshorten()}%m')
 	let spc = g:airline_symbols.space
