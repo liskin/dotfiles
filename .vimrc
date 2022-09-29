@@ -9,56 +9,62 @@ for fn in range(13, 24) " {{{3
 	exe "noremap! <silent> <F" . fn . "> <Nop>"
 endfor
 
-if &term == "rxvt-unicode-256color" " {{{3
-	" my urxvt supports sgr mouse reporting {{{4
-	set ttymouse=sgr
+if !has('nvim')
+	if &term == "rxvt-unicode-256color" " {{{3
+		" my urxvt supports sgr mouse reporting {{{4
+		set ttymouse=sgr
 
-	" cursor shape {{{4
-	let &t_SI = "\<Esc>[5 q"
-	let &t_SR = "\<Esc>[3 q"
-	let &t_EI = "\<Esc>[2 q"
+		" cursor shape {{{4
+		let &t_SI = "\<Esc>[5 q"
+		let &t_SR = "\<Esc>[3 q"
+		let &t_EI = "\<Esc>[2 q"
 
+		" ctrl+pgup/down to switch tabs {{{4
+		exe "set <F13>=\<Esc>[5^"
+		exe "set <F14>=\<Esc>[6^"
+		nmap <silent> <F13> :tabprev<CR>
+		nmap <silent> <F14> :tabnext<CR>
+
+		" fix keycodes {{{4
+		exe "set <S-Up>=\<Esc>[a"
+		exe "set <S-Down>=\<Esc>[b"
+		exe "set <C-Left>=\<Esc>Od"
+		exe "set <C-Right>=\<Esc>Oc"
+		exe "set <A-n>=\<Esc>n"
+	endif
+
+	if &term == "tmux-256color" " {{{3
+		" tmux supports sgr mouse reporting {{{4
+		set ttymouse=sgr
+
+		" cursor shape {{{4
+		let &t_SI = "\<Esc>[5 q"
+		let &t_SR = "\<Esc>[3 q"
+		let &t_EI = "\<Esc>[2 q"
+
+		" focus reporting {{{4
+		let &t_fe = "\<Esc>[?1004h"
+		let &t_fd = "\<Esc>[?1004l"
+
+		" bracketed paste {{{4
+		let &t_BE="\<Esc>[?2004h"
+		let &t_BD="\<Esc>[?2004l"
+		let &t_PS="\<Esc>[200~"
+		let &t_PE="\<Esc>[201~"
+
+		" ctrl+pgup/down to switch tabs {{{4
+		exe "set <F13>=\<Esc>[5;5~"
+		exe "set <F14>=\<Esc>[6;5~"
+		nmap <silent> <F13> :tabprev<CR>
+		nmap <silent> <F14> :tabnext<CR>
+
+		" fix keycodes {{{4
+		exe "set <A-n>=\<Esc>n"
+	endif
+else
 	" ctrl+pgup/down to switch tabs {{{4
-	exe "set <F13>=\<Esc>[5^"
-	exe "set <F14>=\<Esc>[6^"
-	nmap <silent> <F13> :tabprev<CR>
-	nmap <silent> <F14> :tabnext<CR>
-
-	" fix keycodes {{{4
-	exe "set <S-Up>=\<Esc>[a"
-	exe "set <S-Down>=\<Esc>[b"
-	exe "set <C-Left>=\<Esc>Od"
-	exe "set <C-Right>=\<Esc>Oc"
-	exe "set <A-n>=\<Esc>n"
-endif
-
-if &term == "tmux-256color" " {{{3
-	" tmux supports sgr mouse reporting {{{4
-	set ttymouse=sgr
-
-	" cursor shape {{{4
-	let &t_SI = "\<Esc>[5 q"
-	let &t_SR = "\<Esc>[3 q"
-	let &t_EI = "\<Esc>[2 q"
-
-	" focus reporting {{{4
-	let &t_fe = "\<Esc>[?1004h"
-	let &t_fd = "\<Esc>[?1004l"
-
-	" bracketed paste {{{4
-	let &t_BE="\<Esc>[?2004h"
-	let &t_BD="\<Esc>[?2004l"
-	let &t_PS="\<Esc>[200~"
-	let &t_PE="\<Esc>[201~"
-
-	" ctrl+pgup/down to switch tabs {{{4
-	exe "set <F13>=\<Esc>[5;5~"
-	exe "set <F14>=\<Esc>[6;5~"
-	nmap <silent> <F13> :tabprev<CR>
-	nmap <silent> <F14> :tabnext<CR>
-
-	" fix keycodes {{{4
-	exe "set <A-n>=\<Esc>n"
+	nmap <silent> <C-PageUp> :tabprev<CR>
+	nmap <silent> <C-PageDown> :tabnext<CR>
 endif
 
 " fix C-Space mappings in terminal {{{3
