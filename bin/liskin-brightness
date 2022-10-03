@@ -8,7 +8,13 @@ shopt -s nullglob lastpipe
 
 display="${1:-1}"
 
-ddcutil --display "$display" --terse getvcp 10 | read -r _ _ _ current _
+ddcutil --display "$display" --terse getvcp 10 \
+| while read -r f1 f2 _ val _; do
+	if [[ $f1 == VCP && $f2 == 10 ]]; then
+		current=$val
+	fi
+done
+: "${current:?}"
 
 trap 'pkill -P $$' EXIT
 
