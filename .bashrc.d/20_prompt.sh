@@ -48,3 +48,6 @@ unset __groups_ps1
 #*)
 #	;;
 #esac
+
+# disable mail notifications
+unset MAILCHECK
