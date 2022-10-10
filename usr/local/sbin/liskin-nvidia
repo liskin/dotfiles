@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eu
+
+case "$1" in
+	on)
+		if liskin-dmi-product 20VX; then
+			echo 1 >/sys/class/pci_bus/0000:01/rescan
+			echo 1 >/sys/class/pci_bus/0000:01/device/rescan
+		elif liskin-dmi-product 20K7; then
+			: # TODO
+		fi
+		;;
+
+	off)
+		if liskin-dmi-product 20VX; then
+			echo 1 >/sys/bus/pci/devices/0000:01:00.0/remove
+		elif liskin-dmi-product 20K7; then
+			: # TODO
+		fi
+		;;
+esac
