@@ -1,4 +1,4 @@
 [Lenovo T25 Trackpoint]
 MatchName=*TPPS/2 IBM TrackPoint
-MatchDMIModalias=dmi:*svnLENOVO:*pvrThinkPad25:*
+MatchDMIModalias=dmi:*:svnLENOVO:*:pvrThinkPad25:*
 AttrTrackpointMultiplier=0.4
