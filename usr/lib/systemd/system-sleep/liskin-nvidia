@@ -1,0 +1,6 @@
+#!/bin/sh
+
+case "$1" in
+	pre) ;;
+	post) /usr/local/sbin/liskin-nvidia off ;;
+esac

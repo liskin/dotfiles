@@ -2,21 +2,31 @@
 
 set -eu
 
+if liskin-dmi-product 20VX; then
+	pci_bus=0000:01
+elif liskin-dmi-product 20K7; then
+	pci_bus=0000:02
+else
+	echo "$0: Unknown hardware"
+	exit 0
+fi
+
 case "$1" in
 	on)
-		if liskin-dmi-product 20VX; then
-			echo 1 >/sys/class/pci_bus/0000:01/rescan
-			echo 1 >/sys/class/pci_bus/0000:01/device/rescan
-		elif liskin-dmi-product 20K7; then
-			: # TODO
+		if [[ -e /sys/class/pci_bus/"$pci_bus" ]]; then
+			echo 1 >/sys/class/pci_bus/"$pci_bus"/rescan
+			echo 1 >/sys/class/pci_bus/"$pci_bus"/device/rescan
 		fi
 		;;
 
 	off)
-		if liskin-dmi-product 20VX; then
-			echo 1 >/sys/bus/pci/devices/0000:01:00.0/remove
-		elif liskin-dmi-product 20K7; then
-			: # TODO
+		if compgen -G "/sys/module/nvidia*" > /dev/null; then
+			echo "$0: nvidia in use"
+			exit 0
+		fi
+
+		if [[ -e /sys/bus/pci/devices/"$pci_bus":00.0 ]]; then
+			echo 1 >/sys/bus/pci/devices/"$pci_bus":00.0/remove
 		fi
 		;;
 esac
