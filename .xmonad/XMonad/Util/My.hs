@@ -74,13 +74,11 @@ changeDirRofiGit = do
         [sel] -> sendMessage (Chdir sel)
         _ -> pure ()
 
-toggleFullscreen :: X ()
-toggleFullscreen =
-    withWindowSet $ \ws ->
-    withFocused $ \w -> do
-        let fullRect = W.RationalRect 0 0 1 1
-        let isFullFloat = w `M.lookup` W.floating ws == Just fullRect
-        windows $ if isFullFloat then W.sink w else W.float w fullRect
+isFloat :: Window -> X Bool
+isFloat w = gets $ M.member w . W.floating . windowset
+
+isFloatQ :: Query Bool
+isFloatQ = ask >>= liftX . isFloat
 
 -- | Focus (or swap) n-th window group (SubLayouts). If already active, focus
 -- the next window in the group.

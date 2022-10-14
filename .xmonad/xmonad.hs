@@ -34,7 +34,7 @@ import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers hiding (pid)
 import XMonad.Hooks.Place (placeHook, fixed)
-import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen, isFloat)
+import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen)
 import XMonad.Hooks.Rescreen
 import XMonad.Hooks.ServerMode
 import XMonad.Hooks.StatusBar
@@ -64,6 +64,7 @@ import XMonad.Util.Ungrab
 import qualified XMonad.Util.PureX as P
 
 import XMonad.Actions.DoNotDisturb
+import XMonad.Actions.ToggleFullFloat
 import XMonad.Hooks.LayoutHistory
 import XMonad.Hooks.WriteState
 import XMonad.Util.My
@@ -139,7 +140,7 @@ myKeys XConfig{..} = M.fromList $
 
     -- window actions
     , ((modMask,               xK_Escape), kill)
-    , ((modMask .|. shiftMask, xK_w     ), toggleFullscreen)
+    , ((modMask .|. shiftMask, xK_w     ), withFocused toggleFullFloat)
     , ((modMask,               xK_t     ), withFocused (windows . W.sink) >> up)
 
     -- layout changes
@@ -154,7 +155,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask .|. shiftMask, xK_u     ), sendMessages (replicate 5 MirrorShrink) >> up)
     , ((modMask .|. shiftMask, xK_i     ), sendMessages (replicate 5 MirrorExpand) >> up)
     , ((modMask,               xK_m     ), sendMessage (Toggle REFLECTX) >> up)
-    , ((modMask,               xK_w     ), toggleLayout "tab")
+    , ((modMask,               xK_w     ), toggleFullscreen)
     , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)    >> up)
     , ((modMask              , xK_period), sendMessage (IncMasterN (-1)) >> up)
     , ((modMask .|. shiftMask, xK_comma ), withFocused (sendMessage . mergeDir id) >> up)
@@ -218,6 +219,10 @@ xpConfig = def
     , promptBorderWidth = 2
     , showCompletionOnTab = True
     }
+
+toggleFullscreen :: X ()
+toggleFullscreen = withFocused $ \w ->
+    ifM (isFloat w) (withFocused toggleFullFloat) (toggleLayout "tab")
 
 -- Layouts
 myLayout = dir . refocusLastLayoutHook . trackFloating $
@@ -297,12 +302,12 @@ myEventHook = mconcat
     , ewmhUpdatePointerHook
     ]
     where
-        refocusLastEventHook = refocusLastWhen isFloat
+        refocusLastEventHook = refocusLastWhen isFloatQ
         myXmonadCtlHooks = [myCtlDnd]
 
 floatConfReqHook :: MaybeManageHook -> Event -> X All
 floatConfReqHook mh ev@ConfigureRequestEvent{ev_window = w} =
-    runQuery (join <$> (isFloat -?> mh)) w >>= \case
+    runQuery (join <$> (isFloatQ -?> mh)) w >>= \case
         Nothing -> mempty
         Just e -> do
             windows (appEndo e)
@@ -538,6 +543,7 @@ main = do
         docks $
         workspaceNamesEwmh $
         setEwmhActivateHook myActivateHook $
+        toggleFullFloatEwmhFullscreen $
         ewmhFullscreen $
         ewmh $
         withUrgencyHookC myUrgencyHook def{ suppressWhen = Focused } $
