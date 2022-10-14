@@ -1,0 +1,30 @@
+/* ==UserStyle==
+@name           Outlook Calendar tweaks
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document url-prefix("https://outlook.office.com/calendar/") {
+
+	/* animate collapsing */
+	:is(#o365header, div[aria-label="Ribbon"], #LeftRail) { transition: height 0.3s, width 0.3s; }
+	#LeftRail { width: 48px; }
+
+	/* vertically collapse top bars */
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover))
+	:is(#o365header, div[aria-label="Ribbon"]) {
+		height: 4px;
+	}
+
+	/* horizontally collapse left bar */
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover))
+	:is(#LeftRail) {
+		width: 4px;
+	}
+
+	/* fix collapsibility */
+	:is(#o365header, div[aria-label="Ribbon"], #LeftRail) { overflow: hidden !important; }
+	div[aria-label="Ribbon"] > div[style] { position: unset !important; width: unset !important; }
+
+}
