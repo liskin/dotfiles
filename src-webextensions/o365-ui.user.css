@@ -1,5 +1,5 @@
 /* ==UserStyle==
-@name           Outlook Calendar tweaks
+@name           Outlook UI tweaks
 @namespace      github.com/openstyles/stylus
 @version        1.0.0
 @author         Tomáš Janoušek
@@ -27,5 +27,32 @@
 	:is(#o365header, div[aria-label="Ribbon"], #LeftRail) { overflow: hidden !important; }
 	div[aria-label="Ribbon"] > div[style] { position: unset !important; width: unset !important; }
 	#LeftRail + div { width: auto; flex: 1; }
+
+}
+
+@-moz-document url-prefix("https://outlook.office.com/mail/") {
+
+	/* animate collapsing */
+	:is(#o365header, #LeftRail) { transition: height 0.3s, width 0.3s; }
+	#LeftRail { width: 48px; }
+
+	/* vertically collapse top bar */
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):not(:has(button[aria-label="Exit Search"]))
+	:is(#o365header) {
+		height: 4px;
+	}
+
+	/* horizontally collapse left bar */
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):not(:has(button[aria-label="Exit Search"]))
+	:is(#LeftRail) {
+		width: 4px;
+	}
+
+	/* fix collapsibility */
+	:is(#o365header, #LeftRail) { overflow: hidden !important; }
+	#LeftRail + div { width: auto; flex: 1; }
+
+	/* hide day/week/month headings */
+	div[data-app-section="MessageList"] div[role="listbox"] div[role="heading"]:not([id$="results"]) { display: none; }
 
 }
