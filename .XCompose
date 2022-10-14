@@ -24,6 +24,7 @@ include "%L"
 <Multi_key> <parenleft> <bar> <parenright> : "◍" U25CD # CIRCLE WITH VERTICAL FILL
 <Multi_key> <parenleft> <asterisk> <parenright> : "●" U25CF # BLACK CIRCLE
 <Multi_key> <parenleft> <period> <parenright> : "⦿" U29BF # CIRCLED BULLET
+<Multi_key> <x> <period> : "⋅" U22C5 # DOT OPERATOR
 <Multi_key> <a> <asciitilde> : "∝" U221D
 <Multi_key> <minus> <plus> : "∓" U2213
 <Multi_key> <less> <bar> : "◁" U25C5
