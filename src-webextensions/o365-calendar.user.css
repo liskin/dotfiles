@@ -26,5 +26,6 @@
 	/* fix collapsibility */
 	:is(#o365header, div[aria-label="Ribbon"], #LeftRail) { overflow: hidden !important; }
 	div[aria-label="Ribbon"] > div[style] { position: unset !important; width: unset !important; }
+	#LeftRail + div { width: auto; flex: 1; }
 
 }
