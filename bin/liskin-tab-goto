@@ -31,4 +31,12 @@ function goto-calendar {
 	find-tab "https://calendar.google.com/calendar/" | activate-tab
 }
 
+function goto-outlook-mail {
+	find-tab "https://outlook.office.com/mail/" | activate-tab
+}
+
+function goto-outlook-calendar {
+	find-tab "https://outlook.office.com/calendar/" | activate-tab
+}
+
 "$@"
