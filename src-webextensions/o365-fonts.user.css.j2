@@ -1,0 +1,97 @@
+/* ==UserStyle==
+@name           Outlook fonts fix
+@description    Provide fonts with full Unicode coverage. Fixes "ř" and "ě" and …
+@namespace      github.com/openstyles/stylus
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document domain("outlook.office.com") {
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/segoeui.ttf");
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/segoeuib.ttf");
+		font-weight: bold;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/segoeuii.ttf");
+		font-weight: normal;
+		font-style: italic;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/segoeuil.ttf");
+		font-weight: 300;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/seguibl.ttf");
+		font-weight: 900;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/seguibli.ttf");
+		font-weight: 900;
+		font-style: italic;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/seguili.ttf");
+		font-weight: 300;
+		font-style: italic;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/seguisb.ttf");
+		font-weight: 600;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Segoe UI Semilight";
+		src: url("{{ baseurl }}/segoeuisl.ttf");
+		font-weight: 300;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/seguisbi.ttf");
+		font-weight: 600;
+		font-style: italic;
+	}
+
+	@font-face {
+		font-family: "Segoe UI";
+		src: url("{{ baseurl }}/segoeuiz.ttf");
+		font-weight: bold;
+		font-style: italic;
+	}
+
+	@font-face {
+		font-family: "Segoe UI Semilight";
+		src: url("{{ baseurl }}/seguisli.ttf");
+		font-weight: 300;
+		font-style: italic;
+	}
+
+}
+
+/* vim:set ft=css: */
