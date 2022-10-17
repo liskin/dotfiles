@@ -6,6 +6,7 @@ export TZ=UTC
 export LC_ALL=C
 
 function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+function try { local -; set +e; ( set -e; "${@:2}"; ); eval "$1"=\$?; }
 
 function with-arbtt-capture-logs {
 	local log_file
@@ -20,9 +21,9 @@ function with-pause-arbtt {
 
 	if systemctl --user --quiet is-active "$unit"; then
 		o systemctl --user stop "$unit"
-		"$@" && ret=$? || ret=$?
+		try ret "$@"
 		o systemctl --user start "$unit"
-		return $ret
+		return "$ret"
 	else
 		"$@"
 	fi
@@ -31,6 +32,8 @@ function with-pause-arbtt {
 # Rotate arbtt logs monthly. Rotation happens no sooner than 2 weeks after month ended.
 # Each rotated log keeps one day (24 hours) overlap at both start and end of month (UTC).
 function rotate-logs {
+	check-logfile-integrity
+
 	local today
 	local first_sample_date first_sample_day first_sample_day_after
 	local rotate_month rotate_month_start rotate_month_end rotate_month_end_plus_delay
@@ -62,6 +65,10 @@ function rotate-logs {
 		with-pause-arbtt \
 			o filter-main-log "$rotate_start"
 	fi
+}
+
+function check-logfile-integrity {
+	o arbtt-dump --logfile="$log_file" --format=json >/dev/null
 }
 
 function filter-main-log {
