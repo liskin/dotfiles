@@ -55,4 +55,7 @@
 	/* hide day/week/month headings */
 	div[data-app-section="MessageList"] div[role="listbox"] div[role="heading"]:not([id$="results"]) { display: none; }
 
+	/* hide annoying "this email originated from outside …" banners */
+	div#ReadingPaneContainerId div[id^="x_pfptBanner"] { display: none; }
+
 }
