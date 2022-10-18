@@ -6,11 +6,14 @@
 // @version     1
 // ==/UserScript==
 
-/* disable session timeout timers */
-const maxIntervalId = setTimeout(function(){}, 0);
-for (let i = 0; i <= maxIntervalId; ++i) {
-	clearInterval(i);
-}
+/* after the page completes loading */
+setTimeout(function () {
+	/* disable session timeout timers */
+	const maxIntervalId = setTimeout(function(){}, 0);
+	for (let i = 0; i <= maxIntervalId; ++i) {
+		clearInterval(i);
+	}
+}, 60000);
 
 /* refresh session token every 10 minutes */
 setInterval(async function () {
