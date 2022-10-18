@@ -1,4 +1,0 @@
-[Allow firewalld changes by sudo members]
-Identity=unix-group:sudo
-Action=org.fedoraproject.FirewallD1.*
-ResultActive=yes
