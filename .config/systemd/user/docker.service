@@ -5,7 +5,7 @@ Documentation=https://docs.docker.com/go/rootless/
 [Service]
 Type=notify
 NotifyAccess=all
-Environment=PATH=%h/bin/.docker-rootless:/usr/share/docker.io/contrib:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+Environment=PATH=/usr/share/docker.io/contrib:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
 ExecStart=/usr/share/docker.io/contrib/dockerd-rootless.sh
 ExecReload=/bin/kill -s HUP $MAINPID
 TimeoutSec=0
