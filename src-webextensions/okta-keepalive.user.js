@@ -13,12 +13,12 @@ setTimeout(function () {
 	for (let i = 0; i <= maxIntervalId; ++i) {
 		clearInterval(i);
 	}
-}, 60000);
 
-/* refresh session token every 10 minutes */
-setInterval(async function () {
-	if (window.navigator.onLine) {
-		document.cookie = `srefresh=${Date.now()}; path=/; secure`;
-		await fetch("/api/v1/sessions/me/lifecycle/refresh", {method: "POST", headers: {"Accept": "application/json"}});
-	}
-}, 600000);
+	/* refresh session token every 10 minutes */
+	setInterval(async function () {
+		if (window.navigator.onLine) {
+			document.cookie = `srefresh=${Date.now()}; path=/; secure`;
+			await fetch("/api/v1/sessions/me/lifecycle/refresh", {method: "POST", headers: {"Accept": "application/json"}});
+		}
+	}, 600000);
+}, 60000);
