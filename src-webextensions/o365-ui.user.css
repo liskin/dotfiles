@@ -12,13 +12,13 @@
 	#LeftRail { width: 48px; }
 
 	/* vertically collapse top bars */
-	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover))
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover)):not(:has(button[aria-label="Exit Search"]))
 	:is(#o365header, div[aria-label="Ribbon"]) {
 		height: 4px;
 	}
 
 	/* horizontally collapse left bar */
-	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover))
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover)):not(:has(button[aria-label="Exit Search"]))
 	:is(#LeftRail) {
 		width: 4px;
 	}
