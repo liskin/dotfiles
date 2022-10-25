@@ -50,6 +50,11 @@ esac
 entry_content=$(pass show "$entry")
 [[ $field ]] || field=$(extract-fields <<<"$entry_content" | rofi -dmenu -p "$entry field")
 pass=$(extract-field "$field" <<<"$entry_content")
+
+if [[ $pass == :yubikey-oath:* ]]; then
+	pass=$(ykman oath accounts code --single "${pass#:yubikey-oath:}" 2> >(while read -r x; do dunstify -- "$x"; done))
+fi
+
 printf '%s' "$pass" | xdotool type --clearmodifiers --delay 0 --file -
 
 if [[ $history_key ]]; then
