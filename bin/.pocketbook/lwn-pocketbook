@@ -3,13 +3,8 @@
 set -eu -o pipefail
 
 base="$(dirname "$(readlink -f "$0")")"
-. ~/bin/.passlib
 
 out=${1:-lwn-$(date +%F).epub}
-
-pass_entry=$(pass show web/lwn.net)
-username=$(extract-field user <<<"$pass_entry")
-password=$(extract-field password <<<"$pass_entry")
 
 env \
 CALIBRE_OVERRIDE_LANG=C \
@@ -21,6 +16,4 @@ ebook-convert "$base/lwn_weekly.recipe" "$out" \
 	--search-replace="$base/lwn_weekly-searchreplace.txt" \
 	--embed-all-fonts \
 	--disable-font-rescaling \
-	--username="$username" \
-	--password="$password" \
 	${DEBUG+--debug-pipeline=dbg}
