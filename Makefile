@@ -35,6 +35,7 @@ all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
 
 .cargo/bin: bin/.ext
 
+## Invoke "make gc" in sub-Makefiles
 gc: .cargo/bin%gc
 gc: bin/.ext%gc
 gc: bin/.ext-npm%gc
