@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s nullglob
+
+# make sure there are no overrides for GIT_DIR etc.
+if compgen -v | grep ^GIT_; then
+	exit 1
+fi
+
+cd ~/backup/local/libvirt
+
+[[ "$(git symbolic-ref HEAD)" == refs/heads/@(master|main) ]]  # quit if doing manual maintenance
+
+rm -f ./*.xml
+virsh list --all --name \
+| while read -r domain; do
+	[[ $domain ]] || continue
+	virsh dumpxml "$domain" > "$domain".xml
+done
+
+# commit
+git add .
+git diff --cached --exit-code --quiet && diff=$? || diff=$?
+[[ $diff != 1 ]] && exit $diff
+git commit -m "$(date --iso-8601=seconds)"
+
+# garbage collect
+git gc-auto-exact 10

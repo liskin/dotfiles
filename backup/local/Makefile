@@ -1,7 +1,7 @@
 .PHONY: all
 all:
 
-INIT_GIT_REPOS := bash-history browser liferea
+INIT_GIT_REPOS := bash-history browser liferea libvirt
 all: $(INIT_GIT_REPOS)
 $(INIT_GIT_REPOS):
 	mkdir -p $@
