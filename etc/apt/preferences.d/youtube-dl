@@ -1,3 +1,0 @@
-Package: src:youtube-dl:*
-Pin: release a=unstable
-Pin-Priority: 990

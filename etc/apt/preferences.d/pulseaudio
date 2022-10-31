@@ -1,3 +1,0 @@
-Package: src:pulseaudio:*
-Pin: version 16.1*
-Pin-Priority: 990
