@@ -12,6 +12,9 @@ cd ~/backup/local/libvirt
 
 [[ "$(git symbolic-ref HEAD)" == refs/heads/@(master|main) ]]  # quit if doing manual maintenance
 
+# make sure libvirtd is started in the background and won't get killed
+systemd-run --quiet --collect --wait --user --property="KillMode=process" -- virsh connect
+
 rm -f ./*.xml
 virsh list --all --name \
 | while read -r domain; do
