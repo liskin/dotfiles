@@ -19,6 +19,9 @@ if [[ ! $unlocked ]]; then
 		/usr/local/sbin/liskin-clear-agents || :
 	fi
 
+	# stop fprintd before suspend to prevent the reader getting stuck in a weird state
+	systemctl stop fprintd.service || :
+
 	systemctl suspend
 else
 	loginctl lock-sessions
