@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function run-as {
+	systemd-run \
+		--quiet --collect --wait \
+		--user --machine "${1:?user}"@ \
+		-- "${@:2}"
+}
+
+for user in $(loginctl list-users --no-legend | awk '{ print $1 }'); do
+	run-as "$user" \
+		gpgconf --reload gpg-agent || :
+	run-as "$user" \
+		ssh-add -D || :
+done

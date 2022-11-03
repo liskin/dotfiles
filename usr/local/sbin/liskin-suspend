@@ -16,6 +16,7 @@ done
 if [[ ! $unlocked ]]; then
 	if [[ ${1-} == "button" ]]; then
 		touch /run/liskin-suspend-button
+		/usr/local/sbin/liskin-clear-agents || :
 	fi
 
 	systemctl suspend
