@@ -22,3 +22,6 @@ XSECURELOCK_KEY_XF86AudioNext_COMMAND=liskin-media next
 XSECURELOCK_KEY_XF86AudioPrev_COMMAND=liskin-media prev
 
 XSECURELOCK_KEY_XF86Tools_COMMAND=sleep 0.5; xset dpms force off
+
+# avoid starting fprintd when power button is pressed
+XSECURELOCK_KEY_XF86PowerOff_COMMAND=true
