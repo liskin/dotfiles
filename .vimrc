@@ -32,19 +32,15 @@ if !has('nvim')
 		exe "set <C-Right>=\<Esc>Oc"
 		exe "set <A-n>=\<Esc>n"
 
-		function! s:ToggleBg() abort
-			if &bg == "light"
-				let $COLORFGBG = '15;default;0'
-				call echoraw("\33]10;white\7\33]11;black\7\33]708;black\7")
-			else
-				let $COLORFGBG = '0;default;15'
-				call echoraw("\33]10;black\7\33]11;white\7\33]708;white\7")
-			endif
-
-			" reload colorscheme
-			exe "colors " . get(g:, 'colors_name', 'default')
-		endfunction
-		command ToggleBg call s:ToggleBg()
+		command -bar Light
+			\ let $COLORFGBG = '0;default;15' |
+			\ call echoraw("\33]10;black\7\33]11;white\7\33]708;white\7") |
+			\ exe "colors " . get(g:, 'colors_name', 'default')
+		command -bar Dark
+			\ let $COLORFGBG = '15;default;0' |
+			\ call echoraw("\33]10;white\7\33]11;black\7\33]708;black\7") |
+			\ exe "colors " . get(g:, 'colors_name', 'default')
+		command -bar ToggleBg if &bg == "light" | Dark | else | Light | endif
 	endif
 
 	if &term == "tmux-256color" " {{{3
