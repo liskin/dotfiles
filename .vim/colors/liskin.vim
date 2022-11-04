@@ -1,8 +1,3 @@
-" Set 'background' back to the default.  The value can't always be estimated
-" and is then guessed.
-hi clear Normal
-set bg&
-
 " Remove all existing highlighting and set the defaults.
 hi clear
 
@@ -314,6 +309,8 @@ if &t_Co >= 256 || has('gui_running')
 	hi VertSplit cterm=NONE gui=NONE
 
 	if &bg == "dark"
+		hi Normal guifg=white guibg=black
+
 		HiU ColorColumn ctermbg=235
 		HiU Comment ctermfg=45
 		HiU Conceal ctermbg=242
@@ -353,6 +350,8 @@ if &t_Co >= 256 || has('gui_running')
 		hi SpellLocal cterm=underline,bold ctermfg=39 ctermbg=NONE
 		hi SpellRare cterm=underline,bold ctermfg=129 ctermbg=NONE
 	else
+		hi Normal guifg=black guibg=white
+
 		" TODO
 	endif
 

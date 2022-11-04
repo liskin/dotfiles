@@ -32,15 +32,19 @@ if !has('nvim')
 		exe "set <C-Right>=\<Esc>Oc"
 		exe "set <A-n>=\<Esc>n"
 
-		command -bar Light
-			\ let $COLORFGBG = '0;default;15' |
-			\ call echoraw("\33]10;black\7\33]11;white\7\33]708;white\7") |
-			\ exe "colors " . get(g:, 'colors_name', 'default')
-		command -bar Dark
-			\ let $COLORFGBG = '15;default;0' |
-			\ call echoraw("\33]10;white\7\33]11;black\7\33]708;black\7") |
-			\ exe "colors " . get(g:, 'colors_name', 'default')
-		command -bar ToggleBg if &bg == "light" | Dark | else | Light | endif
+		function! s:rxvt_bg() abort
+			if &bg == "light"
+				let $COLORFGBG = '0;default;15'
+				call echoraw("\33]10;black\7\33]11;white\7\33]708;white\7")
+			else
+				let $COLORFGBG = '15;default;0'
+				call echoraw("\33]10;white\7\33]11;black\7\33]708;black\7")
+			endif
+		endfunction
+		augroup RxvtBg
+			autocmd!
+			autocmd OptionSet background call s:rxvt_bg()
+		augroup END
 	endif
 
 	if &term == "tmux-256color" " {{{3
@@ -91,7 +95,6 @@ set mouse=a
 set mousemodel=popup_setpos
 
 if has('gui_running') " {{{2
-	hi Normal guifg=white guibg=black
 	set guifont=Fixed
 
 	" make it look like no-gui vim {{{3
@@ -456,13 +459,16 @@ let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
 let g:snips_github = "https://github.com/liskin"
 
-" load everything: debian addons, pathogen, ft, syn {{{2
+" load plugins: debian addons, pathogen, ft, syn {{{2
 set runtimepath+=/usr/share/vim/addons
 let g:pathogen_disabled = []
 call pathogen#infect()
 
 filetype plugin indent on
 syntax on
+
+" detect background colour, load my colourscheme
+set bg&
 colors liskin
 
 " autocmds {{{1
