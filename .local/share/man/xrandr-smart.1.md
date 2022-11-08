@@ -20,11 +20,14 @@ makes it easier to write generic layout scripts without harcoding output
 names. It works in two steps:
 
 1. For every `--output`, treat the argument as an extended shell glob (see
-   "Pattern Matching" in `bash`(1)) and find the unique _connected_ output
-   that matches. Fail otherwise.
+   "Pattern Matching" in `bash`(1)) — with optional disambiguation index (see
+   later) — and find the unique _connected_ output that matches.
+   Fail otherwise.
 
 2. For every other output (connected or disconnected) not mentioned by any
    `--output` option, append `--output out --off` to disable it.
+
+Disambiguation index syntax: `glob#n` selects `n`-th output matching `glob`.
 
 # EXAMPLES
 
@@ -53,6 +56,15 @@ Disable laptop display, use external monitor only (useful for games):
 
     function layout-extonly {
       xrandr-smart --output '!(eDP-*)' --auto
+    }
+
+Triangle layout, two external monitors side-by-side and laptop display beneath
+them:
+
+    function layout-triangle {
+      xrandr-smart --output '!(eDP-*)#0' --mode 1920x1080 --pos 0x0 \
+                   --output '!(eDP-*)#1' --mode 1920x1080 --pos 1920x0 \
+                   --output   'eDP-*'    --mode 1920x1080 --pos 960x1080 --primary
     }
 
 # SEE ALSO
