@@ -18,6 +18,7 @@ HLS_VERSION := 1.7.0.0
 KIND_VERSION := v0.16.0
 LANGUAGETOOL_VERSION := v5.8
 PANDOC_VERSION := 2.18
+RUSTUP_VERSION := 1.25.1
 RUST_ANALYZER_VERSION := 2022-08-08
 SCCACHE_VERSION := v0.3.0
 TILT_VERSION := v0.30.9
@@ -44,6 +45,14 @@ TZ_GITHUB := oz/tz
 .PHONY: update
 ## Check for updates
 update: update-github
+update: update-rustup
+
+.PHONY: update-rustup
+update-rustup:
+	@{ \
+		v="$$($(CURL) https://static.rust-lang.org/rustup/release-stable.toml | tomlq -r .version)"; \
+		if [ "$$v" != "$(RUSTUP_VERSION)" ]; then echo "RUSTUP_VERSION := $$v"; fi; \
+	}
 
 all: rust-analyzer
 rust-analyzer: | .ext-rust-analyzer ; ln -fsT $| $@
@@ -51,6 +60,13 @@ rust-analyzer: | .ext-rust-analyzer ; ln -fsT $| $@
 .ext-rust-analyzer-$(RUST_ANALYZER_VERSION):
 	$(CURL) https://github.com/$(RUST_ANALYZER_GITHUB)/releases/download/$(RUST_ANALYZER_VERSION)/rust-analyzer-x86_64-unknown-linux-gnu.gz \
 		| gunzip >$@
+	chmod +x $@
+
+all: .x-rustup-init
+.x-rustup-init: | .ext-rustup-init ; ln -fsT $| $@
+.ext-rustup-init: .ext-rustup-init-$(RUSTUP_VERSION) ; ln -fsT $< $@
+.ext-rustup-init-$(RUSTUP_VERSION):
+	$(CURL) -o $@ https://static.rust-lang.org/rustup/archive/$(RUSTUP_VERSION)/x86_64-unknown-linux-gnu/rustup-init
 	chmod +x $@
 
 all: haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper

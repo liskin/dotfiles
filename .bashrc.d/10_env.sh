@@ -11,6 +11,9 @@ export PATH="$HOME"/bin/.aliases:"$PATH"
 export PATH="$HOME"/bin:"$PATH"
 export PATH="$HOME"/bin/.ext:"$PATH"
 export PATH="$HOME"/bin/.ext-npm:"$PATH"
+if [ -e "$HOME"/bin/.rustup/.prefer-rustup ]; then
+	export PATH="$HOME"/bin/.rustup:"$PATH"
+fi
 export PATH="$HOME"/.local/bin:"$PATH"
 
 export MAIL=/var/mail/tomi
