@@ -4,8 +4,8 @@ all:
 HOSTNAME := $(shell hostname)
 
 PRETTIER_VERSION := 2.7.1
-REDOCLY_VERSION := 1.0.0-beta.105
-REDOC_CLI_VERSION := 0.13.17
+REDOCLY_VERSION := 1.0.0-beta.112
+REDOC_CLI_VERSION := 0.13.20
 
 PRETTIER_NPM := prettier
 REDOCLY_NPM := @redocly/cli

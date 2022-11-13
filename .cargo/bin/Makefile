@@ -6,10 +6,10 @@ include ~/_github.mk
 include ~/_gitignore.mk
 include ~/_help.mk
 
-CARGO_CACHE_VERSION := 0.8.2
+CARGO_CACHE_VERSION := 0.8.3
 CARGO_WATCH_VERSION := v8.1.2
-DUST_VERSION := v0.8.1
-FCLONES_VERSION := v0.27.0
+DUST_VERSION := v0.8.3
+FCLONES_VERSION := v0.29.1
 
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
