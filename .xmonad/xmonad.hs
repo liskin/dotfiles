@@ -292,6 +292,7 @@ myEventHook = mconcat
     , floatConfReqHook myFloatConfReqManageHook
     , swallowEventHookSub (className =? "URxvt") (pure True)
     , serverModeEventHookF "_XMONAD_CTL" (mconcat myXmonadCtlHooks)
+    , ewmhUpdatePointerHook
     ]
     where
         refocusLastEventHook = refocusLastWhen isFloat
@@ -325,6 +326,13 @@ floatConfReqHook mh ev@ConfigureRequestEvent{ev_window = w} =
             , wc_sibling      = ev_above ev
             , wc_stack_mode   = ev_detail ev }
 floatConfReqHook _ _ = mempty
+
+-- | Invoke 'up' after (possibly) handling EWMH requests.
+ewmhUpdatePointerHook :: Event -> X All
+ewmhUpdatePointerHook ClientMessageEvent{ev_message_type = mt} = do
+    let as = ["_NET_CURRENT_DESKTOP", "_NET_WM_DESKTOP", "_NET_ACTIVE_WINDOW", "_NET_CLOSE_WINDOW"]
+    whenX ((mt `elem`) <$> traverse getAtom as) up >> mempty
+ewmhUpdatePointerHook _ = mempty
 
 -- Do Not Disturb
 myCtlDnd :: String -> X ()
