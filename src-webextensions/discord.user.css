@@ -39,4 +39,7 @@
 	/* wider inbox */
 	div.recentMentionsPopout-2bI1ZN { width: 80vw; max-width: 80vw; }
 
+	/* fix line-wrapped timestamp with non-default fonts */
+	span.latin12CompactTimeStamp-2G5XJd:not(.XXX1) { width: 2.5rem; }
+
 }
