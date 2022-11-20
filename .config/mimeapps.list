@@ -18,5 +18,6 @@ x-scheme-handler/mailto=mutt-mailto.desktop
 text/html=sensible-browser.desktop
 x-scheme-handler/http=sensible-browser.desktop
 x-scheme-handler/https=sensible-browser.desktop
+application/vnd.oasis.opendocument.text=libreoffice-writer.desktop
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
 application/vnd.openxmlformats-officedocument.presentationml.presentation=libreoffice-impress.desktop
