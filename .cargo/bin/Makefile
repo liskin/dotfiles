@@ -20,7 +20,7 @@ FCLONES_GITHUB := pkolaczk/fclones
 ## Check for updates
 update: update-github
 
-CARGO_BINSTALL := cargo binstall --no-confirm --install-path .binstall
+CARGO_BINSTALL := cargo binstall --no-confirm --disable-strategies compile --install-path .binstall
 
 .binstall:
 	mkdir -p $@
