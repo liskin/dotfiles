@@ -4,6 +4,7 @@ all:
 CURL := curl -LSsf
 
 BUILDIFIER_VERSION := 5.1.0
+CARGO_AUDIT_VERSION := v0.17.4
 CARGO_BINSTALL_VERSION := v0.17.0
 CTLPTL_VERSION := v0.8.12
 DELTA_VERSION := 0.14.0
@@ -46,12 +47,20 @@ TZ_GITHUB := oz/tz
 ## Check for updates
 update: update-github
 update: update-rustup
+update: update-cargo-audit
 
 .PHONY: update-rustup
 update-rustup:
 	@{ \
 		v="$$($(CURL) https://static.rust-lang.org/rustup/release-stable.toml | tomlq -r .version)"; \
 		if [ "$$v" != "$(RUSTUP_VERSION)" ]; then echo "RUSTUP_VERSION := $$v"; fi; \
+	}
+
+.PHONY: update-cargo-audit
+update-cargo-audit:
+	@{ \
+		v="$$(gh api --jq '.[].ref' repos/rustsec/rustsec/git/refs/tag | sed -ne 's|refs/tags/cargo-audit/||p' | sort --version-sort | tail -1)"; \
+		if [ "$$v" != "$(CARGO_AUDIT_VERSION)" ]; then echo "CARGO_AUDIT_VERSION := $$v"; fi; \
 	}
 
 all: rust-analyzer
@@ -183,6 +192,14 @@ cargo-binstall: | .ext-cargo-binstall ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(CARGO_BINSTALL_GITHUB)/releases/download/$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
 		| tar -x -z -C $@ cargo-binstall
+
+all: cargo-audit
+cargo-audit: | .ext-cargo-audit ; ln -fsT $|/$@ $@
+.ext-cargo-audit: .ext-cargo-audit-$(CARGO_AUDIT_VERSION) ; ln -fsT $< $@
+.ext-cargo-audit-$(CARGO_AUDIT_VERSION):
+	mkdir -p $@
+	$(CURL) https://github.com/rustsec/rustsec/releases/download/cargo-audit/$(CARGO_AUDIT_VERSION)/cargo-audit-x86_64-unknown-linux-gnu-$(CARGO_AUDIT_VERSION).tgz \
+		| tar -x -z -C $@ --strip-components=1 --wildcards "*/cargo-audit"
 
 all: sccache
 sccache: | .ext-sccache ; ln -fsT $|/$@ $@

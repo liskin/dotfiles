@@ -1,6 +1,7 @@
 /.ext-*
 /.x-rustup-init
 /buildifier
+/cargo-audit
 /cargo-binstall
 /ctlptl
 /delta
