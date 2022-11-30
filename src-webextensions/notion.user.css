@@ -1,0 +1,11 @@
+/* ==UserStyle==
+@name           Notion tweaks
+@namespace      https://github.com/liskin/dotfiles/tree/home/src-webextensions
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document domain("notion.so") {
+	/* workaround for a Chromium rendering bug - overlapping text from other lines */
+	a span[style*="opacity"] { opacity: unset !important; }
+}
