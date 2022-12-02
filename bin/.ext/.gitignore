@@ -8,6 +8,7 @@
 /dive
 /docker-buildx
 /docker-compose
+/evcxr
 /hadolint
 /haskell-language-server-8.8.4
 /haskell-language-server-wrapper

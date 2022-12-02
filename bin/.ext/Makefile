@@ -11,6 +11,7 @@ DELTA_VERSION := 0.14.0
 DIVE_VERSION := v0.10.0
 DOCKER_BUILDX_VERSION := v0.9.1
 DOCKER_COMPOSE_VERSION := v2.12.2
+EVCXR_VERSION := v0.14.1
 FITSDK_VERSION := 21.84.00
 HADOLINT_VERSION := v2.12.0
 HLINT_VERSION := v3.4.1
@@ -32,6 +33,7 @@ DELTA_GITHUB := dandavison/delta
 DIVE_GITHUB := wagoodman/dive
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
+EVCXR_GITHUB := google/evcxr
 HADOLINT_GITHUB := hadolint/hadolint
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
@@ -242,6 +244,14 @@ dive: | .ext-dive ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(DIVE_GITHUB)/releases/download/$(DIVE_VERSION)/dive_$(DIVE_VERSION:v%=%)_linux_amd64.tar.gz \
 		| tar -x -z -C $@ dive
+
+all: evcxr
+evcxr: | .ext-evcxr ; ln -fsT $|/$@ $@
+.ext-evcxr: .ext-evcxr-$(EVCXR_VERSION) ; ln -fsT $< $@
+.ext-evcxr-$(EVCXR_VERSION):
+	mkdir -p $@
+	$(CURL) https://github.com/$(EVCXR_GITHUB)/releases/download/$(EVCXR_VERSION)/evcxr-$(EVCXR_VERSION)-x86_64-unknown-linux-gnu.tar.gz \
+		| tar -x -z -C $@ --strip-components=1 --wildcards "*/evcxr"
 
 .PHONY: gc
 ## Remove old versions
