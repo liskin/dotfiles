@@ -44,8 +44,12 @@ function ids {
 	jq --raw-output '.id'
 }
 
+function repos-to-reenable {
+	github-watched-repos | filter-original | filter-active | filter-admin | full-names
+}
+
 function reenable {
-	repos=$(github-watched-repos | filter-original | filter-active | filter-admin | full-names)
+	repos=$(repos-to-reenable)
 	for repo in $repos; do
 		inactive_workflows=$(github-repo-workflows "$repo" | filter-state-disabled-inactivity | ids)
 		for workflow in $inactive_workflows; do
