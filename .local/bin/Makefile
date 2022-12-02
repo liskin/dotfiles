@@ -30,6 +30,10 @@ all: dxf
 dxf:
 	$(PIPX_INSTALL) python-dxf
 
+all: gdbgui
+gdbgui:
+	$(PIPX_INSTALL) gdbgui
+
 all: strava-offline
 strava-offline:
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
