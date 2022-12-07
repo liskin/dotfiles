@@ -17,8 +17,13 @@
 		--text-normal: #ddd;
 	}
 
-	/* font with better hinting/rendering on non-HiDPI displays */
-	body { font-family: "Noto Sans"; }
+	/* use system fonts */
+	:root {
+		--font-primary: sans-serif;
+		--font-display: sans-serif;
+		--font-headline: sans-serif;
+		--font-code: monospace;
+	}
 
 	/* collapse sidebar */
 	div.sidebar-1tnWFu { width: 80px; transition: width 0.3s; }
@@ -28,6 +33,8 @@
 	div.sidebar-1tnWFu div.content-1gYQeQ { padding: 0; }
 	div.sidebar-1tnWFu div.content-1gYQeQ:not(:hover) div.children-1MGS9G { display: none; }
 	div.sidebar-1tnWFu div.overflow-1wOqNV * { text-overflow: clip; }
+	div.sidebar-1tnWFu section.panels-3wFtMD * { overflow: clip; }
+	div.sidebar-1tnWFu div#channels { overflow: hidden overlay !important; }
 
 	/* collapse guild navigation */
 	nav.guilds-2JjMmN { z-index: 100; width: 10px; transition: width 0.3s; }
