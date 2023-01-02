@@ -338,9 +338,8 @@ let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/.build/elixir-ls"
 
 let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
 
-let g:ale_python_pylsp_config = #{pylsp: {}}
+let g:ale_python_pylsp_config = #{pylsp: #{plugins: {}}}
 let g:ale_python_pylsp_config['pylsp']['configurationSources'] = ['flake8']
-let g:ale_python_pylsp_config['pylsp']['plugins'] = {}
 
 " disable mypy by default to prevent .mypy_cache appearing all over the filesystem
 let g:ale_python_pylsp_config['pylsp']['plugins']['pylsp_mypy'] = #{enabled: v:false}
@@ -352,11 +351,9 @@ let g:ale_python_pylsp_config['pylsp']['plugins']['pycodestyle'] = #{enabled: v:
 let g:ale_python_pylsp_config['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
 
 let g:ale_haskell_ormolu_executable = 'fourmolu'
-let g:ale_haskell_hls_config = {
-	\ 'haskell': {
-		\ 'maxCompletions': 250,
-	\ },
-\ }
+let g:ale_haskell_hls_config = #{haskell: #{plugin: {}}}
+let g:ale_haskell_hls_config['haskell']['maxCompletions'] = 250
+let g:ale_haskell_hls_config['haskell']['plugin']['stan'] = #{globalOn: v:false}
 
 let g:ale_rust_analyzer_config = #{
 	\ cargo: #{
