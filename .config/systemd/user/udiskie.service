@@ -1,0 +1,10 @@
+[Unit]
+Description=udiskie
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/udiskie --no-automount --no-file-manager --smart-tray
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
