@@ -5,8 +5,6 @@
 
 set -eu
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
-
 options=$(unset GETOPT_COMPATIBLE && getopt -o "" --long name: -- "$@")
 eval "set -- $options"
 
@@ -25,7 +23,7 @@ pid=$(< ~/.vpnns-"$name"/vpnns.pid)
 needsterminal=; [[ -t 0 && $DISPLAY ]] || needsterminal=:
 
 # shellcheck disable=SC2016
-o ${needsterminal:+needsterminal} sudo --preserve-env \
+${needsterminal:+needsterminal} sudo --preserve-env \
 	nsenter --target "$pid" --net \
 	sudo --preserve-env -u "$USER" \
 	${needsterminal:+setsid} \
