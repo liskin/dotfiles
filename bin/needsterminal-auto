@@ -8,6 +8,7 @@ case "$1" in
 	m|m-*|mutt|mutt-*) set -- needsterminal "$@" ;;
 	nomi|nomi-*) set -- needsterminal "$@" ;;
 	arbtt*) set -- needsterminal "$@"; export _XTERM_HOLD=: ;;
+	kinit*) set -- needsterminal "$@"; export _XTERM_HOLD=: ;;
 esac
 
 exec "$@"
