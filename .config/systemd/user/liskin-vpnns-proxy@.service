@@ -1,9 +1,9 @@
 [Unit]
 Description=main netns proxy for vpnns socks5 - %i
-PartOf=vpnns@%i.service
-After=vpnns@%i.service
-Requires=vpnns-proxy@%i.socket
-After=vpnns-proxy@%i.socket
+PartOf=liskin-vpnns@%i.service
+After=liskin-vpnns@%i.service
+Requires=liskin-vpnns-proxy@%i.socket
+After=liskin-vpnns-proxy@%i.socket
 
 [Service]
 ExecStart=sh -c 'exec nsenter --target $(cat ~/.vpnns-%i/vpnns.pid) --net --user --preserve-credentials -- /usr/lib/systemd/systemd-socket-proxyd 127.0.0.1:8080'

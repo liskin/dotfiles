@@ -1,0 +1,7 @@
+[Unit]
+Description=main netns proxy socket for vpnns socks5 - %i
+PartOf=liskin-vpnns@%i.service
+
+[Socket]
+# this is just a default, override this in liskin-vpnns-proxy@%i.socket.d/override.conf
+ListenStream=8080

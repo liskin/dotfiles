@@ -1,7 +1,0 @@
-[Unit]
-Description=main netns proxy socket for vpnns socks5 - %i
-PartOf=vpnns@%i.service
-
-[Socket]
-# this is just a default, override this in vpnns-proxy@%i.socket.d/override.conf
-ListenStream=8080

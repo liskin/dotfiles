@@ -84,9 +84,9 @@ function check-vpns {
 	done
 
 	# shellcheck disable=SC2162
-	systemctl --user --plain --quiet list-units 'vpnns-tun@*.service' \
+	systemctl --user --plain --quiet list-units 'liskin-vpnns-tun@*.service' \
 	| while read name _; do
-		name=${name#vpnns-tun@}
+		name=${name#liskin-vpnns-tun@}
 		name=${name%.service}
 		vpns+=(vpnns:"$name")
 	done

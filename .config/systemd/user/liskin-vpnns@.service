@@ -1,7 +1,7 @@
 [Unit]
 Description=vpnns + socks5 - %i
 PartOf=graphical-session.target
-Wants=vpnns-proxy@%i.socket vpnns-proxy@%i.service
+Wants=liskin-vpnns-proxy@%i.socket liskin-vpnns-proxy@%i.service
 
 [Service]
 ExecStart=vpnns --name=%i -- microsocks -i 127.0.0.1 -p 8080
