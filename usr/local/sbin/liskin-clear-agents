@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s nullglob
 
 function run-as {
 	systemd-run \
 		--quiet --collect --wait \
 		--user --machine "${1:?user}"@ \
-		-- "${@:2}"
+		"${@:2}"
 }
 
 for user in $(loginctl list-users --no-legend | awk '{ print $1 }'); do
-	run-as "$user" \
+	run-as "$user" -- \
 		gpgconf --reload gpg-agent || :
-	run-as "$user" \
+	run-as "$user" -- \
 		ssh-add -D || :
+	for sock in /run/user/"$user"/ssh-agent-*; do
+		run-as "$user" --setenv=SSH_AUTH_SOCK="$sock" -- \
+			ssh-add -D || :
+	done
 done
