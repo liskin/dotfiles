@@ -9,11 +9,7 @@ exec \
 	--disable-smooth-scrolling \
 	--disk-cache-size=2000000000 \
 	--enable-easy-off-store-extension-install \
-	--ignore-gpu-blocklist \
-	--enable-gpu-rasterization \
-	--disable-gpu-driver-bug-workarounds \
-	--enable-zero-copy \
-	--enable-features=VaapiVideoDecoder,VaapiVideoEncoder,VaapiLowPowerEncoderGen9x,kVaapiVp8TemporalLayerHWEncoding,Vp9kSVCHWDecoding,VaapiVp9kSVCHWEncoding,VaapiIgnoreDriverChecks \
-	--disable-features=Vulkan,UseChromeOSDirectVideoDecoder \
 	--disable-font-subpixel-positioning \
+	--enable-features=VaapiVideoDecoder,VaapiVideoEncoder \
+	--disable-features=UseChromeOSDirectVideoDecoder \
 	"$@"
