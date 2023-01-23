@@ -14,8 +14,20 @@ function password-files {
 	printf '%s\n' "${password_files[@]}" | LANG=C sort
 }
 
+function extract-password {
+	local p; read -r p
+	if [[ $p == :yubikey-oath:* ]]; then
+		extract-yubikey-oath "${p#:yubikey-oath:}"
+	else
+		printf '%s\n' "$p"
+	fi
+}
+
+function extract-yubikey-oath {
+	ykman oath accounts code --single "${1:?}" 2> >(while read -r x; do dunstify -- "$x"; done)
+}
+
 function extract-field { if [[ $1 == password ]]; then extract-password; else extract-other "$1"; fi; }
-function extract-password { head -1; }
 function extract-yaml { sed -n -e '/^---$/,/^\.\.\.$/p'; }
 function extract-yaml-standalone { local p; read -r p; extract-yaml | yq --arg p "$p" -e '.password = $p'; }
 function extract-fields { { extract-yaml | yq -r -e 'keys[]'; echo password; } | sort -u; }
