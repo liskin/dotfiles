@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+
+options=$(
+	unset GETOPT_COMPATIBLE POSIXLY_CORRECT
+	getopt \
+		-o "" \
+		--long "help,start,stop,vpnns:,name:" \
+		-- "$@"
+)
+eval "set -- $options"
+
+unset start_stop
+unset vpnns
+unset name
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		--help)
+			echo "Usage: liskin-gp-vpn --start --name=NAME [--vpnns=VPNNS] -- <openconnect-gp-okta args> -- <openconnect args>"
+			exit
+			;;
+
+		--start | --stop) start_stop="${opt#--}" ;;
+		--vpnns) vpnns=$1; shift ;;
+		--name) name=$1; shift ;;
+		--) break ;;
+	esac
+done
+
+gp_okta_args=()
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		--) break ;;
+		*) gp_okta_args+=("$opt")
+	esac
+done
+
+openconnect_args=()
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		--) break ;;
+		*) openconnect_args+=("$opt")
+	esac
+done
+
+case "${start_stop:?}" in
+	start)
+		: "${name:?}"
+		if [[ ${vpnns-} ]]; then
+			o systemd-run \
+				--quiet \
+				--collect \
+				--user --slice="app.slice" --unit="liskin-vpnns-tun@${name}.service" \
+				--property="Environment=PATH=${PATH}:/usr/bin:/sbin" \
+				--property="KillMode=mixed" --property="ExitType=cgroup" \
+				--property="Requires=liskin-vpnns@${vpnns}.service" --property="After=liskin-vpnns@${vpnns}.service" \
+				-- \
+				openconnect-gp-okta \
+					"${gp_okta_args[@]}" \
+					-- \
+					--csd-wrapper="${HOME:?}"/bin/openconnect-gp-hipreport \
+					--setuid="${USER:?}" \
+					--script-tun --script "vpnns --name=${vpnns} --attach" \
+					"${openconnect_args[@]}"
+		else
+			o systemd-run \
+				--quiet \
+				--collect \
+				--user --slice="app.slice" --unit="liskin-gp-vpn@${name}.service" \
+				--property="Environment=PATH=${PATH:?}:/usr/bin:/sbin" \
+				--property="KillMode=mixed" --property="ExitType=cgroup" \
+				-- \
+				openconnect-gp-okta \
+					--pkexec \
+					"${gp_okta_args[@]}" \
+					-- \
+					--csd-wrapper="${HOME:?}"/bin/openconnect-gp-hipreport \
+					--setuid="${USER:?}" \
+					--interface="tun_${name}" \
+					"${openconnect_args[@]}"
+		fi
+		;;
+	stop)
+		o systemctl --user stop "liskin-vpnns-tun@*.service" "liskin-gp-vpn@*.service"
+		;;
+esac

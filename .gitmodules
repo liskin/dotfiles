@@ -219,3 +219,7 @@
 [submodule "src/tmux-bash-completion"]
 	path = src/tmux-bash-completion
 	url = https://github.com/imomaliev/tmux-bash-completion
+[submodule "src/openconnect-gp-okta"]
+	path = src/openconnect-gp-okta
+	#url = https://github.com/zdave/openconnect-gp-okta
+	url = git@github.com:liskin/openconnect-gp-okta
