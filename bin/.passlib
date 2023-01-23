@@ -24,7 +24,8 @@ function extract-password {
 }
 
 function extract-yubikey-oath {
-	ykman oath accounts code --single "${1:?}" 2> >(while read -r x; do dunstify -- "$x"; done)
+	ykman oath accounts code --single "${1:?}" 2> >(dunstify-pipe) \
+		|| zenity --entry --text="Code:" 2>/dev/null
 }
 
 function extract-field { if [[ $1 == password ]]; then extract-password; else extract-other "$1"; fi; }
@@ -32,3 +33,11 @@ function extract-yaml { sed -n -e '/^---$/,/^\.\.\.$/p'; }
 function extract-yaml-standalone { local p; read -r p; extract-yaml | yq --arg p "$p" -e '.password = $p'; }
 function extract-fields { { extract-yaml | yq -r -e 'keys[]'; echo password; } | sort -u; }
 function extract-other { extract-yaml | yq -r -e ".\"${1:?}\""; }
+
+function dunstify-pipe {
+	local x;
+	while read -r x; do
+		dunstify --hints string:x-dunst-stack-tag:passlib-$$ -- "$x"
+	done
+	dunstify -C "$(dunstify --hints string:x-dunst-stack-tag:passlib-$$ --printid "")"
+}
