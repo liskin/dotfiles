@@ -4,10 +4,6 @@ PIPX_INSTALL = pipx install --system-site-packages --python /usr/bin/python3.10
 .PHONY: all
 all:
 
-all: yq xq tomlq
-yq xq tomlq &:
-	$(PIPX_INSTALL) yq
-
 all: markdown2ctags
 markdown2ctags:
 	$(PIPX_INSTALL) markdown2ctags
