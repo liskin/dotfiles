@@ -37,7 +37,6 @@ elif liskin-dmi-product 20K7; then
 	xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
 fi
 
-start-pulseaudio-x11
 liskin-thinkpad-battery update-xmobar
 xprop -root -f _XMOBAR_DND 8u -set _XMOBAR_DND ""
 
@@ -64,11 +63,6 @@ if [[ "$(loginctl show-user --property=Display "$USER")" == "Display=$XDG_SESSIO
 		--property="Restart=on-failure" \
 		-- xmonad
 else
-	# workaround for https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/issues/1076
-	# (also, we don't want AudioPlay/Pause keys in more than one X server)
-	xprop -root -remove PULSE_ID
-	stop-pulseaudio-x11
-
 	systemd-run \
 		--quiet \
 		--collect --scope \
@@ -78,5 +72,4 @@ else
 fi
 
 systemctl --user start "failsafe-xsecurelock@$DISPLAY.service"
-stop-pulseaudio-x11
 sleep 2

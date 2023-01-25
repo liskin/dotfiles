@@ -5,65 +5,15 @@ shopt -s lastpipe
 
 export LANG=C
 
-function volume-bluetooth {
-	local method
-	[[ $1 == up ]] && method=VolumeUp || method=VolumeDown
-	busctl call org.bluez /org/bluez/hci0/dev_"$2" org.bluez.MediaControl1 "$method"
-}
-
-function volume-pulseaudio {
+function action-volume {
 	local sign
+	[[ ${1-} != @(up|down) ]] && { echo 'up|down expected'; exit 1; }
 	[[ $1 == up ]] && sign="+" || sign="-"
 	pactl set-sink-volume @DEFAULT_SINK@ "$sign"5%
 }
 
-# Volume up/down via:
-#  - bluetooth AVRCP (if default sink and my old BT headphones are connected)
-#  - pulseaudio (otherwise)
-#
-# Motivation: lowering volume in software degrades quality as the upper bits
-# are unused. Pulseaudio handles this itself for most headphones but not for my
-# old Sony MDR-XB950BT.
-function action-volume {
-	if [[ ${1-} != @(up|down) ]]; then
-		echo 'up|down expected'
-		exit 1
-	fi
-
-	if [[ $(pactl info) =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
-		bt_addr="${BASH_REMATCH[1]}"
-		if [[ $bt_addr == 10_4F_A8_72_7D_67 ]]; then
-			volume-bluetooth "$1" "$bt_addr" && exit 0
-		fi
-	fi
-
-	volume-pulseaudio "$1"
-}
-
 function action-mute     { pactl set-sink-mute   @DEFAULT_SINK@   toggle; }
 function action-mic-mute { pactl set-source-mute @DEFAULT_SOURCE@ toggle; }
-
-function status-handsfree {
-	local info
-	info=$(pactl info)
-
-	if [[ $info =~ "Default Sink: bluez_sink."([0-9A-F_]*)".a2dp_sink" ]]; then
-		echo "${BASH_REMATCH[1]}" 0
-	elif [[ $info =~ "Default Sink: bluez_sink."([0-9A-F_]*)".handsfree_head_unit" ]]; then
-		echo "${BASH_REMATCH[1]}" 1
-	fi
-}
-
-function set-handsfree {
-	local bt_addr handsfree
-	bt_addr="${1:?}" && handsfree="${2:?}"
-
-	if (( handsfree )); then
-		pactl set-card-profile bluez_card."$bt_addr" handsfree_head_unit
-	else
-		pactl set-card-profile bluez_card."$bt_addr" a2dp_sink
-	fi
-}
 
 function status-camera {
 	local camera
@@ -92,29 +42,10 @@ function set-camera {
 	fi
 }
 
-function action-toggle-handsfree {
-	local bt_addr handsfree
-	status-handsfree | read -r bt_addr handsfree
-	set-handsfree "$bt_addr" $((!handsfree))
-}
-
 function action-toggle-camera {
 	local usb_dev camera
 	status-camera | read -r usb_dev camera
 	set-camera "$usb_dev" $((!camera))
-}
-
-function action-toggle-videocall {
-	local bt_addr handsfree
-	local usb_dev camera
-	status-handsfree | read -r bt_addr handsfree || :
-	status-camera | read -r usb_dev camera || :
-
-	local desired
-	[[ $handsfree == 0 || $camera == 0 ]] && desired=1 || desired=0
-
-	if [[ $bt_addr ]]; then set-handsfree "$bt_addr" $desired; fi
-	if [[ $usb_dev ]]; then set-camera "$usb_dev" $desired; fi
 }
 
 # Listen for MPRIS events and remember which player we interacted with last

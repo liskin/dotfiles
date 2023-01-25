@@ -11,11 +11,6 @@ else
 	cp /tmp/diff-highlight/diff-highlight $@
 endif
 
-all: .venv-pulsectl
-.venv-pulsectl: /usr/bin/python3
-	python3 -m venv --clear --system-site-packages --without-pip $@
-	$@/bin/python3 -m pip install pulsectl-asyncio
-
 all: .aliases/.done
 .SKIP_GITIGNORE: .aliases/.done
 .aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)

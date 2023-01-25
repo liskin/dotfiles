@@ -129,7 +129,7 @@ Details:
   [`.xsession`](../.xsession) with stdout/stderr to systemd journal
 
 * [`.xsession`](../.xsession) performs some initialization (xrdb, xrandr, xset,
-  xsetroot, setxkbmap, xmodmap, xinput, pulseaudio, …) and then launches
+  xsetroot, setxkbmap, xmodmap, xinput, …) and then launches
   xmonad via systemd-run: in primary sessions as a unit binding to
   [`graphical-session.target`](https://www.freedesktop.org/software/systemd/man/systemd.special.html#graphical-session.target)
   and [`xmonad@$DISPLAY.target`](../.config/systemd/user/xmonad@.target), in
