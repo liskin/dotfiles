@@ -10,21 +10,21 @@ define(fixedBig_italicFont, `')dnl
 define(fixedBig_boldItalicFont, `')dnl
 dnl
 define(mono, `xft:monospace:pixelsize=10:slant=$1:weight=$2')dnl
-define(mono_font, mono(roman,normal))dnl
+define(mono_font, mono(roman,regular))dnl
 define(mono_boldFont, mono(roman,bold))dnl
-define(mono_italicFont, mono(oblique,normal))dnl
+define(mono_italicFont, mono(oblique,regular))dnl
 define(mono_boldItalicFont, mono(oblique,bold))dnl
 dnl
 define(iosevka_hidpi, `xft:Iosevka Fixed SS11:pixelsize=20:slant=$1:weight=$2')dnl
-define(iosevka_hidpi_font, iosevka_hidpi(roman,normal))dnl
+define(iosevka_hidpi_font, iosevka_hidpi(roman,regular))dnl
 define(iosevka_hidpi_boldFont, iosevka_hidpi(roman,bold))dnl
-define(iosevka_hidpi_italicFont, iosevka_hidpi(oblique,normal))dnl
+define(iosevka_hidpi_italicFont, iosevka_hidpi(oblique,regular))dnl
 define(iosevka_hidpi_boldItalicFont, iosevka_hidpi(oblique,bold))dnl
 dnl
 define(iosevka, `xft:Iosevka Fixed SS11:pixelsize=25:slant=$1:weight=$2')dnl
-define(iosevka_font, iosevka(roman,normal))dnl
+define(iosevka_font, iosevka(roman,regular))dnl
 define(iosevka_boldFont, iosevka(roman,bold))dnl
-define(iosevka_italicFont, iosevka(oblique,normal))dnl
+define(iosevka_italicFont, iosevka(oblique,regular))dnl
 define(iosevka_boldItalicFont, iosevka(oblique,bold))dnl
 dnl
 define(symbols_fonts, `xft:Symbola,xft:Unidings,xft:Musica')dnl

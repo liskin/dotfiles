@@ -12,9 +12,9 @@ function fallback { echo "xft:Symbola,xft:Unidings,xft:Musica"; }
 function xft { echo "xft:$1:pixelsize=$2:slant=$3:weight=$4,$(fallback)"; }
 
 function set-fonts-xft {
-	set-font "$(xft "$1" "$2" roman normal)"
+	set-font "$(xft "$1" "$2" roman regular)"
 	set-bold-font "$(xft "$1" "$2" roman bold)"
-	set-italic-font "$(xft "$1" "$2" oblique normal)"
+	set-italic-font "$(xft "$1" "$2" oblique regular)"
 	set-bolditalic-font "$(xft "$1" "$2" oblique bold)"
 }
 
