@@ -13,6 +13,7 @@ DOCKER_BUILDX_VERSION := v0.9.1
 DOCKER_COMPOSE_VERSION := v2.14.2
 EVCXR_VERSION := v0.14.2
 FITSDK_VERSION := 21.84.00
+GLAB_VERSION := v1.24.1
 HADOLINT_VERSION := v2.12.0
 HLINT_VERSION := v3.5
 HLS_GHC_VERSION := 8.8.4
@@ -34,6 +35,7 @@ DIVE_GITHUB := wagoodman/dive
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
 EVCXR_GITHUB := google/evcxr
+GLAB_GITLAB := gitlab-org/cli
 HADOLINT_GITHUB := hadolint/hadolint
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
@@ -50,6 +52,7 @@ TZ_GITHUB := oz/tz
 update: update-github
 update: update-rustup
 update: update-cargo-audit
+# TODO: update-gitlab
 
 .PHONY: update-rustup
 update-rustup:
@@ -252,6 +255,14 @@ evcxr: | .ext-evcxr ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(EVCXR_GITHUB)/releases/download/$(EVCXR_VERSION)/evcxr-$(EVCXR_VERSION)-x86_64-unknown-linux-gnu.tar.gz \
 		| tar -x -z -C $@ --strip-components=1 --wildcards "*/evcxr"
+
+all: glab
+glab: | .ext-glab ; ln -fsT $|/$@ $@
+.ext-glab: .ext-glab-$(GLAB_VERSION) ; ln -fsT $< $@
+.ext-glab-$(GLAB_VERSION):
+	mkdir -p $@
+	$(CURL) https://gitlab.com/$(GLAB_GITLAB)/-/releases/$(GLAB_VERSION)/downloads/glab_$(GLAB_VERSION:v%=%)_Linux_x86_64.tar.gz \
+		| tar -x -z -C $@ --strip-components=1 bin/glab
 
 .PHONY: gc
 ## Remove old versions
