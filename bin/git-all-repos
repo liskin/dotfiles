@@ -17,6 +17,7 @@ function locate-all-repos {
 		-e "$HOME/.cache/" \
 		-e "$HOME/.cargo/" \
 		-e "$HOME/.local/share/docker/" \
+		-e "$HOME/.password-store" \
 		-e '/_old/' \
 	| sort -z -u
 }
