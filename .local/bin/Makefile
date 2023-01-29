@@ -1,5 +1,6 @@
-PYTHON = python3
-PIPX_INSTALL = pipx install --system-site-packages --python /usr/bin/python3.10
+# XXX: wipe ~/.local/pipx when updating python
+PYTHON = python3.11
+PIPX_INSTALL = pipx install --system-site-packages --python /usr/bin/$(PYTHON)
 
 .PHONY: all
 all:
@@ -27,6 +28,7 @@ dxf:
 	$(PIPX_INSTALL) python-dxf
 
 all: gdbgui
+gdbgui: PYTHON=python3.10
 gdbgui:
 	$(PIPX_INSTALL) gdbgui
 
