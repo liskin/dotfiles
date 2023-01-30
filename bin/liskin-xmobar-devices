@@ -102,8 +102,20 @@ function check-user-docker {
 	systemctl --user is-active --quiet docker.service
 }
 
+function check-bt-battery {
+	local bt_addr
+	bt_battery=
+
+	[[ $(pactl info) =~ "Default Sink: bluez_output."([0-9A-F_]*)"."* ]] || return 1
+	bt_addr="${BASH_REMATCH[1]}"
+	busctl get-property org.bluez /org/bluez/hci0/dev_"$bt_addr" org.bluez.Battery1 Percentage \
+		| read -r _ bt_battery
+	[[ ${bt_battery-} ]]
+}
+
 function refresh {
 	log=""
+
 	check-nvidia && log="$log <fn=3>"$'\ue266'" </fn>"
 	check-gvt && log="$log v<fn=3>"$'\ue266'" </fn>"
 	check-touchscreen && log="$log <fn=5>"$'\uf25a'"</fn>"
@@ -111,7 +123,11 @@ function refresh {
 	check-vpns && log="$log <fn=3>"$'\uf983'" (${vpns[*]})</fn>"
 	check-sys-docker && log="$log <fn=3>"$'\uf308'" </fn>"
 	check-user-docker && log="$log <fn=3>"$'\ue7b0'" </fn>"
-	log "${log:+<fc=red>$log</fc>}"
+	log="${log:+<fc=red>$log</fc>}"
+
+	check-bt-battery && log="$log <fn=3>"$'\uf7ca'" </fn>${bt_battery}%"
+
+	log "$log"
 }
 
 function monitor {
