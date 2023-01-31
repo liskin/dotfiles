@@ -1,7 +1,11 @@
 /.binstall/
 /.build/
 /.old/
+/cargo-add
 /cargo-cache
+/cargo-rm
+/cargo-set-version
+/cargo-upgrade
 /cargo-watch
 /dust
 /fclones

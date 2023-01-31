@@ -7,11 +7,13 @@ include ~/_gitignore.mk
 include ~/_help.mk
 
 CARGO_CACHE_VERSION := 0.8.3
+CARGO_EDIT_VERSION := v0.11.8
 CARGO_WATCH_VERSION := v8.1.2
 DUST_VERSION := v0.8.3
 FCLONES_VERSION := v0.27.3
 
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
+CARGO_EDIT_GITHUB := killercup/cargo-edit
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
 DUST_GITHUB := bootandy/dust
 FCLONES_GITHUB := pkolaczk/fclones
@@ -42,6 +44,12 @@ cargo-cache: | .binstall/cargo-cache ; ln -fsT $| $@
 .binstall/cargo-cache: .binstall/cargo-cache-v$(CARGO_CACHE_VERSION)
 .binstall/cargo-cache-v$(CARGO_CACHE_VERSION): | .binstall
 	$(CARGO_BINSTALL) --version =$(CARGO_CACHE_VERSION) cargo-cache
+
+all: cargo-add cargo-rm cargo-set-version cargo-upgrade
+cargo-add cargo-rm cargo-set-version cargo-upgrade: | .binstall/cargo-upgrade ; ln -fsT $(dir $|)$@ $@
+.binstall/cargo-upgrade: .binstall/cargo-upgrade-$(CARGO_EDIT_VERSION)
+.binstall/cargo-upgrade-$(CARGO_EDIT_VERSION): | .binstall
+	$(CARGO_BINSTALL) --version =$(CARGO_EDIT_VERSION:v%=%) cargo-edit
 
 all: fclones
 fclones: $(MAKEFILE_LIST) | .build/fclones ; ln -fsT $|/bin/$@ $@; touch $@
