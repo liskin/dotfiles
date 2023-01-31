@@ -15,7 +15,7 @@ while (( $# )); do
 	opt=$1; shift
 	case "$opt" in
 		-h|--help)
-			echo "Usage: $0 [-n|--dry-run] [-h|--help]"
+			echo "Usage: $0 [-n|--dry-run] [-h|--help] [--set-head]"
 			exit
 			;;
 
