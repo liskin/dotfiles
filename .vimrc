@@ -311,6 +311,7 @@ let g:ale_linters_explicit = 1
 let g:ale_maximum_file_size = 524288
 let g:ale_popup_menu_enabled = 1
 let g:ale_set_highlights = 0
+let g:ale_virtualtext_cursor = 0
 
 let g:ale_fixers = {}
 let g:ale_fixers['elixir'] = ['mix_format']
