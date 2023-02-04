@@ -359,6 +359,10 @@ if &t_Co >= 256 || has('gui_running')
 	hi def link diffAdded Identifier
 	hi def link diffChanged PreProc
 	hi def link diffRemoved Special
+
+	" distinguish ALE virtual text from comments
+	hi link ALEVirtualTextError WarningMsg
+	hi link ALEVirtualTextWarning WarningMsg
 endif
 
 delcommand HiU
