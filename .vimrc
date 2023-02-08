@@ -310,57 +310,13 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_linters_explicit = 1
 let g:ale_maximum_file_size = 524288
 let g:ale_popup_menu_enabled = 1
+let g:ale_root = {}
 let g:ale_set_highlights = 0
 let g:ale_virtualtext_cursor = 0
 
 let g:ale_fixers = {}
-let g:ale_fixers['elixir'] = ['mix_format']
-let g:ale_linter_aliases = {}
-let g:ale_linter_aliases['gitcommit'] = ['mail']
 let g:ale_linters = {}
-let g:ale_linters['dockerfile'] = ['hadolint']
-let g:ale_linters['elixir'] = []
-let g:ale_linters['gitcommit'] = ['proselint']
-let g:ale_linters['mail'] = ['proselint']
-let g:ale_linters['markdown'] = ['proselint']
-let g:ale_linters['python'] = ['pylsp']
-let g:ale_linters['rst'] = ['proselint']
-let g:ale_linters['sh'] = ['shellcheck']
-let g:ale_linters['text'] = ['proselint']
-let g:ale_linters['tilt'] = ['tilt_lsp']
-"let g:ale_linters['yaml'] = ['yamllint']
-
-let g:ale_elixir_elixir_ls_config = {
-	\ 'elixirLS': {
-		\ 'dialyzerEnabled': v:false,
-	\ }
-\ }
-let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/.build/elixir-ls"
-
-let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
-
-let g:ale_python_pylsp_config = #{pylsp: #{plugins: {}}}
-let g:ale_python_pylsp_config['pylsp']['configurationSources'] = ['flake8']
-
-" disable mypy by default to prevent .mypy_cache appearing all over the filesystem
-let g:ale_python_pylsp_config['pylsp']['plugins']['pylsp_mypy'] = #{enabled: v:false}
-
-" use flake8 (covers functionality of pyflakes, pycodestyle, mccabe)
-let g:ale_python_pylsp_config['pylsp']['plugins']['flake8'] = #{enabled: v:true}
-let g:ale_python_pylsp_config['pylsp']['plugins']['pyflakes'] = #{enabled: v:false}
-let g:ale_python_pylsp_config['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false}
-let g:ale_python_pylsp_config['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
-
-let g:ale_haskell_ormolu_executable = 'fourmolu'
-let g:ale_haskell_hls_config = #{haskell: #{plugin: {}}}
-let g:ale_haskell_hls_config['haskell']['maxCompletions'] = 250
-let g:ale_haskell_hls_config['haskell']['plugin']['stan'] = #{globalOn: v:false}
-
-let g:ale_rust_analyzer_config = #{
-	\ cargo: #{
-		\ features: 'all',
-	\ },
-\ }
+let g:ale_linter_aliases = {}
 
 function! s:ale_add_linter(ale_linters, filetype, linter) abort
 	if !has_key(a:ale_linters, a:filetype)
@@ -392,6 +348,56 @@ command! -nargs=1 -bar AleBufEnableLinter call s:ale_enable_linter('ale_linters'
 command! -nargs=1 -bar AleBufEnableFixer call s:ale_enable_linter('ale_fixers', &ft, <q-args>)
 command! -nargs=+ -bar AleAddLinter call s:ale_add_linters(g:ale_linters, <f-args>)
 command! -nargs=+ -bar AleAddFixer call s:ale_add_linters(g:ale_fixers, <f-args>)
+
+let g:ale_elixir_elixir_ls_config = #{elixirLS: {}}
+let g:ale_elixir_elixir_ls_config['elixirLS'] = #{dialyzerEnabled: v:false}
+let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/.build/elixir-ls"
+
+let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
+
+let g:ale_python_pylsp_config = #{pylsp: #{plugins: {}}}
+let g:ale_python_pylsp_config['pylsp']['configurationSources'] = ['flake8']
+
+" disable mypy by default to prevent .mypy_cache appearing all over the filesystem
+let g:ale_python_pylsp_config['pylsp']['plugins']['pylsp_mypy'] = #{enabled: v:false}
+
+" use flake8 (covers functionality of pyflakes, pycodestyle, mccabe)
+let g:ale_python_pylsp_config['pylsp']['plugins']['flake8'] = #{enabled: v:true}
+let g:ale_python_pylsp_config['pylsp']['plugins']['pyflakes'] = #{enabled: v:false}
+let g:ale_python_pylsp_config['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false}
+let g:ale_python_pylsp_config['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
+
+let g:ale_haskell_ormolu_executable = 'fourmolu'
+let g:ale_haskell_hls_config = #{haskell: #{plugin: {}}}
+let g:ale_haskell_hls_config['haskell']['maxCompletions'] = 250
+let g:ale_haskell_hls_config['haskell']['plugin']['stan'] = #{globalOn: v:false}
+
+" Set a global project root for rust-analyzer to avoid starting a separate
+" instance for dependencies. Assumes a single project, but that's how I use
+" vim anyway.
+let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
+let g:ale_root['analyzer'] = s:cargo_root
+let g:ale_rust_analyzer_config = #{cargo: {}}
+let g:ale_rust_analyzer_config['cargo'] = #{features: 'all'}
+let g:ale_rust_rustfmt_options = '--edition 2021'
+
+let g:ale_linter_aliases['gitcommit'] = ['mail']
+AleAddFixer elixir mix_format
+AleAddLinter dockerfile hadolint
+AleAddLinter gitcommit proselint
+AleAddLinter mail proselint
+AleAddLinter markdown proselint
+AleAddLinter python pylsp
+AleAddLinter rst proselint
+AleAddLinter sh shellcheck
+AleAddLinter text proselint
+AleAddLinter tilt tilt_lsp
+
+if isdirectory(s:cargo_root . '/target/debug')
+	" Enable only for projects that have been built at least once
+	AleAddLinter rust analyzer
+	AleAddFixer rust rustfmt
+endif
 
 " fzf {{{2
 if exists('$TMUX')
