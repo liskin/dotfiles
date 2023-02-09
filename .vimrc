@@ -164,6 +164,7 @@ set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m,%f:%l:%m
 
 " other {{{2
+set autoread
 set backspace=indent,eol,start
 set completeopt=menu,menuone,longest,preview
 if has('textprop')
