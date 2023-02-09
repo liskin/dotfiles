@@ -144,16 +144,10 @@ autocmd VimResized * call s:equal_windows()
 set hlsearch
 set incsearch
 
-" fsync / swap {{{2
+" location of swap, tags, includes {{{2
 set dir=~/.vim/swap//
-set nofsync
-if exists('&swapsync')
-	set swapsync=
-endif
-
-" location of tags, includes {{{2
-set tags+=./tags;
 set path=.,,
+set tags+=./tags;
 
 " filename completion {{{2
 set wildmenu
