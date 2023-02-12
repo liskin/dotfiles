@@ -52,7 +52,7 @@ TZ_GITHUB := oz/tz
 update: update-github
 update: update-rustup
 update: update-cargo-audit
-# TODO: update-gitlab
+update: update-gitlab
 
 .PHONY: update-rustup
 update-rustup:
@@ -275,6 +275,7 @@ clean:
 	$(RM) -r $(wildcard .ext-*)
 
 include ~/_github.mk
+include ~/_gitlab.mk
 include ~/_gitignore.mk
 include ~/_help.mk
 
