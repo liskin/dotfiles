@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu -o pipefail
-
-pw-cli ls | perl -Mfeature=say -ne '$id = $1 if /^\s*id (\d+).*PipeWire:Interface:Module/; say $id if /module.name.*'"${1:?}"'/' | xargs -r pw-cli destroy
