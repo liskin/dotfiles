@@ -3,17 +3,17 @@ all:
 
 CURL := curl -LSsf
 
-BUILDIFIER_VERSION := 5.1.0
+BUILDIFIER_VERSION := 6.0.1
 CARGO_AUDIT_VERSION := v0.17.4
 CARGO_BINSTALL_VERSION := v0.18.1
-CTLPTL_VERSION := v0.8.15
+CTLPTL_VERSION := v0.8.16
 DELTA_VERSION := 0.15.1
 DIVE_VERSION := v0.10.0
-DOCKER_BUILDX_VERSION := v0.9.1
-DOCKER_COMPOSE_VERSION := v2.14.2
+DOCKER_BUILDX_VERSION := v0.10.2
+DOCKER_COMPOSE_VERSION := v2.16.0
 EVCXR_VERSION := v0.14.2
 FITSDK_VERSION := 21.84.00
-GLAB_VERSION := v1.24.1
+GLAB_VERSION := v1.25.3
 HADOLINT_VERSION := v2.12.0
 HLINT_VERSION := v3.5
 HLS_GHC_VERSION := 8.8.4
@@ -21,11 +21,11 @@ HLS_VERSION := 1.8.0.0
 KIND_VERSION := v0.17.0
 LANGUAGETOOL_VERSION := v6.0
 PANDOC_VERSION := 2.18
-RUSTUP_VERSION := 1.25.1
-RUST_ANALYZER_VERSION := 2023-01-02
+RUSTUP_VERSION := 1.25.2
+RUST_ANALYZER_VERSION := 2023-02-06
 SCCACHE_VERSION := v0.3.3
 TILT_VERSION := v0.30.13
-TZ_VERSION := v0.6.2
+TZ_VERSION := v0.6.3
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
 CARGO_BINSTALL_GITHUB := cargo-bins/cargo-binstall
@@ -108,8 +108,8 @@ tz: | .ext-tz ; ln -fsT $|/$@ $@
 .ext-tz: .ext-tz-$(TZ_VERSION) ; ln -fsT $< $@
 .ext-tz-$(TZ_VERSION):
 	mkdir -p $@
-	$(CURL) https://github.com/$(TZ_GITHUB)/releases/download/$(TZ_VERSION)/tz-$(TZ_VERSION:v%=%)-linux-amd64.tar.xz \
-		| tar -x -J -C $@ tz
+	$(CURL) https://github.com/$(TZ_GITHUB)/releases/download/$(TZ_VERSION)/tz-$(TZ_VERSION)-linux-amd64.tar.gz \
+		| tar -x -z -C $@ tz
 
 all: delta
 delta: | .ext-delta ; ln -fsT $|/$@ $@
