@@ -11,12 +11,14 @@ CARGO_EDIT_VERSION := v0.11.8
 CARGO_WATCH_VERSION := v8.3.0
 DUST_VERSION := v0.8.4
 FCLONES_VERSION := v0.29.3
+WATCHEXEC_VERSION := v1.21.0
 
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
 CARGO_EDIT_GITHUB := killercup/cargo-edit
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
 DUST_GITHUB := bootandy/dust
 FCLONES_GITHUB := pkolaczk/fclones
+WATCHEXEC_GITHUB := watchexec/watchexec
 
 .PHONY: update
 ## Check for updates
@@ -50,6 +52,12 @@ cargo-add cargo-rm cargo-set-version cargo-upgrade: | .binstall/cargo-upgrade ; 
 .binstall/cargo-upgrade: .binstall/cargo-upgrade-$(CARGO_EDIT_VERSION)
 .binstall/cargo-upgrade-$(CARGO_EDIT_VERSION): | .binstall
 	$(CARGO_BINSTALL) --version =$(CARGO_EDIT_VERSION:v%=%) cargo-edit
+
+all: watchexec
+watchexec: | .binstall/watchexec ; ln -fsT $| $@
+.binstall/watchexec: .binstall/watchexec-$(WATCHEXEC_VERSION)
+.binstall/watchexec-$(WATCHEXEC_VERSION): | .binstall
+	$(CARGO_BINSTALL) --version =$(WATCHEXEC_VERSION:v%=%) watchexec-cli
 
 all: fclones
 fclones: $(MAKEFILE_LIST) | .build/fclones ; ln -fsT $|/bin/$@ $@; touch $@
