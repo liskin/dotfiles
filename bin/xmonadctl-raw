@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec xmonadctl.real -a _XMONAD_CTL "${@:?}"
