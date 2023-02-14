@@ -16,6 +16,11 @@ all: .aliases/.done
 .aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)
 	.aliases/.update.sh
 
+all: .venv-slack-sdk
+.venv-slack-sdk:
+	python3 -m venv --clear --system-site-packages --without-pip $@
+	$@/bin/python3 -m pip install slack-sdk
+
 include ~/_gitignore.mk
 
 .DELETE_ON_ERROR:

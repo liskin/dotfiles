@@ -2,6 +2,16 @@
 
 set -eu
 
+: "${DISPLAY:?}"
+minutes=${1:-30}
+
+systemd-run \
+	--quiet --collect \
+	--user --slice="session.slice" --unit="liskin-slack-dnd@$DISPLAY.service" \
+	--property="BindsTo=liskin-xmonad-dnd-timer@$DISPLAY.service" \
+	--property="Requisite=liskin-xmonad-dnd-timer@$DISPLAY.service" \
+	-- liskin-slack-dnd "$minutes"
+
 xmonadctl-raw dnd-on
 
 function dnd-off {
@@ -10,7 +20,7 @@ function dnd-off {
 }
 
 trap 'dnd-off' EXIT
-for (( count=${1:-30}; count > 0; --count )); do
+for (( count=minutes; count > 0; --count )); do
 	xprop -root -f _XMOBAR_DND 8u -set _XMOBAR_DND " <fn=3>"$'\ufb96'" </fn>$count"
 	sleep 1m
 done
