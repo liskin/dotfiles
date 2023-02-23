@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 import os
 import signal
 
@@ -11,8 +14,6 @@ import yaml
 
 
 class SlackWorkspace:
-    resp_set = {}
-
     def __init__(self, name, token, cookie):
         headers = {}
         if cookie:
@@ -23,26 +24,68 @@ class SlackWorkspace:
     def set_snooze(self, minutes):
         try:
             print(f"{self.name}: dnd_setSnooze", flush=True)
-            self.resp_set = self.client.dnd_setSnooze(num_minutes=minutes)
+            resp_set = self.client.dnd_setSnooze(num_minutes=minutes)
+            return lambda: self._end_snooze(resp_set)
+        except SlackApiError as e:
+            print(f"{self.name}: error - {e}", flush=True)
+            return lambda: None
+
+    def _end_snooze(self, resp_set):
+        if not resp_set:
+            return
+
+        try:
+            resp_info = self.client.dnd_info()
+            if (
+                resp_set.get("snooze_enabled", False)
+                and resp_info.get("snooze_enabled", False)
+                and resp_set.get("snooze_endtime", -1)
+                == resp_info.get("snooze_endtime", -2)
+            ):
+                print(f"{self.name}: dnd_endSnooze", flush=True)
+                self.client.dnd_endSnooze()
         except SlackApiError as e:
             print(f"{self.name}: error - {e}", flush=True)
 
-    def end_snooze(self):
-        if not self.resp_set:
-            return
+    def set_lunch(self, minutes):
+        expiration = datetime.now(tz=timezone.utc) + timedelta(minutes=minutes)
+        try:
+            print(f"{self.name}: users_profile_set", flush=True)
+            resp_orig = self.client.users_profile_get()
+            resp_set = self.client.users_profile_set(
+                profile={
+                    "status_text": "Lunch",
+                    "status_emoji": ":knife_fork_plate:",
+                    "status_expiration": int(expiration.timestamp()),
+                }
+            )
+            return lambda: self._end_lunch(resp_orig, resp_set)
+        except SlackApiError as e:
+            print(f"{self.name}: error - {e}", flush=True)
+            return lambda: None
 
-        resp_info = self.client.dnd_info()
-        if (
-            self.resp_set.get("snooze_enabled", False)
-            and resp_info.get("snooze_enabled", False)
-            and self.resp_set.get("snooze_endtime", -1)
-            == resp_info.get("snooze_endtime", -2)
-        ):
-            try:
-                print(f"{self.name}: dnd_endSnooze", flush=True)
-                self.client.dnd_endSnooze()
-            except SlackApiError as e:
-                print(f"{self.name}: error - {e}", flush=True)
+    def _end_lunch(self, resp_orig, resp_set):
+        try:
+            resp_get = self.client.users_profile_get()
+            profile_get = resp_get["profile"]
+            profile_set = resp_set["profile"]
+            profile_orig = resp_orig["profile"]
+            if (
+                profile_get["status_text"] == profile_set["status_text"]
+                and profile_get["status_emoji"] == profile_set["status_emoji"]
+                and profile_get["status_expiration"] == profile_set["status_expiration"]
+            ):
+                print(f"{self.name}: users_profile_set (reset)", flush=True)
+                self.client.users_profile_set(
+                    profile={
+                        "status_text": profile_orig["status_text"],
+                        "status_emoji": profile_orig["status_emoji"],
+                        "status_expiration": profile_orig["status_expiration"],
+                    }
+                )
+        except SlackApiError as e:
+            print(f"{self.name}: error - {e}", flush=True)
+            return lambda: None
 
 
 def wait_for_signal(seconds):
@@ -76,11 +119,22 @@ def cli(ctx, workspaces):
 def cli_dnd(obj, minutes):
     sws = obj["sws"]
 
-    for sw in sws:
-        sw.set_snooze(minutes)
+    ends = [sw.set_snooze(minutes) for sw in sws]
     wait_for_signal(minutes * 60)
-    for sw in sws:
-        sw.end_snooze()
+    for end in ends:
+        end()
+
+
+@cli.command("lunch")
+@click.argument("minutes", type=int)
+@click.pass_obj
+def cli_lunch(obj, minutes):
+    sws = obj["sws"]
+
+    ends = [sw.set_lunch(minutes) for sw in sws]
+    wait_for_signal(minutes * 60)
+    for end in ends:
+        end()
 
 
 if __name__ == "__main__":
