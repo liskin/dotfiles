@@ -50,7 +50,7 @@ def wait_for_signal(seconds):
     signal.sigtimedwait({signal.SIGINT, signal.SIGTERM}, seconds)
 
 
-@click.command()
+@click.group()
 @click.option(
     "--workspaces",
     type=click.File(),
@@ -59,12 +59,22 @@ def wait_for_signal(seconds):
     ),
     show_default=True,
 )
-@click.argument("minutes", type=int)
-def main(minutes, workspaces):
+@click.pass_context
+def cli(ctx, workspaces):
     sws = [
         SlackWorkspace(name=n, token=c["token"], cookie=c.get("cookie"))
         for n, c in yaml.safe_load(workspaces).items()
     ]
+
+    ctx.ensure_object(dict)
+    ctx.obj["sws"] = sws
+
+
+@cli.command("dnd")
+@click.argument("minutes", type=int)
+@click.pass_obj
+def cli_dnd(obj, minutes):
+    sws = obj["sws"]
 
     for sw in sws:
         sw.set_snooze(minutes)
@@ -74,4 +84,4 @@ def main(minutes, workspaces):
 
 
 if __name__ == "__main__":
-    main()
+    cli()

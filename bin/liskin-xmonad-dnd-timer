@@ -7,10 +7,10 @@ minutes=${1:-30}
 
 systemd-run \
 	--quiet --collect \
-	--user --slice="session.slice" --unit="liskin-slack-dnd@$DISPLAY.service" \
+	--user --slice="session.slice" --unit="liskin-slack-status@$DISPLAY.service" \
 	--property="BindsTo=liskin-xmonad-dnd-timer@$DISPLAY.service" \
 	--property="Requisite=liskin-xmonad-dnd-timer@$DISPLAY.service" \
-	-- liskin-slack-dnd "$minutes"
+	-- liskin-slack-status dnd "$minutes"
 
 xmonadctl-raw dnd-on
 

@@ -1,7 +1,7 @@
 let g:ale_python_isort_options = '--profile open_stack'
 AleAddFixer python isort
 
-if fnamemodify(expand('%'), ':~') ==# '~/bin/liskin-slack-dnd.py'
+if fnamemodify(expand('%'), ':~') ==# '~/bin/liskin-slack-status.py'
 	let g:ale_python_pylsp_executable = fnamemodify('~/bin/.venv-slack-sdk/bin/python', ':p')
 	let g:ale_python_pylsp_options = '-m pylsp'
 	AleAddFixer python black

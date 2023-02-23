@@ -1,2 +1,0 @@
-#!/bin/sh
-exec ~/bin/.venv-slack-sdk/bin/python3 ~/bin/liskin-slack-dnd.py "$@"
