@@ -69,11 +69,20 @@ function! s:apg(mode, len)
 	return substitute(system('apg -n 1 -M ' . a:mode . ' -m ' . a:len), '\n\+$', '', '')
 endfunction
 
+function! s:xkcdpass(words)
+	return substitute(system('xkcdpass -n ' . a:words), '\n\+$', '', '')
+endfunction
+
 function! s:GeneratePassword(mode, len = 20)
 	exec "normal \"=s:apg(a:mode, a:len)\<Enter>p"
 endfunction
 
+function! s:GeneratePasswordXKCD(words = 4)
+	exec "normal \"=s:xkcdpass(a:words)\<Enter>p"
+endfunction
+
 command! -nargs=? GeneratePassword call s:GeneratePassword("LCN", <f-args>)
 command! -nargs=? GeneratePasswordSpecial call s:GeneratePassword("LCNS", <f-args>)
+command! -nargs=? GeneratePasswordXKCD call s:GeneratePasswordXKCD(<f-args>)
 
 " vim:set foldenable foldmethod=marker: {{{1
