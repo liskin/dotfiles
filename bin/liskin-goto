@@ -31,6 +31,10 @@ function goto-calendar {
 	find-tab "https://calendar.google.com/calendar/" | activate-tab
 }
 
+function goto-whatsapp {
+	find-tab "https://web.whatsapp.com/" | activate-tab
+}
+
 function goto-outlook-mail {
 	find-tab "https://outlook.office.com/mail/" | activate-tab
 }
