@@ -12,4 +12,5 @@ exec \
 	--disable-font-subpixel-positioning \
 	--enable-features=VaapiVideoDecoder,VaapiVideoEncoder \
 	--disable-features=UseChromeOSDirectVideoDecoder \
+	--enable-features=BatterySaverModeAvailable,HighEfficiencyModeAvailable \
 	"$@"
