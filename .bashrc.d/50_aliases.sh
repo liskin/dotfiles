@@ -104,3 +104,6 @@ export-alias rfkill=/usr/sbin/rfkill
 
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=940511
 export-alias yarn=yarnpkg
+
+alias urldecode='python3 -c "import sys; from urllib.parse import unquote; from functools import reduce; reduce(lambda _, __: None, map(lambda l: print(unquote(l.rstrip())), sys.stdin));"'
+alias urlencode='python3 -c "import sys; from urllib.parse import quote; from functools import reduce; reduce(lambda _, __: None, map(lambda l: print(quote(l.rstrip())), sys.stdin));"'
