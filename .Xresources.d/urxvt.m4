@@ -15,13 +15,13 @@ define(mono_boldFont, mono(roman,bold))dnl
 define(mono_italicFont, mono(oblique,regular))dnl
 define(mono_boldItalicFont, mono(oblique,bold))dnl
 dnl
-define(iosevka_hidpi, `xft:Iosevka Fixed SS11:pixelsize=20:slant=$1:weight=$2')dnl
+define(iosevka_hidpi, `xft:Iosevka Fixed:pixelsize=20:slant=$1:weight=$2')dnl
 define(iosevka_hidpi_font, iosevka_hidpi(roman,regular))dnl
 define(iosevka_hidpi_boldFont, iosevka_hidpi(roman,bold))dnl
 define(iosevka_hidpi_italicFont, iosevka_hidpi(oblique,regular))dnl
 define(iosevka_hidpi_boldItalicFont, iosevka_hidpi(oblique,bold))dnl
 dnl
-define(iosevka, `xft:Iosevka Fixed SS11:pixelsize=25:slant=$1:weight=$2')dnl
+define(iosevka, `xft:Iosevka Fixed:pixelsize=25:slant=$1:weight=$2')dnl
 define(iosevka_font, iosevka(roman,regular))dnl
 define(iosevka_boldFont, iosevka(roman,bold))dnl
 define(iosevka_italicFont, iosevka(oblique,regular))dnl
