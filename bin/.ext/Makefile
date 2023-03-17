@@ -5,15 +5,16 @@ CURL := curl -LSsf
 
 BUILDIFIER_VERSION := 6.0.1
 CARGO_AUDIT_VERSION := v0.17.4
-CARGO_BINSTALL_VERSION := v0.20.1
+CARGO_BINSTALL_VERSION := v0.21.3
 CTLPTL_VERSION := v0.8.16
 DELTA_VERSION := 0.15.1
 DIVE_VERSION := v0.10.0
 DOCKER_BUILDX_VERSION := v0.10.4
 DOCKER_COMPOSE_VERSION := v2.16.0
 EVCXR_VERSION := v0.14.2
+FCLONES_VERSION := v0.30.0
 FITSDK_VERSION := 21.84.00
-GLAB_VERSION := v1.25.3
+GLAB_VERSION := v1.26.0
 HADOLINT_VERSION := v2.12.0
 HLINT_VERSION := v3.5
 HLS_GHC_VERSION := 8.8.4
@@ -35,6 +36,7 @@ DIVE_GITHUB := wagoodman/dive
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
 EVCXR_GITHUB := google/evcxr
+FCLONES_GITHUB := pkolaczk/fclones
 GLAB_GITLAB := gitlab-org/cli
 HADOLINT_GITHUB := hadolint/hadolint
 HLINT_GITHUB := ndmitchell/hlint
@@ -214,6 +216,14 @@ sccache: | .ext-sccache ; ln -fsT $|/$@ $@
 	$(CURL) https://github.com/$(SCCACHE_GITHUB)/releases/download/$(SCCACHE_VERSION)/sccache-$(SCCACHE_VERSION)-x86_64-unknown-linux-musl.tar.gz \
 		| tar -x -z -C $@ --strip-components=1 --wildcards "*/sccache"
 	chmod +x $@/sccache
+
+all: fclones
+fclones: | .ext-fclones ; ln -fsT $|/$@ $@
+.ext-fclones: .ext-fclones-$(FCLONES_VERSION) ; ln -fsT $< $@
+.ext-fclones-$(FCLONES_VERSION):
+	mkdir -p $@
+	$(CURL) https://github.com/$(FCLONES_GITHUB)/releases/download/$(FCLONES_VERSION)/fclones-$(FCLONES_VERSION:v%=%)-linux-glibc-x86_64.tar.gz \
+		| tar -x -z -C $@ --strip-components=3 ./usr/bin/fclones
 
 all: docker-buildx
 docker-buildx: | .ext-docker-buildx ; ln -fsT $| $@

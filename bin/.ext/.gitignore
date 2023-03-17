@@ -9,6 +9,7 @@
 /docker-buildx
 /docker-compose
 /evcxr
+/fclones
 /glab
 /hadolint
 /haskell-language-server-8.8.4
