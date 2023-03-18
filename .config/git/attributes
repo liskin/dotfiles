@@ -6,3 +6,4 @@
 *.pl	diff=perl
 *.pm	diff=perl
 *.py	diff=python
+*.rs	diff=rust
