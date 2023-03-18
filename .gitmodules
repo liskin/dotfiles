@@ -1,6 +1,3 @@
-[submodule ".vim/bundle/groovy.vim"]
-	path = .vim/bundle/groovy.vim
-	url = https://github.com/modille/groovy.vim
 [submodule ".vim/bundle/vimoutliner"]
 	path = .vim/bundle/vimoutliner
 	url = https://github.com/vimoutliner/vimoutliner.git
@@ -36,7 +33,7 @@
 	url = https://github.com/airblade/vim-gitgutter.git
 [submodule ".vim/bundle/vim-indent-guides"]
 	path = .vim/bundle/vim-indent-guides
-	url = https://github.com/nathanaelkane/vim-indent-guides.git
+	url = https://github.com/preservim/vim-indent-guides.git
 [submodule ".vim/bundle/vim-mkdir"]
 	path = .vim/bundle/vim-mkdir
 	url = https://github.com/pbrisbin/vim-mkdir.git
