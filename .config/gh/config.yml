@@ -9,4 +9,4 @@ pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
     co: pr checkout
-    fork: repo fork --remote --remote-name liskin
+    fork: repo fork --remote --remote-name liskin --default-branch-only
