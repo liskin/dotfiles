@@ -1,0 +1,31 @@
+/* ==UserStyle==
+@name           StackExchange site tweaks
+@namespace      https://github.com/liskin/dotfiles/tree/home/src-webextensions
+@version        1.0.0
+@author         Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document
+	domain("askubuntu.com"),
+	domain("mathoverflow.com"),
+	domain("serverfault.com"),
+	domain("stackapps.com"),
+	domain("stackexchange.com"),
+	domain("stackoverflow.com"),
+	domain("superuser.com")
+{
+	/* Unfloat right sidebar up to 1200px width, not just 980px */
+	@media screen and (max-width: 1200px) {
+		div#mainbar {
+			width: 100%;
+			float: none;
+		}
+
+		div#sidebar {
+			float: none;
+			clear: both;
+			margin: 0 auto;
+			width: 100%;
+		}
+	}
+}
