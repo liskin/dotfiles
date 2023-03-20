@@ -6,15 +6,20 @@ include ~/_github.mk
 include ~/_gitignore.mk
 include ~/_help.mk
 
+HOSTNAME := $(shell hostname)
+
 CARGO_CACHE_VERSION := 0.8.3
 CARGO_EDIT_VERSION := v0.11.9
 CARGO_WATCH_VERSION := v8.4.0
+DIESEL_CLI_14_VERSION := v1.4.1
+DIESEL_CLI_VERSION := v2.0.1
 DUST_VERSION := v0.8.5
 WATCHEXEC_VERSION := v1.21.1
 
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
 CARGO_EDIT_GITHUB := killercup/cargo-edit
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
+DIESEL_CLI_GITHUB := diesel-rs/diesel
 DUST_GITHUB := bootandy/dust
 WATCHEXEC_GITHUB := watchexec/watchexec
 
@@ -22,7 +27,8 @@ WATCHEXEC_GITHUB := watchexec/watchexec
 ## Check for updates
 update: update-github
 
-CARGO_BINSTALL := cargo binstall --no-confirm --disable-strategies compile
+CARGO_BINSTALL_COMPILE := cargo binstall --no-confirm
+CARGO_BINSTALL := $(CARGO_BINSTALL_COMPILE) --disable-strategies compile
 
 .binstall:
 	mkdir -p $@
@@ -56,6 +62,18 @@ watchexec: | .binstall/watchexec ; ln -fsT $|/bin/$@ $@
 .binstall/watchexec: .binstall/watchexec-$(WATCHEXEC_VERSION) ; ln -fsrT $< $@
 .binstall/watchexec-$(WATCHEXEC_VERSION): | .binstall
 	$(CARGO_BINSTALL) --root $@ --version =$(WATCHEXEC_VERSION:v%=%) watchexec-cli
+
+all: $(if $(filter pftp.%,$(HOSTNAME)),diesel)
+diesel: | .binstall/diesel ; ln -fsT $|/bin/$@ $@
+.binstall/diesel: .binstall/diesel-$(DIESEL_CLI_VERSION) ; ln -fsrT $< $@
+.binstall/diesel-$(DIESEL_CLI_VERSION): | .binstall
+	$(CARGO_BINSTALL_COMPILE) --root $@ --version =$(DIESEL_CLI_VERSION:v%=%) diesel_cli
+
+all: $(if $(filter pftp.%,$(HOSTNAME)),diesel1.4)
+diesel1.4: | .binstall/diesel1.4 ; ln -fsT $|/bin/diesel $@
+.binstall/diesel1.4: .binstall/diesel1.4-$(DIESEL_CLI_14_VERSION) ; ln -fsrT $< $@
+.binstall/diesel1.4-$(DIESEL_CLI_14_VERSION): | .binstall
+	$(CARGO_BINSTALL_COMPILE) --root $@ --version =$(DIESEL_CLI_14_VERSION:v%=%) diesel_cli
 
 FRECE_SRC := ~/src-rust/frece
 FRECE_VERSION := $(shell $(call GIT_DESCRIBE,$(FRECE_SRC)))
