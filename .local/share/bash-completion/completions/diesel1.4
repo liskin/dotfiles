@@ -1,0 +1,5 @@
+#!bash
+# shellcheck disable=SC2239
+
+_completion_loader diesel
+eval "$(complete -p diesel | awk '{ $NF = "diesel1.4"; print }')"
