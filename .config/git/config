@@ -26,7 +26,7 @@
 	email = tomi@nomi.cz
 	signingKey = 639DFD7BBFF09178
 [push]
-	default = simple
+	default = upstream
 [pull]
 	rebase = true
 [rebase]
