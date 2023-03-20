@@ -22,40 +22,40 @@ WATCHEXEC_GITHUB := watchexec/watchexec
 ## Check for updates
 update: update-github
 
-CARGO_BINSTALL := cargo binstall --no-confirm --disable-strategies compile --install-path .binstall
+CARGO_BINSTALL := cargo binstall --no-confirm --disable-strategies compile
 
 .binstall:
 	mkdir -p $@
 
 all: dust
-dust: | .binstall/dust ; ln -fsT $| $@
-.binstall/dust: .binstall/dust-$(DUST_VERSION)
+dust: | .binstall/dust ; ln -fsT $|/bin/$@ $@
+.binstall/dust: .binstall/dust-$(DUST_VERSION) ; ln -fsrT $< $@
 .binstall/dust-$(DUST_VERSION): | .binstall
-	$(CARGO_BINSTALL) --version =$(DUST_VERSION:v%=%) du-dust
+	$(CARGO_BINSTALL) --root $@ --version =$(DUST_VERSION:v%=%) du-dust
 
 all: cargo-watch
-cargo-watch: | .binstall/cargo-watch ; ln -fsT $| $@
-.binstall/cargo-watch: .binstall/cargo-watch-$(CARGO_WATCH_VERSION)
+cargo-watch: | .binstall/cargo-watch ; ln -fsT $|/bin/$@ $@
+.binstall/cargo-watch: .binstall/cargo-watch-$(CARGO_WATCH_VERSION) ; ln -fsrT $< $@
 .binstall/cargo-watch-$(CARGO_WATCH_VERSION): | .binstall
-	$(CARGO_BINSTALL) --version =$(CARGO_WATCH_VERSION:v%=%) cargo-watch
+	$(CARGO_BINSTALL) --root $@ --version =$(CARGO_WATCH_VERSION:v%=%) cargo-watch
 
 all: cargo-cache
-cargo-cache: | .binstall/cargo-cache ; ln -fsT $| $@
-.binstall/cargo-cache: .binstall/cargo-cache-v$(CARGO_CACHE_VERSION)
+cargo-cache: | .binstall/cargo-cache ; ln -fsT $|/bin/$@ $@
+.binstall/cargo-cache: .binstall/cargo-cache-v$(CARGO_CACHE_VERSION) ; ln -fsrT $< $@
 .binstall/cargo-cache-v$(CARGO_CACHE_VERSION): | .binstall
-	$(CARGO_BINSTALL) --version =$(CARGO_CACHE_VERSION) cargo-cache
+	$(CARGO_BINSTALL) --root $@ --version =$(CARGO_CACHE_VERSION) cargo-cache
 
 all: cargo-add cargo-rm cargo-set-version cargo-upgrade
-cargo-add cargo-rm cargo-set-version cargo-upgrade: | .binstall/cargo-upgrade ; ln -fsT $(dir $|)$@ $@
-.binstall/cargo-upgrade: .binstall/cargo-upgrade-$(CARGO_EDIT_VERSION)
+cargo-add cargo-rm cargo-set-version cargo-upgrade: | .binstall/cargo-upgrade ; ln -fsT $|/bin/$@ $@
+.binstall/cargo-upgrade: .binstall/cargo-upgrade-$(CARGO_EDIT_VERSION) ; ln -fsrT $< $@
 .binstall/cargo-upgrade-$(CARGO_EDIT_VERSION): | .binstall
-	$(CARGO_BINSTALL) --version =$(CARGO_EDIT_VERSION:v%=%) cargo-edit
+	$(CARGO_BINSTALL) --root $@ --version =$(CARGO_EDIT_VERSION:v%=%) cargo-edit
 
 all: watchexec
-watchexec: | .binstall/watchexec ; ln -fsT $| $@
-.binstall/watchexec: .binstall/watchexec-$(WATCHEXEC_VERSION)
+watchexec: | .binstall/watchexec ; ln -fsT $|/bin/$@ $@
+.binstall/watchexec: .binstall/watchexec-$(WATCHEXEC_VERSION) ; ln -fsrT $< $@
 .binstall/watchexec-$(WATCHEXEC_VERSION): | .binstall
-	$(CARGO_BINSTALL) --version =$(WATCHEXEC_VERSION:v%=%) watchexec-cli
+	$(CARGO_BINSTALL) --root $@ --version =$(WATCHEXEC_VERSION:v%=%) watchexec-cli
 
 FRECE_SRC := ~/src-rust/frece
 FRECE_VERSION := $(shell $(call GIT_DESCRIBE,$(FRECE_SRC)))
@@ -71,7 +71,7 @@ RGA_VERSION := $(shell $(call GIT_DESCRIBE,$(RGA_SRC)))
 
 RGA_BINS := rga rga-preproc rga-fzf rga-fzf-open
 all: $(RGA_BINS)
-$(RGA_BINS) &: $(MAKEFILE_LIST) | .build/rga ; $(foreach BIN,$(RGA_BINS),ln -fsT $|/bin/$(BIN) $(BIN); touch $(BIN);)
+$(RGA_BINS): $(MAKEFILE_LIST) | .build/rga ; ln -fsT $|/bin/$@ $@; touch $@
 .build/rga: $(MAKEFILE_LIST) | .build/rga-$(RGA_VERSION) ; ln -fsrT $| $@; touch $@
 .build/rga-$(RGA_VERSION):
 	cargo install --root .build/rga-$(RGA_VERSION) --locked --path ~/src-rust/ripgrep-all
