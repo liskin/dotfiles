@@ -26,6 +26,7 @@ import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.MessageFeedback
+import XMonad.Actions.NoBorders
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.EwmhDesktops
@@ -164,6 +165,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask .|. shiftMask, xK_f     ), toggleFloatAllNew >> runLogHook)
     , ((modMask              , xK_x     ), sendMessage (ToggleStrut D))
     , ((modMask              , xK_z     ), sendMessage ToggleStruts)
+    , ((modMask .|. shiftMask, xK_z     ), withFocused toggleBorder >> refresh)
 
     -- workspace dir and name
     , ((modMask,               xK_c     ), changeDir xpConfig  >> curDirToWorkspacename)
