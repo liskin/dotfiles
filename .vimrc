@@ -173,7 +173,7 @@ endif
 set diffopt+=indent-heuristic,algorithm:histogram
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
-set formatoptions+=r
+set formatoptions+=rj
 set hidden
 set scrolloff=10
 set sessionoptions-=options
