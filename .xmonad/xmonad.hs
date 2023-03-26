@@ -55,7 +55,6 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
 import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
-import XMonad.Prelude (fi)
 import XMonad.Prompt
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Hacks
@@ -306,32 +305,27 @@ myEventHook = mconcat
         myXmonadCtlHooks = [myCtlDnd]
 
 floatConfReqHook :: MaybeManageHook -> Event -> X All
-floatConfReqHook mh ev@ConfigureRequestEvent{ev_window = w} =
+floatConfReqHook mh ConfigureRequestEvent{ev_window = w} =
     runQuery (join <$> (isFloatQ -?> mh)) w >>= \case
         Nothing -> mempty
         Just e -> do
             windows (appEndo e)
-            sendConfWindow -- if still floating, send ConfigureWindow
+            sendConfEvent
             pure (All False)
   where
-    sendConfWindow = withWindowSet $ \ws ->
-        whenJust (M.lookup w (W.floating ws)) $ \fr ->
-            whenJust (findScreenRect ws) (confWindow fr)
-    findScreenRect ws = listToMaybe
-        [ screenRect (W.screenDetail s)
-        | s <- W.current ws : W.visible ws
-        , w `elem` W.integrate' (W.stack (W.workspace s)) ]
-    confWindow fr sr = withDisplay $ \dpy -> do
-        let r = scaleRationalRect sr fr
-        bw <- asks (borderWidth . config)
-        io $ configureWindow dpy w (ev_value_mask ev) $ WindowChanges
-            { wc_x            = fi $ rect_x r
-            , wc_y            = fi $ rect_y r
-            , wc_width        = fi $ rect_width r
-            , wc_height       = fi $ rect_height r
-            , wc_border_width = fromIntegral bw
-            , wc_sibling      = ev_above ev
-            , wc_stack_mode   = ev_detail ev }
+    sendConfEvent = withDisplay $ \dpy ->
+        withWindowAttributes dpy w $ \wa -> do
+            io . allocaXEvent $ \ev -> do
+                -- We may have made no changes to the window size/position
+                -- and thus the X server didn't emit any ConfigureNotify,
+                -- so we need to send the ConfigureNotify ourselves to make
+                -- sure there is a reply to this ConfigureRequestEvent and the
+                -- window knows we (possibly) ignored its request.
+                setEventType ev configureNotify
+                setConfigureEvent ev w w
+                    (wa_x wa) (wa_y wa) (wa_width wa)
+                    (wa_height wa) (wa_border_width wa) none (wa_override_redirect wa)
+                sendEvent dpy w False 0 ev
 floatConfReqHook _ _ = mempty
 
 -- | Invoke 'up' after (possibly) handling EWMH requests.
