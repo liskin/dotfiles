@@ -222,4 +222,5 @@
 	url = git@github.com:liskin/openconnect-gp-okta
 [submodule "src/safaribooks"]
 	path = src/safaribooks
-	url = https://github.com/lorenzodifuccia/safaribooks
+	#url = https://github.com/lorenzodifuccia/safaribooks
+	url = git@github.com:liskin/safaribooks

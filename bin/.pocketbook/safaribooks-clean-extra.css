@@ -1,3 +1,1 @@
-img {
-	object-fit: contain;
-}
+#book-content #sbo-rt-content img { height: auto !important; }
