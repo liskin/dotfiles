@@ -25,5 +25,6 @@ ebook-convert "$input" "$output" \
 	--font-size-mapping=10,10,11,12,14,16,18,20 \
 	--change-justification=justify \
 	--filter-css=color \
+	--extra-css="$base/safaribooks-clean-extra.css" \
 	--transform-css-rules="$base/safaribooks-clean-rules.txt" \
 	--embed-all-fonts
