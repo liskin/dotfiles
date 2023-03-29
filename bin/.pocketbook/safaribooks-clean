@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -e
+
+base="$(dirname "$(readlink -f "$0")")"
+
+input=${1:?input}
+if [[ $input != *.epub ]]; then
+	echo "epub expected"
+	exit 1
+fi
+
+# PocketBook chokes on too many font-faces and ignores the ones Calibre embeds,
+# so we need to drop all of them first.
+sed -i -e 's/@font-face/-x-ignore-font-face/g' OEBPS/Styles/*.css
+zip -u "$input" OEBPS/Styles/*.css
+
+output=${input%.epub}_clean.epub
+
+CALIBRE_OVERRIDE_LANG=C \
+ebook-convert "$input" "$output" \
+	--input-profile=default \
+	--output-profile=generic_eink_hd \
+	--base-font-size=12 \
+	--font-size-mapping=10,10,11,12,14,16,18,20 \
+	--change-justification=justify \
+	--filter-css=color \
+	--transform-css-rules="$base/safaribooks-clean-rules.txt" \
+	--embed-all-fonts

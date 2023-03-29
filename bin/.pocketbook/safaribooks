@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+. ~/bin/.passlib
+pass_entry=$(pass show web/oreilly-safaribooksonline)
+username=$(extract-field user <<<"$pass_entry")
+password=$(extract-field password <<<"$pass_entry")
+
+exec ~/src/safaribooks/safaribooks.py --cred "$username:$password" "$@"
