@@ -1,0 +1,1 @@
+../gitcommit/liskin.vim
