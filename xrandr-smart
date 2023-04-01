@@ -20,29 +20,42 @@ function get-xrandr-query {
 }
 
 function get-xrandr-outputs {
-	<<<"$xrandr_query" grep -P -o '^([\w-]+)(?= (dis)?connected)'
+	<<<"$xrandr_query" grep -P -o '^([\w-]+)(?= (dis)?connected)' | LC_ALL=C sort
 }
 
 function get-xrandr-connected-outputs {
-	<<<"$xrandr_query" grep -P -o '^([\w-]+)(?= connected)'
+	<<<"$xrandr_query" grep -P -o '^([\w-]+)(?= connected)' | LC_ALL=C sort
 }
 
 function get-xrandr-outputs-except {
 	get-xrandr-outputs | grep -F -v -x -f <(printf "%s\n" "$@")
 }
 
+function get-xrandr-custom-monitors {
+	xrandr --listmonitors | grep -P -o '^\s*\d+:\s+\K[^+]\S+' | sed -e 's/^[+*]*//'
+}
+
 function find-one {
-	local tmp one=
+	local pat="${1:?}" n="" tmp=""
+	local -a matches=()
+
+	if [[ $pat == *#* ]]; then
+		n=${pat#*#}
+		pat=${pat%#*}
+	fi
 
 	while read -r tmp; do
 		# shellcheck disable=SC2053
-		if [[ $tmp == $1 ]]; then
-			[[ $one ]] && return 1
-			one="$tmp"
+		if [[ $tmp == $pat ]]; then
+			matches+=("$tmp")
 		fi
 	done
 
-	[[ $one ]] && printf "%s\n" "$one"
+	if [[ $n ]]; then
+		(( n < ${#matches[@]} )) && printf "%s\n" "${matches[$n]}"
+	else
+		(( ${#matches[@]} == 1 )) && printf "%s\n" "${matches[0]}"
+	fi
 }
 
 function find-xrandr-output { get-xrandr-outputs | find-one "$1"; }
@@ -68,6 +81,10 @@ function xrandr-auto-off {
 
 	for output in $(get-xrandr-outputs-except ${outputs[@]+"${outputs[@]}"}); do
 		args+=(--output "$output" --off)
+	done
+
+	for monitor in $(get-xrandr-custom-monitors); do
+		o xrandr --delmonitor "$monitor"
 	done
 
 	o xrandr "${args[@]}"
