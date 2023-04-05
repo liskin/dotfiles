@@ -3,7 +3,8 @@
 set -eu -o pipefail
 shopt -s lastpipe
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 function release-tree {
 	: "${1:?name}"

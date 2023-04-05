@@ -7,7 +7,8 @@ shopt -u checkwinsize
 filter=()
 exclude=()
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 function parse-day {
 	if [[ ${1:?} == ^* ]]; then

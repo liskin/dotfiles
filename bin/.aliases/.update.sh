@@ -3,7 +3,8 @@
 set -eu
 shopt -s nullglob
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=../..
+. "$HOME"/bin/.o
 
 function export-alias {
 	for a in "$@"; do

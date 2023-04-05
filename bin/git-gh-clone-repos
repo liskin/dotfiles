@@ -2,8 +2,8 @@
 
 set -eu -o pipefail
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
-function oo { printf -->&2 "%s: %s\\n" "${0##*/}" "$*"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 options=$(unset GETOPT_COMPATIBLE && getopt -o hfnt:o: --long help,force,dry-run,type:,org: -- "$@")
 eval "set -- $options"

@@ -2,7 +2,8 @@
 
 set -eu
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 location=$(curl --silent --show-error --fail --ipv4 "https://location.services.mozilla.com/v1/geolocate?key=geoclue")
 lat=$(jq -r .location.lat <<<"$location")

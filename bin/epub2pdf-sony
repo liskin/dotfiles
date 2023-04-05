@@ -7,7 +7,8 @@
 
 set -eu
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 file="${1:?}"
 if [[ $file != *.epub ]]; then

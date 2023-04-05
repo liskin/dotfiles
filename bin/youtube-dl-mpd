@@ -2,7 +2,8 @@
 
 set -eu -o pipefail
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 mpd_music_dir="$(echo config | nc -N -U "$MPD_HOST" | awk '$1 == "music_directory:" { print $2 }')"
 : "${mpd_music_dir:?}"

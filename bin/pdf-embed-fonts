@@ -2,7 +2,8 @@
 
 set -eu
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 o mv -i "${1:?input file expected}" "${1}.orig"
 o gs -sDEVICE=pdfwrite -q -dPDFSETTINGS=/prepress -dCompatibilityLevel=1.6 -dNOPAUSE -dBATCH -dEmbedAllFonts=true -dSubsetFonts=true -dNeverEmbed[] -sOutputFile="${1}" -c save pop -f "${1}.orig"

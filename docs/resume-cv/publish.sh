@@ -2,7 +2,8 @@
 
 set -eu -o pipefail
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=../..
+. "$HOME"/bin/.o
 
 filename="${1:?filename}"
 filename_pdf="${filename%%.*}.pdf"

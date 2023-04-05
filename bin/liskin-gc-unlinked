@@ -5,7 +5,8 @@
 set -eu -o pipefail
 export LC_ALL=C
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 declare -A reachable_objects=()
 declare -A objects=()

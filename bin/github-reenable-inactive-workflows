@@ -3,7 +3,8 @@
 set -eu -o pipefail
 shopt -s lastpipe inherit_errexit
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=..
+. "$HOME"/bin/.o
 
 function github-watched-repos {
 	o gh api --paginate user/subscriptions | jq --compact-output '.[]'

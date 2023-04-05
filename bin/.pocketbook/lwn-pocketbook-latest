@@ -4,7 +4,8 @@ set -eu -o pipefail
 
 base="$(dirname "$(readlink -f "$0")")"
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+# shellcheck source-path=../..
+. "$HOME"/bin/.o
 
 o cd ~/docs/news
 epub=lwn-latest.epub

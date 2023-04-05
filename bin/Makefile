@@ -13,8 +13,8 @@ endif
 
 all: .aliases/.done
 .SKIP_GITIGNORE: .aliases/.done
-.aliases/.done: $(wildcard ~/.bashrc.d/5*_aliases*.sh)
-	.aliases/.update.sh
+.aliases/.done: .aliases/.update.sh $(wildcard ~/.bashrc.d/5*_aliases*.sh)
+	$<
 
 all: .venv-slack-sdk
 .venv-slack-sdk:
