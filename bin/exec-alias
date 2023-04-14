@@ -11,7 +11,8 @@ declare -n __EXEC_ALIAS=__EXEC_ALIAS_"$__exec_alias_cmd_clean"
 
 function __bashrc_aliases_get {
 	local LC_COLLATE=C
-	__bashrc_aliases=(~/.bashrc.d/5*_aliases*.sh)
+	eval __exec_alias_home=~"$(printf %q "$USER")"
+	__bashrc_aliases=("$__exec_alias_home"/.bashrc.d/5*_aliases*.sh)
 }; __bashrc_aliases_get; unset -f __bashrc_aliases_get
 
 exec bash -O expand_aliases -c "$(printf "%s\n" \
