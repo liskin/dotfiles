@@ -162,8 +162,8 @@ myKeys XConfig{..} = M.fromList $
     -- toggles
     , ((modMask,               xK_f     ), toggleFloatNext >> runLogHook)
     , ((modMask .|. shiftMask, xK_f     ), toggleFloatAllNew >> runLogHook)
-    , ((modMask              , xK_x     ), sendMessage (ToggleStrut D))
     , ((modMask              , xK_z     ), sendMessage ToggleStruts)
+    , ((modMask .|. ctrlMask , xK_z     ), sendMessage (ToggleStrut D))
     , ((modMask .|. shiftMask, xK_z     ), withFocused toggleBorder >> refresh)
 
     -- workspace dir and name
