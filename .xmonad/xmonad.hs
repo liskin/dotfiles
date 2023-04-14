@@ -73,8 +73,7 @@ import Xmobar.Run.Actions (stripActions)
 -- Bindings
 myKeys XConfig{..} = M.fromList $
     -- running apps
-    [ ((altMask .|. ctrlMask,  xK_r     ), unGrab >> spawnTerm terminal)
-    , ((modMask,               xK_Menu  ), unGrab >> spawnTerm terminal)
+    [ ((modMask,               xK_Menu  ), unGrab >> spawnTerm terminal)
     , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
     , ((altMask,               xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
