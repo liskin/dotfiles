@@ -82,6 +82,8 @@ export-alias nmcli-c-up-bluetooth='nmcli c up s10e.phone.lisk.in'
 export-alias nmcli-c-down-bluetooth='nmcli c down s10e.phone.lisk.in'
 export-alias bt-connect-qc45='bluetoothctl connect 78:2B:64:A0:68:02'
 export-alias bt-disconnect-qc45='bluetoothctl disconnect 78:2B:64:A0:68:02'
+export-alias bt-connect-buds='bluetoothctl connect B0:4A:6A:60:5E:A7'
+export-alias bt-disconnect-buds='bluetoothctl disconnect B0:4A:6A:60:5E:A7'
 
 export-alias mount-dropbox='systemctl --user start liskin-rclone-dropbox.service'
 export-alias umount-dropbox='systemctl --user stop liskin-rclone-dropbox.service'
