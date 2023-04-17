@@ -54,7 +54,7 @@
 [hide_pasystray_mic]
 	appname = pasystray
 	summary = "source *"
-	icon = "*volume*"
+	icon = "*microphone*"
 	skip_display = true
 
 [fullscreen_delay_everything]
