@@ -386,6 +386,7 @@ AleAddLinter python pylsp
 AleAddLinter rst proselint
 AleAddLinter sh shellcheck
 AleAddLinter text proselint
+AleAddLinter tilt buildifier
 AleAddLinter tilt tilt_lsp
 
 if isdirectory(s:cargo_root . '/target/debug')
