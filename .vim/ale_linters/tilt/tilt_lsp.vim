@@ -2,7 +2,7 @@ call ale#Set('tilt_lsp_config', {})
 
 function! ale_linters#tilt#tilt_lsp#GetProjectRoot(buffer) abort
 	return ale#path#Dirname(
-		\ ale#path#FindNearestFile(a:buffer, 'Tiltfile')
+		\ ale#path#liskin#FindFurthestFile(a:buffer, 'Tiltfile')
 	\ )
 endfunction
 
