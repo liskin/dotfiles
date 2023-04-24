@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+remote="${1:?}" || exit 0
+
+grep -q -x -F -e "$remote" < <(git config --get-all liskin.ensureBranchJira) || exit 0
+[[ ${_LISKIN_ENSUREBRANCHJIRA_SKIP-} ]] && exit 0
+
+remote_head=$(git symbolic-ref -q refs/remotes/"$remote"/HEAD) || {
+	echo "$0: missing refs/remotes/${remote}/HEAD symbolic ref" >&2
+	exit 0
+}
+remote_head=${remote_head/#"refs/remotes/$remote/"/"refs/heads/"}
+
+while read -r _local_ref local_oid remote_ref _remote_oid; do
+	if [[ "$local_oid" == +(0) ]]; then # delete branch
+		continue
+	fi
+
+	# if pushing a topic branch
+	if [[ $remote_ref == refs/heads/* && $remote_ref != "$remote_head" ]]; then
+		# check that branch name contains a jira reference
+		if ! grep -q -P -o '\b[A-Z][A-Z]+-\d+\b' <<<"${remote_ref#refs/heads/}"; then
+			echo "$0: preventing push of jira-less branch ${remote_ref#refs/heads/} (skip via _LISKIN_ENSUREBRANCHJIRA_SKIP)" >&2
+			exit 1
+		fi
+	fi
+done
