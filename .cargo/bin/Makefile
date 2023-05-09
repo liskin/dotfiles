@@ -94,6 +94,15 @@ $(RGA_BINS): $(MAKEFILE_LIST) | .build/rga ; ln -fsT $|/bin/$@ $@; touch $@
 .build/rga-$(RGA_VERSION):
 	cargo install --root .build/rga-$(RGA_VERSION) --locked --path ~/src-rust/ripgrep-all
 
+LIVEBUDSCLI_SRC := ~/src-rust/LiveBudsCli
+LIVEBUDSCLI_VERSION := $(shell $(call GIT_DESCRIBE,$(LIVEBUDSCLI_SRC)))
+
+all: earbuds
+earbuds: $(MAKEFILE_LIST) | .build/earbuds ; ln -fsT $|/bin/$@ $@; touch $@
+.build/earbuds: $(MAKEFILE_LIST) | .build/earbuds-$(LIVEBUDSCLI_VERSION) ; ln -fsrT $| $@; touch $@
+.build/earbuds-$(LIVEBUDSCLI_VERSION):
+	cargo install --root .build/earbuds-$(LIVEBUDSCLI_VERSION) --path ~/src-rust/LiveBudsCli
+
 .PHONY: gc
 ## Remove old versions
 gc:

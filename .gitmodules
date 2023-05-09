@@ -213,6 +213,9 @@
 	path = src-rust/ripgrep-all
 	#url = https://github.com/phiresky/ripgrep-all
 	url = git@github.com:liskin/ripgrep-all
+[submodule "src-rust/LiveBudsCli"]
+	path = src-rust/LiveBudsCli
+	url = https://github.com/JojiiOfficial/LiveBudsCli
 [submodule "src/tmux-bash-completion"]
 	path = src/tmux-bash-completion
 	url = https://github.com/imomaliev/tmux-bash-completion
