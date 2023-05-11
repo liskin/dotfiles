@@ -128,6 +128,7 @@ set list
 set listchars=tab:>\ ,trail:#,extends:→,precedes:←,nbsp:␣
 set noshowmode
 set showcmd
+set shortmess+=I " no intro
 
 " keep windows equally tiled {{{2
 set equalalways
@@ -143,6 +144,7 @@ autocmd VimResized * call s:equal_windows()
 " search {{{2
 set hlsearch
 set incsearch
+set shortmess-=S " show number of matches
 
 " location of swap, tags, includes {{{2
 set dir=~/.vim/swap//
@@ -162,6 +164,11 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 " :grep {{{2
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m,%f:%l:%m
+
+" disable 'E325: ATTENTION Found a swap file…' {{{2
+" (I'm a 90s kid, I save manually by pressing F2 every 2 seconds, I don't need
+" vim to warn me about other vim instances.)
+set shortmess+=A
 
 " other {{{2
 set autoread
