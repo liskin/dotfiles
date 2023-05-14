@@ -1,0 +1,8 @@
+# workaround for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1031969
+
+Section: python
+Priority: optional
+Standards-Version: 3.9.2
+
+Package: python3.10-distutils-bogus
+Provides: python3.10-distutils
