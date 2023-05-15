@@ -21,3 +21,6 @@ save-position-on-quit=yes
 # A/V sync
 interpolation=yes
 video-sync=display-resample
+
+[loudnorm]
+af=acompressor=ratio=6:attack=40:release=3000,loudnorm=I=-18
