@@ -8,13 +8,14 @@ include ~/_help.mk
 
 HOSTNAME := $(shell hostname)
 
+CARGO_AUDIT_VERSION := v0.17.6
 CARGO_CACHE_VERSION := 0.8.3
-CARGO_EDIT_VERSION := v0.11.9
+CARGO_EDIT_VERSION := v0.11.11
 CARGO_WATCH_VERSION := v8.4.0
 DIESEL_CLI_14_VERSION := v1.4.1
 DIESEL_CLI_VERSION := v2.0.1
-DUST_VERSION := v0.8.5
-WATCHEXEC_VERSION := v1.22.2
+DUST_VERSION := v0.8.6
+WATCHEXEC_VERSION := v1.22.3
 
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
 CARGO_EDIT_GITHUB := killercup/cargo-edit
@@ -26,6 +27,14 @@ WATCHEXEC_GITHUB := watchexec/watchexec
 .PHONY: update
 ## Check for updates
 update: update-github
+update: update-cargo-audit
+
+.PHONY: update-cargo-audit
+update-cargo-audit:
+	@{ \
+		v="$$(gh api --jq '.[].ref' repos/rustsec/rustsec/git/refs/tag | sed -ne 's|refs/tags/cargo-audit/||p' | sort --version-sort | tail -1)"; \
+		if [ "$$v" != "$(CARGO_AUDIT_VERSION)" ]; then echo "CARGO_AUDIT_VERSION := $$v"; fi; \
+	}
 
 CARGO_BINSTALL_COMPILE := cargo binstall --no-confirm
 CARGO_BINSTALL := $(CARGO_BINSTALL_COMPILE) --disable-strategies compile
@@ -38,6 +47,12 @@ dust: | .binstall/dust ; ln -fsT $|/bin/$@ $@
 .binstall/dust: .binstall/dust-$(DUST_VERSION) ; ln -fsrT $< $@
 .binstall/dust-$(DUST_VERSION): | .binstall
 	$(CARGO_BINSTALL) --root $@ --version =$(DUST_VERSION:v%=%) du-dust
+
+all: cargo-audit
+cargo-audit: | .binstall/cargo-audit ; ln -fsT $|/bin/$@ $@
+.binstall/cargo-audit: .binstall/cargo-audit-$(CARGO_AUDIT_VERSION) ; ln -fsrT $< $@
+.binstall/cargo-audit-$(CARGO_AUDIT_VERSION): | .binstall
+	$(CARGO_BINSTALL) --root $@ --version =$(CARGO_AUDIT_VERSION:v%=%) cargo-audit
 
 all: cargo-watch
 cargo-watch: | .binstall/cargo-watch ; ln -fsT $|/bin/$@ $@

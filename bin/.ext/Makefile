@@ -3,9 +3,8 @@ all:
 
 CURL := curl -LSsf
 
-BUILDIFIER_VERSION := 6.1.0
-CARGO_AUDIT_VERSION := v0.17.5
-CARGO_BINSTALL_VERSION := v0.22.0
+BUILDIFIER_VERSION := v6.1.2
+CARGO_BINSTALL_VERSION := v0.23.0
 CTLPTL_VERSION := v0.8.18
 DELTA_VERSION := 0.15.1
 DIVE_VERSION := v0.10.0
@@ -14,7 +13,7 @@ DOCKER_COMPOSE_VERSION := v2.17.3
 EVCXR_VERSION := v0.14.2
 FCLONES_VERSION := v0.30.0
 FITSDK_VERSION := 21.84.00
-GLAB_VERSION := v1.28.0
+GLAB_VERSION := v1.29.4
 HADOLINT_VERSION := v2.12.0
 HLINT_VERSION := v3.5
 HLS_GHC_VERSION := 8.8.4
@@ -22,10 +21,10 @@ HLS_VERSION := 1.8.0.0
 KIND_VERSION := v0.17.0
 LANGUAGETOOL_VERSION := v6.0
 PANDOC_VERSION := 2.18
-RUSTUP_VERSION := 1.25.2
-RUST_ANALYZER_VERSION := 2023-04-17
-SCCACHE_VERSION := v0.4.1
-TILT_VERSION := v0.32.2
+RUSTUP_VERSION := 1.26.0
+RUST_ANALYZER_VERSION := 2023-05-15
+SCCACHE_VERSION := v0.4.2
+TILT_VERSION := v0.32.3
 TZ_VERSION := v0.6.3
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
@@ -53,7 +52,6 @@ TZ_GITHUB := oz/tz
 ## Check for updates
 update: update-github
 update: update-rustup
-update: update-cargo-audit
 update: update-gitlab
 
 .PHONY: update-rustup
@@ -61,13 +59,6 @@ update-rustup:
 	@{ \
 		v="$$($(CURL) https://static.rust-lang.org/rustup/release-stable.toml | tomlq -r .version)"; \
 		if [ "$$v" != "$(RUSTUP_VERSION)" ]; then echo "RUSTUP_VERSION := $$v"; fi; \
-	}
-
-.PHONY: update-cargo-audit
-update-cargo-audit:
-	@{ \
-		v="$$(gh api --jq '.[].ref' repos/rustsec/rustsec/git/refs/tag | sed -ne 's|refs/tags/cargo-audit/||p' | sort --version-sort | tail -1)"; \
-		if [ "$$v" != "$(CARGO_AUDIT_VERSION)" ]; then echo "CARGO_AUDIT_VERSION := $$v"; fi; \
 	}
 
 all: rust-analyzer
@@ -199,14 +190,6 @@ cargo-binstall: | .ext-cargo-binstall ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(CARGO_BINSTALL_GITHUB)/releases/download/$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
 		| tar -x -z -C $@ cargo-binstall
-
-all: cargo-audit
-cargo-audit: | .ext-cargo-audit ; ln -fsT $|/$@ $@
-.ext-cargo-audit: .ext-cargo-audit-$(CARGO_AUDIT_VERSION) ; ln -fsT $< $@
-.ext-cargo-audit-$(CARGO_AUDIT_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/rustsec/rustsec/releases/download/cargo-audit/$(CARGO_AUDIT_VERSION)/cargo-audit-x86_64-unknown-linux-gnu-$(CARGO_AUDIT_VERSION).tgz \
-		| tar -x -z -C $@ --strip-components=1 --wildcards "*/cargo-audit"
 
 all: sccache
 sccache: | .ext-sccache ; ln -fsT $|/$@ $@

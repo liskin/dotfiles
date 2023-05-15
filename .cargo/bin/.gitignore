@@ -2,6 +2,7 @@
 /.build/
 /.old/
 /cargo-add
+/cargo-audit
 /cargo-cache
 /cargo-rm
 /cargo-set-version
