@@ -102,6 +102,44 @@ function check-user-docker {
 	systemctl --user is-active --quiet docker.service
 }
 
+function is-pid-valid {
+	local -; set +e  # $(< …) exits the whole script otherwise
+	local pp
+	{ pp=$(< "${1:?}"); } 2>/dev/null && [[ -d /proc/"$pp" ]]
+}
+
+function check-sys-libvirt {
+	libvirt_sys_domains=()
+
+	local name
+	is-pid-valid /run/libvirtd.pid || return
+
+	local f
+	for f in /run/libvirt/qemu/*.xml; do
+		if is-pid-valid "${f%.xml}.pid"; then
+			name="${f##*/}"
+			name="${name%.xml}"
+			libvirt_sys_domains+=("$name")
+		fi
+	done
+}
+
+function check-user-libvirt {
+	libvirt_user_domains=()
+
+	local name
+	is-pid-valid "$XDG_RUNTIME_DIR"/libvirt/libvirtd.pid || return
+
+	local f
+	for f in "$XDG_RUNTIME_DIR"/libvirt/qemu/run/*.xml; do
+		if is-pid-valid "${f%.xml}.pid"; then
+			name="${f##*/}"
+			name="${name%.xml}"
+			libvirt_user_domains+=("$name")
+		fi
+	done
+}
+
 function check-bt-battery {
 	local bt_addr
 	bt_battery=
@@ -123,6 +161,8 @@ function refresh {
 	check-vpns && log="$log <fn=3>"$'\uf983'" (${vpns[*]})</fn>"
 	check-sys-docker && log="$log <fn=3>"$'\uf308'" </fn>"
 	check-user-docker && log="$log <fn=3>"$'\ue7b0'" </fn>"
+	check-sys-libvirt && log="$log <fn=3>"$'\uea7a'" (${libvirt_sys_domains[*]})</fn>"
+	check-user-libvirt && log="$log <fn=3>"$'\ueb7b'" (${libvirt_user_domains[*]})</fn>"
 	log="${log:+<fc=red>$log</fc>}"
 
 	check-bt-battery && log="$log <fn=3>"$'\uf7ca'" </fn>${bt_battery}%"
