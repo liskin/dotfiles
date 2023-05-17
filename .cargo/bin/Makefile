@@ -67,9 +67,9 @@ cargo-cache: | .binstall/cargo-cache ; ln -fsT $|/bin/$@ $@
 	$(CARGO_BINSTALL) --root $@ --version =$(CARGO_CACHE_VERSION) cargo-cache
 
 all: cargo-add cargo-rm cargo-set-version cargo-upgrade
-cargo-add cargo-rm cargo-set-version cargo-upgrade: | .binstall/cargo-upgrade ; ln -fsT $|/bin/$@ $@
-.binstall/cargo-upgrade: .binstall/cargo-upgrade-$(CARGO_EDIT_VERSION) ; ln -fsrT $< $@
-.binstall/cargo-upgrade-$(CARGO_EDIT_VERSION): | .binstall
+cargo-add cargo-rm cargo-set-version cargo-upgrade: | .binstall/cargo-edit ; ln -fsT $|/bin/$@ $@
+.binstall/cargo-edit: .binstall/cargo-edit-$(CARGO_EDIT_VERSION) ; ln -fsrT $< $@
+.binstall/cargo-edit-$(CARGO_EDIT_VERSION): | .binstall
 	$(CARGO_BINSTALL) --root $@ --version =$(CARGO_EDIT_VERSION:v%=%) cargo-edit
 
 all: watchexec
