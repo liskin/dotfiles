@@ -37,8 +37,14 @@ find -L . -maxdepth 2 -name .git | sort \
 	if [[ $set_head ]]; then
 		o git -C "$repo" remote set-head --auto origin
 	fi
-	head=$(git -C "$repo" symbolic-ref -q refs/remotes/origin/HEAD)
-	branch=$(git -C "$repo" current-branch)
+	head=$(git -C "$repo" symbolic-ref -q refs/remotes/origin/HEAD) || {
+		msgs+=("$repo - origin/HEAD unknown")
+		continue
+	}
+	branch=$(git -C "$repo" current-branch) || {
+		msgs+=("$repo - no current branch")
+		continue
+	}
 	status=$(git -C "$repo" status --porcelain --untracked-files=no)
 	if [[ $branch != "${head##*/}" ]]; then
 		msgs+=("$repo - different branch: $branch != ${head##*/}")
