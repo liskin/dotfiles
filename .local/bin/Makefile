@@ -32,6 +32,10 @@ gdbgui: PYTHON=python3.10
 gdbgui:
 	$(PIPX_INSTALL) gdbgui
 
+all: git-when-merged
+git-when-merged:
+	$(PIPX_INSTALL) git-when-merged
+
 all: strava-offline
 strava-offline:
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
