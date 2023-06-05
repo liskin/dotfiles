@@ -24,3 +24,8 @@ function __fzf_history__ {
 		READLINE_POINT=0x7fffffff
 	fi
 }
+
+function fopen {
+	# shellcheck disable=SC2048
+	fzf --bind="enter:execute:xdg-open {}" --bind="change:reload: locate {q}" ${*+--bind="start:reload: locate {q}" --query="$*"} </dev/null
+}
