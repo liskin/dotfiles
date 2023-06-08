@@ -31,8 +31,8 @@ xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled' 1 || :
 xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0 || :
 if liskin-dmi-product 20VX; then
-	xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.5 || :
-	xinput set-prop 'TPPS/2 Elan TrackPoint' 'libinput Accel Speed' -0.6 || :
+	xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.6 || :
+	xinput set-prop 'TPPS/2 Elan TrackPoint' 'libinput Accel Speed' -0.5 || :
 elif liskin-dmi-product 20K7; then
 	xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
 fi
