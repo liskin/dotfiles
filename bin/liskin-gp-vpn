@@ -58,7 +58,7 @@ case "${start_stop:?}" in
 				--quiet \
 				--collect \
 				--user --slice="app.slice" --unit="liskin-vpnns-tun@${name}.service" \
-				--property="Environment=PATH=${PATH}:/usr/bin:/sbin" \
+				--property="Environment=PATH=${PATH:?}:/usr/sbin:/sbin" \
 				--property="KillMode=mixed" --property="ExitType=cgroup" \
 				--property="Requires=liskin-vpnns@${vpnns}.service" --property="After=liskin-vpnns@${vpnns}.service" \
 				-- \
@@ -74,7 +74,7 @@ case "${start_stop:?}" in
 				--quiet \
 				--collect \
 				--user --slice="app.slice" --unit="liskin-gp-vpn@${name}.service" \
-				--property="Environment=PATH=${PATH:?}:/usr/bin:/sbin" \
+				--property="Environment=PATH=${PATH:?}:/usr/sbin:/sbin" \
 				--property="KillMode=mixed" --property="ExitType=cgroup" \
 				-- \
 				openconnect-gp-okta \
