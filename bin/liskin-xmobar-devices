@@ -64,8 +64,8 @@ function check-touchscreen {
 function check-camera {
 	local name interface f
 	for f in /sys/class/video4linux/video*; do
-		read -r name <"${f}/name" && [[ "$name" == *"Integrated Camera"* ]] && return 0
-		read -r interface <"${f}/device/interface" && [[ "$interface" == *"Integrated Camera"* ]] && return 0
+		[[ -e "${f}/name" ]] && read -r name <"${f}/name" && [[ "$name" == *"Integrated Camera"* ]] && return 0
+		[[ -e "${f}/device/interface" ]] && read -r interface <"${f}/device/interface" && [[ "$interface" == *"Integrated Camera"* ]] && return 0
 	done
 	return 1
 }
