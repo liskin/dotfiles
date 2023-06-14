@@ -7,6 +7,7 @@ mkdir -p "$save_dir"
 profile="${save_dir}/${1:-.current}"
 profile="$(readlink -f "$profile")"
 [[ "${profile}" ]]
+[[ ${1-} || -f "${profile}" ]]
 
 [[ -f "${profile}" ]] && cp "${profile}" "${profile}~"
 mpstore >"${profile}"
