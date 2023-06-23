@@ -418,7 +418,7 @@ let g:fzf_colors = {
 	\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
 	\ 'hl+':     ['fg', 'Special'],
 	\ 'info':    ['fg', 'PreProc'],
-	\ 'border':  ['fg', 'Ignore'],
+	\ 'border':  ['fg', 'SpecialKey'],
 	\ 'prompt':  ['fg', 'Conditional'],
 	\ 'pointer': ['fg', 'Exception'],
 	\ 'marker':  ['fg', 'Keyword'],

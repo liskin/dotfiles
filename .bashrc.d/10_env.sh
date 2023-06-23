@@ -36,6 +36,7 @@ export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
 export RIPGREP_CONFIG_PATH=~/.config/ripgreprc
 export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_DEFAULT_OPTS='--preview-window=border-left --info=inline-right'
 export FZF_TMUX_HEIGHT=100%
 export FZF_TMUX=0
 export BAT_STYLE=plain
