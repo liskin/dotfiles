@@ -1,0 +1,3 @@
+Package: src:systemd:*
+Pin: release a=stable
+Pin-Priority: 1100
