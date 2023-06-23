@@ -723,7 +723,9 @@ function! s:execute(dict, command, use_height, temps) abort
     let a:temps.shellscript = shellscript
   endif
   if a:use_height
+    call writefile([&t_fd], "/dev/tty", "b")
     call system(printf('tput cup %d > /dev/tty; tput cnorm > /dev/tty; %s < /dev/tty 2> /dev/tty', &lines, command))
+    call writefile([&t_fe], "/dev/tty", "b")
   else
     execute 'silent !'.command
   endif
