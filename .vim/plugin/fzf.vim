@@ -164,7 +164,7 @@ function s:get_version(bin)
   if has_key(s:versions, a:bin)
     return s:versions[a:bin]
   end
-  let command = (&shell =~ 'powershell' ? '&' : '') . s:fzf_call('shellescape', a:bin) . ' --version --no-height'
+  let command = (&shell =~ 'powershell\|pwsh' ? '&' : '') . s:fzf_call('shellescape', a:bin) . ' --version --no-height'
   let output = systemlist(command)
   if v:shell_error || empty(output)
     return ''
@@ -456,6 +456,30 @@ function! s:writefile(...)
   endif
 endfunction
 
+function! s:extract_option(opts, name)
+  let opt = ''
+  let expect = 0
+  " There are a few cases where this function doesn't work as expected.
+  " Let's just assume such cases are extremely unlikely in real world.
+  "   e.g. --query --border
+  for word in split(a:opts)
+    if expect && word !~ '^"\=-'
+      let opt = opt . ' ' . word
+      let expect = 0
+    elseif word == '--no-'.a:name
+      let opt = ''
+    elseif word =~ '^--'.a:name.'='
+      let opt = word
+    elseif word =~ '^--'.a:name.'$'
+      let opt = word
+      let expect = 1
+    elseif expect
+      let expect = 0
+    endif
+  endfor
+  return opt
+endfunction
+
 function! fzf#run(...) abort
 try
   let [shell, shellslash, shellcmdflag, shellxquote] = s:use_sh()
@@ -514,10 +538,8 @@ try
     let height = s:calc_size(&lines, dict.down, dict)
     let optstr .= ' --height='.height
   endif
-  " Respect --border option given in 'options'
-  if stridx(optstr, '--border') < 0 && stridx(optstr, '--no-border') < 0
-    let optstr .= s:border_opt(get(dict, 'window', 0))
-  endif
+  " Respect --border option given in $FZF_DEFAULT_OPTS and 'options'
+  let optstr = join([s:border_opt(get(dict, 'window', 0)), s:extract_option($FZF_DEFAULT_OPTS, 'border'), optstr])
   let prev_default_command = $FZF_DEFAULT_COMMAND
   if len(source_command)
     let $FZF_DEFAULT_COMMAND = source_command
@@ -744,7 +766,7 @@ function! s:calc_size(max, val, dict)
     return size
   endif
   let margin = match(opts, '--inline-info\|--info[^-]\{-}inline') > match(opts, '--no-inline-info\|--info[^-]\{-}\(default\|hidden\)') ? 1 : 2
-  let margin += stridx(opts, '--border') > stridx(opts, '--no-border') ? 2 : 0
+  let margin += match(opts, '--border\([^-]\|$\)') > match(opts, '--no-border\([^-]\|$\)') ? 2 : 0
   if stridx(opts, '--header') > stridx(opts, '--no-header')
     let margin += len(split(opts, "\n"))
   endif
