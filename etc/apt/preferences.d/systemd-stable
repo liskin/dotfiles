@@ -1,3 +1,3 @@
 Package: src:systemd:*
-Pin: release a=stable
+Pin: version 252.6-1
 Pin-Priority: 1100
