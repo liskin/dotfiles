@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+if [[ ! $__VPNC_SCRIPT_PKEXEC && "$(id -u)" != "0" ]]; then
+	env=()
+	while IFS='=' read -r -d '' k v; do
+		case "$k" in
+			reason)  ;&
+			VPNGATEWAY) ;&
+			VPNPID) ;&
+			TUNDEV) ;&
+			IDLE_TIMEOUT) ;&
+			LOG_LEVEL) ;&
+			INTERNAL_IP4_*) ;&
+			INTERNAL_IP6_*) ;&
+			CISCO_*)
+				env+=("${k}=${v}")
+				;;
+		esac
+	done < <(env -0)
+
+	exec pkexec env __VPNC_SCRIPT_PKEXEC=: "${env[@]}" "$(readlink -f "$0")" "$@" || exit 1
+fi
+
+/usr/share/vpnc-scripts/vpnc-script "$@" && ret=$? || ret=$?
+
+# shellcheck disable=SC2154
+if [[ $reason == "connect" && $TUNDEV && ! $CISCO_IPV6_SPLIT_INC && ! $CISCO_IPV6_SPLIT_EXC && ! $INTERNAL_IP6_NETMASK && ! $INTERNAL_IP6_ADDRESS ]]; then
+	ip -6 ro ad unreachable default metric 1
+	ip -6 route flush cache
+elif [[ $reason == "disconnect" && $TUNDEV && ! $CISCO_IPV6_SPLIT_INC && ! $CISCO_IPV6_SPLIT_EXC && ! $INTERNAL_IP6_NETMASK && ! $INTERNAL_IP6_ADDRESS ]]; then
+	ip -6 ro del unreachable default metric 1
+	ip -6 route flush cache
+fi
+
+exit "$ret"

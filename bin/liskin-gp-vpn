@@ -66,6 +66,7 @@ case "${start_stop:?}" in
 					"${gp_okta_args[@]}" \
 					-- \
 					--csd-wrapper="${HOME:?}"/bin/openconnect-gp-hipreport \
+					--csd-user="${USER:?}" \
 					--setuid="${USER:?}" \
 					--script-tun --script "vpnns --name=${vpnns} --attach" \
 					"${openconnect_args[@]}"
@@ -82,8 +83,10 @@ case "${start_stop:?}" in
 					"${gp_okta_args[@]}" \
 					-- \
 					--csd-wrapper="${HOME:?}"/bin/openconnect-gp-hipreport \
+					--csd-user="${USER:?}" \
 					--setuid="${USER:?}" \
 					--interface="tun_${name}" \
+					--script="${HOME:?}"/bin/liskin-gp-vpn-vpnc-script \
 					"${openconnect_args[@]}"
 		fi
 		;;
