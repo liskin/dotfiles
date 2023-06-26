@@ -9,6 +9,7 @@ case "$1" in
 	nomi|nomi-*) set -- needsterminal "$@" ;;
 	arbtt*) set -- needsterminal "$@"; export _XTERM_HOLD=: ;;
 	kinit*) set -- needsterminal "$@"; export _XTERM_HOLD=: ;;
+	liskin-slack-status) set -- needsterminal "$@" ;;
 esac
 
 exec "$@"
