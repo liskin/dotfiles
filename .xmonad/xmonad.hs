@@ -74,6 +74,7 @@ import Xmobar.Run.Actions (stripActions)
 myKeys XConfig{..} = M.fromList $
     -- running apps
     [ ((modMask,               xK_Menu  ), unGrab >> spawnTerm terminal)
+    , ((modMask .|. shiftMask, xK_Menu  ), unGrab >> spawnTerm "urxvt -xrm 'URxvt.transient-for: 0x11111111'") -- float (fake transience)
     , ((0,                     xK_Menu  ), unGrab >> spawnApp "rofi -show run")
     , ((altMask,               xK_Menu  ), unGrab >> spawnApp "rofi -show drun")
 
