@@ -7,8 +7,8 @@ case "$1" in
 	vim|wiki) set -- needsterminal "$@" ;;
 	m|m-*|mutt|mutt-*) set -- needsterminal "$@" ;;
 	nomi|nomi-*) set -- needsterminal "$@" ;;
-	arbtt*) set -- needsterminal "$@"; export _XTERM_HOLD=: ;;
-	kinit*) set -- needsterminal "$@"; export _XTERM_HOLD=: ;;
+	arbtt*) set -- needsterminal "$@"; export _XTERM_HOLD=: _XTERM_FLOAT=: ;;
+	kinit*) set -- needsterminal "$@"; export _XTERM_HOLD=: _XTERM_FLOAT=: ;;
 	liskin-slack-status) set -- needsterminal "$@" ;;
 esac
 
