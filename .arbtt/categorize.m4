@@ -10,7 +10,14 @@ any window (! $hidden && (
 	($program == "google-chrome" && $title =~ m|:: https?://meet\.google|)
 	|| ($program == "google-chrome" && $title =~ m|:: https?://[^/]*zoom\.us/|)
 	|| $program =~ /^zoom/ || ($program =~ /^join\?/ && $title =~ /Zoom Meeting/)
-)) ==> tag Activity:Call,
+) && (
+	-- try to grab a project name for the call window
+	(!( $wdesktop == ["1:irc", "2:web", "12:watch"] ) && $wdesktop =~ m|^W?\d+:([^:]*)|)
+	|| 0 == 0
+)) ==> {
+	tag Activity:Call-$1ⁱ, -- if we grabbed a project name earlier, annotate the tag; ignore otherwise
+	tag Activity:Call,
+},
 $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	current window $title =~ /^(t\[N\] |weechat\S+: )/ ==> tag Activity:Chat,
 	current window $title =~ /^(t\[m\]|m\[[A-Z]\])[  ]/ ==> tag Activity:Mail,
