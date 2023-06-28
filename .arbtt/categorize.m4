@@ -72,7 +72,7 @@ current window $program == "google-chrome" && $desktop == ["1:irc", "2:web"] ==>
 		&& $program == ["urxvt", "x-terminal-emulator"]
 		&& $wdesktop =~ m|^W?\d+:([^:]*)|
 	) ==> tag Activity:Proj-$1ⁱ,
-	tag Activity:Web-otherⁱ,
+	tag Activity:Web-UNKNOWN,
 },
 
 -- vim:set ft=haskell noet:
