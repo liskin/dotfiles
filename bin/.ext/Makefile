@@ -5,6 +5,7 @@ CURL := curl -LSsf
 
 BUILDIFIER_VERSION := v6.1.2
 CARGO_BINSTALL_VERSION := v0.23.1
+CIRCLECI_CLI_VERSION := v0.1.27054
 CTLPTL_VERSION := v0.8.20
 DELTA_VERSION := 0.16.5
 DIVE_VERSION := v0.10.0
@@ -29,6 +30,7 @@ TZ_VERSION := v0.6.3
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
 CARGO_BINSTALL_GITHUB := cargo-bins/cargo-binstall
+CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
 CTLPTL_GITHUB := tilt-dev/ctlptl
 DELTA_GITHUB := dandavison/delta
 DIVE_GITHUB := wagoodman/dive
@@ -256,6 +258,17 @@ glab: | .ext-glab ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://gitlab.com/$(GLAB_GITLAB)/-/releases/$(GLAB_VERSION)/downloads/glab_$(GLAB_VERSION:v%=%)_Linux_x86_64.tar.gz \
 		| tar -x -z -C $@ --strip-components=1 bin/glab
+
+all: .ext-circleci-cli
+.SKIP_GITIGNORE: .ext-circleci-cli
+.ext-circleci-cli: .ext-circleci-cli-$(CIRCLECI_CLI_VERSION) ; ln -fsT $< $@
+.ext-circleci-cli-$(CIRCLECI_CLI_VERSION): .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz
+	mkdir -p $@
+	tar -xzf $< -C $@ --strip-components=1 --wildcards "*/circleci"
+
+.INTERMEDIATE: .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz
+.ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz:
+	wget -O $@ https://github.com/$(CIRCLECI_CLI_GITHUB)/releases/download/$(CIRCLECI_CLI_VERSION)/circleci-cli_$(CIRCLECI_CLI_VERSION:v%=%)_linux_amd64.tar.gz
 
 .PHONY: gc
 ## Remove old versions

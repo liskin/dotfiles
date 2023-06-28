@@ -1,0 +1,2 @@
+#!/bin/sh
+CIRCLECI_CLI_SKIP_UPDATE_CHECK=true exec ~/bin/.ext/.ext-circleci-cli/circleci "$@"
