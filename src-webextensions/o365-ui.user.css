@@ -12,13 +12,13 @@
 	#LeftRail { width: 48px; }
 
 	/* vertically collapse top bars */
-	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover)):not(:has(button[aria-label="Exit Search"]))
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover)):not(:has(button[aria-label="Exit Search" i]))
 	:is(#o365header, div[aria-label="Ribbon"]) {
 		height: 4px;
 	}
 
 	/* horizontally collapse left bar */
-	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover)):not(:has(button[aria-label="Exit Search"]))
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):has(div[aria-label="Ribbon"]:not(:hover)):not(:has(button[aria-label="Exit Search" i]))
 	:is(#LeftRail) {
 		width: 4px;
 	}
@@ -37,13 +37,13 @@
 	#LeftRail { width: 48px; }
 
 	/* vertically collapse top bar */
-	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):not(:has(button[aria-label="Exit Search"]))
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):not(:has(button[aria-label="Exit Search" i]))
 	:is(#o365header) {
 		height: 4px;
 	}
 
 	/* horizontally collapse left bar */
-	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):not(:has(button[aria-label="Exit Search"]))
+	:root:has(#o365header:not(:hover)):has(#LeftRail:not(:hover)):not(:has(button[aria-label="Exit Search" i]))
 	:is(#LeftRail) {
 		width: 4px;
 	}
