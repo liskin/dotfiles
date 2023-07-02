@@ -52,6 +52,7 @@ components:
   schwalbe-one-2017-3: "Schwalbe One Evo 2016 25-622"
   schwalbe-one-2017-4: "Schwalbe One Evo 2016 25-622"
   schwalbe-one-2019-5: "Schwalbe One Evo V-Guard 25-622"
+  schwalbe-pro-one-2020-6: "Schwalbe Pro One (Tube) 25-622"
 
   schwalbe-x-one-2018-1: "Schwalbe X-One Allround Evo 35-622"
   schwalbe-x-one-2018-2: "Schwalbe X-One Allround Evo 35-622"
@@ -298,6 +299,10 @@ rules:
   gravel:
     tyre-front: schwalbe-g-one-2021-2
     tyre-rear: schwalbe-g-one-2021-1
+# - since: TODO
+#   gravel:
+#     tyre-front: schwalbe-pro-one-2020-6
+#     tyre-rear: schwalbe-one-2019-5
 
 # gravel --- wheelsets
 - since: 2017-03-30
@@ -396,6 +401,7 @@ rules:
 - {since: 2022-07-29T15:00:00+01:00, ss-uk: {chain: chain1-6}}
 - {since: 2022-08-01T20:00:00+01:00, ss-uk: {chainring: piste-chainring-2}}
 - {since: 2022-08-25, ss-uk: {cog: cog1-2}}
+- {since: 2023-07-02, ss-uk: {tyre-rear: schwalbe-one-2017-2}}
 
 # road ----------------------------
 - road:
