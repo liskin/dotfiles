@@ -273,6 +273,7 @@ myManageHook = composeAll
     , appName =? "pavucontrol" --> doFloat
     , appName =? "peek" --> doFloat <> hasBorder False
     , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
+    , ("_NET_WM_STATE" `isInProperty` "_NET_WM_STATE_ABOVE" <&&> title $? "is sharing your screen.") --> doHideIgnore
     , isDialog --> doFloat
     , transience'
     ]
