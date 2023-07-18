@@ -55,4 +55,8 @@
 	/* hide day/week/month headings */
 	div[data-app-section="MessageList"] div[role="listbox"] div[role="heading"]:not([id$="results"]) { display: none; }
 
+	/* folders pane compact */
+	div[data-app-section="NavigationPane"] > div > div { padding-left: 0; }
+	div[data-app-section="NavigationPane"] div.ms-FocusZone > div { padding-right: 0; }
+
 }
