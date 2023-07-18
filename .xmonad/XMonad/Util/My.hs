@@ -31,6 +31,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Layout.Inspect
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.WorkspaceDir
+import XMonad.Prompt
 import XMonad.Util.Run
 import XMonad.Util.Ungrab
 import XMonad.Util.WindowProperties
@@ -55,6 +56,12 @@ curDirToWorkspacename = do
         dir <- io getCurrentDirectory
         when (dir /= myHome) $ do
             setCurrentWorkspaceName $ last $ splitOneOf "/" dir
+
+-- | Like 'renameWorkspace' but with the current name in the prompt.
+renameWorkspace :: XPConfig -> X ()
+renameWorkspace conf = do
+    n <- getCurrentWorkspaceName
+    XMonad.Actions.WorkspaceNames.renameWorkspace conf{ defaultText = fromMaybe "" n }
 
 -- | Select an X action from a list using a @rofi@ prompt and do it.
 runSelectedAction :: String -> [(String, X ())] -> X ()

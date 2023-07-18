@@ -28,7 +28,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.MessageFeedback
 import XMonad.Actions.NoBorders
 import XMonad.Actions.UpdatePointer
-import XMonad.Actions.WorkspaceNames
+import XMonad.Actions.WorkspaceNames hiding (renameWorkspace)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
