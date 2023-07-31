@@ -73,7 +73,7 @@
 [diff "hex"]
 	textconv = hexdump -v -C
 [interactive]
-	diffFilter = delta --color-only
+	diffFilter = delta
 [core]
 	pager = less -FRX --tabs=1,5
 	hooksPath = ~/.config/git/hooks
@@ -81,6 +81,8 @@
 	diff = delta
 	show = delta
 [delta]
+	features = diff-highlight
+[delta "diff-highlight"]
 	color-only = true
 	diff-highlight = true
 [stash]
