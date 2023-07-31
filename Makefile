@@ -34,6 +34,7 @@ SUBDIRS_EXCLUDE := docs/resume-cv .xmonad-testing
 all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
 
 .cargo/bin: bin/.ext
+.rustup: bin/.ext
 
 ## Invoke "make gc" in sub-Makefiles
 gc: .cargo/bin%gc
