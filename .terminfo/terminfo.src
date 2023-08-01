@@ -1,13 +1,20 @@
+xterm+sm+1006+focusfix|xterm+sm+1006 without forced focus reporting,
+	XM=\E[?1006;1000%?%p1%{1}%=%th%el%;,
+	use=xterm+sm+1006,
+
 rxvt-unicode-256color|rxvt-unicode terminal with 256 colors (X Window System) + xterm+sm+1006,
 	XT,
 	colors#256, pairs#32767,
 	Se=\E[2 q, Ss=\E[%p1%d q,
 	Cr=\E]12;15\007, Cs=\E]12;%p1%s\007,
 	Ms=\E]52;%p1%s;%p2%s\007,
+	use=xterm+sm+1006+focusfix,
 	use=xterm+sm+1006,
+	use=xterm+focus,
 	use=rxvt-unicode,
 
 tmux-256color|tmux with 256 colors + xterm+sm+1006,
+	use=xterm+sm+1006+focusfix,
 	use=xterm+sm+1006,
 	use=xterm+256setaf, use=tmux,
 
