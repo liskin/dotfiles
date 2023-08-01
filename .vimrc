@@ -60,12 +60,6 @@ if !has('nvim')
 		let &t_fe = "\<Esc>[?1004h"
 		let &t_fd = "\<Esc>[?1004l"
 
-		" bracketed paste {{{4
-		let &t_BE="\<Esc>[?2004h"
-		let &t_BD="\<Esc>[?2004l"
-		let &t_PS="\<Esc>[200~"
-		let &t_PE="\<Esc>[201~"
-
 		" ctrl+pgup/down to switch tabs {{{4
 		exe "set <F13>=\<Esc>[5;5~"
 		exe "set <F14>=\<Esc>[6;5~"

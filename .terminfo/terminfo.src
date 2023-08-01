@@ -11,6 +11,7 @@ rxvt-unicode-256color|rxvt-unicode terminal with 256 colors (X Window System) + 
 	use=xterm+sm+1006+focusfix,
 	use=xterm+sm+1006,
 	use=xterm+focus,
+	use=bracketed+paste,
 	use=rxvt-unicode,
 
 tmux-256color|tmux with 256 colors + xterm+sm+1006,
