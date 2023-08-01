@@ -56,6 +56,8 @@
 	unstatus = -c status.showUntrackedFiles=normal status
 	unigstatus = "!git ls-files | sed -n -e 's|^|./|; s|/\\.gitignore$||p' | xargs git unstatus"
 	resign = rebase -f -S
+	sidiff = -c pager.diff='delta --features=side' diff
+	sishow = -c pager.show='delta --features=side' show
 [mergetool]
 	keepBackup = false
 [merge]
@@ -82,9 +84,26 @@
 	show = delta
 [delta]
 	features = diff-highlight
+	tabs = 4
+	syntax-theme = DarkNeon
 [delta "diff-highlight"]
 	color-only = true
 	diff-highlight = true
+[delta "side"]
+	side-by-side = true
+	paging = always
+	commit-style = raw
+	file-style = bold 39 235
+	file-decoration-style = 39 235 ul ol
+	hunk-header-decoration-style = 245 235 box
+	hunk-header-line-number-style = 245 235
+	line-numbers-left-style = bold 245 233
+	line-numbers-right-style = bold 245 233
+	line-numbers-minus-style = 88 233
+	line-numbers-zero-style = 240 233
+	line-numbers-plus-style = 28 233
+	# colorMoved - newMoved, newMovedAlternative, oldMoved, oldMovedAlternative:
+	map-styles = bold 157 => syntax 24, bold 49 => syntax 29, bold 166 => syntax 54, bold 163 => syntax 89
 [stash]
 	showPatch = true
 [svn]
@@ -105,6 +124,7 @@
 [tig "bind"]
 	generic = e !>tmux-new-window-or-exec vim +"%(lineno)" "%(file)"
 	generic = E !>tmux-new-window-or-exec vim +"%(lineno)" "fugitive://%(repo:git-dir)//%(commit)/%(file)"
+	generic = <Ctrl-S> !>tmux-new-window-or-exec git sishow "%(commit)"
 [fetch]
 	prune = true
 [completion]
