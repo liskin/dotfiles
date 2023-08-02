@@ -88,7 +88,7 @@
 	syntax-theme = DarkNeon
 [delta "diff-highlight"]
 	color-only = true
-	diff-highlight = true
+	commit-style = raw
 [delta "side"]
 	side-by-side = true
 	paging = always
