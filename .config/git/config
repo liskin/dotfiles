@@ -56,8 +56,8 @@
 	unstatus = -c status.showUntrackedFiles=normal status
 	unigstatus = "!git ls-files | sed -n -e 's|^|./|; s|/\\.gitignore$||p' | xargs git unstatus"
 	resign = rebase -f -S
-	sidiff = -c pager.diff='delta --features=side' diff
-	sishow = -c pager.show='delta --features=side' show
+	si-diff = -c pager.diff='delta --features=side' diff
+	si-show = -c pager.show='delta --features=side' show
 [mergetool]
 	keepBackup = false
 [merge]
@@ -124,7 +124,7 @@
 [tig "bind"]
 	generic = e !>tmux-new-window-or-exec vim +"%(lineno)" "%(file)"
 	generic = E !>tmux-new-window-or-exec vim +"%(lineno)" "fugitive://%(repo:git-dir)//%(commit)/%(file)"
-	generic = <Ctrl-S> !>tmux-new-window-or-exec git sishow "%(commit)"
+	generic = <Ctrl-S> !>tmux-new-window-or-exec git si-show "%(commit)"
 [fetch]
 	prune = true
 [completion]
