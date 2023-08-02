@@ -58,6 +58,7 @@
 	resign = rebase -f -S
 	si-diff = -c pager.diff='delta --features=side' diff
 	si-show = -c pager.show='delta --features=side' show
+	si-range-diff = -c pager.range-diff='git-range-diff-delta-preproc | delta --features=side-range-diff' range-diff
 [mergetool]
 	keepBackup = false
 [merge]
@@ -85,7 +86,6 @@
 [delta]
 	features = diff-highlight
 	tabs = 4
-	syntax-theme = DarkNeon
 [delta "diff-highlight"]
 	color-only = true
 	commit-style = raw
@@ -104,6 +104,16 @@
 	line-numbers-plus-style = 28 233
 	# colorMoved - newMoved, newMovedAlternative, oldMoved, oldMovedAlternative:
 	map-styles = bold 157 => syntax 24, bold 49 => syntax 29, bold 166 => syntax 54, bold 163 => syntax 89
+[delta "side-nonum"]
+	features = side
+	hunk-header-style = syntax
+	line-numbers-left-format = ""
+	line-numbers-right-format = "│ "
+	line-numbers-right-style = 245
+	file-decoration-style = 39 235
+[delta "side-range-diff"]
+	features = side-nonum
+	file-style = omit
 [stash]
 	showPatch = true
 [svn]

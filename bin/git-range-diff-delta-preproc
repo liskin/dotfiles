@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# preprocessor for "git range-diff" output to be fed into "delta" for side-by-side diff
+# see ~/.config/git/config for usage (si-range-diff alias)
+#
+# developed against git 2.40 - git range-diff doesn't have stable output, might need adjustments
+# see https://github.com/git/git/blob/ee48e70a829d1fa2da82f14787051ad8e7c45b71/range-diff.c#L376
+
+set -eu
+
+coproc ansi2txt {
+	stdbuf -oL ansi2txt
+}
+
+while IFS= read -r l; do
+	# decolor line for matching/processing
+	printf "%s\n" "$l" >&"${ansi2txt[1]}"
+	IFS= read -r ll <&"${ansi2txt[0]}"
+
+	if [[ $ll == "    @@ "* ]]; then # hunk header line
+		# fake hunk header for delta
+		printf "@@ -0,0 +0,0 @@ %s\n" "${ll#    @@ }"
+	elif [[ $ll == "    "* ]]; then # hunk diff line
+		# un-indent diff
+		printf "%s\n" "${ll#    }"
+	else # pair header line
+		# horizontal separator before the line
+		tput setaf 39; tput setab 235; printf %"$(tput cols)"s | sed 's/ /─/g'; tput sgr0
+		printf "%s\n" "$l"
+
+		if [[ $ll =~ ^[[:digit:]][[:digit:]]*:"  "([[:alnum:]][[:alnum:]]*)" ! "[[:digit:]][[:digit:]]*:"  "([[:alnum:]][[:alnum:]]*)" " ]]; then
+			# fake file header for delta to syntax highlight as patch
+			echo "--- ${BASH_REMATCH[1]}.patch"
+			echo "+++ ${BASH_REMATCH[2]}.patch"
+		else
+			# extra line for unmatched commits
+			echo
+		fi
+	fi
+done
