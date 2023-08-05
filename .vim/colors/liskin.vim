@@ -301,12 +301,13 @@ if &t_Co >= 256 || has('gui_running')
 	hi Search cterm=underline gui=underline
 	hi Special cterm=bold gui=bold
 	hi SpecialKey cterm=bold gui=bold
-	hi link Whitespace SpecialKey
 	hi Statement cterm=bold gui=bold
 	hi Title cterm=bold gui=bold
 	hi Type cterm=bold gui=bold
 	hi Underlined cterm=bold gui=bold
 	hi VertSplit cterm=NONE gui=NONE
+	hi link FloatBorder Pmenu
+	hi link Whitespace SpecialKey
 
 	if &bg == "dark"
 		hi Normal guifg=white guibg=black
