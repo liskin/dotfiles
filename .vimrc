@@ -169,9 +169,10 @@ set shortmess+=A
 " other {{{2
 set autoread
 set backspace=indent,eol,start
-set completeopt=menu,menuone,longest,preview
-if has('textprop')
-	set completeopt-=preview completeopt+=popup
+set completeopt=menu,menuone,longest
+if !has('nvim')
+	" see float_preview.nvim for the nvim version
+	set completeopt+=popup
 endif
 set diffopt+=indent-heuristic,algorithm:histogram
 set fileencodings=ucs-bom,utf-8,iso-8859-2
@@ -461,6 +462,15 @@ let g:snips_name = 'Tomáš Janoušek'
 let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
 let g:snips_github = "https://github.com/liskin"
+
+" float_preview.nvim {{{2
+if has('nvim')
+	let g:float_preview#docked = 0
+	autocmd User FloatPreviewWinOpen call s:FloatPreviewStyle()
+	function! s:FloatPreviewStyle() abort
+		call nvim_win_set_config(g:float_preview#win, #{border: 'rounded'})
+	endfunction
+endif
 
 " old-style debian vim addons {{{2
 set runtimepath+=/usr/share/vim/addons

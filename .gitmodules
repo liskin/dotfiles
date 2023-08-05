@@ -102,6 +102,9 @@
 [submodule ".config/nvim/bundle/nvim-treesitter"]
 	path = .config/nvim/bundle/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
+[submodule ".config/nvim/bundle/float-preview.nvim"]
+	path = .config/nvim/bundle/float-preview.nvim
+	url = https://github.com/ncm2/float-preview.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
