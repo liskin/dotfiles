@@ -528,6 +528,9 @@ autocmd BufNewFile,BufRead */.config/git/include/* setf gitconfig
 
 " key maps {{{1
 
+nnoremap <silent> <F1> <Cmd>:FzfHelptags<CR>
+inoremap <silent> <F1> <Cmd>:FzfHelptags<CR>
+
 nnoremap <silent> <F2> <Cmd>:w!<CR>
 inoremap <silent> <F2> <Cmd>:w!<CR>
 
