@@ -462,11 +462,10 @@ let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
 let g:snips_github = "https://github.com/liskin"
 
-" load plugins: debian addons, pathogen, ft, syn {{{2
+" old-style debian vim addons {{{2
 set runtimepath+=/usr/share/vim/addons
-let g:pathogen_disabled = []
-call pathogen#infect()
 
+" ft, syn {{{2
 filetype plugin indent on
 syntax on
 
