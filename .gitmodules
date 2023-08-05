@@ -99,6 +99,9 @@
 [submodule ".vim/bundle/vim-sleuth"]
 	path = .vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth
+[submodule ".config/nvim/bundle/nvim-treesitter"]
+	path = .config/nvim/bundle/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
