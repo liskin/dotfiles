@@ -8,6 +8,7 @@ rxvt-unicode-256color|rxvt-unicode terminal with 256 colors (X Window System) + 
 	Se=\E[2 q, Ss=\E[%p1%d q,
 	Cr=\E]12;15\007, Cs=\E]12;%p1%s\007,
 	Ms=\E]52;%p1%s;%p2%s\007,
+	kf13=\E[5\^, kf14=\E[6\^,
 	use=xterm+sm+1006+focusfix,
 	use=xterm+sm+1006,
 	use=xterm+focus,

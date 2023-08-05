@@ -73,6 +73,8 @@ else
 	" ctrl+pgup/down to switch tabs {{{4
 	nmap <silent> <C-PageUp> :tabprev<CR>
 	nmap <silent> <C-PageDown> :tabnext<CR>
+	nmap <silent> <F13> <C-PageUp>
+	nmap <silent> <F14> <C-PageDown>
 endif
 
 " fix C-Space mappings in terminal {{{3
