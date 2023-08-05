@@ -15,6 +15,7 @@
 /haskell-language-server-wrapper
 /hlint
 /kind
+/nvim
 /pandoc
 /rust-analyzer
 /sccache
