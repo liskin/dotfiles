@@ -347,13 +347,13 @@ command! -nargs=1 -bar AleBufEnableFixer call s:ale_enable_linter('ale_fixers', 
 command! -nargs=+ -bar AleAddLinter call s:ale_add_linters(g:ale_linters, <f-args>)
 command! -nargs=+ -bar AleAddFixer call s:ale_add_linters(g:ale_fixers, <f-args>)
 
-let g:ale_elixir_elixir_ls_config = #{elixirLS: {}}
+let g:ale_elixir_elixir_ls_config = #{elixirLS: {} }
 let g:ale_elixir_elixir_ls_config['elixirLS'] = #{dialyzerEnabled: v:false}
 let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/.build/elixir-ls"
 
 let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
 
-let g:ale_python_pylsp_config = #{pylsp: #{plugins: {}}}
+let g:ale_python_pylsp_config = #{pylsp: #{plugins: {} } }
 let g:ale_python_pylsp_config['pylsp']['configurationSources'] = ['flake8']
 
 " disable mypy by default to prevent .mypy_cache appearing all over the filesystem
@@ -366,7 +366,7 @@ let g:ale_python_pylsp_config['pylsp']['plugins']['pycodestyle'] = #{enabled: v:
 let g:ale_python_pylsp_config['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
 
 let g:ale_haskell_ormolu_executable = 'fourmolu'
-let g:ale_haskell_hls_config = #{haskell: #{plugin: {}}}
+let g:ale_haskell_hls_config = #{haskell: #{plugin: {} } }
 let g:ale_haskell_hls_config['haskell']['maxCompletions'] = 250
 let g:ale_haskell_hls_config['haskell']['plugin']['stan'] = #{globalOn: v:false}
 
@@ -375,7 +375,7 @@ let g:ale_haskell_hls_config['haskell']['plugin']['stan'] = #{globalOn: v:false}
 " vim anyway.
 let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
 let g:ale_root['analyzer'] = s:cargo_root
-let g:ale_rust_analyzer_config = #{cargo: {}}
+let g:ale_rust_analyzer_config = #{cargo: {} }
 let g:ale_rust_analyzer_config['cargo'] = #{features: 'all'}
 let g:ale_rust_rustfmt_options = '--edition 2021'
 
@@ -470,7 +470,7 @@ call pathogen#infect()
 filetype plugin indent on
 syntax on
 
-" detect background colour, load my colourscheme
+" detect background colour, load my colourscheme {{{2
 set bg&
 colors liskin
 
