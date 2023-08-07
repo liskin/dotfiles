@@ -15,6 +15,7 @@ CARGO_WATCH_VERSION := v8.4.0
 DIESEL_CLI_14_VERSION := v1.4.1
 DIESEL_CLI_VERSION := v2.1.0
 DUST_VERSION := v0.8.6
+TOKIO_CONSOLE_VERSION := tokio-console-v0.1.9
 WATCHEXEC_VERSION := v1.22.3
 
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
@@ -22,6 +23,7 @@ CARGO_EDIT_GITHUB := killercup/cargo-edit
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
 DIESEL_CLI_GITHUB := diesel-rs/diesel
 DUST_GITHUB := bootandy/dust
+TOKIO_CONSOLE_GITHUB := tokio-rs/console
 WATCHEXEC_GITHUB := watchexec/watchexec
 
 .PHONY: update
@@ -89,6 +91,12 @@ diesel1.4: | .binstall/diesel1.4 ; ln -fsT $|/bin/diesel $@
 .binstall/diesel1.4: .binstall/diesel1.4-$(DIESEL_CLI_14_VERSION) ; ln -fsrT $< $@
 .binstall/diesel1.4-$(DIESEL_CLI_14_VERSION): | .binstall
 	$(CARGO_BINSTALL_COMPILE) --root $@ --version =$(DIESEL_CLI_14_VERSION:v%=%) diesel_cli
+
+all: tokio-console
+tokio-console: | .binstall/tokio-console ; ln -fsT $|/bin/$@ $@
+.binstall/tokio-console: .binstall/tokio-console-$(TOKIO_CONSOLE_VERSION) ; ln -fsrT $< $@
+.binstall/tokio-console-$(TOKIO_CONSOLE_VERSION): | .binstall
+	$(CARGO_BINSTALL) --root $@ --version =$(TOKIO_CONSOLE_VERSION:tokio-console-v%=%) tokio-console
 
 FRECE_SRC := ~/src-rust/frece
 FRECE_VERSION := $(shell $(call GIT_DESCRIBE,$(FRECE_SRC)))
