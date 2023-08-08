@@ -7,7 +7,6 @@ BUILDIFIER_VERSION := v6.1.2
 CARGO_BINSTALL_VERSION := v1.1.2
 CIRCLECI_CLI_VERSION := v0.1.28084
 CTLPTL_VERSION := v0.8.20
-DELTA_VERSION := 0.16.5
 DIVE_VERSION := v0.11.0
 DOCKER_BUILDX_VERSION := v0.11.2
 DOCKER_COMPOSE_VERSION := v2.20.2
@@ -33,7 +32,6 @@ BUILDIFIER_GITHUB := bazelbuild/buildtools
 CARGO_BINSTALL_GITHUB := cargo-bins/cargo-binstall
 CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
 CTLPTL_GITHUB := tilt-dev/ctlptl
-DELTA_GITHUB := dandavison/delta
 DIVE_GITHUB := wagoodman/dive
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
@@ -107,14 +105,6 @@ tz: | .ext-tz ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(TZ_GITHUB)/releases/download/$(TZ_VERSION)/tz-$(TZ_VERSION)-linux-amd64.tar.gz \
 		| tar -x -z -C $@ tz
-
-all: delta
-delta: | .ext-delta ; ln -fsT $|/$@ $@
-.ext-delta: .ext-delta-$(DELTA_VERSION) ; ln -fsT $< $@
-.ext-delta-$(DELTA_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(DELTA_GITHUB)/releases/download/$(DELTA_VERSION)/delta-$(DELTA_VERSION)-x86_64-unknown-linux-gnu.tar.gz \
-		| tar -x -z -C $@ --strip-components=1 --wildcards "*/delta"
 
 all: pandoc
 pandoc: | .ext-pandoc ; ln -fsT $|/bin/$@ $@
