@@ -8,6 +8,10 @@ shopt -s nullglob lastpipe
 
 display="${1:-1}"
 
+if [[ ${2-} ]]; then
+	exec ddcutil --display "$display" setvcp 10 "${2}"
+fi
+
 ddcutil --display "$display" --terse getvcp 10 \
 | while read -r f1 f2 _ val _; do
 	if [[ $f1 == VCP && $f2 == 10 ]]; then
