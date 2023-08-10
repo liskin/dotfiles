@@ -1,3 +1,28 @@
+URxvt.cutchars: \\``"''&()*,;<=>?@[]{|}
+URxvt.geometry: 100x34
+URxvt.intensityStyles: true
+URxvt.modifier: mod1
+URxvt.pastableTabs: false
+URxvt.perl-ext-common: default,-selection,-selection-popup,-option-popup,-confirm-paste,osc-xterm-clipboard
+URxvt.pointerBlank: true
+URxvt.pointerBlankDelay: 987654321
+URxvt.print-pipe: cat >/dev/null
+URxvt.reverseVideo: true
+URxvt.saveLines: 3000
+URxvt.scrollBar: false
+URxvt.scrollBar_right: true
+URxvt.scrollColor: #004000
+URxvt.scrollTtyKeypress: true
+URxvt.scrollTtyOutput: false
+URxvt.scrollWithBuffer: true
+URxvt.scrollstyle: rxvt
+URxvt.searchable-scrollback: C-M-s
+URxvt.secondaryScroll: false
+URxvt.termName: rxvt-unicode-256color
+URxvt.tripleclickwords: false
+URxvt.troughColor: #001000
+URxvt.urgentOnBell: true
+dnl
 define(fixed7x13, `-misc-fixed-$1-$2-normal--13-120-75-75-c-70-iso10646-1')dnl
 define(fixed_font, fixed7x13(medium, r))dnl
 define(fixed_boldFont, fixed7x13(bold, r))dnl
@@ -53,30 +78,6 @@ URxvt.font: default_font
 URxvt.boldFont: default_boldFont
 URxvt.italicFont: default_italicFont
 URxvt.boldItalicFont: default_boldItalicFont
-URxvt.reverseVideo: true
-URxvt.scrollTtyOutput: false
-URxvt.saveLines: 3000
-URxvt.scrollTtyKeypress: true
-URxvt.modifier: mod1
-URxvt.termName: rxvt-unicode-256color
-URxvt.scrollBar: false
-URxvt.scrollBar_right: true
-URxvt.geometry: 100x34
-URxvt.print-pipe: cat >/dev/null
-URxvt.scrollWithBuffer: true
-URxvt.secondaryScroll: false
-URxvt.scrollstyle: rxvt
-URxvt.scrollColor: #004000
-URxvt.troughColor: #001000
-URxvt.cutchars: \\``"''&()*,;<=>?@[]{|}
-URxvt.searchable-scrollback: C-M-s
-URxvt.perl-ext-common: default,-selection,-selection-popup,-option-popup,-confirm-paste,osc-xterm-clipboard
-URxvt.tripleclickwords: false
-URxvt.intensityStyles: true
-URxvt.urgentOnBell: true
-URxvt.pastableTabs: false
-URxvt.pointerBlank: true
-URxvt.pointerBlankDelay: 987654321
 dnl
 define(_set_font, `\033]$1;$2\007')dnl
 define(set_font, _set_font(710, `$1'))dnl
