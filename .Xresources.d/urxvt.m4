@@ -8,6 +8,7 @@ URxvt.pointerBlank: true
 URxvt.pointerBlankDelay: 987654321
 URxvt.print-pipe: cat >/dev/null
 URxvt.reverseVideo: true
+URxvt.rewrapMode: always
 URxvt.saveLines: 3000
 URxvt.scrollBar: false
 URxvt.scrollBar_right: true
