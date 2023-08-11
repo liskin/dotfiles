@@ -24,6 +24,10 @@ cp ~/.config/google-chrome/Default/Bookmarks ./chrome-bookmarks.json
 cp ~/.config/google-chrome/Default/History* "$TMPDIR"/
 sqlite3 "$TMPDIR"/History .dump >./chrome-history.sql
 
+# backup keywords
+cp ~/.config/google-chrome/Default/Web\ Data* "$TMPDIR"/
+sqlite3 "$TMPDIR"/Web\ Data ".dump keywords" >./chrome-keywords.sql
+
 # backup sessionbuddy
 mkdir "$TMPDIR"/sessionbuddy
 cp ~/.config/google-chrome/Default/databases/chrome-extension_edacconmaakjimmfgnblocblbcdcpbko_0/* "$TMPDIR"/sessionbuddy/
