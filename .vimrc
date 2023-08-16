@@ -608,7 +608,7 @@ nnoremap <silent> <C-W>S <Cmd>:CloneBufTmp<CR>
 nnoremap <silent> <C-W>C <Cmd>:tabclose<CR>
 
 " git (fugitive) shortcuts
-nnoremap <silent> <Leader>gg <Cmd>:tab G<CR>
+nnoremap <silent> <Leader>gg <Cmd>:0tab G<CR>
 nnoremap <silent> <Leader>gv <Cmd>:Gvdiffsplit<CR>
 
 " C-X is commands, remap decrement to C-Q
