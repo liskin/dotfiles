@@ -571,14 +571,14 @@ inoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
 nnoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
 inoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
 
-nnoremap <silent> <C-P> <Cmd>:FzfFiles<CR>
 nnoremap <silent> <C-B> <Cmd>:FzfBuffers<CR>
-nnoremap <silent> <C-Y> <Cmd>:FzfWindows<CR>
 nnoremap <silent> <C-G> <Cmd>:FzfTags<CR>
+nnoremap <silent> <C-P> <Cmd>:FzfFiles<CR>
 nnoremap <silent> <C-T> <Cmd>:FzfBTags<CR>
 nnoremap <silent> <C-X> <Cmd>:FzfCommands<CR>
+nnoremap <silent> <C-Y> <Cmd>:FzfWindows<CR>
 
-nnoremap <C-J> :FzfRg<space>
+nnoremap <C-J> :FzfRG<space>
 
 nnoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
 inoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
