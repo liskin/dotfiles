@@ -1,0 +1,8 @@
+map <PageUp> scroll full-up
+map <PageDown> scroll full-down
+map <C-PageUp> navigate previous
+map <C-PageDown> navigate next
+map <S-PageUp> navigate previous
+map <S-PageDown> navigate next
+set smooth-scroll true
+set scroll-full-overlap 0.1
