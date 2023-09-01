@@ -24,7 +24,6 @@ NVIM_VERSION := v0.9.1
 PANDOC_VERSION := 2.18
 RUSTUP_VERSION := 1.26.0
 RUST_ANALYZER_VERSION := 2023-08-28
-SCCACHE_VERSION := v0.5.4
 TILT_VERSION := v0.33.4
 TZ_VERSION := v0.6.3
 
@@ -46,7 +45,6 @@ LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
 NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
 RUST_ANALYZER_GITHUB := rust-analyzer/rust-analyzer
-SCCACHE_GITHUB := mozilla/sccache
 TILT_GITHUB := tilt-dev/tilt
 TZ_GITHUB := oz/tz
 
@@ -184,15 +182,6 @@ cargo-binstall: | .ext-cargo-binstall ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(CARGO_BINSTALL_GITHUB)/releases/download/$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
 		| tar -x -z -C $@ cargo-binstall
-
-all: sccache
-sccache: | .ext-sccache ; ln -fsT $|/$@ $@
-.ext-sccache: .ext-sccache-$(SCCACHE_VERSION) ; ln -fsT $< $@
-.ext-sccache-$(SCCACHE_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(SCCACHE_GITHUB)/releases/download/$(SCCACHE_VERSION)/sccache-$(SCCACHE_VERSION)-x86_64-unknown-linux-musl.tar.gz \
-		| tar -x -z -C $@ --strip-components=1 --wildcards "*/sccache"
-	chmod +x $@/sccache
 
 all: fclones
 fclones: | .ext-fclones ; ln -fsT $|/$@ $@
