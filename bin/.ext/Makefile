@@ -3,29 +3,29 @@ all:
 
 CURL := curl -LSsf
 
-BUILDIFIER_VERSION := v6.1.2
-CARGO_BINSTALL_VERSION := v1.1.2
-CIRCLECI_CLI_VERSION := v0.1.28084
-CTLPTL_VERSION := v0.8.20
+BUILDIFIER_VERSION := v6.3.3
+CARGO_BINSTALL_VERSION := v1.3.0
+CIRCLECI_CLI_VERSION := v0.1.28811
+CTLPTL_VERSION := v0.8.21
 DIVE_VERSION := v0.11.0
 DOCKER_BUILDX_VERSION := v0.11.2
-DOCKER_COMPOSE_VERSION := v2.20.2
+DOCKER_COMPOSE_VERSION := v2.21.0
 EVCXR_VERSION := v0.15.1
 FCLONES_VERSION := v0.32.1
 FITSDK_VERSION := 21.84.00
-GLAB_VERSION := v1.31.0
+GLAB_VERSION := v1.32.0
 HADOLINT_VERSION := v2.12.0
-HLINT_VERSION := v3.5
+HLINT_VERSION := v3.6.1
 HLS_GHC_VERSION := 8.8.4
 HLS_VERSION := 1.8.0.0
 KIND_VERSION := v0.20.0
-LANGUAGETOOL_VERSION := v6.0
+LANGUAGETOOL_VERSION := v6.2
 NVIM_VERSION := v0.9.1
 PANDOC_VERSION := 2.18
 RUSTUP_VERSION := 1.26.0
-RUST_ANALYZER_VERSION := 2023-07-31
+RUST_ANALYZER_VERSION := 2023-08-28
 SCCACHE_VERSION := v0.5.4
-TILT_VERSION := v0.33.3
+TILT_VERSION := v0.33.4
 TZ_VERSION := v0.6.3
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
@@ -43,7 +43,7 @@ HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 KIND_GITHUB := kubernetes-sigs/kind
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
-NVIM_GITHUB := neovim/neovim
+NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
 RUST_ANALYZER_GITHUB := rust-analyzer/rust-analyzer
 SCCACHE_GITHUB := mozilla/sccache
@@ -271,7 +271,7 @@ nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 
 .INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
 .ext-nvim-$(NVIM_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(NVIM_GITHUB)/releases/download/$(NVIM_VERSION)/nvim-linux64.tar.gz
+	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux64.tar.gz
 
 .PHONY: gc
 ## Remove old versions
