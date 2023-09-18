@@ -27,5 +27,5 @@ function __fzf_history__ {
 
 function fopen {
 	# shellcheck disable=SC2048
-	fzf --bind="enter:execute:xdg-open {}" --bind="change:reload: sh -c 'locate {q}'" ${*+--bind="start:reload: sh -c 'locate {q}'" --query="$*"} </dev/null
+	fzf --bind="enter:execute:xdg-open {}" --bind="change:reload: sh -c 'locate -i {q}'" ${*+--bind="start:reload: sh -c 'locate -i {q}'" --query="$*"} </dev/null
 }
