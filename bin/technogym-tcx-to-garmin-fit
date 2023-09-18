@@ -306,8 +306,8 @@ def parse_xml(inp):
 
 
 def parse_tcx(xml) -> Activity:
-    activity = xml.find('Activities/Activity')
-    laps = list(parse_tcx_lap(lap) for lap in activity.findall('Lap'))
+    activity = xml.find('{*}Activities/{*}Activity')
+    laps = list(parse_tcx_lap(lap) for lap in activity.findall('{*}Lap'))
 
     match activity.get('Sport'):
         case "biking" | "Biking":
@@ -324,36 +324,36 @@ def parse_tcx(xml) -> Activity:
 
 
 def parse_tcx_lap(xml) -> Lap:
-    tp0 = xml.find('Track').find('Trackpoint')
-    ext0 = tp0.find('Extensions')
+    tp0 = xml.find('{*}Track').find('{*}Trackpoint')
+    ext0 = tp0.find('{*}Extensions')
     ext_tpx0 = ext0.find('{*}TPX')
 
     timestamp = []
-    distance = [] if tp0.findtext('DistanceMeters') is not None else None
-    altitude = [] if tp0.findtext('AltitudeMeters') is not None else None
-    cadence = [] if tp0.findtext('Cadence') is not None else None
+    distance = [] if tp0.findtext('{*}DistanceMeters') is not None else None
+    altitude = [] if tp0.findtext('{*}AltitudeMeters') is not None else None
+    cadence = [] if tp0.findtext('{*}Cadence') is not None else None
     speed = [] if ext_tpx0.findtext('{*}Speed') is not None else None
     power = [] if ext_tpx0.findtext('{*}Watts') is not None else None
-    heart_rate = [] if tp0.findtext('HeartRateBpm/Value') is not None else None
+    heart_rate = [] if tp0.findtext('{*}HeartRateBpm/{*}Value') is not None else None
 
-    for tp in xml.find('Track').findall('Trackpoint'):
-        ext = tp.find('Extensions')
+    for tp in xml.find('{*}Track').findall('{*}Trackpoint'):
+        ext = tp.find('{*}Extensions')
         ext_tpx = ext.find('{*}TPX')
-        timestamp.append(TS(isoparse(tp.findtext('Time')).timestamp()))
+        timestamp.append(TS(isoparse(tp.findtext('{*}Time')).timestamp()))
         if distance is not None:
-            distance.append(float(tp.findtext('DistanceMeters')))
+            distance.append(float(tp.findtext('{*}DistanceMeters')))
         if altitude is not None:
-            altitude.append(float(tp.findtext('AltitudeMeters')))
+            altitude.append(float(tp.findtext('{*}AltitudeMeters')))
         if cadence is not None:
-            cadence.append(float(tp.findtext('Cadence')))
+            cadence.append(float(tp.findtext('{*}Cadence')))
         if speed is not None:
             speed.append(float(ext_tpx.findtext('{*}Speed')))
         if power is not None:
             power.append(float(ext_tpx.findtext('{*}Watts')))
         if heart_rate is not None:
-            heart_rate.append(float(tp.findtext('HeartRateBpm/Value')))
+            heart_rate.append(float(tp.findtext('{*}HeartRateBpm/{*}Value')))
 
-    total_calories = xml.findtext('Calories')
+    total_calories = xml.findtext('{*}Calories')
 
     timestamp_interp = np.arange(min(timestamp), max(timestamp) + 1)
     timestamp = np.asarray(timestamp)
