@@ -74,6 +74,7 @@ export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
 export-alias meld='LC_MESSAGES=C /usr/bin/meld'
 export-alias weechat='LC_MESSAGES=C /usr/bin/weechat'
 export-alias cantata='LC_COLLATE=C /usr/bin/cantata'
+export-alias virt-manager='LC_MESSAGES=C /usr/bin/virt-manager'
 
 export-alias google-earth-pro='LC_NUMERIC=C /usr/bin/google-earth-pro'
 export-alias google-earth='google-earth-pro'
@@ -111,3 +112,5 @@ alias urldecode='python3 -c "import sys; from urllib.parse import unquote; from 
 alias urlencode='python3 -c "import sys; from urllib.parse import quote; from functools import reduce; reduce(lambda _, __: None, map(lambda l: print(quote(l.rstrip())), sys.stdin));"'
 
 alias bel='echo -en "\007"'
+
+export-alias nheko='QT_QPA_PLATFORMTHEME=qt5ct /usr/bin/nheko'
