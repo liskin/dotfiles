@@ -1,0 +1,5 @@
+/* workaround for black on black tray icon of pasystray */
+/* https://github.com/christophgysin/pasystray/issues/151#issuecomment-985911322 */
+window > image {
+	color: #cfcfcf;
+}
