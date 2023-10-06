@@ -1,0 +1,10 @@
+[Unit]
+Description=syncthingtray
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/syncthingtray
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
