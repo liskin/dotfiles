@@ -2,3 +2,6 @@
 address = 'B0:4A:6A:60:5E:A7'
 default = true
 auto_pause_music = true
+
+[[buds_settings]]
+address = '78:2B:64:A0:68:02'
