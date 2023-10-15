@@ -1,7 +1,7 @@
 # enable all hwdec and force vaapi (vdpau powers on nvidia dGPU)
 hwdec-codecs=all
 hwdec=vaapi
-gpu-hwdec-interop=vaapi-egl
+gpu-hwdec-interop=vaapi
 
 # old school OSD GUI
 script-opts=osc-deadzonesize=0,osc-minmousemove=3
