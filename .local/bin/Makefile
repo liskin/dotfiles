@@ -28,7 +28,6 @@ dxf:
 	$(PIPX_INSTALL) python-dxf
 
 all: gdbgui
-gdbgui: PYTHON=python3.10
 gdbgui:
 	$(PIPX_INSTALL) gdbgui
 
