@@ -25,6 +25,7 @@ $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	current window $title =~ m|~/taskwiki.* - VIM$| ==> tag Activity:Org,
 	current window $program == "google-chrome" ==> {
 		current window $title =~ m!:: https?://app\.slack\.com/! ==> tag Activity:Chat,
+		current window $title =~ m!:: https?://web.whatsapp.com/! ==> tag Activity:Chat,
 		current window $title =~ m!:: https?://mail\.google\.com/! ==> tag Activity:Mail,
 		current window $title =~ m!:: https?://calendar\.google\.com/! ==> tag Activity:Org,
 		current window $title =~ m!:: https?://outlook\.office\.com/mail/! ==> tag Activity:Mail,
@@ -37,6 +38,7 @@ current window $program == "google-chrome" ==> {
 	current window $title =~ m|:: https?://.*muni.*/discussion/| ==> tag Activity:Web-Plkarna,
 	current window $title =~ m|:: https?://news\.ycombinator| ==> tag Activity:Web-HN,
 	current window $title =~ m!( / Twitter|\bFacebook) (::|-) ! ==> tag Activity:Web-Social,
+	current window $title =~ m!:: https?://genserver\.social/! ==> tag Activity:Web-Social,
 	current window $title =~ m!\bYouTube (::|-) ! ==> tag Activity:Watch,
 	current window $title =~ m!\bTwitch (::|-) ! ==> tag Activity:Watch,
 	current window $title =~ m!:: https?://(www\.)?(tesco\.com|amazon\.|planetx\.|alza\.)! ==> tag Activity:Web-Shopping,
@@ -49,6 +51,7 @@ current window $program == "gl" ==> {
 },
 current window $program == ["app.element.io", "discord.com__app", "www.messenger.com"] ==> tag Activity:Chat,
 current window $program =~ /\.slack\.com$/ ==> tag Activity:Chat,
+current window $program == "nheko" ==> tag Activity:Chat,
 any window $active && $desktop =~ /^W?\d+:steam$/ ==> tag Activity:Games,
 any window $active && $desktop =~ /^W?\d+$/ && any window ($desktop == $wdesktop && $program == ["Steam", "lutris"]) ==> tag Activity:Games,
 
