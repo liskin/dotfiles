@@ -1,5 +1,4 @@
 /.ext-*
-/.x-rustup-init
 /buildifier
 /cargo-binstall
 /ctlptl

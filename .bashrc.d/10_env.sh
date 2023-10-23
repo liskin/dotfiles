@@ -11,8 +11,9 @@ export PATH="$HOME"/bin/.aliases:"$PATH"
 export PATH="$HOME"/bin:"$PATH"
 export PATH="$HOME"/bin/.ext:"$PATH"
 export PATH="$HOME"/bin/.ext-npm:"$PATH"
-export PATH="$HOME"/bin/.rustup:"$PATH"
 export PATH="$HOME"/.local/bin:"$PATH"
+
+export PATH="$HOME"/.local/share/man/.manpath/rustup:"$PATH" # manpath only
 
 export MAIL=/var/mail/tomi
 
