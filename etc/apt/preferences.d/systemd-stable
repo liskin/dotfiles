@@ -1,3 +1,0 @@
-Package: src:systemd:*
-Pin: version 252.6-1
-Pin-Priority: 1100
