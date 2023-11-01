@@ -2,6 +2,7 @@ aliases:
   city: b167437
   gravel: b2564785
   road: b7429965
+  road-uk: b12997651
   ss-yellow: b2471193
   ss-cx: b6468714
   ss-uk: b6537590
@@ -14,6 +15,7 @@ components:
   8bar-tflsberg-v2: "8bar TFLSBERG v2"
   trek-5th-district: "Trek 5th District"
   isaac-element: "Isaac Element"
+  orro-pyro: "Orro Pyro Evo 105 Hydro 2020"
 
   # wheels ----------------------------
   wheel-front-agang: "ACO ARGON CROSS CNC/HB-M590"
@@ -92,6 +94,7 @@ components:
   casette11-1: {name: "Shimano CS-5800 11-32", hours: 100, kms: 2000}
   casette11-2: "Shimano CS-5800 11-28"
   casette11-3: "Shimano CS-6800 11-28"
+  casette11-4: "Shimano CS-R7000 11-30"
   chain11-1: {name: "KMC X11 OEM", hours: 100, kms: 2000}
   chain11-2: "Shimano CN-HG700-11"
   chain11-3: "Shimano CN-HG700-11"
@@ -99,6 +102,8 @@ components:
   chain11-5: "Shimano CN-HG701-11"
   chain11-6: "Shimano CN-HG701-11"
   chain11-7: "Shimano CN-HG701-11"
+  chain11-8: "Shimano CN-HG601-11"
+  chain11-9: "Shimano CN-HG601-11"
 
   shimano-mtb-single: "Shimano some old MTB cranks"
   sturmey-archer-cranks: "Sturmey Archer FCT26BD"
@@ -130,17 +135,23 @@ components:
   rs785-rear: {name: "Shimano BR-RS785", hours: 100, kms: 2000}
   brifter-rs685-front: {name: "Shimano ST-RS685", hours: 100, kms: 2000}
   brifter-rs685-rear: {name: "Shimano ST-RS685", hours: 100, kms: 2000}
+  br-r7070-f: "Shimano BR-R7070-F"
+  br-r7070-r: "Shimano BR-R7070-R"
 
   disc-pads-front-1: {name: "Shimano J02A Ice-Tech", hours: 100, kms: 2000}
-  disc-pads-front-2: "Shimano J02A Ice-Tech"
-  disc-pads-front-3: "Shimano J02A Ice-Tech"
   disc-pads-rear-1: {name: "Shimano J02A Ice-Tech", hours: 100, kms: 2000}
+  disc-pads-front-2: "Shimano J02A Ice-Tech"
   disc-pads-rear-2: "Shimano J02A Ice-Tech"
+  disc-pads-front-3: "Shimano J02A Ice-Tech"
   disc-pads-rear-3: "Shimano J02A Ice-Tech"
+  disc-pads-front-4: "Shimano L05A-RF"
+  disc-pads-rear-4: "Shimano L05A-RF"
   disc-rotor-front-1: {name: "Shimano SM-RT81-S", hours: 100, kms: 2000}
   disc-rotor-rear-1: {name: "Shimano SM-RT81-S", hours: 100, kms: 2000}
   disc-rotor-front-2: "Shimano SM-RT86-S"
   disc-rotor-rear-2: "Shimano SM-RT86-S"
+  disc-rotor-front-3: "Shimano SM-RT70"
+  disc-rotor-rear-3: "Shimano SM-RT70"
 
   exage-front: "Shimano Exage Motion"
   exage-rear: "Shimano Exage Motion"
@@ -152,6 +163,7 @@ components:
   pd-m520-2: "Shimano PD-M520"
   pd-m520-3: "Shimano PD-M520"
   pd-es600: "Shimano PD-ES600"
+  pd-es600-2: "Shimano PD-ES600"
 
 rules:
 # city ----------------------------
@@ -411,3 +423,20 @@ rules:
     chain: chain11-6
     tyre-front: schwalbe-one-2017-3
     tyre-rear: schwalbe-one-2017-4
+
+# road-uk ----------------------------
+- since: 2023-08-07
+  road-uk:
+    frame: orro-pyro
+    pedals: pd-es600-2
+    casette: casette11-4
+    chain: chain11-8
+    brake-rotor-front: disc-rotor-front-3
+    brake-rotor-rear: disc-rotor-rear-3
+- since: 2023-09-20
+  road-uk:
+    brake-front: br-r7070-f
+    brake-rear: br-r7070-r
+    brake-pads-front: disc-pads-front-4
+    brake-pads-rear: disc-pads-rear-4
+- {since: 2023-11-01, road-uk: {chain: chain11-9}}
