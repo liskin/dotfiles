@@ -8,4 +8,4 @@ case "$1" in
 	*) exit 1 ;;
 esac
 
-pkill -"$sig" -f '^/usr/[a-z/]+firefox|^/opt/google/chrome'
+pkill -"$sig" -f '^/usr/[a-z/]+firefox|^/opt/google/chrome|^/usr/lib/.*/WebKit'
