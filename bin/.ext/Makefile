@@ -20,7 +20,6 @@ HLS_GHC_VERSION := 8.8.4
 HLS_VERSION := 1.8.0.0
 KIND_VERSION := v0.20.0
 LANGUAGETOOL_VERSION := v6.3
-LUALS_VERSION := 3.7.0
 NVIM_VERSION := v0.9.4
 PANDOC_VERSION := 2.18
 RUST_ANALYZER_VERSION := 2023-11-06
@@ -42,7 +41,6 @@ HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 KIND_GITHUB := kubernetes-sigs/kind
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
-LUALS_GITHUB := LuaLS/lua-language-server
 NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
 RUST_ANALYZER_GITHUB := rust-analyzer/rust-analyzer
@@ -247,17 +245,6 @@ nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 .INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
 .ext-nvim-$(NVIM_VERSION).tar.gz:
 	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux64.tar.gz
-
-all: lua-language-server
-lua-language-server: | .ext-luals ; ln -fsT $|/bin/$@ $@
-.ext-luals: .ext-luals-$(LUALS_VERSION) ; ln -fsT $< $@
-.ext-luals-$(LUALS_VERSION): .ext-luals-$(LUALS_VERSION).tar.gz
-	mkdir -p $@
-	tar -xzf $< -C $@
-
-.INTERMEDIATE: .ext-luals-$(LUALS_VERSION).tar.gz
-.ext-luals-$(LUALS_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(LUALS_GITHUB)/releases/download/$(LUALS_VERSION)/lua-language-server-$(LUALS_VERSION)-linux-x64.tar.gz
 
 .PHONY: gc
 ## Remove old versions
