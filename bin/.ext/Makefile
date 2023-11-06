@@ -50,7 +50,6 @@ TZ_GITHUB := oz/tz
 .PHONY: update
 ## Check for updates
 update: update-github
-update: update-rustup
 update: update-gitlab
 
 all: rust-analyzer
