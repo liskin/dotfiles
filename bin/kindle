@@ -2,6 +2,11 @@
 
 set -eu
 
+if [[ ! -e /etc/ssl/certs/b204d74a.0 ]]; then
+	zenity --warning --text "/etc/ssl/certs/b204d74a.0 missing, Kindle won't be able to connect.\nSee https://askubuntu.com/questions/1323817/kindle-app-unable-to-connect"
+	exit 1
+fi
+
 export WINEPREFIX=~/.local/share/wineprefixes/kindle
 cd "${WINEPREFIX}/drive_c/Program Files (x86)/Amazon/Kindle"
 wine Kindle.exe
