@@ -1,3 +1,3 @@
 .PHONY: all
 all:
-	vim -c "helptags ALL" -c "quit"
+	nvim -c "helptags ALL" -c "quit"
