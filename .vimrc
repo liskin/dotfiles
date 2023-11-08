@@ -70,6 +70,9 @@ if !has('nvim')
 		exe "set <A-n>=\<Esc>n"
 	endif
 else
+	" cursor shape {{{4
+	set guicursor=n-v-c-sm:block,i-ci-ve:ver25-blinkoff500-blinkon500,r-cr-o:hor20-blinkoff500-blinkon500
+
 	" ctrl+pgup/down to switch tabs {{{4
 	nmap <silent> <C-PageUp> :tabprev<CR>
 	nmap <silent> <C-PageDown> :tabnext<CR>
