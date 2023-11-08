@@ -364,6 +364,12 @@ if &t_Co >= 256 || has('gui_running')
 	" distinguish ALE virtual text from comments
 	hi link ALEVirtualTextError WarningMsg
 	hi link ALEVirtualTextWarning WarningMsg
+
+	" nvim diagnostics like ALE signs
+	hi link DiagnosticSignError Error
+	hi link DiagnosticSignWarn Todo
+	hi link DiagnosticSignInfo Todo
+	hi link DiagnosticSignHint Todo
 endif
 
 delcommand HiU

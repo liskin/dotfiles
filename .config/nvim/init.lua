@@ -8,3 +8,7 @@ require'nvim-treesitter.configs'.setup {
 		enable = true,
 	},
 }
+
+vim.diagnostic.config {
+	severity_sort = true,
+}

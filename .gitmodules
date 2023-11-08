@@ -101,7 +101,8 @@
 	url = https://github.com/tpope/vim-sleuth
 [submodule ".config/nvim/bundle/nvim-treesitter"]
 	path = .config/nvim/bundle/nvim-treesitter
-	url = https://github.com/nvim-treesitter/nvim-treesitter
+	#url = https://github.com/nvim-treesitter/nvim-treesitter
+	url = git@github.com:liskin/nvim-treesitter
 [submodule ".config/nvim/bundle/float-preview.nvim"]
 	path = .config/nvim/bundle/float-preview.nvim
 	url = https://github.com/ncm2/float-preview.nvim

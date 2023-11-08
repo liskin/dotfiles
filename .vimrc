@@ -313,8 +313,20 @@ let g:ale_linters_explicit = 1
 let g:ale_maximum_file_size = 524288
 let g:ale_popup_menu_enabled = 1
 let g:ale_root = {}
+let g:ale_save_hidden = 1
 let g:ale_set_highlights = 0
 let g:ale_virtualtext_cursor = 0
+
+" vim signs
+let g:ale_sign_error = '>>'
+let g:ale_sign_info = '--'
+let g:ale_sign_warning = '--'
+
+" nvim signs
+sign define DiagnosticSignError text=>> texthl=DiagnosticSignError
+sign define DiagnosticSignWarn text=-- texthl=DiagnosticSignWarn
+sign define DiagnosticSignInfo text=-- texthl=DiagnosticSignInfo
+sign define DiagnosticSignHint text=-- texthl=DiagnosticSignHint
 
 let g:ale_fixers = {}
 let g:ale_linters = {}
@@ -409,7 +421,6 @@ else
 	let g:fzf_prefer_height = 1
 	let g:fzf_layout = { 'down': '60%' }
 endif
-let g:fzf_command_prefix = 'Fzf'
 let g:fzf_colors = {
 	\ 'fg':      ['fg', 'Normal'],
 	\ 'bg':      ['bg', 'Normal'],
@@ -425,6 +436,8 @@ let g:fzf_colors = {
 	\ 'spinner': ['fg', 'Label'],
 	\ 'header':  ['fg', 'Comment']
 \ }
+let g:fzf_vim = {}
+let g:fzf_vim.command_prefix = 'Fzf'
 
 " vimwiki {{{2
 let g:taskwiki_disable_concealcursor = 1
