@@ -13,7 +13,10 @@ export PATH="$HOME"/bin/.ext:"$PATH"
 export PATH="$HOME"/bin/.ext-npm:"$PATH"
 export PATH="$HOME"/.local/bin:"$PATH"
 
-export PATH="$HOME"/.local/share/man/.manpath/rustup:"$PATH" # manpath only
+# manpath only
+for manpath in "$HOME"/.local/share/man/.manpath/*; do
+	[ -e "$manpath" ] && export PATH="$manpath":"$PATH"
+done
 
 export MAIL=/var/mail/tomi
 
