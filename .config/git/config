@@ -142,7 +142,14 @@
 	commands = ls-files absorb
 [url "ssh://git@github.com/"]
 	pushInsteadOf = https://github.com/
+
+# includes
 [includeIf "gitdir:~/src-haskell/xmonad*/"]
 	path = ~/.config/git/include/xmonad
 [includeIf "gitdir:~/work/"]
 	path = ~/work/.gitconfig
+
+# workaround for gh's "No default remote repository has been set for this directory."
+# NB: never run "gh repo fork" as that renames origin, use the "gh fork" alias
+[remote "origin"]
+	gh-resolved = base
