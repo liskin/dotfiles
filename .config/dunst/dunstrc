@@ -35,6 +35,9 @@
 
 	idle_threshold = 120
 
+[fullscreen_delay_everything]
+	fullscreen = delay
+
 [urgency_low]
 	background = "#222222"
 	foreground = "#aaaaaa"
@@ -50,6 +53,8 @@
 	foreground = "#ffffff"
 	frame_color = "#ff0000"
 	timeout = 0
+	fullscreen = show
+	override_pause_level = 90
 
 [hide_pasystray_mic]
 	appname = pasystray
@@ -57,15 +62,9 @@
 	icon = "*microphone*"
 	skip_display = true
 
-[fullscreen_delay_everything]
-	fullscreen = delay
-
-[fullscreen_show_critical]
-	msg_urgency = critical
-	fullscreen = show
-
 [fullscreen_show_pasystray]
 	appname = pasystray
 	fullscreen = show
+	override_pause_level = 60
 
 # vim:set ft=cfg:

@@ -13,9 +13,11 @@ systemd-run \
 	-- liskin-slack-status dnd "$minutes"
 
 xmonadctl-raw dnd-on
+dunstctl set-pause-level 50
 
 function dnd-off {
 	xmonadctl-raw dnd-off || :
+	dunstctl set-pause-level 0 || :
 	xprop -root -f _XMOBAR_DND 8u -set _XMOBAR_DND "" || :
 }
 
