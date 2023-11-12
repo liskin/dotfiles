@@ -95,7 +95,8 @@
 	url = https://github.com/axvr/org.vim
 [submodule ".vim/bundle/zepl.vim"]
 	path = .vim/bundle/zepl.vim
-	url = https://github.com/axvr/zepl.vim/
+	# url = https://github.com/axvr/zepl.vim/
+	url = git@github.com:liskin/zepl.vim
 [submodule ".vim/bundle/vim-sleuth"]
 	path = .vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth

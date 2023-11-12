@@ -488,6 +488,10 @@ if has('nvim')
 	endfunction
 endif
 
+" zepl {{{2
+let g:repl_config = {}
+let g:repl_config['python'] = #{cmd: 'ipython3', formatter: function('zepl#contrib#bracketedpaste#formatter')}
+
 " old-style debian vim addons {{{2
 set runtimepath+=/usr/share/vim/addons
 
