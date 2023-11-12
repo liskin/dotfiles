@@ -149,6 +149,9 @@
 	path = src-webextensions/reszoom
 	#url = https://github.com/raboof/reszoom
 	url = git@github.com:liskin/reszoom
+[submodule "src-webextensions/bypass-paywalls-chrome-clean"]
+	path = src-webextensions/bypass-paywalls-chrome-clean
+	url = https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean.git/
 [submodule "src-haskell/xmonad-contrib"]
 	path = src-haskell/xmonad-contrib
 	#url = https://github.com/xmonad/xmonad-contrib.git
