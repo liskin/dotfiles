@@ -47,7 +47,10 @@ function! s:SynInfo()
 endfunction
 
 function! s:SynStack()
-	echo map(synstack(line('.'), col('.')), {_, s -> synIDattr(s, "name")})
+	if has('nvim')
+		echo "treesitter: " .. string(luaeval("vim.treesitter.get_captures_at_cursor()"))
+	endif
+	echo "vim: " .. string(map(synstack(line('.'), col('.')), {_, s -> synIDattr(s, "name")}))
 endfunction
 
 command! SynInfo call s:SynInfo()
