@@ -130,12 +130,13 @@ set showbreak=\\
 set wrap
 
 " visuals {{{2
+set cursorlineopt=number
 set fillchars=vert:│,fold:-
 set list
 set listchars=tab:>\ ,trail:#,extends:→,precedes:←,nbsp:␣
 set noshowmode
-set showcmd
 set shortmess+=I " no intro
+set showcmd
 
 " keep windows equally tiled {{{2
 set equalalways
