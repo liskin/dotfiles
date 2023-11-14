@@ -31,6 +31,10 @@ if !has('nvim')
 		exe "set <C-Left>=\<Esc>Od"
 		exe "set <C-Right>=\<Esc>Oc"
 		exe "set <A-n>=\<Esc>n"
+		exe "set <F14>=\<Esc>[26;*~"
+		exe "set <F15>=\<Esc>[28;*~"
+		exe "set <Undo>="
+		exe "set <Help>="
 
 		function! s:rxvt_bg() abort
 			if &bg == "light"
@@ -68,6 +72,10 @@ if !has('nvim')
 
 		" fix keycodes {{{4
 		exe "set <A-n>=\<Esc>n"
+		exe "set <F13>=\<Esc>[1;2P"
+		exe "set <F14>=\<Esc>[1;2Q"
+		exe "set <F15>=\<Esc>[1;2R"
+		exe "set <F16>=\<Esc>[1;2S"
 	endif
 else
 	" cursor shape {{{4
@@ -566,15 +574,15 @@ inoremap <silent> <F2> <Cmd>:w!<CR>
 nnoremap <silent> <F3> <Cmd>:IndentGuidesToggle<CR>
 inoremap <silent> <F3> <Cmd>:IndentGuidesToggle<CR>
 
-nnoremap <silent> <F4> <Cmd>:cprevious<CR>
-inoremap <silent> <F4> <Cmd>:cprevious<CR>
-nnoremap <silent> <F5> <Cmd>:cnext<CR>
-inoremap <silent> <F5> <Cmd>:cnext<CR>
+nnoremap <silent> <F14> <Cmd>:cprevious<CR>
+inoremap <silent> <F14> <Cmd>:cprevious<CR>
+nnoremap <silent> <F4> <Cmd>:cnext<CR>
+inoremap <silent> <F4> <Cmd>:cnext<CR>
 
-nnoremap <silent> <F6> <Cmd>:lprevious<CR>
-inoremap <silent> <F6> <Cmd>:lprevious<CR>
-nnoremap <silent> <F7> <Cmd>:lnext<CR>
-inoremap <silent> <F7> <Cmd>:lnext<CR>
+nnoremap <silent> <F15> <Cmd>:lprevious<CR>
+inoremap <silent> <F15> <Cmd>:lprevious<CR>
+nnoremap <silent> <F5> <Cmd>:lnext<CR>
+inoremap <silent> <F5> <Cmd>:lnext<CR>
 
 nnoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
 inoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
