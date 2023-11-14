@@ -30,4 +30,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.diagnostic.config {
 	severity_sort = true,
+	virtual_text = {
+		source = 'if_many',
+		spacing = 10,
+		-- virt_text_pos = "right", -- needs nightly neovim
+	},
 }
+
+-- rounded borders of LSP floating windows
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+	opts = opts or {}
+	opts.border = opts.border or 'rounded'
+	return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
