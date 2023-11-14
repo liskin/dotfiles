@@ -606,23 +606,26 @@ nnoremap <C-J> :FzfRG<space>
 nnoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
 inoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
 
-nnoremap <silent> <Plug>(lsp_hover) <Plug>(ale_hover)
-nnoremap <silent> <Plug>(lsp_detail) <Plug>(ale_detail)
-nnoremap <silent> <Plug>(lsp_code_action) <Plug>(ale_code_action)
-nnoremap <silent> <Plug>(lsp_go_to_definition) <Plug>(ale_tags_fallback_go_to_definition)
-nnoremap <silent> <Plug>(lsp_go_to_definition_hsplit) <Plug>(ale_tags_fallback_go_to_definition_in_split)
-nnoremap <silent> <Plug>(lsp_prev) <Plug>(ale_previous_wrap)
-nnoremap <silent> <Plug>(lsp_next) <Plug>(ale_next_wrap)
+noremap <silent> <Plug>(lsp_hover) <Plug>(ale_hover)
+noremap <silent> <Plug>(lsp_detail) <Plug>(ale_detail)
+noremap <silent> <Plug>(lsp_code_action) <Plug>(ale_code_action)
+noremap <silent> <Plug>(lsp_hover_ins) <Plug>(lsp_hover)
+noremap <silent> <Plug>(lsp_detail_ins) <Plug>(lsp_detail)
+noremap <silent> <Plug>(lsp_code_action_ins) <Plug>(lsp_code_action)
+noremap <silent> <Plug>(lsp_go_to_definition) <Plug>(ale_tags_fallback_go_to_definition)
+noremap <silent> <Plug>(lsp_go_to_definition_hsplit) <Plug>(ale_tags_fallback_go_to_definition_in_split)
+noremap <silent> <Plug>(lsp_prev) <Plug>(ale_previous_wrap)
+noremap <silent> <Plug>(lsp_next) <Plug>(ale_next_wrap)
 
 nmap <C-]> <Plug>(lsp_go_to_definition)
 nmap <C-W><C-]> <Plug>(lsp_go_to_definition_hsplit)
 nmap <C-H> <Plug>(lsp_hover)
-imap <C-H> <C-\><C-O><C-H>
+imap <C-H> <C-\><C-O><Plug>(lsp_hover_ins)
 nmap <C-K> <Plug>(lsp_detail)
-imap <C-K> <C-\><C-O><C-K>
+imap <C-K> <C-\><C-O><Plug>(lsp_detail_ins)
 nmap <C-F> <Plug>(lsp_code_action)
 vmap <C-F> <Plug>(lsp_code_action)
-imap <C-F> <C-\><C-O><C-F>
+imap <C-F> <C-\><C-O><Plug>(lsp_code_action_ins)
 nmap [d <Plug>(lsp_prev)
 nmap ]d <Plug>(lsp_next)
 

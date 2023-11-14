@@ -1,5 +1,6 @@
 vim.keymap.set('n', '<Plug>(lsp_prev)', vim.diagnostic.goto_prev)
 vim.keymap.set('n', '<Plug>(lsp_next)', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<Plug>(lsp_detail)', vim.diagnostic.open_float)
 
 vim.diagnostic.config {
 	severity_sort = true,
