@@ -488,15 +488,6 @@ let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
 let g:snips_github = "https://github.com/liskin"
 
-" float_preview.nvim {{{2
-if has('nvim')
-	let g:float_preview#docked = 0
-	autocmd User FloatPreviewWinOpen call s:FloatPreviewStyle()
-	function! s:FloatPreviewStyle() abort
-		call nvim_win_set_config(g:float_preview#win, #{border: 'rounded'})
-	endfunction
-endif
-
 " zepl {{{2
 let g:repl_config = {}
 let g:repl_config['python'] = #{cmd: 'ipython3', formatter: function('zepl#contrib#bracketedpaste#formatter')}
