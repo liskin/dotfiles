@@ -20,10 +20,10 @@ if !has('nvim')
 		let &t_EI = "\<Esc>[2 q"
 
 		" ctrl+pgup/down to switch tabs {{{4
-		exe "set <F13>=\<Esc>[5^"
-		exe "set <F14>=\<Esc>[6^"
-		nmap <silent> <F13> :tabprev<CR>
-		nmap <silent> <F14> :tabnext<CR>
+		exe "set <F21>=\<Esc>[5^"
+		exe "set <F22>=\<Esc>[6^"
+		nmap <silent> <F21> :tabprev<CR>
+		nmap <silent> <F22> :tabnext<CR>
 
 		" fix keycodes {{{4
 		exe "set <S-Up>=\<Esc>[a"
@@ -61,10 +61,10 @@ if !has('nvim')
 		let &t_fd = "\<Esc>[?1004l"
 
 		" ctrl+pgup/down to switch tabs {{{4
-		exe "set <F13>=\<Esc>[5;5~"
-		exe "set <F14>=\<Esc>[6;5~"
-		nmap <silent> <F13> :tabprev<CR>
-		nmap <silent> <F14> :tabnext<CR>
+		exe "set <F21>=\<Esc>[5;5~"
+		exe "set <F22>=\<Esc>[6;5~"
+		nmap <silent> <F21> :tabprev<CR>
+		nmap <silent> <F22> :tabnext<CR>
 
 		" fix keycodes {{{4
 		exe "set <A-n>=\<Esc>n"
@@ -76,8 +76,8 @@ else
 	" ctrl+pgup/down to switch tabs {{{4
 	nmap <silent> <C-PageUp> :tabprev<CR>
 	nmap <silent> <C-PageDown> :tabnext<CR>
-	nmap <silent> <F13> <C-PageUp>
-	nmap <silent> <F14> <C-PageDown>
+	nmap <silent> <F21> <C-PageUp>
+	nmap <silent> <F22> <C-PageDown>
 endif
 
 " fix C-Space mappings in terminal {{{3
