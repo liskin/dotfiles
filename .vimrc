@@ -603,14 +603,25 @@ nnoremap <C-J> :FzfRG<space>
 nnoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
 inoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
 
-nmap <C-]> <Plug>(ale_tags_fallback_go_to_definition)
-nmap <C-W><C-]> <Plug>(ale_tags_fallback_go_to_definition_in_split)
-nmap <C-H> <Plug>(ale_hover)
+nnoremap <silent> <Plug>(lsp_hover) <Plug>(ale_hover)
+nnoremap <silent> <Plug>(lsp_detail) <Plug>(ale_detail)
+nnoremap <silent> <Plug>(lsp_code_action) <Plug>(ale_code_action)
+nnoremap <silent> <Plug>(lsp_go_to_definition) <Plug>(ale_tags_fallback_go_to_definition)
+nnoremap <silent> <Plug>(lsp_go_to_definition_hsplit) <Plug>(ale_tags_fallback_go_to_definition_in_split)
+nnoremap <silent> <Plug>(lsp_prev) <Plug>(ale_previous_wrap)
+nnoremap <silent> <Plug>(lsp_next) <Plug>(ale_next_wrap)
+
+nmap <C-]> <Plug>(lsp_go_to_definition)
+nmap <C-W><C-]> <Plug>(lsp_go_to_definition_hsplit)
+nmap <C-H> <Plug>(lsp_hover)
 imap <C-H> <C-\><C-O><C-H>
-nmap <C-K> <Plug>(ale_detail)
+nmap <C-K> <Plug>(lsp_detail)
 imap <C-K> <C-\><C-O><C-K>
-nmap <C-F> <Plug>(ale_code_action)
+nmap <C-F> <Plug>(lsp_code_action)
+vmap <C-F> <Plug>(lsp_code_action)
 imap <C-F> <C-\><C-O><C-F>
+nmap [d <Plug>(lsp_prev)
+nmap ]d <Plug>(lsp_next)
 
 function! LiskinTabComplete() abort
 	if pumvisible()

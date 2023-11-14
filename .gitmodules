@@ -107,6 +107,9 @@
 [submodule ".config/nvim/bundle/float-preview.nvim"]
 	path = .config/nvim/bundle/float-preview.nvim
 	url = https://github.com/ncm2/float-preview.nvim
+[submodule ".config/nvim/bundle/nvim-lspconfig"]
+	path = .config/nvim/bundle/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
