@@ -41,8 +41,13 @@ function! s:save_session()
 endfunc
 
 function! s:auto_load_session()
-	" TOOD: allow options that don't open buffers, perhaps? (check argc(), check buffer list, …)
-	if len(v:argv) == 1
+	let argv = copy(v:argv)
+	let argv = argv[1:] " drop command name
+	if !empty(argv) && argv[0] ==# "--embed"
+		let argv = argv[1:] " drop --embed (nvim has this by default)
+	endif
+	" TOOD: allow other options that don't open buffers, perhaps? (check argc(), check buffer list, …)
+	if len(argv) == 0
 		call s:load_session()
 	endif
 endfunc
