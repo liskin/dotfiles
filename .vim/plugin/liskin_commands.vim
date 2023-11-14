@@ -1,7 +1,4 @@
-if &cp || exists('g:loaded_liskin_commands')
-	finish
-endif
-
+if &cp || exists('g:loaded_liskin_commands') | finish | endif
 let g:loaded_liskin_commands = 1
 
 " {{{1 CloneBuf

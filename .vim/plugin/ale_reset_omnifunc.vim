@@ -1,9 +1,6 @@
 " Vim plugin that resets omnifunc to use ale's completion when it's available
 
-if &cp || exists('g:loaded_ale_reset_omnifunc')
-	finish
-endif
-
+if &cp || exists('g:loaded_ale_reset_omnifunc') | finish | endif
 let g:loaded_ale_reset_omnifunc = 1
 
 function! s:on_ready(linter, lsp_details) abort

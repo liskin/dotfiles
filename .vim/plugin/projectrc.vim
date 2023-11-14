@@ -1,5 +1,4 @@
 if &cp || exists('g:loaded_projectrc') | finish | endif
-
 let g:loaded_projectrc = 1
 
 let s:projectrc_dir = expand("~/.vim/projectrc/")

@@ -1,7 +1,4 @@
-if &cp || exists('g:loaded_session')
-	finish
-endif
-
+if &cp || exists('g:loaded_session') | finish | endif
 let g:loaded_session = 1
 
 let s:auto_save_interval = 5 * 60

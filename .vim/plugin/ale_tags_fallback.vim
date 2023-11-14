@@ -1,10 +1,7 @@
 " Vim plugin that allows using ale's ALEGoToDefinition or vim's support for
 " tags, whichever is available, using a single keybinding <C-]>
 
-if &cp || exists('g:loaded_ale_tags_fallback')
-	finish
-endif
-
+if &cp || exists('g:loaded_ale_tags_fallback') | finish | endif
 let g:loaded_ale_tags_fallback = 1
 
 function! s:on_ready(linter, lsp_details) abort

@@ -1,9 +1,6 @@
 " Vim plugin that resolves symlinks of opened files and makes filenames relative
 
-if &cp || exists('g:loaded_canon_filename')
-	finish
-endif
-
+if &cp || exists('g:loaded_canon_filename') | finish | endif
 let g:loaded_canon_filename = 1
 
 function! s:canon_filename() abort
