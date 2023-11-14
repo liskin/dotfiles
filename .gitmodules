@@ -110,6 +110,9 @@
 [submodule ".config/nvim/bundle/nvim-lspconfig"]
 	path = .config/nvim/bundle/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
+[submodule ".config/nvim/bundle/trouble.nvim"]
+	path = .config/nvim/bundle/trouble.nvim
+	url = https://github.com/folke/trouble.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf

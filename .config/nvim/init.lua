@@ -44,3 +44,23 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	opts.border = opts.border or 'rounded'
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
+
+require'trouble'.setup {
+	icons = false,
+	padding = false,
+	fold_open = "▾",
+	fold_closed = "▸",
+	signs = {
+		error = "E",
+		warning = "W",
+		hint = "H",
+		information = "I",
+		other = "",
+	},
+	action_keys = {
+		hover = "<C-K>",
+	},
+	win_config = {
+		border = "rounded",
+	},
+}
