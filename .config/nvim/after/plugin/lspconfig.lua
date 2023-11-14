@@ -35,10 +35,11 @@ require'lspconfig'.lua_ls.setup{
 					workspace = {
 						checkThirdParty = false,
 						library = {
-							vim.env.VIMRUNTIME
-						}
+							vim.fn.stdpath("config"),
+							vim.env.VIMRUNTIME,
+						},
 						-- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-						-- library = vim.api.nvim_get_runtime_file("", true)
+						-- library = vim.api.nvim_get_runtime_file("", true),
 					}
 				}
 			})
