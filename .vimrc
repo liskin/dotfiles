@@ -372,39 +372,50 @@ command! -nargs=1 -bar AleBufEnableFixer call s:ale_enable_linter('ale_fixers', 
 command! -nargs=+ -bar AleAddLinter call s:ale_add_linters(g:ale_linters, <f-args>)
 command! -nargs=+ -bar AleAddFixer call s:ale_add_linters(g:ale_fixers, <f-args>)
 
-let g:ale_elixir_elixir_ls_config = #{elixirLS: {} }
-let g:ale_elixir_elixir_ls_config['elixirLS'] = #{dialyzerEnabled: v:false}
-let g:ale_elixir_elixir_ls_release = $HOME."/src-elixir/.build/elixir-ls"
+let g:lsp_settings_elixirls = {}
+let g:lsp_settings_elixirls['elixirLS'] = #{dialyzerEnabled: v:false}
+let g:ale_elixir_elixir_ls_config = g:lsp_settings_elixirls
+let g:ale_elixir_elixir_ls_release = $HOME .. "/src-elixir/.build/elixir-ls"
+let g:lsp_cmd_elixirls = [g:ale_elixir_elixir_ls_release .. "/language_server.sh"]
 
+" FIXME: no equivalent in nvim-lspconfig
 let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
 
-let g:ale_python_pylsp_config = #{pylsp: #{plugins: {} } }
-let g:ale_python_pylsp_config['pylsp']['configurationSources'] = ['flake8']
+let g:lsp_settings_pylsp = #{pylsp: #{plugins: {} } }
+let g:lsp_settings_pylsp['pylsp']['configurationSources'] = ['flake8']
 
 " disable mypy by default to prevent .mypy_cache appearing all over the filesystem
-let g:ale_python_pylsp_config['pylsp']['plugins']['pylsp_mypy'] = #{enabled: v:false}
+let g:lsp_settings_pylsp['pylsp']['plugins']['pylsp_mypy'] = #{enabled: v:false}
 
 " use flake8 (covers functionality of pyflakes, pycodestyle, mccabe)
-let g:ale_python_pylsp_config['pylsp']['plugins']['flake8'] = #{enabled: v:true}
-let g:ale_python_pylsp_config['pylsp']['plugins']['pyflakes'] = #{enabled: v:false}
-let g:ale_python_pylsp_config['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false}
-let g:ale_python_pylsp_config['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
+let g:lsp_settings_pylsp['pylsp']['plugins']['flake8'] = #{enabled: v:true}
+let g:lsp_settings_pylsp['pylsp']['plugins']['pyflakes'] = #{enabled: v:false}
+let g:lsp_settings_pylsp['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false}
+let g:lsp_settings_pylsp['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
+
+let g:ale_python_pylsp_config = g:lsp_settings_pylsp
 
 let g:ale_haskell_ormolu_executable = 'fourmolu'
-let g:ale_haskell_hls_config = #{haskell: #{plugin: {} } }
-let g:ale_haskell_hls_config['haskell']['maxCompletions'] = 250
-let g:ale_haskell_hls_config['haskell']['plugin']['stan'] = #{globalOn: v:false}
+let g:lsp_settings_hls = #{haskell: #{plugin: {} } }
+let g:lsp_settings_hls['haskell']['maxCompletions'] = 250
+let g:lsp_settings_hls['haskell']['plugin']['stan'] = #{globalOn: v:false}
+let g:ale_haskell_hls_config = g:lsp_settings_hls
 
 " Set a global project root for rust-analyzer to avoid starting a separate
 " instance for dependencies. Assumes a single project, but that's how I use
 " vim anyway.
 let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
 let g:ale_root['analyzer'] = s:cargo_root
-let g:ale_rust_analyzer_config = #{cargo: {} }
-let g:ale_rust_analyzer_config['cargo'] = #{features: 'all'}
+let g:lsp_settings_rust_analyzer = #{rust-analyzer: {}}
+let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = #{features: 'all'}
+let g:ale_rust_analyzer_config = g:lsp_settings_rust_analyzer['rust-analyzer']
 let g:ale_rust_rustfmt_options = '--edition 2021'
 
+let g:lsp_autostart_pylsp = v:true
+let g:lsp_autostart_tilt_ls = v:true
+
 let g:ale_linter_aliases['gitcommit'] = ['mail']
+
 AleAddFixer elixir mix_format
 AleAddLinter dockerfile hadolint
 AleAddLinter gitcommit proselint
@@ -419,6 +430,7 @@ AleAddLinter tilt tilt_lsp
 
 if isdirectory(s:cargo_root . '/target/debug')
 	" Enable only for projects that have been built at least once
+	let g:lsp_autostart_rust_analyzer = v:true
 	AleAddLinter rust analyzer
 	AleAddFixer rust rustfmt
 endif
