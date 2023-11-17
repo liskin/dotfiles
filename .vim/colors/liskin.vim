@@ -375,6 +375,16 @@ if &t_Co >= 256 || has('gui_running')
 	hi link DiagnosticSignWarn Todo
 	hi link DiagnosticSignInfo Todo
 	hi link DiagnosticSignHint Todo
+
+	if has('nvim')
+		hi link @punctuation NONE
+		hi link @punctuation.bracket Special
+
+		hi link @variable NONE
+		hi link @lsp.type.variable NONE
+
+		hi link @lsp.mod.attribute PreProc
+	endif
 endif
 
 delcommand HiU
