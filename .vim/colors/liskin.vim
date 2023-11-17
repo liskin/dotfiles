@@ -344,6 +344,11 @@ if &t_Co >= 256 || has('gui_running')
 		HiU VertSplit ctermbg=250 ctermfg=232
 		HiU Visual ctermbg=238
 		HiU WarningMsg ctermfg=9
+		HiU DiagnosticHint ctermfg=242
+		HiU DiagnosticOk ctermfg=40
+		HiU DiagnosticInfo ctermfg=33
+		HiU DiagnosticWarn ctermfg=184
+		HiU DiagnosticError ctermfg=160
 
 		" cterm only:
 		hi SpellBad cterm=underline,bold ctermfg=9 ctermbg=NONE
@@ -362,8 +367,8 @@ if &t_Co >= 256 || has('gui_running')
 	hi def link diffRemoved Special
 
 	" distinguish ALE virtual text from comments
-	hi link ALEVirtualTextError WarningMsg
-	hi link ALEVirtualTextWarning WarningMsg
+	hi link ALEVirtualTextError DiagnosticError
+	hi link ALEVirtualTextWarning DiagnosticWarn
 
 	" nvim diagnostics like ALE signs
 	hi link DiagnosticSignError Error
