@@ -4,7 +4,7 @@ set -eu
 shopt -s extglob
 
 case "$1" in
-	vim|wiki) set -- needsterminal "$@" ;;
+	vim|nvim|wiki) set -- needsterminal "$@" ;;
 	m|m-*|mutt|mutt-*) set -- needsterminal "$@" ;;
 	nomi|nomi-*) set -- needsterminal "$@" ;;
 	arbtt*) set -- needsterminal "$@"; export _XTERM_HOLD=: _XTERM_FLOAT=: ;;

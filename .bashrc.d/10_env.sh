@@ -30,7 +30,7 @@ export LESS="--mouse --wheel-lines=3 --LONG-PROMPT"
 
 export BROWSER=google-chrome
 export DVIVIEWER=okular
-export EDITOR=vim
+export EDITOR=nvim
 export PDFVIEWER=zathura
 export PSVIEWER=zathura
 export SSH_ASKPASS=/usr/bin/ssh-askpass

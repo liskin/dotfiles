@@ -50,7 +50,7 @@ export-alias mutt-news-gmane='neomutt -g news.gmane.io'
 export-alias mutt-news-kernel='neomutt -g nntp.lore.kernel.org'
 #alias mutt-lkml='mutt -f news://nntp.lore.kernel.org/org.kernel.vger.linux-kernel'
 
-export-alias wiki="vim ~/taskwiki/index.wiki"
+export-alias wiki='"$EDITOR" ~/taskwiki/index.wiki'
 
 # shellcheck disable=SC2016
 export-alias git-dotfiles='git --git-dir="$HOME/src/dotfiles.git"'
@@ -114,3 +114,7 @@ alias urlencode='python3 -c "import sys; from urllib.parse import quote; from fu
 alias bel='echo -en "\007"'
 
 export-alias nheko='QT_QPA_PLATFORMTHEME=qt5ct /usr/bin/nheko'
+
+alias vim='nvim'
+alias view='nvim -R'
+alias vimdiff='nvim -d'
