@@ -32,7 +32,7 @@ import XMonad.Actions.WorkspaceNames hiding (renameWorkspace)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers hiding (pid)
+import XMonad.Hooks.ManageHelpers hiding (pid, Side(..))
 import XMonad.Hooks.Place (placeHook, fixed)
 import XMonad.Hooks.RefocusLast (refocusLastLayoutHook, refocusLastWhen)
 import XMonad.Hooks.Rescreen
@@ -41,6 +41,7 @@ import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.WindowSwallowing
+import XMonad.Layout.Dwindle (Dwindle(Dwindle), Chirality(CW))
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MultiToggle
@@ -50,7 +51,7 @@ import XMonad.Layout.PerScreen
 import XMonad.Layout.Reflect
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Simplest(Simplest(..))
-import XMonad.Layout.Spiral
+import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
 import XMonad.Layout.TrackFloating
@@ -231,10 +232,12 @@ myLayout = dir . refocusLastLayoutHook . trackFloating $
     named "tab" (fixl Full) |||
     named "grid" (fixl $ sub $ grid) |||
     named "spiral" (fixl $ sub $ spiral 0.618) |||
+    named "dwindle" (fixl $ sub $ dwindle) |||
     named "full" (layoutHints $ noBorders Full)
   where
      tiled = ResizableTall 1 0.03 0.5 []
      grid = ifWider 3000 (GridRatio (1/1)) (GridRatio (4/3))
+     dwindle = Dwindle R CW 1 1.1
      dir = workspaceDir myHome
      toggles = mkToggle (single REFLECTX)
      fixl = avoidStruts . layoutHintsWithPlacement (0.5, 0.5) . smartBorders . toggles
@@ -254,6 +257,7 @@ laySels = [ (s, jumpToLayout s) | s <- l ]
               , "tab"
               , "grid"
               , "spiral"
+              , "dwindle"
               , "full" ]
 
 instance Shrinker CustomShrink where
