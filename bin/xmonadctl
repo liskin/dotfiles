@@ -9,6 +9,7 @@ case "$1" in
 			--user --slice="session.slice" --unit="liskin-xmonad-dnd-timer@$DISPLAY.service" \
 			--property="PartOf=xmonad@$DISPLAY.target" \
 			--property="EnvironmentFile=$XDG_RUNTIME_DIR/xsession-env-$DISPLAY" \
+			--property="KillMode=mixed" \
 			-- liskin-xmonad-dnd-timer ${2+"$2"}
 		;;
 	dnd-off)
