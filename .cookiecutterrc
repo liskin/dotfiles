@@ -1,0 +1,7 @@
+default_context:
+  author_name: Tomáš Janoušek
+  author_email: tomi@nomi.cz
+  author_github: liskin
+  author_paypal: lisknisi
+
+# vim:set ft=yaml:
