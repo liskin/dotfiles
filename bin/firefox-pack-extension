@@ -8,10 +8,7 @@ if [[ ! $id ]]; then
 	exit 1
 fi
 
-firefox_extensions=( ~/.mozilla/firefox/*.default/extensions )
-if [[ ! "${firefox_extensions[0]}" ]]; then
-	echo 'no firefox extensions directory'
-	exit 1
-fi
+firefox_app_id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+user_extension_dir=~/.mozilla/extensions/"$firefox_app_id"
 
-git ls-tree -r --name-only HEAD | zip "${firefox_extensions[0]}"/"$id".xpi -@
+git ls-tree -r --name-only HEAD | zip "$user_extension_dir"/"$id".xpi -@

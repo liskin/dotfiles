@@ -1,14 +1,44 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 export FONTCONFIG_FILE=~/.config/fontconfig/browser.conf
 export MOZ_USE_XINPUT2=1
 
-# TODO: memory cgroup
+[[ -x /usr/bin/firefox.real ]] && firefox_bin=/usr/bin/firefox.real || firefox_bin=/usr/bin/firefox
 
-if [[ -x /usr/bin/firefox.real ]]; then
-	exec /usr/bin/firefox.real "$@"
-else
-	exec /usr/bin/firefox "$@"
-fi
+# Firefox disallows sideloading extensions from ~/.mozilla/extensions but
+# there's an exception allowing sideloading them from system directories as
+# these would normally be inaccessible to users. As a workaround, use bwrap to
+# bind-mount the user-specific extensions into the system directory.
+#
+# Note that Debian patches the extensions.autoDisableScopes pref, other
+# distributions of Firefox may disable the system dirs as well, but this is
+# easily overridden in about:config.
+function sideload-workaround {
+	local firefox_app_id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+	local user_extension_dir=~/.mozilla/extensions/"$firefox_app_id"
+	local sys_extension_dir=/usr/share/mozilla/extensions/"$firefox_app_id"
+
+	local bwrap_extension_binds=()
+	bwrap_extension_binds+=(--bind "$user_extension_dir" "$sys_extension_dir")
+
+	local ext
+	for ext in "$sys_extension_dir"/*; do
+		bwrap_extension_binds+=(--bind "$ext" "$ext")
+	done
+
+	local bwrap=(
+		bwrap
+			--bind /{,}
+			--dev-bind /dev{,}
+			"${bwrap_extension_binds[@]}"
+			--
+		${LD_LIBRARY_PATH+/usr/bin/env LD_LIBRARY_PATH="$LD_LIBRARY_PATH"}
+	)
+
+	exec "${bwrap[@]}" "$@"
+}
+
+sideload-workaround "$firefox_bin" "$@"
