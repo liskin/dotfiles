@@ -1,0 +1,2 @@
+require'fidget'.setup {
+}
