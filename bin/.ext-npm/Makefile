@@ -6,10 +6,12 @@ HOSTNAME := $(shell hostname)
 PRETTIER_VERSION := 2.8.8
 REDOCLY_VERSION := 1.0.0-beta.126
 REDOC_CLI_VERSION := 0.13.21
+TYPESCRIPT_LANGUAGE_SERVER_VERSION := 4.1.3
 
 PRETTIER_NPM := prettier
 REDOCLY_NPM := @redocly/cli
 REDOC_CLI_NPM := redoc-cli
+TYPESCRIPT_LANGUAGE_SERVER_NPM := typescript-language-server
 
 define NPM_CHECK_LATEST_RELEASE
 	{ \
@@ -41,6 +43,12 @@ prettier: | .ext-prettier ; ln -fsT $|/bin/$@ $@
 .ext-prettier: .ext-prettier-$(PRETTIER_VERSION) ; ln -fsT $< $@
 .ext-prettier-$(PRETTIER_VERSION):
 	bwrap-npm-install --prefix $@ -- --omit=dev $(PRETTIER_NPM)@$(PRETTIER_VERSION)
+
+all: typescript-language-server
+typescript-language-server: | .ext-typescript-language-server ; ln -fsT $|/bin/$@ $@
+.ext-typescript-language-server: .ext-typescript-language-server-$(TYPESCRIPT_LANGUAGE_SERVER_VERSION) ; ln -fsT $< $@
+.ext-typescript-language-server-$(TYPESCRIPT_LANGUAGE_SERVER_VERSION):
+	bwrap-npm-install --prefix $@ -- --omit=dev $(TYPESCRIPT_LANGUAGE_SERVER_NPM)@$(TYPESCRIPT_LANGUAGE_SERVER_VERSION)
 
 .PHONY: gc
 gc:
