@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2317
 
 # Wrapper around xrandr which allows shell globs in --output and automatically
 # disables all other outputs.
@@ -34,6 +35,17 @@ function get-xrandr-outputs-except {
 
 function get-xrandr-custom-monitors {
 	xrandr --listmonitors | grep -P -o '^\s*\d+:\s+\K[^+]\S+' | sed -e 's/^[+*]*//'
+}
+
+function xrandr-delete-custom-monitors {
+	local -a args=()
+	for monitor in $(get-xrandr-custom-monitors); do
+		args+=(--delmonitor "$monitor")
+	done
+
+	if (( ${args[@]+${#args[@]}} )); then
+		o xrandr "${args[@]}"
+	fi
 }
 
 function find-one {
@@ -84,10 +96,7 @@ function xrandr-auto-off {
 		args+=(--output "$output" --off)
 	done
 
-	for monitor in $(get-xrandr-custom-monitors); do
-		o xrandr --delmonitor "$monitor"
-	done
-
+	xrandr-delete-custom-monitors
 	o xrandr "${args[@]}"
 }
 

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2317
 
 set -eu
 
-. ~/bin/xrandr-smart
+# shellcheck source-path=..
+. "$HOME"/bin/xrandr-smart
 
 xrandr-smart \
 	--dpi 96 \
@@ -19,6 +21,7 @@ if (( wide_width_left < wide_width )); then
 	wide_width_left_mm=$((wide_width_mm * wide_width_left / wide_width))
 	wide_width_right=$((wide_width - wide_width_left))
 	wide_width_right_mm=$((wide_width_mm - wide_width_left_mm))
-	o xrandr --setmonitor "${out_wide}-l" "${wide_width_left}/${wide_width_left_mm}x${wide_height}/${wide_height_mm}+0+0" "$out_wide"
-	o xrandr --setmonitor "${out_wide}-r" "${wide_width_right}/${wide_width_right_mm}x${wide_height}/${wide_height_mm}+${wide_width_left}+0" none
+	o xrandr \
+		--setmonitor "${out_wide}-l" "${wide_width_left}/${wide_width_left_mm}x${wide_height}/${wide_height_mm}+0+0" "$out_wide" \
+		--setmonitor "${out_wide}-r" "${wide_width_right}/${wide_width_right_mm}x${wide_height}/${wide_height_mm}+${wide_width_left}+0" none
 fi
