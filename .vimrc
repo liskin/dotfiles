@@ -428,21 +428,23 @@ let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_pylsp = v:true
 let g:lsp_autostart_tilt_ls = v:true
 let g:lsp_null_enabled = {}
+let g:lsp_null_enabled['proselint'] = ['code_actions', 'diagnostics']
 let g:lsp_null_enabled['shellcheck'] = ['code_actions', 'diagnostics']
 let g:lsp_null_settings = {}
+let g:lsp_null_settings['proselint'] = #{filetypes: ["gitcommit", "mail", "markdown", "rst", "text"]}
 
 let g:ale_linter_aliases['gitcommit'] = ['mail']
 
 AleAddFixer elixir mix_format
+AleAddLinter gitcommit proselint
+AleAddLinter mail proselint
+AleAddLinter markdown proselint
 AleAddLinter python pylsp
+AleAddLinter rst proselint
 AleAddLinter sh shellcheck
+AleAddLinter text proselint
 AleAddLinter tilt tilt_lsp
 AleAddLinter! dockerfile hadolint
-AleAddLinter! gitcommit proselint
-AleAddLinter! mail proselint
-AleAddLinter! markdown proselint
-AleAddLinter! rst proselint
-AleAddLinter! text proselint
 AleAddLinter! tilt buildifier
 
 if isdirectory(s:cargo_root . '/target/debug')
