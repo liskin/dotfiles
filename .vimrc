@@ -101,6 +101,9 @@ set ttyfast
 set mouse=a
 set mousemodel=popup_setpos
 
+" set terminal title regardless of whether it can be restored
+set title
+
 if has('gui_running') " {{{2
 	set guifont=Fixed
 
