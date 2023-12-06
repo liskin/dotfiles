@@ -1,6 +1,8 @@
 if vim.g.loaded_after_lspconfig then return end
 vim.g.loaded_after_lspconfig = true
 
+local lspconfig = require'lspconfig'
+
 local function fullpaths(paths)
 	local function full(path)
 		return vim.fn.fnamemodify(vim.fn.resolve(path), ":p")
@@ -39,6 +41,16 @@ if has_vimrc_vimdir(fullpaths(vim.fn.argv())) then
 	}
 end
 
+lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup, function(config)
+	-- flake8_lint in pylsp needs root_dir, so add a fallback to the directory of the file
+	if config.name == "pylsp" then
+		local root_dir = config.root_dir
+		config.root_dir = function(fname)
+			return root_dir(fname) or vim.fs.dirname(fname)
+		end
+	end
+end)
+
 local lsps = {
 	'clangd',
 	'elixirls',
@@ -51,9 +63,17 @@ local lsps = {
 }
 
 for _, lsp in ipairs(lsps) do
-	require'lspconfig'[lsp].setup {
+	lspconfig[lsp].setup {
 		autostart = vim.g['lsp_autostart_' .. lsp] or false,
 		settings = vim.g['lsp_settings_' .. lsp],
 		cmd = vim.g['lsp_cmd_' .. lsp],
+		on_attach = function(client, bufnr)
+			if vim.g['lsp_autoformat_' .. lsp] then
+				require'lsp-format'.on_attach(client, bufnr)
+			end
+		end,
 	}
 end
+
+-- Disable ALE fixers
+vim.g['ale_fixers'] = {}

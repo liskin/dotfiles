@@ -393,6 +393,11 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['pyflakes'] = #{enabled: v:false}
 let g:lsp_settings_pylsp['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false}
 let g:lsp_settings_pylsp['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
 
+" disable black (formatting) and ruff (formatting + linting) by default, only enable isort
+let g:lsp_settings_pylsp['pylsp']['plugins']['pyls_isort'] = #{enabled: v:true}
+let g:lsp_settings_pylsp['pylsp']['plugins']['pylsp_black'] = #{enabled: v:false}
+let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
+
 let g:ale_python_pylsp_config = g:lsp_settings_pylsp
 
 let g:ale_haskell_ormolu_executable = 'fourmolu'
@@ -411,6 +416,7 @@ let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = #{features: 'all'}
 let g:ale_rust_analyzer_config = g:lsp_settings_rust_analyzer['rust-analyzer']
 let g:ale_rust_rustfmt_options = '--edition 2021'
 
+let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_pylsp = v:true
 let g:lsp_autostart_tilt_ls = v:true
 
@@ -430,6 +436,7 @@ AleAddLinter tilt tilt_lsp
 
 if isdirectory(s:cargo_root . '/target/debug')
 	" Enable only for projects that have been built at least once
+	let g:lsp_autoformat_rust_analyzer = v:true
 	let g:lsp_autostart_rust_analyzer = v:true
 	AleAddLinter rust analyzer
 	AleAddFixer rust rustfmt

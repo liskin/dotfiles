@@ -116,6 +116,9 @@
 [submodule ".config/nvim/bundle/lsp_lines.nvim"]
 	path = .config/nvim/bundle/lsp_lines.nvim
 	url = https://git.sr.ht/%7Ewhynothugo/lsp_lines.nvim
+[submodule ".config/nvim/bundle/lsp-format.nvim"]
+	path = .config/nvim/bundle/lsp-format.nvim
+	url = https://github.com/lukas-reineke/lsp-format.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
