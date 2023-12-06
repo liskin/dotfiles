@@ -1,1 +1,1 @@
-au BufRead,BufNewFile *Tiltfile* setf bzl.tilt
+au BufRead,BufNewFile *Tiltfile* setf bzl.tiltfile

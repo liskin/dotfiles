@@ -1,17 +1,17 @@
 runtime autoload/ale/fixers/buildifier.vim
 
-function! ale_linters#tilt#buildifier#GetProjectRoot(buffer) abort
+function! ale_linters#tiltfile#buildifier#GetProjectRoot(buffer) abort
 	return ale#path#Dirname(
 		\ ale#path#liskin#FindFurthestFile(a:buffer, 'Tiltfile')
 	\ )
 endfunction
 
-function! ale_linters#tilt#buildifier#GetCommand(buffer) abort
+function! ale_linters#tiltfile#buildifier#GetCommand(buffer) abort
 	let l:options = ale#Var(a:buffer, 'bazel_buildifier_options')
 	return '%e' . ale#Pad(l:options) . ' -mode check -lint warn -format json -path %s -'
 endfunction
 
-function! ale_linters#tilt#buildifier#Handle(buffer, lines) abort
+function! ale_linters#tiltfile#buildifier#Handle(buffer, lines) abort
 	try
 		let l:json = json_decode(join(a:lines, ''))
 	catch
@@ -40,10 +40,10 @@ function! ale_linters#tilt#buildifier#Handle(buffer, lines) abort
 	return l:output
 endfunction
 
-call ale#linter#Define('tilt', #{
+call ale#linter#Define('tiltfile', #{
 	\ name: 'buildifier',
 	\ executable: {b -> ale#Var(b, 'bazel_buildifier_executable')},
-	\ command: function('ale_linters#tilt#buildifier#GetCommand'),
-	\ cwd: function('ale_linters#tilt#buildifier#GetProjectRoot'),
-	\ callback: function('ale_linters#tilt#buildifier#Handle'),
+	\ command: function('ale_linters#tiltfile#buildifier#GetCommand'),
+	\ cwd: function('ale_linters#tiltfile#buildifier#GetProjectRoot'),
+	\ callback: function('ale_linters#tiltfile#buildifier#Handle'),
 \ })

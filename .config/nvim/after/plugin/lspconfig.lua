@@ -45,11 +45,16 @@ end
 
 lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup, function(config)
 	-- flake8_lint in pylsp needs root_dir, so add a fallback to the directory of the file
-	if config.name == "pylsp" then
+	if config.name == 'pylsp' then
 		local root_dir = config.root_dir
 		config.root_dir = function(fname)
 			return root_dir(fname) or vim.fs.dirname(fname)
 		end
+	end
+
+	-- nvim-lspconfig doesn't handle dot-separated filetypes (https://github.com/neovim/nvim-lspconfig/issues/1220)
+	if config.name == 'tilt_ls' then
+		config.filetypes = {'*.tiltfile', unpack(config.filetypes)}
 	end
 end)
 
