@@ -16,4 +16,5 @@ require'trouble'.setup {
 	win_config = {
 		border = "rounded",
 	},
+	auto_preview = false,
 }
