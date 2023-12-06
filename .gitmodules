@@ -122,6 +122,12 @@
 [submodule ".config/nvim/bundle/fidget.nvim"]
 	path = .config/nvim/bundle/fidget.nvim
 	url = https://github.com/j-hui/fidget.nvim
+[submodule ".config/nvim/bundle/none-ls.nvim"]
+	path = .config/nvim/bundle/none-ls.nvim
+	url = https://github.com/nvimtools/none-ls.nvim
+[submodule ".config/nvim/bundle/plenary.nvim"]
+	path = .config/nvim/bundle/plenary.nvim
+	url = https://github.com/nvim-lua/plenary.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
