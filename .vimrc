@@ -428,8 +428,7 @@ let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_pylsp = v:true
 let g:lsp_autostart_tilt_ls = v:true
 let g:lsp_null_enabled = {}
-let g:lsp_null_enabled['code_actions.shellcheck'] = v:true
-let g:lsp_null_enabled['diagnostics.shellcheck'] = v:true
+let g:lsp_null_enabled['shellcheck'] = ['code_actions', 'diagnostics']
 let g:lsp_null_settings = {}
 
 let g:ale_linter_aliases['gitcommit'] = ['mail']

@@ -77,21 +77,19 @@ for _, lsp in ipairs(lsps) do
 	}
 end
 
+local lsp_null_sources = {}
+local lsp_null_settings = vim.g.lsp_null_settings or {}
+for tool, handlers in pairs(vim.g.lsp_null_enabled) do
+	for _, handler in ipairs(handlers) do
+		local source = vim.tbl_get(null_ls.builtins, handler, tool)
+		if source then
+			local settings = lsp_null_settings[handler .. '.' .. tool] or lsp_null_settings[tool]
+			table.insert(lsp_null_sources, source.with(settings or {}))
+		end
+	end
+end
+
 null_ls.setup {
-	sources = vim.tbl_filter(
-		function(source) return source end,
-		vim.tbl_map(
-			function(tool)
-				if vim.g.lsp_null_enabled[tool] then
-					local lsp_null_settings = vim.g.lsp_null_settings or {}
-					local source = vim.tbl_get(null_ls.builtins, unpack(vim.split(tool, ".", {plain=true})))
-					return source.with(lsp_null_settings[tool] or {})
-				else
-					return nil
-				end
-			end,
-			vim.tbl_keys(vim.g.lsp_null_enabled or {})
-		)
-	),
+	sources = lsp_null_sources,
 	on_attach = lsp_format.on_attach,
 }
