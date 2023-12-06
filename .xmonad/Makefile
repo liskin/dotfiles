@@ -30,6 +30,7 @@ ghcid-X11:
 ghcid-X11-xft:
 ghcid-xmonad-contrib:
 ghcid-xmonad:
+ghcid-xmobar:
 ghcid-%: build-deps _phony
 	cd $(SRC_HASKELL) && \
 		ghcid --target $*:lib
@@ -51,6 +52,7 @@ ghci-X11:
 ghci-X11-xft:
 ghci-xmonad-contrib:
 ghci-xmonad:
+ghci-xmobar:
 ghci-%: build-deps _phony
 	cd $(SRC_HASKELL) && \
 		stack ghci $*:lib
