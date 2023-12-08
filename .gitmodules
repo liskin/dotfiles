@@ -152,6 +152,9 @@
 	path = src-webextensions/empty-tab
 	#url = https://github.com/karlerikjonatan/empty-tab
 	url = git@github.com:liskin/empty-tab
+[submodule "src-webextensions/empty-tab-firefox"]
+	path = src-webextensions/empty-tab-firefox
+	url = git@github.com:liskin/empty-tab
 [submodule "src-webextensions/Just-Read"]
 	path = src-webextensions/Just-Read
 	#url = https://github.com/ZachSaucier/Just-Read.git

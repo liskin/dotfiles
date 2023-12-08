@@ -22,17 +22,19 @@ function sideload-workaround {
 	local sys_extension_dir=/usr/share/mozilla/extensions/"$firefox_app_id"
 
 	local bwrap_extension_binds=()
-	bwrap_extension_binds+=(--bind "$user_extension_dir" "$sys_extension_dir")
-
 	local ext
+	for ext in "$user_extension_dir"/*; do
+		bwrap_extension_binds+=(--bind "$(readlink -f "$ext")" "$sys_extension_dir"/"${ext#"$user_extension_dir"/}")
+	done
 	for ext in "$sys_extension_dir"/*; do
-		bwrap_extension_binds+=(--bind "$ext" "$ext")
+		bwrap_extension_binds+=(--bind "$(readlink -f "$ext")" "$ext")
 	done
 
 	local bwrap=(
 		bwrap
 			--bind /{,}
 			--dev-bind /dev{,}
+			--tmpfs "$sys_extension_dir"
 			"${bwrap_extension_binds[@]}"
 			--
 		${LD_LIBRARY_PATH+/usr/bin/env LD_LIBRARY_PATH="$LD_LIBRARY_PATH"}
