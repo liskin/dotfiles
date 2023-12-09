@@ -654,6 +654,7 @@ inoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
 nnoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
 inoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
 
+" fzf keys {{{2
 nnoremap <silent> <C-B> <Cmd>:FzfBuffers<CR>
 nnoremap <silent> <C-G> <Cmd>:FzfTags<CR>
 nnoremap <silent> <C-P> <Cmd>:FzfFiles<CR>
@@ -671,6 +672,7 @@ else
 	imap <C-_> <Plug>(cmp_snippet)
 endif
 
+" ALE/LSP keys {{{2
 noremap <silent> <Plug>(lsp_hover) <Plug>(ale_hover)
 noremap <silent> <Plug>(lsp_detail) <Plug>(ale_detail)
 noremap <silent> <Plug>(lsp_code_action) <Plug>(ale_code_action)
@@ -694,6 +696,7 @@ imap <C-F> <C-\><C-O><Plug>(lsp_code_action_ins)
 nmap [d <Plug>(lsp_prev)
 nmap ]d <Plug>(lsp_next)
 
+" smart Tab completion (vim only) {{{2
 if !has('nvim')
 	function! LiskinTabComplete() abort
 		if pumvisible()
@@ -717,14 +720,15 @@ if !has('nvim')
 	inoremap <silent> <S-Tab> <C-R>=LiskinShiftTabComplete()<CR>
 endif
 
+" cloning/closing tabs {{{2
 nnoremap <silent> <C-W>S <Cmd>:CloneBufTmp<CR>
 nnoremap <silent> <C-W>C <Cmd>:tabclose<CR>
 
-" git (fugitive) shortcuts
+" git (fugitive) shortcuts {{{2
 nnoremap <silent> <Leader>gg <Cmd>:0tab G<CR>
 nnoremap <silent> <Leader>gv <Cmd>:Gvdiffsplit<CR>
 
-" C-X is commands, remap decrement to C-Q
+" C-X is commands, remap decrement to C-Q {{{2
 nnoremap <silent> <C-Q> <C-X>
 vnoremap <silent> <C-Q> <C-X>
 
