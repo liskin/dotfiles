@@ -190,6 +190,9 @@ if !has('nvim')
 	set completeopt+=popup
 endif
 set diffopt+=indent-heuristic,algorithm:histogram
+if has('nvim')
+	set diffopt+=linematch:30
+endif
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
 set formatoptions+=rj
