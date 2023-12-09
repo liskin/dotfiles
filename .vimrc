@@ -40,20 +40,6 @@ if !has('nvim')
 		exe "set <F20>=\<Esc>[34;*~"
 		exe "set <Undo>="
 		exe "set <Help>="
-
-		function! s:rxvt_bg() abort
-			if &bg == "light"
-				let $COLORFGBG = '0;default;15'
-				call echoraw("\33]10;black\7\33]11;white\7\33]708;white\7")
-			else
-				let $COLORFGBG = '15;default;0'
-				call echoraw("\33]10;white\7\33]11;black\7\33]708;black\7")
-			endif
-		endfunction
-		augroup RxvtBg
-			autocmd!
-			autocmd OptionSet background call s:rxvt_bg()
-		augroup END
 	endif
 
 	if &term == "tmux-256color" " {{{3
@@ -86,15 +72,40 @@ if !has('nvim')
 		exe "set <F19>=\<Esc>[18;2~"
 		exe "set <F20>=\<Esc>[19;2~"
 	endif
-else
+else " {{{3
 	" cursor shape {{{4
-	set guicursor=n-v-c-sm:block,i-ci-ve:ver25-blinkoff500-blinkon500,r-cr-o:hor20-blinkoff500-blinkon500
+	set guicursor=n-v-c-sm:block-Cursor,i-ci-ve:ver25-blinkoff500-blinkon500-Cursor,r-cr-o:hor20-blinkoff500-blinkon500-Cursor
 
 	" ctrl+pgup/down to switch tabs {{{4
 	nmap <silent> <C-PageUp> :tabprev<CR>
 	nmap <silent> <C-PageDown> :tabnext<CR>
 	nmap <silent> <F21> <C-PageUp>
 	nmap <silent> <F22> <C-PageDown>
+endif
+
+" rxvt background switching {{{3
+if &term == "rxvt-unicode-256color" " {{{3
+	function! s:rxvt_bg() abort
+		if &bg == "light"
+			let $COLORFGBG = '0;default;15'
+			if has('nvim')
+				call chansend(v:stderr, "\33]10;black\7\33]11;white\7\33]12;black\7\33]708;white\7")
+			else
+				call echoraw("\33]10;black\7\33]11;white\7\33]708;white\7")
+			endif
+		else
+			let $COLORFGBG = '15;default;0'
+			if has('nvim')
+				call chansend(v:stderr, "\33]10;white\7\33]11;black\7\33]12;white\7\33]708;black\7")
+			else
+				call echoraw("\33]10;white\7\33]11;black\7\33]708;black\7")
+			endif
+		endif
+	endfunction
+	augroup RxvtBg
+		autocmd!
+		autocmd OptionSet background call s:rxvt_bg()
+	augroup END
 endif
 
 " fix C-Space mappings in terminal {{{3
