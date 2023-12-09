@@ -128,6 +128,27 @@
 [submodule ".config/nvim/bundle/plenary.nvim"]
 	path = .config/nvim/bundle/plenary.nvim
 	url = https://github.com/nvim-lua/plenary.nvim
+[submodule ".config/nvim/bundle/nvim-cmp"]
+	path = .config/nvim/bundle/nvim-cmp
+	url = https://github.com/hrsh7th/nvim-cmp
+[submodule ".config/nvim/bundle/cmp-cmdline"]
+	path = .config/nvim/bundle/cmp-cmdline
+	url = https://github.com/hrsh7th/cmp-cmdline
+[submodule ".config/nvim/bundle/cmp-nvim-lsp"]
+	path = .config/nvim/bundle/cmp-nvim-lsp
+	url = https://github.com/hrsh7th/cmp-nvim-lsp
+[submodule ".config/nvim/bundle/cmp-nvim-ultisnips"]
+	path = .config/nvim/bundle/cmp-nvim-ultisnips
+	url = https://github.com/quangnguyen30192/cmp-nvim-ultisnips
+[submodule ".config/nvim/bundle/cmp-path"]
+	path = .config/nvim/bundle/cmp-path
+	url = https://github.com/hrsh7th/cmp-path
+[submodule ".config/nvim/bundle/cmp-buffer"]
+	path = .config/nvim/bundle/cmp-buffer
+	url = https://github.com/hrsh7th/cmp-buffer
+[submodule ".config/nvim/bundle/cmp-omni"]
+	path = .config/nvim/bundle/cmp-omni
+	url = https://github.com/hrsh7th/cmp-omni
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf

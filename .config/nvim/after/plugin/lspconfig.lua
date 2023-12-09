@@ -1,9 +1,10 @@
 if vim.g.loaded_after_lspconfig then return end
 vim.g.loaded_after_lspconfig = true
 
-local lspconfig = require'lspconfig'
-local null_ls = require'null-ls'
-local lsp_format = require'lsp-format'
+local cmp_nvim_lsp = require 'cmp_nvim_lsp'
+local lsp_format = require 'lsp-format'
+local lspconfig = require 'lspconfig'
+local null_ls = require 'null-ls'
 
 local function fullpaths(paths)
 	local function full(path)
@@ -79,6 +80,7 @@ for _, lsp in ipairs(lsps) do
 				require'lsp-format'.on_attach(client, bufnr)
 			end
 		end,
+		capabilities = cmp_nvim_lsp.default_capabilities(),
 	}
 end
 

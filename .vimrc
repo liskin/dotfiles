@@ -640,8 +640,13 @@ nnoremap <silent> <C-Y> <Cmd>:FzfWindows<CR>
 
 nnoremap <C-J> :FzfRG<space>
 
-nnoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
-inoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
+if !has('nvim')
+	nnoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
+	inoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
+else
+	nmap <C-_> i<C-_>
+	imap <C-_> <Plug>(cmp_snippet)
+endif
 
 noremap <silent> <Plug>(lsp_hover) <Plug>(ale_hover)
 noremap <silent> <Plug>(lsp_detail) <Plug>(ale_detail)
@@ -666,19 +671,28 @@ imap <C-F> <C-\><C-O><Plug>(lsp_code_action_ins)
 nmap [d <Plug>(lsp_prev)
 nmap ]d <Plug>(lsp_next)
 
-function! LiskinTabComplete() abort
-	if pumvisible()
-		return "\<C-N>"
-	elseif strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
-		return "\<Tab>"
-	elseif &omnifunc != ''
-		return "\<C-X>\<C-O>"
-	else
-		return "\<C-N>"
-	endif
-endfunction
-inoremap <silent> <Tab> <C-R>=LiskinTabComplete()<CR>
-inoremap <silent> <S-Tab> <Tab>
+if !has('nvim')
+	function! LiskinTabComplete() abort
+		if pumvisible()
+			return "\<C-N>"
+		elseif strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
+			return "\<Tab>"
+		elseif &omnifunc != ''
+			return "\<C-X>\<C-O>"
+		else
+			return "\<C-N>"
+		endif
+	endfunction
+	function! LiskinShiftTabComplete() abort
+		if pumvisible()
+			return "\<C-P>"
+		else
+			return "\<Tab>"
+		endif
+	endfunction
+	inoremap <silent> <Tab> <C-R>=LiskinTabComplete()<CR>
+	inoremap <silent> <S-Tab> <C-R>=LiskinShiftTabComplete()<CR>
+endif
 
 nnoremap <silent> <C-W>S <Cmd>:CloneBufTmp<CR>
 nnoremap <silent> <C-W>C <Cmd>:tabclose<CR>
