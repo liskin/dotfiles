@@ -33,6 +33,11 @@ if !has('nvim')
 		exe "set <A-n>=\<Esc>n"
 		exe "set <F14>=\<Esc>[26;*~"
 		exe "set <F15>=\<Esc>[28;*~"
+		exe "set <F16>=\<Esc>[29;*~"
+		exe "set <F17>=\<Esc>[31;*~"
+		exe "set <F18>=\<Esc>[32;*~"
+		exe "set <F19>=\<Esc>[33;*~"
+		exe "set <F20>=\<Esc>[34;*~"
 		exe "set <Undo>="
 		exe "set <Help>="
 
@@ -76,6 +81,10 @@ if !has('nvim')
 		exe "set <F14>=\<Esc>[1;2Q"
 		exe "set <F15>=\<Esc>[1;2R"
 		exe "set <F16>=\<Esc>[1;2S"
+		exe "set <F17>=\<Esc>[15;2~"
+		exe "set <F18>=\<Esc>[17;2~"
+		exe "set <F19>=\<Esc>[18;2~"
+		exe "set <F20>=\<Esc>[19;2~"
 	endif
 else
 	" cursor shape {{{4
