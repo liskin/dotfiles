@@ -636,6 +636,9 @@ inoremap <silent> <F5> <Cmd>:lnext<CR>
 nnoremap <silent> <F6> <Cmd>:TroubleToggle<CR>
 inoremap <silent> <F6> <Cmd>:TroubleToggle<CR>
 
+nnoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
+inoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
+
 nnoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
 inoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
 
