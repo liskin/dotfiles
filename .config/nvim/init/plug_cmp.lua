@@ -96,6 +96,7 @@ cmp.setup {
 			{ name = 'nvim_lsp' },
 		}, {
 			{ name = 'buffer' },
+			{ name = 'spell' },
 		}
 	),
 	mapping = {
