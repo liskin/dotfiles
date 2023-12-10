@@ -538,8 +538,10 @@ let g:sleuth_gitcommit_heuristics = 0
 
 " ultisnips {{{2
 let g:UltiSnipsEditSplit = 'context'
-let g:UltiSnipsExpandTrigger = '<c-x><c-_>'
-let g:UltiSnipsListSnippets = ''
+let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list)'
+let g:UltiSnipsJumpForwardTrigger = '<C-_>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-X><C-_>'
 let g:snips_name = 'Tomáš Janoušek'
 let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
