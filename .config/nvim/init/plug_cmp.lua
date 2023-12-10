@@ -5,6 +5,16 @@ local function has_words_before()
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local function cmp_or(if_cmp, fallback1)
+	return function(fallback2)
+		if cmp.visible() then
+			if_cmp()
+		else
+			(fallback1 or fallback2)()
+		end
+	end
+end
+
 local function cmp_select_next()
 	cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 	if not cmp.get_selected_entry() then
@@ -18,26 +28,6 @@ local function cmp_select_prev()
 	if not cmp.get_selected_entry() then
 		-- skip non-active state on wrap-around
 		cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-	end
-end
-
-local function cmp_select_next_or(fallback1)
-	return function(fallback2)
-		if cmp.visible() then
-			cmp_select_next()
-		else
-			(fallback1 or fallback2)()
-		end
-	end
-end
-
-local function cmp_select_prev_or(fallback1)
-	return function(fallback2)
-		if cmp.visible() then
-			cmp_select_prev()
-		else
-			(fallback1 or fallback2)()
-		end
 	end
 end
 
@@ -109,14 +99,19 @@ cmp.setup {
 				fallback()
 			end
 		end,
-		['<S-Tab>'] = cmp_select_prev_or(),
-		['<Down>'] = cmp_select_next_or(),
-		['<Up>'] = cmp_select_prev_or(),
-		['<C-N>'] = cmp_select_next_or(cmp_complete_buffer_all),
-		['<C-P>'] = cmp_select_prev_or(cmp_complete_buffer_all),
-		['<C-X><C-N>'] = cmp_select_next_or(cmp_complete_buffer_current),
-		['<C-X><C-P>'] = cmp_select_prev_or(cmp_complete_buffer_current),
-		['<C-X><C-O>'] = cmp_select_prev_or(cmp_complete_omni),
+		['<S-Tab>'] = cmp_or(cmp_select_prev),
+		['<Down>'] = cmp_or(cmp_select_next),
+		['<Up>'] = cmp_or(cmp_select_prev),
+		['<Right>'] = cmp_or(cmp.confirm),
+		['<Left>'] = function(fallback)
+			cmp.abort()
+			fallback()
+		end,
+		['<C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_all),
+		['<C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_all),
+		['<C-X><C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_current),
+		['<C-X><C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_current),
+		['<C-X><C-O>'] = cmp_or(cmp_select_prev, cmp_complete_omni),
 	},
 	confirmation = {
 		get_commit_characters = function(commit_characters)
