@@ -84,6 +84,7 @@ cmp.setup {
 	sources = cmp.config.sources(
 		{
 			{ name = 'nvim_lsp' },
+			{ name = 'omni' },
 			{ name = 'path' },
 		}, {
 			{ name = 'buffer' },
