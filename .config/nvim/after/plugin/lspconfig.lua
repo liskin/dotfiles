@@ -23,7 +23,7 @@ local function has_vimrc_vimdir(paths)
 	return not vim.tbl_isempty(vim.tbl_filter(is_vim, paths))
 end
 
-if has_vimrc_vimdir(fullpaths(vim.fn.argv())) then
+if has_vimrc_vimdir(fullpaths({vim.fn.getcwd(), unpack(vim.fn.argv())})) then
 	vim.g.lsp_autostart_lua_ls = true
 	vim.g.lsp_settings_lua_ls = {
 		Lua = {
