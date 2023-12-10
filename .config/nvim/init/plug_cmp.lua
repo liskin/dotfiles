@@ -23,8 +23,26 @@ local function cmp_select_next()
 	end
 end
 
+local function cmp_select_next_page()
+	local menu_info = cmp.core.view:_get_entries_view():info()
+	cmp.select_next_item({ behavior = cmp.SelectBehavior.Select, count = menu_info.inner_height })
+	if not cmp.get_selected_entry() then
+		-- skip non-active state on wrap-around
+		cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+	end
+end
+
 local function cmp_select_prev()
 	cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+	if not cmp.get_selected_entry() then
+		-- skip non-active state on wrap-around
+		cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+	end
+end
+
+local function cmp_select_prev_page()
+	local menu_info = cmp.core.view:_get_entries_view():info()
+	cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select, count = menu_info.inner_height })
 	if not cmp.get_selected_entry() then
 		-- skip non-active state on wrap-around
 		cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
@@ -104,6 +122,8 @@ cmp.setup {
 		['<S-Tab>'] = cmp_or(cmp_select_prev),
 		['<Down>'] = cmp_or(cmp_select_next),
 		['<Up>'] = cmp_or(cmp_select_prev),
+		['<PageDown>'] = cmp_or(cmp_select_next_page),
+		['<PageUp>'] = cmp_or(cmp_select_prev_page),
 		['<Right>'] = cmp_or(cmp.confirm),
 		['<Left>'] = function(fallback)
 			cmp.abort()
