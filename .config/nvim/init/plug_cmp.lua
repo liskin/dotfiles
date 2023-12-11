@@ -112,7 +112,11 @@ cmp.setup {
 	mapping = {
 		['<Tab>'] = function(fallback)
 			if cmp.visible() then
-				cmp_select_next()
+				if #cmp.get_entries() == 1 then
+					cmp.confirm()
+				else
+					cmp_select_next()
+				end
 			elseif has_words_before() then
 				cmp.complete()
 			else
@@ -140,6 +144,7 @@ cmp.setup {
 			return {
 				' ', '\r',
 				'.', ',',
+				':', ';',
 				'(', ')',
 				'[', ']',
 				'{', '}',
