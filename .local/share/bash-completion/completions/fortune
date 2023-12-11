@@ -1,0 +1,21 @@
+#!bash
+# shellcheck disable=SC2239
+
+function _fortune {
+	# shellcheck disable=2034
+	local cur prev words cword
+	_init_completion || return
+
+	local dbs
+	dbs=$(
+		find \
+			/usr/{local/,}share/games/fortunes \
+			-type f -! -name '*.*' -printf "%P\n" \
+			2>/dev/null \
+		| sort -u
+	)
+
+	readarray -t COMPREPLY < <(compgen -W "$dbs" -- "$cur")
+}
+
+complete -F _fortune fortune
