@@ -22,7 +22,7 @@ any window (! $hidden && (
 $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	current window $title =~ /^(t\[N\] |weechat\S+: )/ ==> tag Activity:Chat,
 	current window $title =~ /^(t\[m\]|m\[[A-Z]\])[  ]/ ==> tag Activity:Mail,
-	current window $title =~ m|~/taskwiki.* - VIM$| ==> tag Activity:Org,
+	current window $title =~ m|~/taskwiki.* - N?VIM$| ==> tag Activity:Org,
 	current window $program == "google-chrome" ==> {
 		current window $title =~ m!:: https?://app\.slack\.com/! ==> tag Activity:Chat,
 		current window $title =~ m!:: https?://web.whatsapp.com/! ==> tag Activity:Chat,
