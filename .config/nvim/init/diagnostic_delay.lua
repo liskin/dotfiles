@@ -28,24 +28,18 @@ local function get_bufnr(bufnr)
 end
 
 local orig_vim_diagnostic_set = vim.diagnostic.set
-function vim.diagnostic.set(namespace, bufnr, diagnostics, opts)
+function vim.diagnostic.set(namespace, bufnr, ...)
 	vim.validate({
 		namespace = { namespace, 'n' },
 		bufnr = { bufnr, 'n' },
-		diagnostics = {
-			diagnostics,
-			vim.tbl_islist,
-			'a list of diagnostics',
-		},
-		opts = { opts, 't', true },
 	})
 
 	bufnr = get_bufnr(bufnr)
 
 	if diag_delay_locked[bufnr] then
-		diag_delay_queue[bufnr][namespace] = { diagnostics, opts }
+		diag_delay_queue[bufnr][namespace] = { ... }
 	else
-		orig_vim_diagnostic_set(namespace, bufnr, diagnostics, opts)
+		orig_vim_diagnostic_set(namespace, bufnr, ...)
 	end
 end
 
@@ -81,8 +75,7 @@ local function diag_delay_unlock(bufnr)
 	diag_delay_queue[bufnr] = nil
 
 	for namespace, args in pairs(queue) do
-		local diagnostics, opts = unpack(args)
-		orig_vim_diagnostic_set(namespace, bufnr, diagnostics, opts)
+		orig_vim_diagnostic_set(namespace, bufnr, unpack(args))
 	end
 end
 
