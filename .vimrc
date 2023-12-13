@@ -448,6 +448,7 @@ let g:ale_rust_rustfmt_options = '--edition 2021'
 
 " See .config/nvim/after/plugin/lspconfig.lua for neovim LSP configs
 let g:lsp_autoformat_elixirls = v:true
+let g:lsp_autostart_lua_ls = v:true
 let g:lsp_autostart_pylsp = v:true
 let g:lsp_autostart_tilt_ls = v:true
 let g:lsp_null_enabled = {}

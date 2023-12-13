@@ -155,6 +155,9 @@
 [submodule ".local/share/nvim/site/bundle/hop.nvim"]
 	path = .local/share/nvim/site/bundle/hop.nvim
 	url = https://github.com/smoka7/hop.nvim
+[submodule ".local/share/nvim/site/bundle/neodev.nvim"]
+	path = .local/share/nvim/site/bundle/neodev.nvim
+	url = https://github.com/folke/neodev.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
