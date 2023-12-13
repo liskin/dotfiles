@@ -57,18 +57,6 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 
 			return orig_handler(...)
 		end
-
-		-- include all of ~/.config/nvim in the workspace
-		local orig_root_dir = config.root_dir
-		config.root_dir = function(fname)
-			local config_root = vim.fn.stdpath("config")
-			local ret = orig_root_dir(fname)
-			if ret == config_root .. "/lua/" then
-				return config_root
-			else
-				return ret
-			end
-		end
 	end
 end)
 
