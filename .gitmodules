@@ -100,60 +100,60 @@
 [submodule ".vim/bundle/vim-sleuth"]
 	path = .vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth
-[submodule ".config/nvim/bundle/nvim-treesitter"]
-	path = .config/nvim/bundle/nvim-treesitter
+[submodule ".local/share/nvim/site/bundle/nvim-treesitter"]
+	path = .local/share/nvim/site/bundle/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
 	# url = git@github.com:liskin/nvim-treesitter
-[submodule ".config/nvim/bundle/float-preview.nvim"]
-	path = .config/nvim/bundle/float-preview.nvim
+[submodule ".local/share/nvim/site/bundle/float-preview.nvim"]
+	path = .local/share/nvim/site/bundle/float-preview.nvim
 	url = https://github.com/ncm2/float-preview.nvim
-[submodule ".config/nvim/bundle/nvim-lspconfig"]
-	path = .config/nvim/bundle/nvim-lspconfig
+[submodule ".local/share/nvim/site/bundle/nvim-lspconfig"]
+	path = .local/share/nvim/site/bundle/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
-[submodule ".config/nvim/bundle/trouble.nvim"]
-	path = .config/nvim/bundle/trouble.nvim
+[submodule ".local/share/nvim/site/bundle/trouble.nvim"]
+	path = .local/share/nvim/site/bundle/trouble.nvim
 	url = https://github.com/folke/trouble.nvim
-[submodule ".config/nvim/bundle/lsp_lines.nvim"]
-	path = .config/nvim/bundle/lsp_lines.nvim
+[submodule ".local/share/nvim/site/bundle/lsp_lines.nvim"]
+	path = .local/share/nvim/site/bundle/lsp_lines.nvim
 	url = https://git.sr.ht/%7Ewhynothugo/lsp_lines.nvim
-[submodule ".config/nvim/bundle/lsp-format.nvim"]
-	path = .config/nvim/bundle/lsp-format.nvim
+[submodule ".local/share/nvim/site/bundle/lsp-format.nvim"]
+	path = .local/share/nvim/site/bundle/lsp-format.nvim
 	url = https://github.com/lukas-reineke/lsp-format.nvim
-[submodule ".config/nvim/bundle/fidget.nvim"]
-	path = .config/nvim/bundle/fidget.nvim
+[submodule ".local/share/nvim/site/bundle/fidget.nvim"]
+	path = .local/share/nvim/site/bundle/fidget.nvim
 	url = https://github.com/j-hui/fidget.nvim
-[submodule ".config/nvim/bundle/none-ls.nvim"]
-	path = .config/nvim/bundle/none-ls.nvim
+[submodule ".local/share/nvim/site/bundle/none-ls.nvim"]
+	path = .local/share/nvim/site/bundle/none-ls.nvim
 	url = https://github.com/nvimtools/none-ls.nvim
-[submodule ".config/nvim/bundle/plenary.nvim"]
-	path = .config/nvim/bundle/plenary.nvim
+[submodule ".local/share/nvim/site/bundle/plenary.nvim"]
+	path = .local/share/nvim/site/bundle/plenary.nvim
 	url = https://github.com/nvim-lua/plenary.nvim
-[submodule ".config/nvim/bundle/nvim-cmp"]
-	path = .config/nvim/bundle/nvim-cmp
+[submodule ".local/share/nvim/site/bundle/nvim-cmp"]
+	path = .local/share/nvim/site/bundle/nvim-cmp
 	url = https://github.com/hrsh7th/nvim-cmp
-[submodule ".config/nvim/bundle/cmp-cmdline"]
-	path = .config/nvim/bundle/cmp-cmdline
+[submodule ".local/share/nvim/site/bundle/cmp-cmdline"]
+	path = .local/share/nvim/site/bundle/cmp-cmdline
 	url = https://github.com/hrsh7th/cmp-cmdline
-[submodule ".config/nvim/bundle/cmp-nvim-lsp"]
-	path = .config/nvim/bundle/cmp-nvim-lsp
+[submodule ".local/share/nvim/site/bundle/cmp-nvim-lsp"]
+	path = .local/share/nvim/site/bundle/cmp-nvim-lsp
 	url = https://github.com/hrsh7th/cmp-nvim-lsp
-[submodule ".config/nvim/bundle/cmp-nvim-ultisnips"]
-	path = .config/nvim/bundle/cmp-nvim-ultisnips
+[submodule ".local/share/nvim/site/bundle/cmp-nvim-ultisnips"]
+	path = .local/share/nvim/site/bundle/cmp-nvim-ultisnips
 	url = https://github.com/quangnguyen30192/cmp-nvim-ultisnips
-[submodule ".config/nvim/bundle/cmp-path"]
-	path = .config/nvim/bundle/cmp-path
+[submodule ".local/share/nvim/site/bundle/cmp-path"]
+	path = .local/share/nvim/site/bundle/cmp-path
 	url = https://github.com/hrsh7th/cmp-path
-[submodule ".config/nvim/bundle/cmp-buffer"]
-	path = .config/nvim/bundle/cmp-buffer
+[submodule ".local/share/nvim/site/bundle/cmp-buffer"]
+	path = .local/share/nvim/site/bundle/cmp-buffer
 	url = https://github.com/hrsh7th/cmp-buffer
-[submodule ".config/nvim/bundle/cmp-omni"]
-	path = .config/nvim/bundle/cmp-omni
+[submodule ".local/share/nvim/site/bundle/cmp-omni"]
+	path = .local/share/nvim/site/bundle/cmp-omni
 	url = https://github.com/hrsh7th/cmp-omni
-[submodule ".config/nvim/bundle/cmp-spell"]
-	path = .config/nvim/bundle/cmp-spell
+[submodule ".local/share/nvim/site/bundle/cmp-spell"]
+	path = .local/share/nvim/site/bundle/cmp-spell
 	url = https://github.com/f3fora/cmp-spell
-[submodule ".config/nvim/bundle/hop.nvim"]
-	path = .config/nvim/bundle/hop.nvim
+[submodule ".local/share/nvim/site/bundle/hop.nvim"]
+	path = .local/share/nvim/site/bundle/hop.nvim
 	url = https://github.com/smoka7/hop.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
