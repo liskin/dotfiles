@@ -28,6 +28,7 @@ local function get_bufnr(bufnr)
 end
 
 local orig_vim_diagnostic_set = vim.diagnostic.set
+---@diagnostic disable-next-line: duplicate-set-field
 function vim.diagnostic.set(namespace, bufnr, ...)
 	vim.validate({
 		namespace = { namespace, 'n' },
@@ -44,6 +45,7 @@ function vim.diagnostic.set(namespace, bufnr, ...)
 end
 
 local orig_vim_diagnostic_reset = vim.diagnostic.reset
+---@diagnostic disable-next-line: duplicate-set-field
 function vim.diagnostic.reset(namespace, bufnr)
 	vim.validate({
 		namespace = { namespace, 'n', true },

@@ -139,6 +139,7 @@ cmp.setup {
 		['<C-X><C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_current),
 		['<C-X><C-O>'] = cmp_or(cmp_select_prev, cmp_complete_omni),
 	},
+	---@diagnostic disable-next-line: missing-fields
 	confirmation = {
 		get_commit_characters = function(commit_characters)
 			return {
