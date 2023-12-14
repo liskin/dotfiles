@@ -21,7 +21,7 @@ function! s:canon_filename(new_file) abort
 	set buftype=acwrite
 	augroup CanonFilenameHelper
 		autocmd! BufWriteCmd <buffer>
-		autocmd BufWriteCmd <buffer> echo
+		autocmd BufWriteCmd <buffer> :
 		" this may still trigger other BufWriteCmds but the special buffer
 		" detection makes this very unlikely
 		w!
