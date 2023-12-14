@@ -3,14 +3,14 @@
 if &cp || exists('g:loaded_canon_filename') | finish | endif
 let g:loaded_canon_filename = 1
 
-function! s:canon_filename() abort
+function! s:canon_filename(new_file) abort
 	let f = simplify(expand("%"))
 	let f_canon = resolve(f)
 
 	" try to detect if the buffer is in any way special: plugins that rely on
 	" BufWriteCmd should set buftype=acwrite, but not all do, so test the
 	" other options to mark the buffer special
-	if empty(f) || !&write || !empty(&buftype) || !empty(&bufhidden) || !&swapfile || !&buflisted || !filereadable(f) || f ==# f_canon
+	if empty(f) || !&write || !empty(&buftype) || !empty(&bufhidden) || !&swapfile || !&buflisted || (!filereadable(f) && !a:new_file) || f ==# f_canon
 		return
 	endif
 
@@ -32,5 +32,6 @@ endfunc
 
 augroup CanonFilename
 	autocmd!
-	autocmd BufRead * ++nested call s:canon_filename()
+	autocmd BufRead * ++nested call s:canon_filename(v:false)
+	autocmd BufNewFile * ++nested call s:canon_filename(v:true)
 augroup END
