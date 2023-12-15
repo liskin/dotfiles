@@ -1,6 +1,3 @@
-if vim.g.loaded_after_lspconfig then return end
-vim.g.loaded_after_lspconfig = true
-
 local cmp_nvim_lsp = require 'cmp_nvim_lsp'
 local lsp_format = require 'lsp-format'
 local lspconfig = require 'lspconfig'

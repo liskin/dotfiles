@@ -1,14 +1,18 @@
-local L = require('liskin')
+-- vim:set path^=./lua:
 
--- use "gf" to jump between files
-L.src("init/vimrc.vim") -- ~/.vimrc
-L.src("init/diagnostic.lua")
-L.src("init/diagnostic_delay.lua")
-L.src("init/lsp.lua")
-L.src("init/plug_float_preview.vim")
-L.src("init/plug_treesitter.lua")
-L.src("init/plug_trouble.lua")
-L.src("init/plug_lsp_lines.lua")
-L.src("init/plug_fidget.lua")
-L.src("init/plug_cmp.lua")
-L.src("init/plug_hop.lua")
+vim.loader.enable()
+
+-- use 'gf' to jump between files
+require 'init.vimrc' -- ~/.vimrc
+require 'init.diagnostic'
+require 'init.diagnostic_delay'
+require 'init.lsp' -- see also 'init.after_lsp'
+require 'init.plug_float_preview'
+require 'init.plug_treesitter'
+require 'init.plug_trouble'
+require 'init.plug_lsp_lines'
+require 'init.plug_fidget'
+require 'init.plug_cmp'
+require 'init.plug_hop'
+
+-- see also 'init/after'

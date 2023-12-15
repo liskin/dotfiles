@@ -25,4 +25,4 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
--- see ../after/plugin/lspconfig.lua for individual LSP configs
+-- see "after_lsp" for individual LSP configs
