@@ -1,4 +1,6 @@
-require'trouble'.setup {
+local trouble = require 'trouble'
+
+trouble.setup {
 	icons = false,
 	padding = false,
 	fold_open = "▾",
@@ -18,3 +20,11 @@ require'trouble'.setup {
 	},
 	auto_preview = false,
 }
+
+vim.keymap.set({ 'n', 'i' }, '<Plug>(trouble_toggle)', function()
+	if trouble.is_open() then
+		trouble.close()
+	else
+		trouble.open('workspace_diagnostics')
+	end
+end)

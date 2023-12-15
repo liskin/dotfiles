@@ -636,11 +636,13 @@ inoremap <silent> <F15> <Cmd>:lprevious<CR>
 nnoremap <silent> <F5> <Cmd>:lnext<CR>
 inoremap <silent> <F5> <Cmd>:lnext<CR>
 
-nnoremap <silent> <F6> <Cmd>:TroubleToggle<CR>
-inoremap <silent> <F6> <Cmd>:TroubleToggle<CR>
+if has('nvim')
+	nnoremap <silent> <F6> <Plug>(trouble_toggle)
+	inoremap <silent> <F6> <Plug>(trouble_toggle)
 
-nnoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
-inoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
+	nnoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
+	inoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
+endif
 
 nnoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
 inoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
