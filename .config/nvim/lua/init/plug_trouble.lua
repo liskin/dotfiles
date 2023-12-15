@@ -14,7 +14,7 @@ require'trouble'.setup {
 		hover = "<C-K>",
 	},
 	win_config = {
-		border = "rounded",
+		border = { '', '', '', '│' },
 	},
 	auto_preview = false,
 }

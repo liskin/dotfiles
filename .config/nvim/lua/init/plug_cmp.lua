@@ -94,6 +94,15 @@ cmp.setup {
 	experimental = {
 		ghost_text = true,
 	},
+	window = {
+		completion = {
+			scrollbar = false,
+			border = { '', '', '', '│' },
+		},
+		documentation = {
+			border = { '', '', '', '│', '', '', '', ' ' },
+		},
+	},
 	snippet = {
 		expand = function(args)
 			vim.fn["UltiSnips#Anon"](args.body)
