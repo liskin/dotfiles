@@ -280,6 +280,7 @@ myManageHook = composeAll
     , ("_NET_WM_STATE" `isInProperty` "_NET_WM_STATE_ABOVE" <&&> title $? "is sharing your screen.") --> doHideIgnore
     , isDialog --> doFloat
     , transience'
+    , stringProperty "WM_WINDOW_ROLE" =? "browser" --> desktopHook
     ]
 
 myFloatConfReqManageHook :: MaybeManageHook
@@ -291,7 +292,7 @@ myFloatConfReqManageHook = composeAll
 
 myActivateHook :: ManageHook
 myActivateHook = composeOne
-    [ peekQ (className =? "Liferea") <&&> (className =? "Google-chrome" <||> className =? "google-chrome") -?> doAskUrgent
+    [ peekQ (className =? "Liferea") <&&> stringProperty "WM_WINDOW_ROLE" =? "browser" -?> doAskUrgent
     , pure True -?> doFocus
     ]
 
