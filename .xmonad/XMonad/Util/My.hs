@@ -31,7 +31,6 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
 import XMonad.Util.Run
-import XMonad.Util.Ungrab
 import XMonad.Util.WindowProperties
 import XMonad.Util.WorkspaceCompare
 import qualified XMonad.Util.PureX as P

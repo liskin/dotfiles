@@ -42,25 +42,24 @@ import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.WindowSwallowing
 import XMonad.Layout.Dwindle (Dwindle(Dwindle), Chirality(CW))
+import XMonad.Layout.FocusTracking
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutHints
 import XMonad.Layout.MultiToggle
-import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerScreen
 import XMonad.Layout.Reflect
+import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Simplest(Simplest(..))
 import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.Tabbed (addTabs, Shrinker(..), CustomShrink(..), Theme(..))
-import XMonad.Layout.TrackFloating
 import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Hacks
 import XMonad.Util.NamedWindows
-import XMonad.Util.Ungrab
 import qualified XMonad.Util.PureX as P
 
 import XMonad.Actions.DoNotDisturb
@@ -226,7 +225,7 @@ toggleFullscreen = withFocused $ \w ->
     ifM (isFloat w) (withFocused toggleFullFloat) (toggleLayout "tab")
 
 -- Layouts
-myLayout = dir . refocusLastLayoutHook . trackFloating $
+myLayout = dir . refocusLastLayoutHook . focusTracking $
     named "tiled" (fixl $ sub $ tiled) |||
     named "mtiled" (fixl $ sub $ Mirror $ tiled) |||
     named "tab" (fixl Full) |||
