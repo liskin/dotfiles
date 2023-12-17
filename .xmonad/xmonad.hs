@@ -279,7 +279,7 @@ myManageHook = composeAll
     , ("_NET_WM_STATE" `isInProperty` "_NET_WM_STATE_ABOVE" <&&> title $? "is sharing your screen.") --> doHideIgnore
     , isDialog --> doFloat
     , transience'
-    , stringProperty "WM_WINDOW_ROLE" =? "browser" --> desktopHook
+    , stringProperty "WM_WINDOW_ROLE" =? "browser" --> ewmhDesktopsManageHook
     ]
 
 myFloatConfReqManageHook :: MaybeManageHook

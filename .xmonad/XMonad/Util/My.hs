@@ -32,7 +32,6 @@ import XMonad.Layout.WorkspaceDir
 import XMonad.Prompt
 import XMonad.Util.Run
 import XMonad.Util.WindowProperties
-import XMonad.Util.WorkspaceCompare
 import qualified XMonad.Util.PureX as P
 
 {-# NOINLINE myHome #-}
@@ -141,24 +140,6 @@ peekQ' :: Monoid a => Query a -> Query a
 peekQ' q = do
     w <- liftX $ gets $ W.peek . windowset
     maybe mempty (flip local q . const) w
-
--- | This function returns 'Just' the @_NET_WM_DESKTOP@ property for a
--- particular window if set, 'Nothing' otherwise.
---
--- See <https://specifications.freedesktop.org/wm-spec/wm-spec-1.5.html#idm46181547492704>.
-desktopQ :: Query (Maybe Int)
-desktopQ = ask >>= \w -> liftX $ getProp32s "_NET_WM_DESKTOP" w <&> \case
-    Just [x] -> Just (fromIntegral x)
-    _        -> Nothing
-
--- | 'ManageHook' that shifts windows to the workspace they want to be in.
--- Useful for restoring browser windows to where they were before restart.
-desktopHook :: ManageHook
-desktopHook = do
-    sortWs <- liftX getSortByIndex
-    ws <- liftX . gets $ map W.tag . sortWs . W.workspaces . windowset
-    t <- maybe Nothing (ws !?) <$> desktopQ
-    maybe mempty doShift t
 
 fnBold, fnOblique, fnNerd, fnAweFree, fnAweFreeS, fnAweBrand :: String -> String
 fnBold = wrap "<fn=1>" "</fn>"
