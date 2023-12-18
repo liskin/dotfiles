@@ -142,4 +142,16 @@ null_ls.setup {
 	-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 	-- (this needs to be the same as debounce_text_changes for LSPs, neovim uses the minimum)
 	debounce = 5000,
+	-- disable for large files (FIXME: limit to proselint somehow?)
+	should_attach = function(bufnr)
+		local max_filesize = vim.g.ale_maximum_file_size
+		local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+		if ok and stats then
+			return stats.size <= max_filesize
+		else
+			local content = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), '\n')
+			vim.notify(string.format("size = %s", #content))
+			return #content <= max_filesize
+		end
+	end,
 }
