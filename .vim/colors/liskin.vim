@@ -380,6 +380,9 @@ if &t_Co >= 256 || has('gui_running')
 		hi link @punctuation NONE
 		hi link @punctuation.bracket Special
 
+		hi link @text.todo.checked Special
+		hi link @text.todo.unchecked Special
+
 		hi link @variable NONE
 		hi link @lsp.type.variable NONE
 

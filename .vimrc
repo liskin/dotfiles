@@ -561,7 +561,7 @@ syntax on
 
 " detect background colour, load my colourscheme {{{2
 set bg&
-colors liskin
+colorscheme liskin " see ~/.vim/colors/liskin.vim
 
 " autocmds {{{1
 
