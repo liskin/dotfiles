@@ -71,7 +71,27 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 			return orig_neodev_util_find_root(vim.loop.fs_realpath(path) or path)
 		end
 	end
+
+	config.flags = vim.tbl_deep_extend("keep", config.flags or {}, {
+		-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
+		debounce_text_changes = 5000,
+	})
+
+	-- -- disable semantic tokens to avoid wasting CPU in the LSP
+	-- config.on_attach = lspconfig.util.add_hook_after(config.on_attach, function(client, _bufnr)
+	-- 	client.server_capabilities.semanticTokensProvider = nil
+	-- end)
 end)
+
+-- force longer debounce for vim.lsp.semantic_tokens (not configurable otherwise)
+-- to avoid wasting too much CPU in the LSP
+local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
+---@diagnostic disable-next-line: duplicate-set-field
+function vim.lsp.semantic_tokens.start(bufnr, client_id, opts)
+	opts = opts or {}
+	opts.debounce = 5000
+	return orig_vim_lsp_semantic_tokens_start(bufnr, client_id, opts)
+end
 
 local lsps = {
 	'clangd',
@@ -100,12 +120,18 @@ end
 
 local lsp_null_sources = {}
 local lsp_null_settings = vim.g.lsp_null_settings or {}
+
+-- don't waste time proselinting before saving, we won't see the diagnostics before save anyway
+lsp_null_settings['diagnostics.proselint'] = vim.tbl_deep_extend("keep", lsp_null_settings['diagnostics.proselint'] or {}, {
+	method = {null_ls.methods.DIAGNOSTICS_ON_OPEN, null_ls.methods.DIAGNOSTICS_ON_SAVE}
+})
+
 for tool, handlers in pairs(vim.g.lsp_null_enabled) do
 	for _, handler in ipairs(handlers) do
 		local source = vim.tbl_get(null_ls.builtins, handler, tool)
 		if source then
-			local settings = lsp_null_settings[handler .. '.' .. tool] or lsp_null_settings[tool]
-			table.insert(lsp_null_sources, source.with(settings or {}))
+			local settings = vim.tbl_deep_extend("keep", lsp_null_settings[handler .. '.' .. tool] or {}, lsp_null_settings[tool] or {})
+			table.insert(lsp_null_sources, source.with(settings))
 		end
 	end
 end
@@ -113,4 +139,7 @@ end
 null_ls.setup {
 	sources = lsp_null_sources,
 	on_attach = lsp_format.on_attach,
+	-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
+	-- (this needs to be the same as debounce_text_changes for LSPs, neovim uses the minimum)
+	debounce = 5000,
 }
