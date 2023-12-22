@@ -1,6 +1,7 @@
 local cmp_nvim_lsp = require 'cmp_nvim_lsp'
 local lsp_format = require 'lsp-format'
 local lspconfig = require 'lspconfig'
+local lspconfig_manager = require 'lspconfig.manager'
 local neodev = require 'neodev'
 local neodev_util = require 'neodev.util'
 local null_ls = require 'null-ls'
@@ -9,6 +10,16 @@ local function is_nvim_path(path)
 	local config_root = vim.fn.stdpath("config")
 	local data_root = vim.fn.stdpath("data")
 	return vim.startswith(path, config_root) or vim.startswith(path, data_root)
+end
+
+local function buf_filesize(bufnr)
+	local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+	if ok and stats then
+		return stats.size
+	else
+		local content = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), '\n')
+		return #content
+	end
 end
 
 neodev.setup {
@@ -83,6 +94,15 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 	-- end)
 end)
 
+-- implement "should_attach" for nvim-lspconfig
+local orig_lspconfig_manager_add = lspconfig_manager.add
+---@diagnostic disable-next-line: duplicate-set-field
+function lspconfig_manager.add(self, root_dir, single_file, bufnr)
+	if not vim.b[bufnr].lsp_disabled and not vim.g.lsp_disabled then
+		return orig_lspconfig_manager_add(self, root_dir, single_file, bufnr)
+	end
+end
+
 -- force longer debounce for vim.lsp.semantic_tokens (not configurable otherwise)
 -- to avoid wasting too much CPU in the LSP
 local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
@@ -142,16 +162,17 @@ null_ls.setup {
 	-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 	-- (this needs to be the same as debounce_text_changes for LSPs, neovim uses the minimum)
 	debounce = 5000,
-	-- disable for large files (FIXME: limit to proselint somehow?)
 	should_attach = function(bufnr)
+		-- disable for large files (FIXME: limit to proselint somehow?)
 		local max_filesize = vim.g.ale_maximum_file_size
-		local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
-		if ok and stats then
-			return stats.size <= max_filesize
-		else
-			local content = table.concat(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false), '\n')
-			vim.notify(string.format("size = %s", #content))
-			return #content <= max_filesize
+		if buf_filesize(bufnr) > max_filesize then
+			return false
 		end
+
+		if vim.b[bufnr].lsp_disabled or vim.g.lsp_disabled then
+			return false
+		end
+
+		return true
 	end,
 }

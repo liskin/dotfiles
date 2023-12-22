@@ -611,9 +611,12 @@ autocmd FileType xhtml setlocal indentkeys&
 autocmd FileType xml setlocal indentkeys&
 autocmd BufNewFile,BufRead *.hsc setlocal ft=haskell
 autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal ft=gitcommit
-autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile et | let b:ale_enabled = 0
+autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile et
 autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 autocmd BufNewFile,BufRead */.config/git/include/* setf gitconfig
+
+" disable LSP before it's attached to the buffer
+autocmd FileType * if expand("<afile>:p") =~ glob2regpat("/dev/shm/pass.*") | let b:ale_enabled = 0 | let b:lsp_disabled = 1 | endif
 
 " key maps {{{1
 
