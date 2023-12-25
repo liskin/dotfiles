@@ -1,5 +1,3 @@
-local trouble = require 'trouble'
-
 vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
 	callback = function(ev)
@@ -13,7 +11,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, buf_local)
 		vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, buf_local)
 		vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, buf_local)
-		vim.keymap.set('n', 'gr', function() trouble.open('lsp_references') end, buf_local)
+		vim.keymap.set('n', 'gr', vim.lsp.buf.references, buf_local)
 		vim.keymap.set('n', 'gR', vim.lsp.buf.rename, buf_local)
 	end,
 })

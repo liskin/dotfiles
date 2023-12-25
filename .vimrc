@@ -640,8 +640,8 @@ nnoremap <silent> <F5> <Cmd>:lnext<CR>
 inoremap <silent> <F5> <Cmd>:lnext<CR>
 
 if has('nvim')
-	nnoremap <silent> <F6> <Plug>(trouble_toggle)
-	inoremap <silent> <F6> <Plug>(trouble_toggle)
+	nnoremap <silent> <F6> <Cmd>:TroubleToggle<CR>
+	inoremap <silent> <F6> <Cmd>:TroubleToggle<CR>
 
 	nnoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
 	inoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
