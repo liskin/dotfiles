@@ -120,6 +120,12 @@ set ttyfast
 
 set mouse=a
 set mousemodel=popup_setpos
+if has('nvim')
+	" emulate clipboard=autoselect
+	vmap <LeftRelease> "*ygv
+	vmap <2-LeftRelease> "*ygv
+	vmap <3-LeftRelease> "*ygv
+endif
 
 " set terminal title regardless of whether it can be restored
 set title
