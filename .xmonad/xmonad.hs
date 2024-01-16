@@ -4,9 +4,12 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE PackageImports #-}
 {-# LANGUAGE ParallelListComp #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# OPTIONS_GHC -Wno-missing-signatures -Wno-orphans #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
+{-# OPTIONS_GHC -Wno-orphans#-}
 
 module Mainxmonad (main) where
 
@@ -18,7 +21,8 @@ import Graphics.X11.ExtraTypes.XF86
 import System.Environment
 import System.Exit
 import System.Info
-import "regex-compat-tdfa" Text.Regex
+import Text.RE.Replace
+import Text.RE.TDFA.String
 import qualified Data.Map as M
 
 import XMonad
@@ -504,16 +508,16 @@ isWeechatTitle :: String -> Bool
 isWeechatTitle t = "t[N] weechat: " `isPrefixOf` t || "weechat/matrix: " `isPrefixOf` t
 
 workspaceIcons :: String -> String
-workspaceIcons = s "\\<irc\\>" (fnNerd "\xf198")
-               . s "\\<web\\>" (fnNerd "\xfa9e")
-               . s "\\<watch\\>" (fnAweBrand "\xf167") -- fnNerd "\xf947"
-               . s "\\<steam\\>" (fnNerd "\xf1b7")
-               . s "\\<xmonad\\>" ("X" ++ fnNerd "\xe61f")
-               . s "\\<strava\\>" (fnAweBrand "\xf428")
-               . s "\\<foursquare\\>" (fnAweBrand "\xf180")
-               . s "\\<python\\>" (fnNerd "\xf81f")
+workspaceIcons = s [re|\<irc\>|] (fnNerd "\xf198")
+               . s [re|\<web\>|] (fnNerd "\xfa9e")
+               . s [re|\<watch\>|] (fnAweBrand "\xf167") -- fnNerd "\xf947"
+               . s [re|\<steam\>|] (fnNerd "\xf1b7")
+               . s [re|\<xmonad\>|] ("X" ++ fnNerd "\xe61f")
+               . s [re|\<strava\>|] (fnAweBrand "\xf428")
+               . s [re|\<foursquare\>|] (fnAweBrand "\xf180")
+               . s [re|\<python\>|] (fnNerd "\xf81f")
   where
-    s re sub x = subRegex (mkRegex re) x sub
+    s r sub x = replaceAll sub $ x *=~ r
 
 shortenUrgent :: String -> String
 shortenUrgent t

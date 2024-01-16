@@ -1,4 +1,4 @@
-resolver: lts-16.31
+resolver: lts-21.21
 
 packages:
     - X11
@@ -20,6 +20,8 @@ flags:
         with_threaded: true
     xmonad-contrib:
         use_xft: true
+    bytestring-progress:
+        use-system-progressbar: false
 
 ghc-options:
     xmonad-contrib: '-j'

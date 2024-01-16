@@ -1,6 +1,6 @@
 ARCH := $(shell uname -m)
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
-XMONAD_DEPS := xmobar xmonad xmonad-contrib split regex-compat-tdfa
+XMONAD_DEPS := xmobar xmonad xmonad-contrib split regex
 BUILD_TARGETS = $(XMONAD_DEPS)
 BUILD_DEPS_TARGETS := build .bin/xmonadctl .bin/xmonadpropread .bin/xmonadpropwrite
 BUILD_DOCS_TARGETS := build-doc

@@ -2,7 +2,7 @@ templates:
   params:
     author-name: Tomáš Janoušek
     author-email: tomi@nomi.cz
-    copyright: ! 'Copyright: (c) 2020 Tomáš Janoušek'
+    copyright: ! 'Copyright: (c) 2024 Tomáš Janoušek'
     github-username: liskin
 
 system-ghc: true
@@ -11,6 +11,7 @@ install-ghc: false
 
 recommend-stack-upgrade: false
 
-# apply-ghc-options: everything
-ghc-options:
-  "$everything": -dynamic
+configure-options:
+  "$everything":
+    - "--enable-shared"
+    - "--enable-executable-dynamic"
