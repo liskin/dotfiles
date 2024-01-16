@@ -438,7 +438,6 @@ let g:ale_python_pylsp_config = g:lsp_settings_pylsp
 
 let g:ale_haskell_ormolu_executable = 'fourmolu'
 let g:lsp_settings_hls = #{haskell: #{plugin: {} } }
-let g:lsp_settings_hls['haskell']['maxCompletions'] = 250
 let g:lsp_settings_hls['haskell']['plugin']['stan'] = #{globalOn: v:false}
 let g:ale_haskell_hls_config = g:lsp_settings_hls
 
