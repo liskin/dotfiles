@@ -4,8 +4,10 @@ require'nvim-treesitter.configs'.setup {
 	ensure_installed = {
 		"c",
 		"cpp",
+		"css",
 		"go",
 		"html",
+		"javascript",
 		"lua",
 		"markdown",
 		"markdown_inline",
