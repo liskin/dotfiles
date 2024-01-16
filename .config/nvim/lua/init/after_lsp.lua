@@ -34,9 +34,9 @@ neodev.setup {
 lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup, function(config)
 	-- flake8_lint in pylsp needs root_dir, so add a fallback to the directory of the file
 	if config.name == 'pylsp' then
-		local root_dir = config.root_dir
+		local orig_root_dir = config.root_dir
 		config.root_dir = function(fname)
-			return root_dir(fname) or vim.fs.dirname(fname)
+			return orig_root_dir(fname) or vim.fs.dirname(fname)
 		end
 	end
 
@@ -50,9 +50,8 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 		-- https://github.com/folke/neodev.nvim/issues/41
 		-- https://github.com/LuaLS/lua-language-server/issues/1089
 		-- https://github.com/LuaLS/lua-language-server/issues/1596
-		local orig_handler = vim.lsp.handlers['workspace/configuration']
-		---@diagnostic disable-next-line: duplicate-set-field
-		vim.lsp.handlers['workspace/configuration'] = function(...)
+		config.handlers = vim.tbl_extend('error', {}, config.handlers)
+		config.handlers['workspace/configuration'] = function(...)
 			local _, result, ctx = ...
 			local client_id = ctx.client_id
 			local client = vim.lsp.get_client_by_id(client_id)
@@ -64,7 +63,7 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 				end
 			end
 
-			return orig_handler(...)
+			return vim.lsp.handlers['workspace/configuration'](...)
 		end
 
 		-- resolve symlinks before looking for root_dir
