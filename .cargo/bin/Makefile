@@ -8,6 +8,7 @@ include ~/_help.mk
 
 HOSTNAME := $(shell hostname)
 
+AST_GREP_VERSION := 0.17.1
 CARGO_AUDIT_VERSION := v0.17.6
 CARGO_CACHE_VERSION := 0.8.3
 CARGO_EDIT_VERSION := v0.12.0
@@ -18,6 +19,7 @@ DUST_VERSION := v0.8.6
 TOKIO_CONSOLE_VERSION := tokio-console-v0.1.9
 WATCHEXEC_VERSION := v1.22.3
 
+AST_GREP_GITHUB := ast-grep/ast-grep
 CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
 CARGO_EDIT_GITHUB := killercup/cargo-edit
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
@@ -97,6 +99,12 @@ tokio-console: | .binstall/tokio-console ; ln -fsT $|/bin/$@ $@
 .binstall/tokio-console: .binstall/tokio-console-$(TOKIO_CONSOLE_VERSION) ; ln -fsrT $< $@
 .binstall/tokio-console-$(TOKIO_CONSOLE_VERSION): | .binstall
 	$(CARGO_BINSTALL) --root $@ --version =$(TOKIO_CONSOLE_VERSION:tokio-console-v%=%) tokio-console
+
+all: ast-grep sg
+ast-grep sg: | .binstall/ast-grep ; ln -fsT $|/bin/$@ $@
+.binstall/ast-grep: .binstall/ast-grep-$(AST_GREP_VERSION) ; ln -fsrT $< $@
+.binstall/ast-grep-$(AST_GREP_VERSION): | .binstall
+	$(CARGO_BINSTALL) --root $@ --version =$(AST_GREP_VERSION:v%=%) ast-grep
 
 FRECE_SRC := ~/src-rust/frece
 FRECE_VERSION := $(shell $(call GIT_DESCRIBE,$(FRECE_SRC)))

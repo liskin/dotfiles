@@ -1,6 +1,7 @@
 /.binstall/
 /.build/
 /.old/
+/ast-grep
 /cargo-add
 /cargo-audit
 /cargo-cache
@@ -17,5 +18,6 @@
 /rga-fzf
 /rga-fzf-open
 /rga-preproc
+/sg
 /tokio-console
 /watchexec
