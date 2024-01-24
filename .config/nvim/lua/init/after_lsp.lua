@@ -6,6 +6,8 @@ local neodev = require 'neodev'
 local neodev_util = require 'neodev.util'
 local null_ls = require 'null-ls'
 
+local debounce = 5000
+
 local function is_nvim_path(path)
 	local config_root = vim.fn.stdpath("config")
 	local data_root = vim.fn.stdpath("data")
@@ -64,7 +66,7 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 
 	config.flags = vim.tbl_deep_extend("keep", config.flags or {}, {
 		-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
-		debounce_text_changes = 5000,
+		debounce_text_changes = debounce,
 	})
 
 	-- -- disable semantic tokens to avoid wasting CPU in the LSP
@@ -88,7 +90,7 @@ local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
 ---@diagnostic disable-next-line: duplicate-set-field
 function vim.lsp.semantic_tokens.start(bufnr, client_id, opts)
 	opts = opts or {}
-	opts.debounce = 5000
+	opts.debounce = debounce
 	return orig_vim_lsp_semantic_tokens_start(bufnr, client_id, opts)
 end
 
@@ -140,7 +142,7 @@ null_ls.setup {
 	on_attach = lsp_format.on_attach,
 	-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 	-- (this needs to be the same as debounce_text_changes for LSPs, neovim uses the minimum)
-	debounce = 5000,
+	debounce = debounce,
 	should_attach = function(bufnr)
 		-- disable for large files (FIXME: limit to proselint somehow?)
 		local max_filesize = vim.g.ale_maximum_file_size
