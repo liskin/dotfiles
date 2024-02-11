@@ -5,6 +5,6 @@ if fnamemodify(expand('%'), ':~') ==# '~/bin/liskin-slack-status.py'
 	let g:ale_python_pylsp_executable = fnamemodify('~/bin/.venv-slack-sdk/bin/python', ':p')
 	let g:ale_python_pylsp_options = '-m pylsp'
 	let g:lsp_cmd_pylsp = [fnamemodify('~/bin/.venv-slack-sdk/bin/python', ':p'), '-m', 'pylsp']
-	let g:lsp_settings_pylsp['pylsp']['plugins']['pylsp_black'] = #{enabled: v:true}
+	let g:lsp_settings_pylsp['pylsp']['plugins']['black'] = #{enabled: v:true}
 	AleAddFixer python black
 endif
