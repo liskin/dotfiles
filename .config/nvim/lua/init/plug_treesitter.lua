@@ -17,6 +17,7 @@ require'nvim-treesitter.configs'.setup {
 		"rust",
 		"vim",
 		"vimdoc",
+		"yaml",
 	},
 	highlight = {
 		enable = true,
