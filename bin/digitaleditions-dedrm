@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+# shellcheck source-path=..
+. "$HOME"/bin/.o
+
+function docker-libgourou {
+	podman run \
+		-it --rm \
+		-v "$HOME"/.adept:/home/libgourou/.adept \
+		-v "$HOME"/DRM-adept:/home/libgourou/files \
+		bcliang/docker-libgourou "$@"
+}
+
+for f in "$@"; do
+	f=$(readlink -f "$f")
+	[[ -e "$f" ]]
+	b=$(basename -- "$f")
+	d=~/DRM-adept/"$b"
+	d=$(readlink -f "$d")
+	if [[ "$f" != "$d" ]]; then
+		o mv "$f" "$d"
+	fi
+	o docker-libgourou "$b"
+done

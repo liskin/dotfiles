@@ -284,3 +284,6 @@
 	path = src/safaribooks
 	#url = https://github.com/lorenzodifuccia/safaribooks
 	url = git@github.com:liskin/safaribooks
+[submodule "src/docker-libgourou"]
+	path = src/docker-libgourou
+	url = https://github.com/bcliang/docker-libgourou
