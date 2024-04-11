@@ -35,6 +35,10 @@ all: git-when-merged
 git-when-merged:
 	$(PIPX_INSTALL) git-when-merged
 
+all: pandoc-plantuml
+pandoc-plantuml:
+	$(PIPX_INSTALL) 'pandoc-plantuml-filter >= 0.1.5'
+
 all: strava-offline
 strava-offline:
 	cd ~/src-python/strava-offline && $(PIPX_INSTALL) --editable .
@@ -42,10 +46,6 @@ strava-offline:
 all: strava-gear strava-gear-sync
 strava-gear strava-gear-sync &:
 	cd ~/src-python/strava-gear && $(PIPX_INSTALL) --editable .
-
-all: pandoc-plantuml
-pandoc-plantuml:
-	cd ~/src-python/pandoc-plantuml-filter && $(PIPX_INSTALL) --editable .
 
 all: foursquare-swarm-ical
 foursquare-swarm-ical:

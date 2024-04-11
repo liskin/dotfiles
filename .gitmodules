@@ -248,11 +248,6 @@
 [submodule "src-elixir/elixir-ls"]
 	path = src-elixir/elixir-ls
 	url = https://github.com/elixir-lsp/elixir-ls.git
-[submodule "src-python/pandoc-plantuml-filter"]
-	path = src-python/pandoc-plantuml-filter
-	#url = https://github.com/timofurrer/pandoc-plantuml-filter.git
-	url = git@github.com:liskin/pandoc-plantuml-filter.git
-	ignore = untracked
 [submodule "src-python/strava-offline"]
 	path = src-python/strava-offline
 	url = git@github.com:liskin/strava-offline.git
