@@ -5,6 +5,7 @@ application/postscript=org.pwmt.zathura-ps.desktop
 application/vnd.oasis.opendocument.text=libreoffice-writer.desktop
 application/vnd.openxmlformats-officedocument.presentationml.presentation=libreoffice-impress.desktop
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
+application/x-mobipocket-ebook=calibre-ebook-viewer.desktop
 audio/mpeg=mpv.desktop
 image/heic=geeqie.desktop
 image/heif=geeqie.desktop
