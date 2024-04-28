@@ -5,10 +5,10 @@ let b:did_ftplugin_vimwiki_liskin_after = 1
 setlocal et
 let &l:wrap = fnamemodify(expand('%'), ':p:.') =~# '^notes/'
 
-command! -buffer TaskWikiNote call vimwiki#liskin#TaskWikiNote()
+command! -buffer -range TaskWikiNote :<line1>,<line2>call vimwiki#liskin#TaskWikiNote()
 nnoremap <silent><buffer> <LocalLeader>n :TaskWikiNote<CR>
 
-command! -buffer TaskWikiOpen call vimwiki#liskin#TaskWikiOpen()
+command! -buffer -range TaskWikiOpen :<line1>,<line2>call vimwiki#liskin#TaskWikiOpen()
 nnoremap <silent><buffer> <LocalLeader>o :TaskWikiOpen<CR>
 
 nnoremap <silent><buffer> <CR> :call vimwiki#liskin#follow_link()<CR>

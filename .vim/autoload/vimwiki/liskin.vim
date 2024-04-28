@@ -89,7 +89,8 @@ function! vimwiki#liskin#task_note_wikifile(task) abort
 	return file
 endfunc
 
-function! vimwiki#liskin#TaskWikiNote() abort
+function! vimwiki#liskin#TaskWikiNote() range abort
+	call vimwiki#liskin#SetVimCurrentRange(a:firstline, a:lastline)
 	let tasks = vimwiki#liskin#selected_tasks()
 	if empty(tasks)
 		" create new note
@@ -119,7 +120,12 @@ function! vimwiki#liskin#xdg_open(uri) abort
 	endif
 endfunction
 
-function! vimwiki#liskin#TaskWikiOpen() abort
+function! vimwiki#liskin#TaskWikiOpen() range abort
+	call vimwiki#liskin#SetVimCurrentRange(a:firstline, a:lastline)
 	let annotations = vimwiki#liskin#selected_tasks_annotations()
 	call fzf#run(fzf#wrap({'source': annotations, 'sink*': function('vimwiki#liskin#xdg_open')}))
+endfunction
+
+function! vimwiki#liskin#SetVimCurrentRange(xfirstline, xlastline) abort
+	execute a:xfirstline .. "," .. a:xlastline .. "py3 pass"
 endfunction
