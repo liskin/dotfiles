@@ -34,6 +34,7 @@ import XMonad.Actions.NoBorders
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames hiding (renameWorkspace)
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.FloatConfigureReq
 import XMonad.Hooks.FloatNext
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers hiding (pid, Side(..))
@@ -286,11 +287,11 @@ myManageHook = composeAll
     , stringProperty "WM_WINDOW_ROLE" =? "browser" --> ewmhDesktopsManageHook
     ]
 
-myFloatConfReqManageHook :: MaybeManageHook
+myFloatConfReqManageHook :: MaybeMaybeManageHook
 myFloatConfReqManageHook = composeAll
-    [ appName =? "alarm-clock-applet" -?> doFloat -- prevent alarm-clock-applet from moving its floats to remebered location
-    , className =? "Steam" -?> doFloat -- prevent Steam from moving its floats to primary screen
-    , className =? "URxvt" -?> doFloat -- prevent URxvt from moving to 0, 0 when changing fonts
+    [ appName =? "alarm-clock-applet" -?> pure <$> doFloat -- prevent alarm-clock-applet from moving its floats to remebered location
+    , className =? "URxvt" -?> pure <$> doFloat -- prevent URxvt from moving to 0, 0 when changing fonts
+    , fixSteamFlickerMMMH -- ignore Steam's requests - don't move floats, avoid annoying flicker
     ]
 
 myActivateHook :: ManageHook
@@ -313,30 +314,6 @@ myEventHook = mconcat
     where
         refocusLastEventHook = refocusLastWhen isFloatQ
         myXmonadCtlHooks = [myCtlDnd]
-
-floatConfReqHook :: MaybeManageHook -> Event -> X All
-floatConfReqHook mh ConfigureRequestEvent{ev_window = w} =
-    runQuery (join <$> (isFloatQ -?> mh)) w >>= \case
-        Nothing -> mempty
-        Just e -> do
-            windows (appEndo e)
-            sendConfEvent
-            pure (All False)
-  where
-    sendConfEvent = withDisplay $ \dpy ->
-        withWindowAttributes dpy w $ \wa -> do
-            io . allocaXEvent $ \ev -> do
-                -- We may have made no changes to the window size/position
-                -- and thus the X server didn't emit any ConfigureNotify,
-                -- so we need to send the ConfigureNotify ourselves to make
-                -- sure there is a reply to this ConfigureRequestEvent and the
-                -- window knows we (possibly) ignored its request.
-                setEventType ev configureNotify
-                setConfigureEvent ev w w
-                    (wa_x wa) (wa_y wa) (wa_width wa)
-                    (wa_height wa) (wa_border_width wa) none (wa_override_redirect wa)
-                sendEvent dpy w False 0 ev
-floatConfReqHook _ _ = mempty
 
 -- | Invoke 'up' after (possibly) handling EWMH requests.
 ewmhUpdatePointerHook :: Event -> X All
