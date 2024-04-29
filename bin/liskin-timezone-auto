@@ -5,7 +5,8 @@ set -eu
 # shellcheck source-path=..
 . "$HOME"/bin/.o
 
-location=$(curl --silent --show-error --fail --ipv4 "https://location.services.mozilla.com/v1/geolocate?key=geoclue")
+api_key=$(pass-extract-field google/api/geolocation password)
+location=$(curl --silent --show-error --fail --ipv4 -X POST "https://www.googleapis.com/geolocation/v1/geolocate?key=$api_key")
 lat=$(jq -r .location.lat <<<"$location")
 lon=$(jq -r .location.lng <<<"$location")
 
