@@ -22,8 +22,8 @@ if !has('nvim')
 		" ctrl+pgup/down to switch tabs {{{4
 		exe "set <F21>=\<Esc>[5^"
 		exe "set <F22>=\<Esc>[6^"
-		nmap <silent> <F21> :tabprev<CR>
-		nmap <silent> <F22> :tabnext<CR>
+		nmap <silent> <F21> <C-PageUp>
+		nmap <silent> <F22> <C-PageDown>
 
 		" fix keycodes {{{4
 		exe "set <S-Up>=\<Esc>[a"
@@ -58,8 +58,8 @@ if !has('nvim')
 		" ctrl+pgup/down to switch tabs {{{4
 		exe "set <F21>=\<Esc>[5;5~"
 		exe "set <F22>=\<Esc>[6;5~"
-		nmap <silent> <F21> :tabprev<CR>
-		nmap <silent> <F22> :tabnext<CR>
+		nmap <silent> <F21> <C-PageUp>
+		nmap <silent> <F22> <C-PageDown>
 
 		" fix keycodes {{{4
 		exe "set <A-n>=\<Esc>n"
@@ -77,8 +77,6 @@ else " {{{3
 	set guicursor=n-v-c-sm:block-Cursor,i-ci-ve:ver25-blinkoff500-blinkon500-Cursor,r-cr-o:hor20-blinkoff500-blinkon500-Cursor
 
 	" ctrl+pgup/down to switch tabs {{{4
-	nmap <silent> <C-PageUp> :tabprev<CR>
-	nmap <silent> <C-PageDown> :tabnext<CR>
 	nmap <silent> <F21> <C-PageUp>
 	nmap <silent> <F22> <C-PageDown>
 endif
