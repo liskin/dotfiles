@@ -13,6 +13,7 @@ image/jpeg=geeqie.desktop
 image/png=geeqie.desktop
 image/tiff=geeqie.desktop
 image/vnd.djvu=org.pwmt.zathura-djvu.desktop
+inode/directory=mc.desktop
 text/html=sensible-browser.desktop
 video/mp4=mpv.desktop
 video/x-flv=mpv.desktop
