@@ -52,6 +52,10 @@ current window $program == "gl" ==> {
 current window $program == ["app.element.io", "discord.com__app", "www.messenger.com"] ==> tag Activity:Chat,
 current window $program =~ /\.slack\.com$/ ==> tag Activity:Chat,
 current window $program == "nheko" ==> tag Activity:Chat,
+current window $program == "ferdium" ==> {
+	current window $title =~ m!genserver\.social! ==> tag Activity:Web-Social,
+	tag Activity:Chat,
+},
 any window $active && $desktop =~ /^W?\d+:steam$/ ==> tag Activity:Games,
 any window $active && $desktop =~ /^W?\d+$/ && any window ($desktop == $wdesktop && $program == ["Steam", "lutris"]) ==> tag Activity:Games,
 
