@@ -296,7 +296,7 @@ myFloatConfReqManageHook = composeAll
 
 myActivateHook :: ManageHook
 myActivateHook = composeOne
-    [ peekQ (className =? "Liferea") <&&> stringProperty "WM_WINDOW_ROLE" =? "browser" -?> doAskUrgent
+    [ peekQ (className =? "Liferea" <||> className =? "Net.sourceforge.liferea") <&&> stringProperty "WM_WINDOW_ROLE" =? "browser" -?> doAskUrgent
     , pure True -?> doFocus
     ]
 
