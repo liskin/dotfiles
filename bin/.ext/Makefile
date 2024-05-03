@@ -21,7 +21,6 @@ HLS_VERSION := 2.4.0.0
 KIND_VERSION := v0.20.0
 LANGUAGETOOL_VERSION := v6.3
 LUALS_VERSION := 3.7.4
-NVIM_VERSION := v0.9.5
 PANDOC_VERSION := 2.18
 RUST_ANALYZER_VERSION := 2024-01-22
 TILT_VERSION := v0.33.10
@@ -43,7 +42,6 @@ HLS_GITHUB := haskell/haskell-language-server
 KIND_GITHUB := kubernetes-sigs/kind
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
 LUALS_GITHUB := LuaLS/lua-language-server
-NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
 RUST_ANALYZER_GITHUB := rust-analyzer/rust-analyzer
 TILT_GITHUB := tilt-dev/tilt
@@ -236,17 +234,6 @@ all: .ext-circleci-cli
 .INTERMEDIATE: .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz
 .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz:
 	wget -O $@ https://github.com/$(CIRCLECI_CLI_GITHUB)/releases/download/$(CIRCLECI_CLI_VERSION)/circleci-cli_$(CIRCLECI_CLI_VERSION:v%=%)_linux_amd64.tar.gz
-
-all: nvim
-nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
-.ext-nvim: .ext-nvim-$(NVIM_VERSION) ; ln -fsT $< $@
-.ext-nvim-$(NVIM_VERSION): .ext-nvim-$(NVIM_VERSION).tar.gz
-	mkdir -p $@
-	tar -xzf $< -C $@ --strip-components=1
-
-.INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
-.ext-nvim-$(NVIM_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux64.tar.gz
 
 all: lua-language-server
 lua-language-server: | .ext-luals ; ln -fsT $|/bin/$@ $@
