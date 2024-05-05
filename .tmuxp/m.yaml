@@ -1,0 +1,13 @@
+session_name: m
+suppress_history: false
+windows:
+  - window_name: nomi
+    focus: 'true'
+    panes:
+      - 'm'
+  - window_name: local
+    panes:
+      - 'mutt'
+  - window_name: gmane
+    panes:
+      - 'mutt-news-gmane'

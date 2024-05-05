@@ -46,7 +46,7 @@ export-alias mutt-nomi='mutt -F ~/.config/mutt/muttrc-nomi'
 export-alias neomutt-nomi='neomutt -F ~/.config/mutt/muttrc-nomi'
 
 export-alias m='mutt-nomi'
-export-alias m-tmux="tmux new-session -s m -n nomi \\; new-window -d -n local \\; send-keys -l \$'m\\n' \\; send-keys -t :local -l \$'mutt\\n'"
+export-alias m-tmux='tmuxp load m'
 
 export-alias mutt-news-gmane='neomutt -g news.gmane.io'
 export-alias mutt-news-kernel='neomutt -g nntp.lore.kernel.org'
