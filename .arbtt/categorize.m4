@@ -43,6 +43,7 @@ current window $program == "google-chrome" ==> {
 	current window $title =~ m!\bTwitch (::|-) ! ==> tag Activity:Watch,
 	current window $title =~ m!:: https?://(www\.)?(tesco\.com|amazon\.|planetx\.|alza\.)! ==> tag Activity:Web-Shopping,
 	current window $title =~ m|^shopping list - Google Sheets| ==> tag Activity:Web-Shopping,
+	current window $title =~ m!:: https?://play\.geforcenow\.com/! ==> tag Activity:Games,
 	$desktop == "12:watch" ==> tag Activity:Watch,
 },
 current window $program == "gl" ==> {
