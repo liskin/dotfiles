@@ -71,10 +71,10 @@ any window $active && $desktop =~ /^W?\d+:\.?xmonad/ ==> tag Activity:Proj-XMona
 
 -- possibly ambiguous fallback activities
 any window $active && !( $desktop == ["1:irc", "2:web", "12:watch"] ) && $desktop =~ m|^W?\d+:([^:]*)| ==> tag Activity:Proj-$1ⁱ,
-current window $program == "google-chrome" && $desktop == ["1:irc", "2:web"] ==> {
+current window $program == "google-chrome" ==> {
 	-- assume that browsing while a project-related terminal window is visible
 	-- on another monitor means that browsing is related to that project
-	any window (
+	$desktop == ["1:irc", "2:web"] && any window (
 		! $hidden
 		&& !( $wdesktop == ["1:irc", "2:web", "12:watch"] )
 		&& $program == ["urxvt", "x-terminal-emulator"]
