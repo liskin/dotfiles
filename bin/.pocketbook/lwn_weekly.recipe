@@ -1,15 +1,18 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
-__license__ = 'GPL v3'
+from __future__ import print_function
+
+__license__   = 'GPL v3'
 __copyright__ = '2011, Davide Cavalca <davide125 at tiscali.it>'
 '''
 lwn.net
 '''
 
-from calibre.web.feeds.news import BasicNewsRecipe
+import os
 import re
 import sys
-import os
+
+from calibre.web.feeds.news import BasicNewsRecipe
 
 
 class WeeklyLWN(BasicNewsRecipe):
@@ -103,15 +106,16 @@ class WeeklyLWN(BasicNewsRecipe):
                 break
 
             text = self.tag_to_string(curr.contents[0])
+            cclass = ''.join(curr['class'])
 
-            if 'Cat2HL' in curr['class']:
+            if 'Cat2HL' in cclass:
                 subsection = text
 
-            elif 'Cat1HL' in curr['class']:
+            elif 'Cat1HL' in cclass:
                 section = text
                 subsection = None
 
-            elif 'SummaryHL' in curr['class']:
+            elif 'SummaryHL' in cclass:
                 article_title = text
                 if not article_title:
                     article_title = _('Undefined article title')
@@ -129,8 +133,8 @@ class WeeklyLWN(BasicNewsRecipe):
                 if article_anchor:
                     article_url = article_anchor.get('href')
                     if not article_url:
-                        print >>sys.stderr, 'article_url is None for article_anchor "%s": "%s"' \
-                            % (str(article_anchor), article_title)
+                        print('article_url is None for article_anchor "%s": "%s"'
+                            % (str(article_anchor), article_title), file=sys.stderr)
                         continue
 
                 else:
