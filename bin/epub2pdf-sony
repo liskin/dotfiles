@@ -17,10 +17,17 @@ if [[ $file != *.epub ]]; then
 fi
 
 CALIBRE_OVERRIDE_LANG=C \
-o ebook-convert "$file" "${file%.epub}.pdf" \
+o ebook-convert "$file" "${file%.epub}.tmp.pdf" \
 	--output-profile=sony300 --use-profile-size \
 	--change-justification=justify --pdf-hyphenate \
 	--margin-top=0 --margin-bottom=0 --margin-left=0 --margin-right=0 \
 	--pdf-page-margin-top=2 --pdf-page-margin-bottom=2 --pdf-page-margin-left=2 --pdf-page-margin-right=2 \
 	--pdf-mono-family=Consolas --pdf-sans-family=Calibri --pdf-serif-family='PMN Caecilia LT' \
 	--pdf-mono-font-size=10 --pdf-default-font-size=12
+gs \
+	-dBATCH -dNOPAUSE \
+	-sDEVICE=pdfwrite \
+	-sProcessColorModel=DeviceRGB \
+	-sOutputFile="${file%.epub}.pdf" \
+	"${file%.epub}.tmp.pdf"
+rm "${file%.epub}.tmp.pdf"
