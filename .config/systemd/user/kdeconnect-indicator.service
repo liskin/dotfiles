@@ -1,0 +1,10 @@
+[Unit]
+Description=kdeconnect-indicator
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/kdeconnect-indicator
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
