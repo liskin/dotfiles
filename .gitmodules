@@ -115,7 +115,8 @@
 	url = https://github.com/folke/trouble.nvim
 [submodule ".local/share/nvim/site/bundle/lsp_lines.nvim"]
 	path = .local/share/nvim/site/bundle/lsp_lines.nvim
-	url = https://git.sr.ht/%7Ewhynothugo/lsp_lines.nvim
+	# url = https://git.sr.ht/%7Ewhynothugo/lsp_lines.nvim
+	url = git@github.com:liskin/lsp_lines.nvim
 [submodule ".local/share/nvim/site/bundle/lsp-format.nvim"]
 	path = .local/share/nvim/site/bundle/lsp-format.nvim
 	url = https://github.com/lukas-reineke/lsp-format.nvim
