@@ -120,3 +120,5 @@ export-alias nheko='QT_QPA_PLATFORMTHEME=qt5ct /usr/bin/nheko'
 alias vim='nvim'
 alias view='nvim -R'
 alias vimdiff='nvim -d'
+
+alias luajit='rlwrap luajit'
