@@ -67,6 +67,11 @@
 	summary = "input * 100%"
 	skip_display = true
 
+[hide_pasystray_output100]
+	appname = pasystray
+	summary = "output * 100%"
+	skip_display = true
+
 [fullscreen_show_pasystray]
 	appname = pasystray
 	fullscreen = show
