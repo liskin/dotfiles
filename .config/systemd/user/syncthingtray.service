@@ -3,7 +3,7 @@ Description=syncthingtray
 PartOf=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/syncthingtray
+ExecStart=/usr/bin/syncthingtray --wait
 Restart=always
 
 [Install]
