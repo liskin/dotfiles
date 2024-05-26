@@ -139,8 +139,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask .|. ctrlMask ,   xK_Right ), nextWS      >> up)
     , ((modMask .|. shiftMask,   xK_Left  ), swapTo Prev >> up)
     , ((modMask .|. shiftMask,   xK_Right ), swapTo Next >> up)
-    , ((modMask,                 xK_Tab   ), nextScreen  >> up)
-    , ((modMask .|. shiftMask,   xK_Tab   ), prevScreen  >> up)
+    , ((modMask,                 xK_Tab   ), cycleScreens xK_Tab xK_grave >> up)
 
     -- window actions
     , ((modMask,               xK_Escape), kill)

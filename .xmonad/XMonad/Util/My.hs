@@ -13,6 +13,7 @@
 --
 module XMonad.Util.My where
 
+import Data.Bits ((.&.))
 import Data.List.Split (splitOneOf)
 import System.Directory (getCurrentDirectory)
 import System.Environment (getEnv)
@@ -23,6 +24,7 @@ import XMonad
 import XMonad.Prelude
 import qualified XMonad.StackSet as W
 
+import XMonad.Actions.CycleRecentWS (cycleWindowSets)
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
@@ -113,6 +115,50 @@ focusNthScreen :: PhysicalScreen -> Bool -> X ()
 focusNthScreen n greedy = do
     ws <- maybe mempty screenWorkspace =<< getScreen def n
     whenJust ws $ P.defile . (if greedy then P.greedyView else P.view)
+
+-- | 'XMonad.Actions.CycleRecentWS.cycleRecentWS', but no hiddens.
+cycleScreens :: KeySym -- ^ Key used to switch to next (less recent) screen.
+             -> KeySym -- ^ Key used to switch to previous (more recent) screen.
+                       --   If it's the same as the nextWorkspace key, it is effectively ignored.
+             -> X ()
+cycleScreens keyNext keyPrev = do
+    mods <- getCurrentMods =<< asks display
+    when (null mods) $ error "null mods, would loop indefinitely"
+    cycleWindowSets screens mods keyNext keyPrev
+  where
+    screens :: WindowSet -> [WorkspaceId]
+    screens w = map W.tag $ map W.workspace (W.visible w) ++ [W.workspace (W.current w)]
+
+-- | Get 'KeySym's of currently pressed modifiers (assuming the event
+-- currently being handled is a 'KeyEvent')
+getCurrentMods :: Display -> X [KeySym]
+getCurrentMods d = ask >>= \case
+    XConf{ currentEvent = Just KeyEvent{ ev_state = mask } } -> io $ getCurrentMods' mask
+    _ -> pure []
+  where
+    getCurrentMods' mask = do
+        modMap <- modsToMasks <$> getModifierMapping d
+        keycodesToKeysyms $ currentModKeys mask modMap
+
+    modsToMasks :: [(Modifier, [KeyCode])] -> [(KeyMask, [KeyCode])]
+    modsToMasks modMap = [ (mask, kcs) | (modi, kcs) <- modMap, mask <- maybeToList (modi `lookup` masks) ]
+
+    masks =
+        [ (shiftMapIndex,   shiftMask)
+        , (lockMapIndex,    lockMask)
+        , (controlMapIndex, controlMask)
+        , (mod1MapIndex,    mod1Mask)
+        , (mod2MapIndex,    mod2Mask)
+        , (mod3MapIndex,    mod3Mask)
+        , (mod4MapIndex,    mod4Mask)
+        , (mod5MapIndex,    mod5Mask)
+        ]
+
+    currentModKeys :: KeyMask -> [(KeyMask, [KeyCode])] -> [KeyCode]
+    currentModKeys mask modMap = [ kc | (m, kcs) <- modMap, mask .&. m /= 0, kc <- kcs, kc /= 0 ]
+
+    keycodesToKeysyms :: [KeyCode] -> IO [KeySym]
+    keycodesToKeysyms = traverse $ \kc -> keycodeToKeysym d kc 0
 
 -- | Do something with a named workspace.
 withWorkspace :: WorkspaceId -> (WindowSpace -> X ()) -> X ()
