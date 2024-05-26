@@ -17,6 +17,7 @@ sub-ass-force-margins=yes
 # other
 hr-seek=yes
 save-position-on-quit=yes
+ignore-path-in-watch-later-config=yes
 
 # A/V sync
 interpolation=yes
