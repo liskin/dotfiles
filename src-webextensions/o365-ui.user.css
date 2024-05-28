@@ -5,7 +5,7 @@
 @author         Tomáš Janoušek
 ==/UserStyle== */
 
-@-moz-document url-prefix("https://outlook.office.com/calendar/") {
+@-moz-document url-prefix("https://outlook.office.com/calendar/"), url-prefix("https://outlook.office.com.mcas.ms/calendar/") {
 
 	/* animate collapsing */
 	:is(#o365header, div[aria-label="Ribbon"], #LeftRail) { transition: height 0.3s, width 0.3s; }
@@ -30,7 +30,7 @@
 
 }
 
-@-moz-document url-prefix("https://outlook.office.com/mail/") {
+@-moz-document url-prefix("https://outlook.office.com/mail/"), url-prefix("https://outlook.office.com.mcas.ms/mail/") {
 
 	/* animate collapsing */
 	:is(#o365header, #LeftRail) { transition: height 0.3s, width 0.3s; }

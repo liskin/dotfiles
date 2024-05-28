@@ -2,6 +2,7 @@
 // @name        O365 - tweak keyboard shortcuts
 // @namespace   https://github.com/liskin/dotfiles/tree/home/src-webextensions
 // @match       https://outlook.office.com/*
+// @match       https://outlook.office.com.mcas.ms/*
 // @grant       none
 // @version     1
 // ==/UserScript==

@@ -2,6 +2,7 @@
 // @name        O365 - unread mails favicon badge
 // @namespace   https://github.com/liskin/dotfiles/tree/home/src-webextensions
 // @match       https://outlook.office.com/mail/*
+// @match       https://outlook.office.com.mcas.ms/mail/*
 // @grant       none
 // @version     1
 // @require     https://cdn.jsdelivr.net/gh/ejci/favico.js/favico.js
