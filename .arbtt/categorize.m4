@@ -83,4 +83,8 @@ current window $program == "google-chrome" ==> {
 	tag Activity:Web-UNKNOWN,
 },
 
+-- focus outside any visible windows, possibly being used as a KVM for another
+-- computer?
+!(any window $active) && any window $hidden ==> tag Activity:KVM,
+
 -- vim:set ft=haskell noet:
