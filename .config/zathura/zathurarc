@@ -5,3 +5,4 @@ map <C-PageDown> navigate next
 map <S-PageUp> navigate previous
 map <S-PageDown> navigate next
 set scroll-full-overlap 0.1
+set database sqlite
