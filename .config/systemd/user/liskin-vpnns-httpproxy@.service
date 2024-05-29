@@ -1,0 +1,14 @@
+[Unit]
+Description=http proxy alternative to the vpnns socks5 proxy - %i
+PartOf=liskin-vpnns@%i.service
+After=liskin-vpnns@%i.service
+
+[Service]
+ExecStart=tinyproxy -d -c /dev/stdin
+StandardInput=data
+StandardInputText=Listen 127.0.0.1
+
+# $ systemctl --user edit liskin-vpnns-httpproxy@xxx.service
+# [Service]
+# StandardInputText=Port 8888
+# StandardInputText=Upstream socks5 127.0.0.1:12345
