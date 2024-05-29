@@ -1,7 +1,7 @@
 /* fonts */
-html { font-size: 16px; font-family: sans; }
+html { line-height: 1.5; font-size: 16px; font-family: sans; }
 :root { --print-fonts: Noto Serif, Times New Roman, serif; }
-@media print { html { font-family: var(--print-fonts); line-height: 1.4; } body { font-size: 11pt; } }
+@media print { html { font-family: var(--print-fonts); line-height: 1.4; } body { font-size: 10.6pt; } }
 /* .chrome-load-fonts { position: absolute; top: 0; visibility: hidden; font-family: var(--print-fonts); } */
 
 /* colors */
@@ -20,11 +20,14 @@ body { max-width: 55em; }
 }
 
 /* print page layout */
-@media print { @page { size: A4; margin: 1cm; @bottom-center { content: counter(page); } } }
+@media print {
+	body { padding: 0; }
+	@page { size: A4; margin: 1.3cm 1.3cm 2.3cm 1.3cm; }
+}
 
 /* main header style (columns if wide enough) */
 header { margin-bottom: 2em; }
-header img { vertical-align: middle; }
+header img, header svg { vertical-align: middle; }
 @media print, (min-width: 900px) {
 	header { display: flex; justify-content: space-evenly; align-items: flex-end; }
 	header .title { flex: 2; }
@@ -72,10 +75,6 @@ div { break-inside: avoid; }
 /* footer */
 :root:not(.has-paged-js) footer { margin-left: auto; margin-right: auto; width: max-content; }
 :root:not(.has-paged-js) footer p { border-top: 2px solid var(--header-color); margin-top: 3em; }
-@media print {
-	:root.has-paged-js footer { position: absolute; bottom: -1cm; right: 0; }
-	:root.has-paged-js footer p { height: 1cm; margin: 0; display: table-cell; vertical-align: middle; }
-}
 
 /* block justification (needs good hyphenation) */
 /* header + p { text-align: justify; } */

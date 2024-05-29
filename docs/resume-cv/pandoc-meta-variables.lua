@@ -1,14 +1,14 @@
 local vars = {}
 
-function get_vars(meta)
+local function get_vars(meta)
 	for k, v in pairs(meta) do
-		if (type(v) == 'table' or type(v) == 'userdata') and v.t == 'MetaInlines' then
+		if pandoc.utils.type(v) == 'Inlines' then
 			vars["%" .. k .. "%"] = {table.unpack(v)}
 		end
 	end
 end
 
-function replace(el)
+local function replace(el)
 	if vars[el.text] then
 		return vars[el.text]
 	else

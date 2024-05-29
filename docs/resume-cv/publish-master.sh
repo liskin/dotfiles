@@ -20,8 +20,9 @@ pub_dir=~/src/work.lisk.in/cv
 
 o mkdir -p "${pub_dir}"
 cat >"${pub_dir}/meta.yaml" <<-END
-	header-includes: |-
-	  <script data-goatcounter="https://liskin.goatcounter.com/count" data-external="1" async src="//gc.zgo.at/count.js"></script>
+	header-includes:
+	  - |-
+	    <script data-goatcounter="https://liskin.goatcounter.com/count" data-external="1" async src="//gc.zgo.at/count.js"></script>
 	footer: |-
 	  [HTML version](${url_html}) | [PDF version](${url_pdf})
 	END

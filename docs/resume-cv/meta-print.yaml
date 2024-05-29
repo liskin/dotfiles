@@ -1,3 +1,8 @@
-header-includes: |-
-  <script>document.documentElement.classList.add('has-paged-js')</script>
-  <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+css:
+  - style.css
+  - style-print.css
+header-includes:
+  - |-
+    <script>document.documentElement.classList.add("has-paged-js")</script>
+  - |-
+    <script src="https://unpkg.com/pagedjs@0.4.3/dist/paged.polyfill.js"></script>

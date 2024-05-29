@@ -1,6 +1,5 @@
 ---
 document-css: true
-css: [style.css]
 lang: en
 
 title-prefix: CV

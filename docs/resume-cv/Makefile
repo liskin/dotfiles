@@ -1,9 +1,7 @@
-all: cv.html
+.PHONY: all
+all: cv.selfcont.html cv.print.html cv.pdf
 
 PUBLIC ?=
-
-private.yaml: | public.yaml
-	cat $| >>$@
 
 PANDOC ?= pandoc
 PANDOC_FLAGS ?=
@@ -14,7 +12,7 @@ PANDOC_FLAGS_COMMON=\
 	--to=html \
 	--strip-comments \
 	--lua-filter=pandoc-meta-variables.lua \
-	--metadata-file=meta-footer.yaml \
+	--metadata-file=meta-defaults.yaml \
 	--metadata-file=meta-$(if $(PUBLIC),public,private).yaml \
 	$(PANDOC_FLAGS)
 PANDOC_INPUTS_COMMON=\
@@ -27,7 +25,7 @@ PANDOC_INPUTS_COMMON=\
 
 PANDOC_FLAGS_SELFCONT=\
 	$(PANDOC_FLAGS_COMMON) \
-	--self-contained
+	--embed-resources
 PANDOC_INPUTS_SELFCONT=\
 	$(PANDOC_INPUTS_COMMON) \
 	style.css
@@ -37,28 +35,29 @@ PANDOC_INPUTS_SELFCONT=\
 
 PANDOC_FLAGS_PRINT=\
 	$(PANDOC_FLAGS_COMMON) \
-	--self-contained \
+	--embed-resources \
 	--metadata-file=meta-print.yaml
 PANDOC_INPUTS_PRINT=\
 	$(PANDOC_INPUTS_COMMON) \
 	meta-print.yaml \
+	style-print.css \
 	style.css
 
 %.print.html: %.md Makefile $(PANDOC_INPUTS_PRINT)
 	$(PANDOC) $(PANDOC_FLAGS_PRINT) --output=$@ $<
 
-CHROME=/usr/bin/google-chrome
-CHROME_DIR=./.chrometmp
-
+# needs:
+#   apt install node-playwright
 %.pdf: %.print.html Makefile
-	$(CHROME) \
-		--user-data-dir=$(CHROME_DIR) \
-		--crash-dumps-dir=$(CHROME_DIR) \
-		--enable-logging=stderr \
-		--log-level=2 \
-		--virtual-time-budget=10000 \
-		--headless \
-		--print-to-pdf-no-header \
-		--print-to-pdf=$@ \
-		$<
-	pdf-drop-blank-pages $@
+	$(RM) $@
+	-bwrap-home --tmpfs -- \
+		./playwright pdf \
+			--browser chromium \
+			--channel chrome \
+			--wait-for-timeout 2000 \
+			$< $@
+	pdfinfo $@ > /dev/null
+
+.PHONY: clean
+clean:
+	$(RM) -r $(foreach md,$(basename $(wildcard *.md)),$(wildcard $(md).html $(md).selfcont.html $(md).print.html $(md).pdf))

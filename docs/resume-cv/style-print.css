@@ -1,0 +1,20 @@
+@media print {
+	@page {
+		@bottom-center { vertical-align: top; padding-top: 0.5cm; content: counter(page); }
+		@bottom-right { vertical-align: top; padding-top: 0.5cm; content: element(footerRunning); }
+	}
+
+	footer { position: running(footerRunning); }
+	footer p { display: inline; }
+
+	/* top margin unnecessary after page break */
+	h1:first-child,
+	h2:first-child,
+	h3:first-child,
+	h4:first-child,
+	h5:first-child,
+	h6:first-child,
+	div.entry:first-child > p:first-child {
+		margin-top: 0;
+	}
+}
