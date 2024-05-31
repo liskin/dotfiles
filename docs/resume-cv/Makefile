@@ -51,11 +51,7 @@ PANDOC_INPUTS_PRINT=\
 %.pdf: %.print.html Makefile
 	$(RM) $@
 	-bwrap-home --tmpfs -- \
-		./playwright pdf \
-			--browser chromium \
-			--channel chrome \
-			--wait-for-timeout 2000 \
-			$< $@
+		./playwright/pdf.mjs file://$(CURDIR)/$< $@
 	pdfinfo $@ > /dev/null
 
 .PHONY: clean

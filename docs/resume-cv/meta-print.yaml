@@ -6,3 +6,11 @@ header-includes:
     <script>document.documentElement.classList.add("has-paged-js")</script>
   - |-
     <script src="https://unpkg.com/pagedjs@0.4.3/dist/paged.polyfill.js"></script>
+  - |-
+    <script>
+    class pagedjsDone extends Paged.Handler {
+      constructor(chunker, polisher, caller) { super(chunker, polisher, caller) }
+      afterPreview(pages) { console.log('pagedjsDone') }
+    }
+    Paged.registerHandlers(pagedjsDone)
+    </script>
