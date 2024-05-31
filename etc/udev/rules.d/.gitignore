@@ -1,1 +1,9 @@
 /*-netnames.rules
+/*-uaccess-local.rules
+
+# nvme-cli stuff that shouldn't be in /etc
+/7?-nvmf-*.rules
+
+# hplip crap
+/40-libsane.rules
+/S99-2000S1.rules
