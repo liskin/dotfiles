@@ -14,43 +14,68 @@ set -eu -o pipefail
 options=$(
 	unset GETOPT_COMPATIBLE
 	getopt \
-		-o hH:t \
-		--long "help,home:,tmpfs" \
+		-o hH:Tt \
+		--long "help,home:,home-tmpfs,tmpfs" \
 		-- "$@"
 )
 eval "set -- $options"
 
 home=$PWD/.home
+home_tmpfs=
 tmpfs=
 while (( $# )); do
 	opt=$1; shift
 	case "$opt" in
 		-h|--help)
-			echo "Usage: bwrap-home [-h|--home=PATH] [-t|--tmpfs] -- <command> [<args>…]"
+			echo "Usage: bwrap-home [-h|--home=PATH] [-T|--home-tmpfs] [-t|--tmpfs] -- <command> [<args>…]"
 			exit
 			;;
 
 		-H|--home) home=$1; shift ;;
+		-T|--home-tmpfs) home_tmpfs=: ;;
 		-t|--tmpfs) tmpfs=: ;;
 		--) break ;;
 	esac
 done
 
-home=$(readlink -f "$home")
-[[ -d "$home" ]] || o mkdir -p "$home"
-export HOME="$home"
+if [[ "$(readlink -f "$PWD")" == "$(readlink -f "$HOME")" ]]; then
+	echo "\$PWD == \$HOME, would mount \$HOME read-write, exiting"
+	exit 1
+fi
+
+bwrap_opts=()
 
 if [[ $tmpfs ]]; then
-	tmpfs_opts=(--tmpfs /tmp)
+	if [[ "$(readlink -f "$PWD")" == "$(readlink -f /tmp)" ]]; then
+		echo "\$PWD == /tmp, would mount /tmp read-write, exiting"
+		exit 1
+	fi
+
+	bwrap_opts+=(--tmpfs /tmp)
 else
-	tmpfs_opts=(--bind /tmp{,})
+	bwrap_opts+=(--bind /tmp{,})
 fi
+
+if [[ $home_tmpfs ]]; then
+	bwrap_opts+=(
+		--tmpfs "$HOME"
+		--bind "$PWD"{,}
+	)
+else
+	home=$(readlink -f "$home")
+	[[ -d "$home" ]] || o mkdir -p "$home"
+	export HOME="$home"
+	bwrap_opts+=(
+		--bind "$PWD"{,}
+		--bind "$HOME"{,}
+	)
+fi
+
+(( $# )) || set -- bash
 
 o exec bwrap \
 	--ro-bind /{,} \
 	--dev /dev \
-	"${tmpfs_opts[@]}" \
 	--proc /proc \
-	--bind "$PWD"{,} \
-	--bind "$HOME"{,} \
+	"${bwrap_opts[@]}" \
 	-- "$@"
