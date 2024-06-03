@@ -1,0 +1,8 @@
+/.config/git/config
+/.config/tig/config
+/.tmux.conf
+/.vim/colors/liskin.vim
+/.vimrc
+/_gitignore.mk
+/_help.mk
+/bin/liskin-make-gitignore

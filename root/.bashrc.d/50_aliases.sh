@@ -21,5 +21,4 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-alias git-dotfiles='git --git-dir="$HOME/src/dotfiles.git"'
 alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
