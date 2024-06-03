@@ -11,7 +11,13 @@ set -eu -o pipefail
 # shellcheck source-path=..
 . "$HOME"/bin/.o
 
-options=$(unset GETOPT_COMPATIBLE && getopt -o H:t --long home:,tmpfs -- "$@")
+options=$(
+	unset GETOPT_COMPATIBLE
+	getopt \
+		-o hH:t \
+		--long "help,home:,tmpfs" \
+		-- "$@"
+)
 eval "set -- $options"
 
 home=$PWD/.home
@@ -19,6 +25,11 @@ tmpfs=
 while (( $# )); do
 	opt=$1; shift
 	case "$opt" in
+		-h|--help)
+			echo "Usage: bwrap-home [-h|--home=PATH] [-t|--tmpfs] -- <command> [<args>…]"
+			exit
+			;;
+
 		-H|--home) home=$1; shift ;;
 		-t|--tmpfs) tmpfs=: ;;
 		--) break ;;
