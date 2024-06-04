@@ -7,7 +7,7 @@ build: $(BUILD)/build.ninja
 
 $(BUILD)/build.ninja: | meson.build
 	env -u LD_LIBRARY_PATH \
-		meson $(BUILD)
+		meson setup $(BUILD)
 
 .PHONY: clean
 clean:
