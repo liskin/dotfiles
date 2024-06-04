@@ -1,7 +1,17 @@
 .PHONY: all
 all:
 
-INIT_GIT_REPOS := bash-history browser liferea libvirt gsettings
+define INIT_GIT_REPOS :=
+$(strip
+	apt
+	bash-history
+	browser
+	gsettings
+	libvirt
+	liferea
+)
+endef
+
 all: $(INIT_GIT_REPOS)
 $(INIT_GIT_REPOS):
 	mkdir -p $@
