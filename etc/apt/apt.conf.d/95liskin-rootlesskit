@@ -1,3 +1,3 @@
 DPkg::Post-Invoke {
-	"setcap -q -v cap_net_bind_service+ep /usr/bin/rootlesskit || ( set -x; setcap cap_net_bind_service+ep /usr/bin/rootlesskit; )";
+	"! test -e /usr/bin/rootlesskit || setcap -q -v cap_net_bind_service+ep /usr/bin/rootlesskit || ( set -x; setcap cap_net_bind_service+ep /usr/bin/rootlesskit; )";
 };
