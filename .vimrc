@@ -181,8 +181,7 @@ set hlsearch
 set incsearch
 set shortmess-=S " show number of matches
 
-" location of swap, tags, includes {{{2
-set dir=~/.vim/swap//
+" location of tags, includes {{{2
 set path=.,,
 set tags+=./tags;
 
@@ -199,6 +198,11 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 " :grep {{{2
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m,%f:%l:%m
+
+" disable 'E325: ATTENTION Found a swap file…' {{{2
+" (I'm a 90s kid, I save manually by pressing F2 every 2 seconds, I don't need
+" vim to warn me about other vim instances.)
+set directory=
 
 " other {{{2
 set autoread
