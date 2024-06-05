@@ -200,11 +200,6 @@ set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 set grepprg=rg\ --vimgrep
 set grepformat=%f:%l:%c:%m,%f:%l:%m
 
-" disable 'E325: ATTENTION Found a swap file…' {{{2
-" (I'm a 90s kid, I save manually by pressing F2 every 2 seconds, I don't need
-" vim to warn me about other vim instances.)
-set shortmess+=A
-
 " other {{{2
 set autoread
 set backspace=indent,eol,start
