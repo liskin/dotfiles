@@ -10,22 +10,25 @@ include _gitignore.mk
 homefiles:
 
 define HOMEFILE_TEMPLATE
+.PHONY: $$(if $$(filter homefiles,$$(MAKECMDGOALS)),$(1))
 homefiles: $(1)
 all: $(1)
 $(1):
 	git-dotfiles-checkout origin/home $$@
 endef
 
-HOMEFILES := \
-	.config/git/config \
-	.config/tig/config \
-	.tmux.conf \
-	.vim/colors/liskin.vim \
-	.vimrc \
-	_gitignore.mk \
-	_help.mk \
-	bin/liskin-make-gitignore \
-	# end of HOMEFILES
+define HOMEFILES
+$(strip
+	.config/git/config
+	.config/tig/config
+	.tmux.conf
+	.vim/colors/liskin.vim
+	.vimrc
+	_gitignore.mk
+	_help.mk
+	bin/liskin-make-gitignore
+)
+endef
 $(foreach homefile,$(HOMEFILES),$(eval $(call HOMEFILE_TEMPLATE,$(homefile))))
 
 define SUBDIR_TEMPLATE
