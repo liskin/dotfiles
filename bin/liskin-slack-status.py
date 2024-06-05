@@ -39,8 +39,7 @@ class SlackWorkspace:
             if (
                 resp_set.get("snooze_enabled", False)
                 and resp_info.get("snooze_enabled", False)
-                and resp_set.get("snooze_endtime", -1)
-                == resp_info.get("snooze_endtime", -2)
+                and resp_set.get("snooze_endtime", -1) == resp_info.get("snooze_endtime", -2)
             ):
                 print(f"{self.name}: dnd_endSnooze", flush=True)
                 self.client.dnd_endSnooze()
