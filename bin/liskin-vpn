@@ -12,7 +12,7 @@ function action-down {
 	# shellcheck disable=SC2162
 	nmcli --get-values UUID,TYPE c show --active \
 	| while IFS=: read uuid type; do
-		if [[ $type == vpn ]]; then
+		if [[ $type == @(vpn|wireguard) ]]; then
 			nmcli c down "$uuid"
 		fi
 	done
@@ -25,7 +25,7 @@ function action-up {
 	# shellcheck disable=SC2162
 	nmcli --get-values NAME,TYPE c show \
 	| while IFS=: read name type; do
-		if [[ $type == vpn ]]; then
+		if [[ $type == @(vpn|wireguard) ]]; then
 			names+=("$name")
 		fi
 	done
