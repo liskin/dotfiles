@@ -39,9 +39,6 @@ export-alias nomi="ssh -C nomi.cz -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-https="ssh -C nomi.cz-https -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-mosh="MOSH_TITLE_NOPREFIX=1 mosh nomi.cz bin/atmux"
 
-export-alias mutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/mutt'
-export-alias neomutt='LC_MESSAGES=en_US.UTF-8 /usr/bin/neomutt'
-
 export-alias mutt-nomi='mutt -F ~/.config/mutt/muttrc-nomi'
 export-alias neomutt-nomi='neomutt -F ~/.config/mutt/muttrc-nomi'
 
@@ -52,6 +49,7 @@ export-alias mutt-news-gmane='neomutt -g news.gmane.io'
 export-alias mutt-news-kernel='neomutt -g nntp.lore.kernel.org'
 #alias mutt-lkml='mutt -f news://nntp.lore.kernel.org/org.kernel.vger.linux-kernel'
 
+# shellcheck disable=SC2016
 export-alias wiki='"$EDITOR" ~/taskwiki/index.wiki'
 
 # shellcheck disable=SC2016
@@ -76,9 +74,6 @@ export-alias google-chrome-app-wire="google-chrome --app=https://app.wire.com/"
 
 export-alias google-chrome-profile-mitm="bwrap-pki-mitm google-chrome-profile"
 
-export-alias gitg='LC_MESSAGES=C /usr/bin/gitg'
-export-alias meld='LC_MESSAGES=C /usr/bin/meld'
-export-alias weechat='LC_MESSAGES=C /usr/bin/weechat'
 export-alias cantata='LC_COLLATE=C /usr/bin/cantata'
 export-alias virt-manager='LC_MESSAGES=C /usr/bin/virt-manager'
 
