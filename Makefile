@@ -41,3 +41,10 @@ gc: .cargo/bin%gc
 gc: bin/.ext%gc
 gc: bin/.ext-npm%gc
 gc: src-elixir%gc
+
+.PHONY: $(filter bootstrap.sh,$(MAKECMDGOALS))
+all: bootstrap.sh
+.SKIP_GITIGNORE: bootstrap.sh
+##
+bootstrap.sh: bin/liskin-include-preproc.py bin/.o
+	liskin-include-preproc.py $@
