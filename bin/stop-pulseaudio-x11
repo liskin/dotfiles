@@ -3,7 +3,7 @@
 set -eu
 set -o pipefail
 
-export LANG=C
+export LC_ALL=C
 
 [[ ! $DISPLAY ]] && exit
 

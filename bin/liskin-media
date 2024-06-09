@@ -3,7 +3,7 @@
 set -eu -o pipefail
 shopt -s lastpipe
 
-export LANG=C
+export LC_ALL=C
 
 function action-volume {
 	local sign

@@ -11,7 +11,7 @@ function password-files {
 	password_files=( "${password_files[@]#"$prefix"/}" )
 	password_files=( "${password_files[@]%.gpg}" )
 
-	printf '%s\n' "${password_files[@]}" | LANG=C sort
+	printf '%s\n' "${password_files[@]}" | LC_ALL=C sort
 }
 
 function extract-password {
