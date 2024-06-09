@@ -1,7 +1,7 @@
 ACTION=="remove", GOTO="liskin-trackpoint-end"
 
 SUBSYSTEM=="input", ATTR{name}=="TPPS/2 IBM TrackPoint", \
-	ATTR{device/speed}="50", \
+	ATTR{device/speed}="70", \
 	ATTR{device/inertia}="3"
 
 LABEL="liskin-trackpoint-end"
