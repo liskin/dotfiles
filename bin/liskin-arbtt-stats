@@ -40,12 +40,26 @@ function activity-chart { #complete
 	{
 		arbtt-stats-foreach "${filter[@]}" "${exclude[@]}" --min-percentage=0 --category=Activity --output-format=csv \
 			| sed 's/^(total time)/(screen)/; s/^(unmatched time)/Activity:(???)/; s/UNKNOWN/(???)/'
-		[[ ! -f ~/.local/share/strava_offline/strava.sqlite ]] || o sqlite3 ~/.local/share/strava_offline/strava.sqlite \
-			".mode csv" ".headers on" \
-			"SELECT 'Activity:Sport-' || type as Tag, SUM(elapsed_time) as Time FROM activity \
-			 WHERE datetime(start_date,'localtime') BETWEEN '${d1} ${t1}' AND '${d2} ${t2}' \
-			 GROUP BY 1"
+		arbtt-stats-strava
 	} | arbtt-chart --subtags --totals-re '^\(screen\)$'
+}
+
+function arbtt-stats-strava {
+	[[ -f ~/.local/share/strava_offline/strava.sqlite ]] || return 0
+
+	o sqlite3 ~/.local/share/strava_offline/strava.sqlite \
+		".mode csv" ".headers on" \
+		"
+		SELECT
+			CASE
+				WHEN type='Workout' AND name GLOB 'VR*' THEN 'Activity:Games-VR'
+				ELSE 'Activity:Sport-' || type
+			END as Tag,
+			SUM(elapsed_time) as Time
+		FROM activity
+		WHERE datetime(start_date,'localtime') BETWEEN '${d1} ${t1}' AND '${d2} ${t2}'
+		GROUP BY 1
+		"
 }
 
 function activity { #complete
