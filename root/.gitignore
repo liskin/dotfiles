@@ -6,3 +6,4 @@
 /_gitignore.mk
 /_help.mk
 /bin/liskin-make-gitignore
+/bootstrap.sh

@@ -27,6 +27,7 @@ $(strip
 	_gitignore.mk
 	_help.mk
 	bin/liskin-make-gitignore
+	bootstrap.sh
 )
 endef
 $(foreach homefile,$(HOMEFILES),$(eval $(call HOMEFILE_TEMPLATE,$(homefile))))
