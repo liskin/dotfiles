@@ -1,7 +1,7 @@
 [submodule "usr/src/acpilight"]
 	path = usr/src/acpilight
 	#url = https://github.com/wavexx/acpilight
-	url = git@github.com:liskin/acpilight.git
+	url = https://github.com/liskin/acpilight.git
 [submodule "root/src/tig-colors-neonwolf"]
 	path = root/src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
