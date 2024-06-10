@@ -7,6 +7,7 @@ After=liskin-vpnns@%i.service
 ExecStart=tinyproxy -d -c /dev/stdin
 StandardInput=data
 StandardInputText=Listen 127.0.0.1
+StandardInputText=DisableViaHeader yes
 
 # $ systemctl --user edit liskin-vpnns-httpproxy@xxx.service
 # [Service]
