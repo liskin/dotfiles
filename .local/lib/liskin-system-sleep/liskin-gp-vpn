@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+case "$1" in
+	pre) liskin-gp-vpn --stop ;;
+	post) ;;
+esac
