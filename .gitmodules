@@ -6,7 +6,7 @@
 	url = https://github.com/wesQ3/vim-windowswap.git
 [submodule ".vim/bundle/ale"]
 	path = .vim/bundle/ale
-	# url = git@github.com:liskin/ale.git
+	# url = https://github.com/liskin/ale.git
 	url = https://github.com/dense-analysis/ale.git
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
@@ -22,11 +22,11 @@
 	url = https://github.com/tpope/vim-dispatch.git
 [submodule ".vim/bundle/vim-elixir"]
 	path = .vim/bundle/vim-elixir
-	#url = git@github.com:liskin/vim-elixir.git
+	#url = https://github.com/liskin/vim-elixir.git
 	url = https://github.com/elixir-editors/vim-elixir.git
 [submodule ".vim/bundle/vim-fugitive"]
 	path = .vim/bundle/vim-fugitive
-	# url = git@github.com:liskin/vim-fugitive.git
+	# url = https://github.com/liskin/vim-fugitive.git
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule ".vim/bundle/vim-gitgutter"]
 	path = .vim/bundle/vim-gitgutter
@@ -48,14 +48,14 @@
 	url = https://github.com/derekwyatt/vim-scala.git
 [submodule ".vim/bundle/fzf.vim"]
 	path = .vim/bundle/fzf.vim
-	url = git@github.com:liskin/fzf.vim.git
+	url = https://github.com/liskin/fzf.vim.git
 	#url = https://github.com/junegunn/fzf.vim.git
 [submodule ".vim/bundle/vim-rhubarb"]
 	path = .vim/bundle/vim-rhubarb
 	url = https://github.com/tpope/vim-rhubarb.git
 [submodule ".vim/bundle/vim-fubitive"]
 	path = .vim/bundle/vim-fubitive
-	url = git@github.com:liskin/vim-fubitive.git
+	url = https://github.com/liskin/vim-fubitive.git
 	#url = https://github.com/tommcdo/vim-fubitive.git
 [submodule ".vim/bundle/fugitive-gitlab.vim"]
 	path = .vim/bundle/fugitive-gitlab.vim
@@ -69,15 +69,15 @@
 [submodule ".vim/bundle/vimwiki"]
 	path = .vim/bundle/vimwiki
 	url = https://github.com/vimwiki/vimwiki/
-	#url = git@github.com:liskin/vimwiki/
+	#url = https://github.com/liskin/vimwiki/
 [submodule ".vim/bundle/taskwiki"]
 	path = .vim/bundle/taskwiki
 	#url = https://github.com/tbabej/taskwiki
-	url = git@github.com:liskin/taskwiki
+	url = https://github.com/liskin/taskwiki
 [submodule ".vim/bundle/vim-characterize"]
 	path = .vim/bundle/vim-characterize
 	url = https://github.com/tpope/vim-characterize
-	#url = git@github.com:liskin/vim-characterize
+	#url = https://github.com/liskin/vim-characterize
 [submodule ".vim/bundle/vim-visual-multi"]
 	path = .vim/bundle/vim-visual-multi
 	url = https://github.com/mg979/vim-visual-multi
@@ -96,14 +96,14 @@
 [submodule ".vim/bundle/zepl.vim"]
 	path = .vim/bundle/zepl.vim
 	# url = https://github.com/axvr/zepl.vim/
-	url = git@github.com:liskin/zepl.vim
+	url = https://github.com/liskin/zepl.vim
 [submodule ".vim/bundle/vim-sleuth"]
 	path = .vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
-	# url = git@github.com:liskin/nvim-treesitter
+	# url = https://github.com/liskin/nvim-treesitter
 [submodule ".local/share/nvim/site/bundle/float-preview.nvim"]
 	path = .local/share/nvim/site/bundle/float-preview.nvim
 	url = https://github.com/ncm2/float-preview.nvim
@@ -116,7 +116,7 @@
 [submodule ".local/share/nvim/site/bundle/lsp_lines.nvim"]
 	path = .local/share/nvim/site/bundle/lsp_lines.nvim
 	# url = https://git.sr.ht/%7Ewhynothugo/lsp_lines.nvim
-	url = git@github.com:liskin/lsp_lines.nvim
+	url = https://github.com/liskin/lsp_lines.nvim
 [submodule ".local/share/nvim/site/bundle/lsp-format.nvim"]
 	path = .local/share/nvim/site/bundle/lsp-format.nvim
 	url = https://github.com/lukas-reineke/lsp-format.nvim
@@ -167,11 +167,11 @@
 	url = https://github.com/h3xx/tig-colors-neonwolf
 [submodule "src/emoji-rofi-menu"]
 	path = src/emoji-rofi-menu
-	url = git@github.com:liskin/emoji-rofi-menu
+	url = https://github.com/liskin/emoji-rofi-menu
 [submodule "src/urxvt-scripts"]
 	path = src/urxvt-scripts
 	#url = https://github.com/pkkolos/urxvt-scripts.git
-	url = git@github.com:liskin/urxvt-scripts.git
+	url = https://github.com/liskin/urxvt-scripts.git
 [submodule "src/urxvt-aAtt"]
 	path = src/urxvt-aAtt
 	url = https://github.com/Vifon/autocomplete-ALL-the-things
@@ -181,62 +181,62 @@
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
-	url = git@github.com:liskin/add-url-to-window-title
+	url = https://github.com/liskin/add-url-to-window-title
 [submodule "src-webextensions/empty-tab"]
 	path = src-webextensions/empty-tab
 	#url = https://github.com/karlerikjonatan/empty-tab
-	url = git@github.com:liskin/empty-tab
+	url = https://github.com/liskin/empty-tab
 [submodule "src-webextensions/empty-tab-firefox"]
 	path = src-webextensions/empty-tab-firefox
-	url = git@github.com:liskin/empty-tab
+	url = https://github.com/liskin/empty-tab
 [submodule "src-webextensions/Just-Read"]
 	path = src-webextensions/Just-Read
 	#url = https://github.com/ZachSaucier/Just-Read.git
-	url = git@github.com:liskin/Just-Read.git
+	url = https://github.com/liskin/Just-Read.git
 [submodule "src-webextensions/strava-map-switcher"]
 	path = src-webextensions/strava-map-switcher
-	url = git@github.com:liskin/strava-map-switcher.git
+	url = https://github.com/liskin/strava-map-switcher.git
 [submodule "src-webextensions/plkfotkator"]
 	path = src-webextensions/plkfotkator
-	url = git@github.com:liskin/plkfotkator.git
+	url = https://github.com/liskin/plkfotkator.git
 [submodule "src-webextensions/retrograde-is-muni"]
 	path = src-webextensions/retrograde-is-muni
 	#url = https://github.com/adamatousek/retrograde-is-muni
-	url = git@github.com:liskin/retrograde-is-muni
+	url = https://github.com/liskin/retrograde-is-muni
 [submodule "src-webextensions/reszoom"]
 	path = src-webextensions/reszoom
 	#url = https://github.com/raboof/reszoom
-	url = git@github.com:liskin/reszoom
+	url = https://github.com/liskin/reszoom
 [submodule "src-webextensions/bypass-paywalls-chrome-clean"]
 	path = src-webextensions/bypass-paywalls-chrome-clean
 	url = https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean.git/
 [submodule "src-haskell/xmonad-contrib"]
 	path = src-haskell/xmonad-contrib
 	#url = https://github.com/xmonad/xmonad-contrib.git
-	url = git@github.com:liskin/xmonad-contrib.git
+	url = https://github.com/liskin/xmonad-contrib.git
 [submodule "src-haskell/xmonad"]
 	path = src-haskell/xmonad
 	#url = https://github.com/xmonad/xmonad.git
-	url = git@github.com:liskin/xmonad.git
+	url = https://github.com/liskin/xmonad.git
 [submodule "src-haskell/xmobar"]
 	path = src-haskell/xmobar
 	#url = https://codeberg.org/xmobar/xmobar
-	url = git@github.com:liskin/xmobar.git
+	url = https://github.com/liskin/xmobar.git
 [submodule "src-haskell/X11"]
 	path = src-haskell/X11
 	#url = https://github.com/xmonad/X11
-	url = git@github.com:liskin/X11
+	url = https://github.com/liskin/X11
 [submodule "src-haskell/X11-xft"]
 	path = src-haskell/X11-xft
 	#url = https://github.com/xmonad/X11-xft
-	url = git@github.com:liskin/X11-xft
+	url = https://github.com/liskin/X11-xft
 [submodule "src-haskell/ghcid"]
 	path = src-haskell/ghcid
 	url = https://github.com/ndmitchell/ghcid
 [submodule "src-haskell/arbtt"]
 	path = src-haskell/arbtt
 	#url = https://github.com/nomeata/arbtt
-	url = git@github.com:liskin/arbtt
+	url = https://github.com/liskin/arbtt
 [submodule "src-haskell/fourmolu"]
 	path = src-haskell/fourmolu
 	url = https://github.com/fourmolu/fourmolu
@@ -254,26 +254,26 @@
 	url = https://github.com/elixir-lsp/elixir-ls.git
 [submodule "src-python/strava-offline"]
 	path = src-python/strava-offline
-	url = git@github.com:liskin/strava-offline.git
+	url = https://github.com/liskin/strava-offline.git
 [submodule "src-python/arbtt-chart"]
 	path = src-python/arbtt-chart
-	url = git@github.com:liskin/arbtt-chart.git
+	url = https://github.com/liskin/arbtt-chart.git
 [submodule "src-python/strava-gear"]
 	path = src-python/strava-gear
-	url = git@github.com:liskin/strava-gear.git
+	url = https://github.com/liskin/strava-gear.git
 [submodule "src-python/foursquare-swarm-ical"]
 	path = src-python/foursquare-swarm-ical
-	url = git@github.com:liskin/foursquare-swarm-ical.git
+	url = https://github.com/liskin/foursquare-swarm-ical.git
 [submodule "src-python/liscopridge"]
 	path = src-python/liscopridge
-	url = git@github.com:liskin/liscopridge.git
+	url = https://github.com/liskin/liscopridge.git
 [submodule "src-rust/frece"]
 	path = src-rust/frece
 	url = https://github.com/YodaEmbedding/frece/
 [submodule "src-rust/ripgrep-all"]
 	path = src-rust/ripgrep-all
 	#url = https://github.com/phiresky/ripgrep-all
-	url = git@github.com:liskin/ripgrep-all
+	url = https://github.com/liskin/ripgrep-all
 [submodule "src-rust/LiveBudsCli"]
 	path = src-rust/LiveBudsCli
 	url = https://github.com/JojiiOfficial/LiveBudsCli
@@ -283,11 +283,11 @@
 [submodule "src/openconnect-gp-okta"]
 	path = src/openconnect-gp-okta
 	#url = https://github.com/zdave/openconnect-gp-okta
-	url = git@github.com:liskin/openconnect-gp-okta
+	url = https://github.com/liskin/openconnect-gp-okta
 [submodule "src/safaribooks"]
 	path = src/safaribooks
 	#url = https://github.com/lorenzodifuccia/safaribooks
-	url = git@github.com:liskin/safaribooks
+	url = https://github.com/liskin/safaribooks
 [submodule "src/docker-libgourou"]
 	path = src/docker-libgourou
 	url = https://github.com/bcliang/docker-libgourou
