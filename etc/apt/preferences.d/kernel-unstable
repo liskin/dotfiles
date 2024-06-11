@@ -5,3 +5,7 @@ Pin-Priority: 990
 Package: src:linux-signed-amd64:*
 Pin: release a=unstable
 Pin-Priority: 990
+
+Package: src:linux-signed-arm64:*
+Pin: release a=unstable
+Pin-Priority: 990
