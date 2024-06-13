@@ -1,31 +1,100 @@
 source "~/.config/mutt/muttrc-detect.sh $mailcap_path |"
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt neomutt ~/.config/mutt/muttrc-neomutt-tsprefix |"
-source ~/.config/mutt/muttrc-old
 source ~/.config/mutt/muttrc-colors
 source ~/.config/mutt/muttrc-lists
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt traditional ~/.config/mutt/muttrc-traditional |"
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt neomutt ~/.config/mutt/muttrc-neomutt |"
 
+# debian defaults, repeated here to avoid surprises
+set bounce_delivered=no
+set sort=threads
+set crypt_use_gpgme=yes
+
+# cache
+set header_cache="~/Mail-headercache"
+set message_cache_clean=yes
+set message_cachedir="~/Mail-msgcache"
+
+# default folders (usually overridden)
+set mbox_type=Maildir
+set postponed="=.postponed"
+set record="=.sent"
 mailboxes `find ~/Mail -mindepth 2 -maxdepth 2 -type d -name 'cur' -printf '%h '` !
+
+# default addresses
+set from=tomi@nomi.cz
+alternates '^tomi\+.*@nomi\.cz$'
+alternates '^liskni\.si@gmail\.com$'
+alternates '^liskni\.si\+.*@gmail\.com$'
+alternates '@tomi\.nomi\.cz$'
+alternates '@lisk\.in$'
+alternates '^(207561|pivnik)@mail\.muni\.cz'
 
 # aliases
 set alias_file=~/.config/mutt/aliases
 source ~/.config/mutt/aliases
 
-# mu integration
-set query_command="mu cfind --format=mutt-ab %s"
-macro index <F2> "<shell-escape>mu find --format=links --linksdir=~/Mail/.mu-find --clearlinks \"$(bash -c 'read -r -e -p \"Mu: \" && echo \"\$REPLY\"')\"<enter><change-folder-readonly>~/Mail/.mu-find<enter>"
-macro index <F3> "<shell-escape>mu find --format=links --linksdir=~/Mail/.mu-find --clearlinks --include-related \"$(bash -c 'read -r -e -p \"Mu: \" && echo \"\$REPLY\"')\"<enter><change-folder-readonly>~/Mail/.mu-find<enter><enter-command>set record=!<enter>"
-
-# wrapping
-set wrap=100
-set reflow_wrap=100
+# message composition
+set abort_noattach=ask-yes
+set abort_noattach_regexp='\<(attach|attached|attachments?)\>|\<přílo[hz]|\<přilož'
+set abort_nosubject=no
+set abort_unmodified=ask-yes
+set encode_from=yes
+set mime_forward=ask-yes
+set reverse_name=yes
+set reverse_realname=no
+set send_charset=utf-8
+set sendmail='/usr/bin/msmtp'
 set text_flowed=yes
+set use_envelope_from=yes
 
-# autoview
+# MIME content type hanadling
+alternative_order text/plain
 auto_view application/msword
 auto_view application/pdf
 auto_view text/html
+
+# look & feel
+set collapse_unread=no
+set delete=yes
+set folder_format="%2C %t %N %f %> %N %t %2C"
+set index_format="%5C %Z %(%F %H:%M) %-15.15L %?M?▶&│? %s %*  │ %4c"
+set markers=no
+set narrow_tree=yes
+set pager_context=5
+set pager_index_lines=6
+set pager_stop=yes
+set reflow_wrap=100
+set sort_aux=last-date-received
+set tilde=yes
+set wrap=100
+folder-hook . exec collapse-all
+
+# keybinds - unread messages
+bind index,pager <tab> next-unread
+bind index,pager <esc><tab> previous-unread
+macro index X "<limit>~(~U)<enter>"
+macro index \CX "<limit>all<enter><collapse-all>"
+
+# keybinds - sort
+macro index ,sd '<enter-command>set sort_aux=last-date-received<enter>'
+macro index ,sv '<enter-command>set sort_aux=subject<enter>'
+
+# pgp
+set pgp_auto_decode=yes
+set pgp_default_key=2BC64B95062BE9AAB043A011639DFD7BBFF09178
+
+# imap
+set imap_check_subscribed=yes
+set imap_idle=yes
+set imap_keepalive=30
+set timeout=30
+bind index <Esc><Space> imap-fetch-mail
+
+# show message-id
+unignore message-id
+unhdr_order *
+hdr_order message-id date from to cc subject
 
 # sidebar
 set sidebar_divider_char='│'
@@ -37,10 +106,12 @@ bind index,pager \CP sidebar-prev
 bind index,pager \CN sidebar-next
 bind index,pager \CO sidebar-open
 
-# show message-id
-unignore message-id
-unhdr_order *
-hdr_order message-id date from to cc subject
+# xmonad integration
+set beep_new=yes
+set ts_enabled=yes
+set ts_status_format="$my_ts_prefix%f: %nN %oO %bI"
 
-# look & feel
-set index_format="%5C %Z %(%F %H:%M) %-15.15L %?M?▶&│? %s %*  │ %4c"
+# mu integration
+set query_command="mu cfind --format=mutt-ab %s"
+macro index <F2> "<shell-escape>mu find --format=links --linksdir=~/Mail/.mu-find --clearlinks \"$(bash -c 'read -r -e -p \"Mu: \" && echo \"\$REPLY\"')\"<enter><change-folder-readonly>~/Mail/.mu-find<enter>"
+macro index <F3> "<shell-escape>mu find --format=links --linksdir=~/Mail/.mu-find --clearlinks --include-related \"$(bash -c 'read -r -e -p \"Mu: \" && echo \"\$REPLY\"')\"<enter><change-folder-readonly>~/Mail/.mu-find<enter><enter-command>set record=!<enter>"
