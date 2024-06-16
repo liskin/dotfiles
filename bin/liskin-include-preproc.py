@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations  # python 3.8 compat
+
 from dataclasses import dataclass
 from pathlib import Path
 import re
