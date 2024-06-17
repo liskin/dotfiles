@@ -11,6 +11,8 @@
 /* the following originates from https://github.com/834N5/proofskip/blob/684721fd090d2f1f713670f7afccd560fdba594c/src/proofskip.js */
 /* Copyright (c) 2023 834N5; MIT License */
 
+/* see also https://github.com/cphyc/thunderbird_remove_safelinks/blob/main/src/decoders.js for a different implementation */
+
 const reUrldefense = /^https?:\/\/urldefense(?:\.proofpoint)?\.com\/.*/;
 const reVersion = /^[^:]+:\/\/[^\/]+\/v([123])\/.+?/;
 
@@ -24,7 +26,7 @@ function verifyUrl(url) {
 }
 
 function decryptBase64(base64) {
-	base64 = atob(base64);
+	base64 = atob(base64.replace(/_/g, '/').replace(/-/g, '+'));
 	base64 = Uint8Array.from(base64, (m) => m.codePointAt(0));
 	return(new TextDecoder().decode(base64));
 }
