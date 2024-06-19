@@ -18,6 +18,7 @@ HADOLINT_VERSION := v2.12.0
 HLINT_VERSION := v3.8
 HLS_GHC_VERSION := 9.4.7
 HLS_VERSION := 2.4.0.0
+JIRA_CLI_VERSION := v1.5.1
 KIND_VERSION := v0.20.0
 LANGUAGETOOL_VERSION := v6.3
 LUALS_VERSION := 3.7.4
@@ -39,6 +40,7 @@ GLAB_GITLAB := gitlab-org/cli
 HADOLINT_GITHUB := hadolint/hadolint
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
+JIRA_CLI_GITHUB := ankitpokhrel/jira-cli
 KIND_GITHUB := kubernetes-sigs/kind
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
 LUALS_GITHUB := LuaLS/lua-language-server
@@ -245,6 +247,14 @@ lua-language-server: | .ext-luals ; ln -fsT $|/bin/$@ $@
 .INTERMEDIATE: .ext-luals-$(LUALS_VERSION).tar.gz
 .ext-luals-$(LUALS_VERSION).tar.gz:
 	wget -O $@ https://github.com/$(LUALS_GITHUB)/releases/download/$(LUALS_VERSION)/lua-language-server-$(LUALS_VERSION)-linux-x64.tar.gz
+
+all: jira
+jira: | .ext-jira ; ln -fsT $|/$@ $@
+.ext-jira: .ext-jira-$(JIRA_CLI_VERSION) ; ln -fsT $< $@
+.ext-jira-$(JIRA_CLI_VERSION):
+	mkdir -p $@
+	$(CURL) https://github.com/$(JIRA_CLI_GITHUB)/releases/download/$(JIRA_CLI_VERSION)/jira_$(JIRA_CLI_VERSION:v%=%)_linux_x86_64.tar.gz \
+		| tar -x -z -C $@ --strip-components=2 --wildcards "*/bin/jira"
 
 .PHONY: gc
 ## Remove old versions
