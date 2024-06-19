@@ -121,3 +121,6 @@ alias view='nvim -R'
 alias vimdiff='nvim -d'
 
 alias luajit='rlwrap luajit'
+
+alias taskw-timesheet='task timesheet "/^work /" or project:work'
+alias taskw-log='task log project:work'
