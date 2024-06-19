@@ -1,0 +1,8 @@
+#!bash
+# shellcheck disable=SC2239
+
+# like ~/bin/.o, but confirm each command before executing
+
+if [[ -t 1 ]]; then _o_tput_bold=$(tput bold || :); _o_tput_reset=$(tput sgr0 || :); else _o_tput_bold=; _o_tput_reset=; fi
+function oc { read -r -p "${_o_tput_bold}${0##*/}:${_o_tput_reset}$(printf " %q" "$@")"; "$@"; }
+function ooc { read -r -p "${_o_tput_bold}${0##*/}:${_o_tput_reset} $*"; }
