@@ -3,16 +3,27 @@
 
 # like ~/bin/.o, but confirm/edit each command before executing
 
-if [[ -t 1 ]]; then _o_tput_bold=$(tput bold || :); _o_tput_reset=$(tput sgr0 || :); else _o_tput_bold=; _o_tput_reset=; fi
+if [[ -t 1 ]]; then
+	_oc_tput_bold=$(tput bold || :)
+	_oc_tput_reset=$(tput sgr0 || :)
+	_oc_rl_prompt_start_ignore=$'\001'
+	_oc_rl_prompt_end_ignore=$'\002'
+else
+	_oc_tput_bold=
+	_oc_tput_reset=
+	_oc_rl_prompt_start_ignore=
+	_oc_rl_prompt_end_ignore=
+fi
+
 if [[ -t 0 ]]; then
 	exec {_o_stdin}<&0
 	function oc {
 		local _o_cmd
-		read -r -u "$_o_stdin" -p "${_o_tput_bold}${0##*/}:${_o_tput_reset}" -e -i "$(printf " %q" "$@")" _o_cmd || return 1
+		read -r -u "$_o_stdin" -p "${_oc_rl_prompt_start_ignore}${_oc_tput_bold}${_oc_rl_prompt_end_ignore}${0##*/}:${_oc_rl_prompt_start_ignore}${_oc_tput_reset}${_oc_rl_prompt_end_ignore}" -e -i "$(printf " %q" "$@")" _o_cmd || return 1
 		eval "$_o_cmd"
 	}
-	function ooc { read -r -u "$_o_stdin" -p "${_o_tput_bold}${0##*/}:${_o_tput_reset} $*"; }
+	function ooc { read -r -u "$_o_stdin" -p "${_oc_tput_bold}${0##*/}:${_oc_tput_reset} $*"; }
 else
-	function oc { printf -->&2 "%s%s:%s %s\\n" "$_o_tput_bold" "${0##*/}" "$_o_tput_reset" "stdin not a tty"; return 1; }
-	function ooc { printf -->&2 "%s%s:%s %s\\n" "$_o_tput_bold" "${0##*/}" "$_o_tput_reset" "stdin not a tty"; return 1; }
+	function oc { printf -->&2 "%s%s:%s %s\\n" "$_oc_tput_bold" "${0##*/}" "$_oc_tput_reset" "stdin not a tty"; return 1; }
+	function ooc { printf -->&2 "%s%s:%s %s\\n" "$_oc_tput_bold" "${0##*/}" "$_oc_tput_reset" "stdin not a tty"; return 1; }
 fi
