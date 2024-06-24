@@ -1,12 +1,16 @@
 #!bash
 # shellcheck disable=SC2239
 
-# like ~/bin/.o, but confirm each command before executing
+# like ~/bin/.o, but confirm/edit each command before executing
 
 if [[ -t 1 ]]; then _o_tput_bold=$(tput bold || :); _o_tput_reset=$(tput sgr0 || :); else _o_tput_bold=; _o_tput_reset=; fi
 if [[ -t 0 ]]; then
 	exec {_o_stdin}<&0
-	function oc { read -r -u "$_o_stdin" -p "${_o_tput_bold}${0##*/}:${_o_tput_reset}$(printf " %q" "$@")"; "$@"; }
+	function oc {
+		local _o_cmd
+		read -r -u "$_o_stdin" -p "${_o_tput_bold}${0##*/}:${_o_tput_reset}" -e -i "$(printf " %q" "$@")" _o_cmd || return 1
+		eval "$_o_cmd"
+	}
 	function ooc { read -r -u "$_o_stdin" -p "${_o_tput_bold}${0##*/}:${_o_tput_reset} $*"; }
 else
 	function oc { printf -->&2 "%s%s:%s %s\\n" "$_o_tput_bold" "${0##*/}" "$_o_tput_reset" "stdin not a tty"; return 1; }
