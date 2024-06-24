@@ -4,8 +4,12 @@ set -eu -o pipefail
 
 # shellcheck source-path=..
 . "$HOME"/bin/.o
+# shellcheck source-path=..
+. "$HOME"/bin/.oc
 
-options=$(unset GETOPT_COMPATIBLE && getopt -o hfnt:o: --long help,force,dry-run,type:,org: -- "$@")
+function ask-continue { return $?; }
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o hfnit:o: --long help,force,dry-run,interactive,type:,org: -- "$@")
 eval "set -- $options"
 
 dry_run=:
@@ -21,6 +25,7 @@ while (( $# )); do
 
 		-f|--force) dry_run= ;;
 		-n|--dry-run) dry_run=: ;;
+		-i|--interactive) function ask-continue { ooc "error; continue?"; } ;;
 		-t|--type) type=$1; shift ;;
 		-o|--org) org=$1; shift ;;
 		--) break ;;
@@ -42,6 +47,6 @@ gh api --paginate --jq '.[].full_name' orgs/"$org"/repos?type="$type" \
 	if [[ -d "${repo#*/}" ]]; then
 		oo "$repo" exists
 	else
-		o${dry_run:+o} git clone https://github.com/"$repo"
+		o${dry_run:+o} git clone https://github.com/"$repo" || ask-continue
 	fi
 done

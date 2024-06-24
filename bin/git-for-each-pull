@@ -5,8 +5,12 @@ shopt -s lastpipe
 
 # shellcheck source-path=..
 . "$HOME"/bin/.o
+# shellcheck source-path=..
+. "$HOME"/bin/.oc
 
-options=$(unset GETOPT_COMPATIBLE && getopt -o "hn" --long dry-run,set-head,help -- "$@")
+function ask-continue { return $?; }
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o "hni" --long dry-run,interactive,set-head,help -- "$@")
 eval "set -- $options"
 
 dry_run=
@@ -20,6 +24,7 @@ while (( $# )); do
 			;;
 
 		-n|--dry-run) dry_run=: ;;
+		-i|--interactive) function ask-continue { ooc "error; continue?"; } ;;
 		--set-head) set_head=: ;;
 		--) break ;;
 	esac
@@ -35,7 +40,7 @@ find -L . -maxdepth 2 -name .git | sort \
 | while read -r repo; do
 	repo=$(realpath --relative-base=. "${repo%/.git}")
 	if [[ $set_head ]]; then
-		o git -C "$repo" remote set-head --auto origin
+		o git -C "$repo" remote set-head --auto origin || ask-continue
 	fi
 	head=$(git -C "$repo" symbolic-ref -q refs/remotes/origin/HEAD) || {
 		msgs+=("$repo - origin/HEAD unknown")
@@ -52,7 +57,7 @@ find -L . -maxdepth 2 -name .git | sort \
 		msgs+=("$repo - dirty")
 	else
 		if [[ ! $dry_run ]]; then
-			o git -C "$repo" pull
+			o git -C "$repo" pull || ask-continue
 		fi
 	fi
 done
