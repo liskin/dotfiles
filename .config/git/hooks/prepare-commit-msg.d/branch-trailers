@@ -21,5 +21,5 @@ function trailers-auto {
 }
 
 case "${2-}" in
-	""|message|commit) trailers-auto "$1" ;;
+	""|message|template|commit) trailers-auto "$1" ;;
 esac
