@@ -1,0 +1,12 @@
+/* ==UserStyle==
+@name			Akkoma - font tweaks
+@namespace		https://github.com/liskin/dotfiles/tree/home/src-webextensions
+@version		1.0.0
+@author			Tomáš Janoušek
+==/UserStyle== */
+
+@-moz-document domain("genserver.social") {
+	html {
+		font-size: unset;
+	}
+}
