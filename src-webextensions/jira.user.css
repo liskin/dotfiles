@@ -3,13 +3,16 @@
 @namespace      https://github.com/liskin/dotfiles/tree/home/src-webextensions
 @version        1.0.0
 @author         Tomáš Janoušek
+@preprocessor   less
 ==/UserStyle== */
 
 @-moz-document domain("atlassian.net") {
 	/* thinner top bar */
 	:root * { --topNavigationHeight: 32px; }
-	body#jira header[role="banner"] { height: var(--topNavigationHeight); }
-	body#jira header[role="banner"] *[height="56px"] { height: var(--topNavigationHeight); }
+	body#jira, body#com-atlassian-confluence {
+		header[role="banner"] { height: var(--topNavigationHeight); }
+		header[role="banner"] *[height="56px"] { height: var(--topNavigationHeight); }
+	}
 
 	/* search save space at the top */
 	body#jira form.navigator-search { margin: 0; }
