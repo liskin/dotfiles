@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Wrapper for ssh-keygen to be used in git's gpg.ssh.program that allows
+# specifying a different ssh agent and auto-adding a key to it
+
+set -eu
+shopt -s lastpipe
+
+# shellcheck source-path=..
+. "$HOME"/bin/.o 2>&1
+
+function find-key {
+	local arg
+	key=
+	while (( $# )); do
+		arg="$1"; shift
+		if [[ $arg == "-f" ]]; then
+			key="$1"
+		fi
+	done
+}
+
+find-key "$@"
+: "${key:?}"
+
+if git config --get gpg.ssh.agent-name | read -r agent_name; then
+	export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent-${agent_name}"
+fi
+o ssh-add "$key"
+o ssh-keygen "$@"
