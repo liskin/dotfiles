@@ -9,22 +9,29 @@ shopt -s lastpipe
 # shellcheck source-path=..
 . "$HOME"/bin/.o 2>&1
 
-function find-key {
+function parse-opts {
 	local arg
-	key=
 	while (( $# )); do
 		arg="$1"; shift
 		if [[ $arg == "-f" ]]; then
 			key="$1"
 		fi
+		if [[ $arg == "-Y" ]]; then
+			y_op="$1"
+		fi
 	done
 }
 
-find-key "$@"
-: "${key:?}"
+key=
+y_op=
+parse-opts "$@"
 
-if git config --get gpg.ssh.agent-name | read -r agent_name; then
-	export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent-${agent_name}"
+if [[ $key && $y_op == sign ]]; then
+	if git config --get gpg.ssh.agent-name | read -r agent_name; then
+		export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent-${agent_name}"
+	fi
+	o ssh-add "$key"
+	o ssh-keygen "$@"
+else
+	exec ssh-keygen "$@"
 fi
-o ssh-add "$key"
-o ssh-keygen "$@"
