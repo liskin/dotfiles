@@ -4,13 +4,38 @@ set -eu
 
 export FONTCONFIG_FILE=~/.config/fontconfig/browser.conf
 
+function join { local IFS="$1"; shift; echo "$*"; }
+
 exec \
 	/usr/bin/google-chrome \
 	--disable-smooth-scrolling \
 	--disk-cache-size=2000000000 \
 	--enable-easy-off-store-extension-install \
 	--disable-font-subpixel-positioning \
-	--enable-features=VaapiVideoDecoder,VaapiVideoEncoder \
-	--disable-features=UseChromeOSDirectVideoDecoder \
-	--enable-features=BatterySaverModeAvailable,HighEfficiencyModeAvailable \
+	--disable-features="$(join "," \
+		Vulkan \
+	)" \
+	--enable-features="$(join "," \
+		BatterySaverModeAvailable \
+		HighEfficiencyModeAvailable \
+		VaapiVideoEncoder \
+		VaapiVideoDecodeLinuxGL \
+	)" \
 	"$@"
+
+# XXX: Vulkan
+# exec \
+# 	/usr/bin/google-chrome \
+# 	--disable-smooth-scrolling \
+# 	--disk-cache-size=2000000000 \
+# 	--enable-easy-off-store-extension-install \
+# 	--disable-font-subpixel-positioning \
+# 	--enable-features="$(join "," \
+# 		BatterySaverModeAvailable \
+# 		HighEfficiencyModeAvailable \
+# 		VaapiVideoEncoder \
+# 		Vulkan \
+# 		DefaultANGLEVulkan \
+# 		VulkanFromANGLE \
+# 	)" \
+# 	"$@"
