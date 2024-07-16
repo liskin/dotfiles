@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# FIXME: doesn't work as a systemd-sleep hook since https://github.com/systemd/systemd/pull/30612
+# needs to be reimplemented using https://www.freedesktop.org/wiki/Software/systemd/inhibit/ API
+# see https://github.com/martininsulander/KrunnerBitwarden/commit/5083d1263162ee3edd08a648cc8e8662904f0b78
+# see https://github.com/jvinet/dotfiles/blob/85c3361b6ce6db770dd348d3995ee6d737de0dab/bin/doorman.py
+# see https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/blob/777418dfd786722d4dc16d4e60d2ca724f93b55c/src/core/nm-power-monitor.c#L177-191
+
+set -eu -o pipefail
+
+: "${1:?}" "${2:?}"
+
+for user in $(loginctl list-users --no-legend | awk '{ print $1 }'); do
+	systemd-run \
+		--quiet --collect --wait \
+		--user --machine "$user"@ \
+		bash -c "if [[ -d ~/.local/lib/liskin-system-sleep ]]; then run-parts -v --arg=$(printf %q "$1") --arg=$(printf %q "$2") ~/.local/lib/liskin-system-sleep; fi" || :
+done

@@ -8,7 +8,7 @@ flock --nonblock "$lock_fd" || exit
 
 unlocked=
 for session in $(loginctl list-sessions --no-legend | awk '{ print $1 }'); do
-	if [[ "$(loginctl show-session --property=Remote "$session")" == "Remote=no" && "$(loginctl show-session --property=LockedHint "$session")" == "LockedHint=no" ]]; then
+	if [[ "$(loginctl show-session --property=VTNr "$session")" != "VTNr=0" && "$(loginctl show-session --property=LockedHint "$session")" == "LockedHint=no" ]]; then
 		unlocked=:
 	fi
 done
@@ -21,6 +21,9 @@ if [[ ! $unlocked ]]; then
 
 	# stop fprintd before suspend to prevent the reader getting stuck in a weird state
 	systemctl stop fprintd.service || :
+
+	# FIXME: use Inhibitor Locks API instead
+	liskin-user-system-sleep pre suspend
 
 	systemctl suspend
 else
