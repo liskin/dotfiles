@@ -114,8 +114,6 @@ alias urlencode='python3 -c "import sys; from urllib.parse import quote; sys.std
 
 alias bel='echo -en "\007"'
 
-export-alias nheko='QT_QPA_PLATFORMTHEME=qt5ct /usr/bin/nheko'
-
 alias vim='nvim'
 alias view='nvim -R'
 alias vimdiff='nvim -d'
