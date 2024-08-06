@@ -448,7 +448,7 @@ let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = #{features: 'all'}
 let g:ale_rust_analyzer_config = g:lsp_settings_rust_analyzer['rust-analyzer']
 let g:ale_rust_rustfmt_options = '--edition 2021'
 
-" See .config/nvim/after/plugin/lspconfig.lua for neovim LSP configs
+" See .config/nvim/lua/init/after_lsp.lua for neovim LSP configs
 let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_lua_ls = v:true
 let g:lsp_autostart_pylsp = v:true
