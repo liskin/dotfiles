@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Attach a netns created by vpnns (https://github.com/cernekee/ocproxy)
+# while preserving UID/GID.
+
+set -eu
+
+if (( ! $# )); then
+	echo "Usage: vpnns-user [<vpnns args ...> --] <command>"
+	exit 1
+fi
+
+vpnns_args=()
+command_args=()
+
+for arg in "$@"; do
+	if [[ "$arg" == "--" ]]; then
+		vpnns_args=("${command_args[@]}")
+		command_args=()
+	else
+		command_args+=("$arg")
+	fi
+done
+
+exec vpnns "${vpnns_args[@]}" -- unshare --map-user="$(id -u)" --map-group="$(id -g)" -- "${command_args[@]}"
+
