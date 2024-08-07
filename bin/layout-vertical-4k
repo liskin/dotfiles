@@ -5,6 +5,6 @@ set -eu
 xrandr-smart \
 	--dpi 96 \
 	--output '!(eDP-*)' --mode 3840x2160 --pos 0x0 \
-	--output 'eDP-*' --mode 1920x1080 --pos 960x2160 --primary
+	--output 'eDP-*' --auto --pos 960x2160 --primary
 
 xset -dpms

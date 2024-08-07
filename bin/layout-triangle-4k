@@ -12,6 +12,6 @@ xrandr-smart \
 	--dpi 96 \
 	--output '!(eDP-*)#'$o1 --mode 3840x2160 --pos 0x0 \
 	--output '!(eDP-*)#'$o2 --mode 3840x2160 --pos 3840x0 \
-	--output 'eDP-*' --mode 1920x1080 --pos 2880x2160 --primary
+	--output 'eDP-*' --auto --pos 2880x2160 --primary
 
 xset -dpms

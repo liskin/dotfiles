@@ -12,6 +12,6 @@ xrandr-smart \
 	--dpi 96 \
 	--output '!(eDP-*)#'$o1 --mode 1920x1080 --pos 0x0 \
 	--output '!(eDP-*)#'$o2 --mode 1920x1080 --pos 1920x0 \
-	--output 'eDP-*' --mode 1920x1080 --pos 960x1080 --primary
+	--output 'eDP-*' --auto --pos 960x1080 --primary
 
 xset -dpms
