@@ -18,12 +18,12 @@ function action-mic-mute { pactl set-source-mute @DEFAULT_SOURCE@ toggle; }
 function status-camera {
 	local camera
 
-	camera=$(usbguard list-devices --blocked | awk -F: '/ name "Integrated Camera" / { print $1 }')
+	camera=$(usbguard list-devices --blocked | awk -F: '/ name "Integrated (RGB )?Camera" / { print $1 }')
 	if [[ $camera ]]; then
 		echo "$camera" 0; exit
 	fi
 
-	camera=$(usbguard list-devices --allowed | awk -F: '/ name "Integrated Camera" / { print $1 }')
+	camera=$(usbguard list-devices --allowed | awk -F: '/ name "Integrated (RGB )?Camera" / { print $1 }')
 	if [[ $camera ]]; then
 		echo "$camera" 1; exit
 	fi

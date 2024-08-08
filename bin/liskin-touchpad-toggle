@@ -10,4 +10,5 @@ function toggle-device {
 	fi
 }
 
-toggle-device 'SynPS/2 Synaptics TouchPad'
+xi_touchpad=$(xinput list --name-only | grep -i -m 1 'touchpad$' | sed -e 's/^∼ //')
+toggle-device "$xi_touchpad"

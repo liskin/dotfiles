@@ -26,15 +26,25 @@ xset dpms 600 600 600
 xsetroot -cursor_name left_ptr
 setxkbmap ${_LISKIN_NVIDIA:+-option terminate:ctrl_alt_bksp}
 xmodmap ~/.Xmodmap
-if liskin-dmi-product 20VX; then xmodmap ~/.Xmodmap-thinkpad-6row; fi
-xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Natural Scrolling Enabled' 1 || :
-xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Middle Emulation Enabled' 1 || :
-xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Disable While Typing Enabled' 0 || :
-if liskin-dmi-product 20VX; then
-	xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.6 || :
-	xinput set-prop 'TPPS/2 Elan TrackPoint' 'libinput Accel Speed' -0.5 || :
-elif liskin-dmi-product 20K7; then
-	xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Accel Speed' 0.3 || :
+if liskin-dmi-product 20VX 21HE; then xmodmap ~/.Xmodmap-thinkpad-6row; fi
+
+if xi_touchpad=$(
+	xinput list --name-only | grep -i -m 1 'touchpad$'
+) && xi_trackpoint=$(
+	xinput list --name-only | grep -i -m 1 'trackpoint$'
+); then
+	xinput set-prop "$xi_touchpad" 'libinput Natural Scrolling Enabled' 1 || :
+	xinput set-prop "$xi_touchpad" 'libinput Middle Emulation Enabled' 1 || :
+	xinput set-prop "$xi_touchpad" 'libinput Disable While Typing Enabled' 0 || :
+	if liskin-dmi-product 20VX; then
+		xinput set-prop "$xi_touchpad" 'libinput Accel Speed' 0.6 || :
+		xinput set-prop "$xi_trackpoint" 'libinput Accel Speed' -0.5 || :
+	elif liskin-dmi-product 20K7; then
+		xinput set-prop "$xi_touchpad" 'libinput Accel Speed' 0.3 || :
+	elif liskin-dmi-product 21HE; then
+		xinput set-prop "$xi_touchpad" 'libinput Accel Speed' 0.1 || :
+		xinput set-prop "$xi_trackpoint" 'libinput Accel Speed' -0.5 || :
+	fi
 fi
 
 liskin-thinkpad-battery update-xmobar
