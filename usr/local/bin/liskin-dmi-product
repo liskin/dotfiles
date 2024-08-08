@@ -4,7 +4,12 @@ set -eu -o pipefail
 
 read -r product < /sys/class/dmi/id/product_name
 if (( $# )); then
-	[[ $product == "$1"* ]]
+	for prefix in "$@"; do
+		if [[ $product == "$prefix"* ]]; then
+			exit 0
+		fi
+	done
+	exit 1
 else
 	echo "$product"
 fi
