@@ -6,7 +6,7 @@ shopt -s nullglob
 exec </dev/null
 
 # ssh-agent is setgid and drops LD_* vars, reload them
-. ~/.xsessionrc
+. "$HOME"/.xsessionrc
 
 for xres in $(run-parts --list /etc/X11/Xresources); do xrdb -merge "$xres"; done
 for xres in ~/.Xresources.d/*.{ad,m4}; do xrdb -cpp m4 -merge "$xres"; done
