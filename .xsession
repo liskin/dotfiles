@@ -43,7 +43,7 @@ if xi_touchpad=$(
 		xinput set-prop "$xi_touchpad" 'libinput Accel Speed' 0.3 || :
 	elif liskin-dmi-product 21HE; then
 		xinput set-prop "$xi_touchpad" 'libinput Accel Speed' 0.1 || :
-		xinput set-prop "$xi_trackpoint" 'libinput Accel Speed' -0.5 || :
+		xinput set-prop "$xi_trackpoint" 'libinput Accel Speed' -0.7 || :
 	fi
 fi
 
