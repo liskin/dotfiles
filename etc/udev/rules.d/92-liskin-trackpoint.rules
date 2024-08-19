@@ -5,6 +5,6 @@ SUBSYSTEM=="input", ATTR{name}=="TPPS/2 IBM TrackPoint", \
 	ATTR{device/inertia}="3"
 
 SUBSYSTEM=="input", ATTR{name}=="TPPS/2 Synaptics TrackPoint", \
-	ATTR{device/sensitivity}="60"
+	ATTR{device/sensitivity}="100"
 
 LABEL="liskin-trackpoint-end"
