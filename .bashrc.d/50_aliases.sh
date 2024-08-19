@@ -59,6 +59,7 @@ alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
 export-alias livereload-make="python3 -c 'from livereload import Server, shell; server = Server(); server.watch(\".\", shell(\"make\")); server.serve();'"
 
 export-alias google-chrome-app-diagrams="gtk-launch chrome-ilmgmogedobmcfegdjcibiiaodmdenpf-Default"
+export-alias google-chrome-app-teams="gtk-launch chrome-cifhbcnohmdccbgoicgdjpfamggdegmo-Default"
 export-alias google-chrome-app-discord="google-chrome --app=https://discord.com/app"
 export-alias google-chrome-app-excalidraw="gtk-launch chrome-kmcnjdcipmgchfndpapkoecbidofdpbc-Default"
 export-alias google-chrome-app-fb-messenger="google-chrome --app=https://www.messenger.com/"

@@ -9,8 +9,10 @@ any window $active ==> tag Desktop:$desktop,
 any window (! $hidden && (
 	($program == "google-chrome" && $title =~ m|:: https?://meet\.google|)
 	|| ($program == "google-chrome" && $title =~ m|:: https?://[^/]*zoom\.us/|)
+	|| ($program == "google-chrome" && $title =~ m|:: https?://teams\.microsoft|)
 	|| ($program == "google-chrome" && $title =~ m|Slack - .* - Huddle|)
 	|| $program =~ /^zoom/ || ($program =~ /^join\?/ && $title =~ /Zoom Meeting/)
+	|| $program == "crx_cifhbcnohmdccbgoicgdjpfamggdegmo"
 ) && (
 	-- try to grab a project name for the call window
 	(!( $wdesktop == ["1:irc", "2:web", "12:watch"] ) && $wdesktop =~ m|^W?\d+:([^:]*)|)
