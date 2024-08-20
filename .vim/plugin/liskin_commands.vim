@@ -85,4 +85,8 @@ command! -nargs=? GeneratePassword call s:GeneratePassword("LCN", <f-args>)
 command! -nargs=? GeneratePasswordSpecial call s:GeneratePassword("LCNS", <f-args>)
 command! -nargs=? GeneratePasswordXKCD call s:GeneratePasswordXKCD(<f-args>)
 
+" {{{1 JoinParagraphs
+
+command! -range=% JoinParagraphs <line1>,<line2>g/^./ .,/^$/-1 join | noh
+
 " vim:set foldenable foldmethod=marker: {{{1
