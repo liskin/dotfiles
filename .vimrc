@@ -444,7 +444,9 @@ let g:ale_haskell_hls_config = g:lsp_settings_hls
 let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
 let g:ale_root['analyzer'] = s:cargo_root
 let g:lsp_settings_rust_analyzer = #{rust-analyzer: {}}
-let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = #{features: 'all'}
+let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = {}
+let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['features'] = 'all'
+let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['allTargets'] = v:true
 let g:ale_rust_analyzer_config = g:lsp_settings_rust_analyzer['rust-analyzer']
 let g:ale_rust_rustfmt_options = '--edition 2021'
 
