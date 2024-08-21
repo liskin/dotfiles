@@ -142,6 +142,7 @@ cmp.setup {
 			cmp.abort()
 			fallback()
 		end,
+		['<CR>'] = cmp_or(cmp.confirm),
 		['<C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_all),
 		['<C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_all),
 		['<C-X><C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_current),
@@ -152,7 +153,7 @@ cmp.setup {
 	confirmation = {
 		get_commit_characters = function(commit_characters)
 			return {
-				' ', '\r',
+				' ',
 				'.', ',',
 				':', ';',
 				'(', ')',
