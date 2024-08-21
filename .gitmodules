@@ -100,6 +100,9 @@
 [submodule ".vim/bundle/vim-sleuth"]
 	path = .vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth
+[submodule ".vim/bundle/jq.vim"]
+	path = .vim/bundle/jq.vim
+	url = https://github.com/vito-c/jq.vim
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
@@ -160,9 +163,6 @@
 [submodule ".local/share/nvim/site/bundle/neodev.nvim"]
 	path = .local/share/nvim/site/bundle/neodev.nvim
 	url = https://github.com/folke/neodev.nvim
-[submodule ".local/share/nvim/site/bundle/jq.vim"]
-	path = .local/share/nvim/site/bundle/jq.vim
-	url = https://github.com/vito-c/jq.vim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
