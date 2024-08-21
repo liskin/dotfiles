@@ -40,4 +40,4 @@ git diff --cached --exit-code --quiet && diff=$? || diff=$?
 git commit -m "$(date --iso-8601=seconds)"
 
 # garbage collect
-git gc-auto-exact 10
+git gc-auto-exact 25
