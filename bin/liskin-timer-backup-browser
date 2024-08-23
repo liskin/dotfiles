@@ -28,11 +28,6 @@ sqlite3 "$TMPDIR"/History .dump >./chrome-history.sql
 cp ~/.config/google-chrome/Default/Web\ Data* "$TMPDIR"/
 sqlite3 "$TMPDIR"/Web\ Data ".dump keywords" >./chrome-keywords.sql
 
-# backup sessionbuddy
-mkdir "$TMPDIR"/sessionbuddy
-cp ~/.config/google-chrome/Default/databases/chrome-extension_edacconmaakjimmfgnblocblbcdcpbko_0/* "$TMPDIR"/sessionbuddy/
-sqlite3 "$TMPDIR"/sessionbuddy/[0-9] .dump >./chrome-sessionbuddy.sql
-
 # commit
 git add .
 git diff --cached --exit-code --quiet && diff=$? || diff=$?
