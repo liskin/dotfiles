@@ -21,6 +21,12 @@ function log {
 	last_log="$1"
 }
 
+function log-pp {
+	if [[ -v last_log_pp && "$last_log_pp" == "$1" ]]; then return; fi
+	xmobar-proplog _XMOBAR_DEVICES_PP "$1"
+	last_log_pp="$1"
+}
+
 function find-nvidia {
 	local vendor f
 	if [[ -v sys_nvidia_dev ]]; then return; fi
@@ -170,6 +176,20 @@ function refresh {
 	log "$log"
 }
 
+function refresh-pp {
+	local power_profile=
+
+	busctl get-property org.freedesktop.UPower.PowerProfiles /org/freedesktop/UPower/PowerProfiles org.freedesktop.UPower.PowerProfiles ActiveProfile | read -r _ power_profile || :
+	case "$power_profile" in
+		\"performance\") power_profile=H ;;
+		\"balanced\") power_profile=M ;;
+		\"power-saver\") power_profile=L ;;
+		*) power_profile="?" ;;
+	esac
+
+	log-pp "$power_profile"
+}
+
 function monitor {
 	{
 		echo force initial refresh
@@ -187,6 +207,7 @@ function monitor {
 		fi
 
 		refresh
+		refresh-pp
 	done
 }
 

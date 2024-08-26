@@ -19,6 +19,11 @@ def nm_properties_changed(interface_name, changed_properties, invalidated_proper
         print(".", flush=True)
 
 
+def pp_properties_changed(interface_name, changed_properties, invalidated_properties):
+    if 'ActiveProfile' in changed_properties:
+        print(".", flush=True)
+
+
 @click.command()
 @click.option('--systemd-unit-regex', type=str, default='')
 def main(systemd_unit_regex):
@@ -44,6 +49,13 @@ def main(systemd_unit_regex):
     nm.connect_to_signal(
         'PropertiesChanged',
         nm_properties_changed,
+        dbus_interface='org.freedesktop.DBus.Properties',
+    )
+
+    pp = system_bus.get_object('org.freedesktop.UPower.PowerProfiles', '/org/freedesktop/UPower/PowerProfiles')
+    pp.connect_to_signal(
+        'PropertiesChanged',
+        pp_properties_changed,
         dbus_interface='org.freedesktop.DBus.Properties',
     )
 

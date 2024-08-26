@@ -31,6 +31,7 @@ myConfig = do
             [ "%coretemp%" ] <>
             [ " " ] <>
             [ "%multicpu%" ] <>
+            [ "%_XMOBAR_DEVICES_PP%" ] <>
             [ " " ] <>
             [ "%eth0%" | hasEth0 ] <>
             [ "%wlan1%" ] <>
@@ -41,6 +42,7 @@ myConfig = do
             , Run $ XPropertyLog "_XMOBAR_BATTERY_EXTRA"
             , Run $ XPropertyLog "_XMOBAR_DND"
             , Run $ XPropertyLog "_XMOBAR_DEVICES"
+            , Run $ XPropertyLog "_XMOBAR_DEVICES_PP"
             , Run $ CoreTemp ["-t",fnNerd "\xf2c9" <> "<core0>C"] 50
             , Run $ MultiCpu ["-H","95","--high","red","-t","<icon=cpu.xbm/><icon=l.xbm/><autovbar><icon=r.xbm/>","--","--contiguous-icons"] 10
             ] <> netCmds <> batCmds
