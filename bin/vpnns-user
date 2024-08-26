@@ -5,7 +5,7 @@
 
 set -eu
 
-if (( ! $# )); then
+if (( ! $# )) || [[ "$*" == "--help" ]]; then
 	echo "Usage: vpnns-user [<vpnns args ...> --] <command>"
 	exit 1
 fi
