@@ -1,5 +1,5 @@
 # XXX: wipe ~/.local/pipx when updating python
-PYTHON = python3.11
+PYTHON = python3.12
 PIPX_INSTALL = pipx install --system-site-packages --python /usr/bin/$(PYTHON)
 
 .PHONY: all
@@ -17,10 +17,6 @@ pushl:
 all: timezonefinder
 timezonefinder:
 	$(PIPX_INSTALL) timezonefinder
-
-all: isort isort-identify-imports
-isort isort-identify-imports &:
-	$(PIPX_INSTALL) 'isort ~= 5.9'
 
 # docker registry client
 all: dxf
