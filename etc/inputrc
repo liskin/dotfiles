@@ -25,4 +25,11 @@ $if term=tmux
 "\e[1;2D": backward-word
 $endif
 
+$if term=alacritty
+"\e[1;2A": history-search-backward
+"\e[1;2B": history-search-forward
+"\e[1;2C": forward-word
+"\e[1;2D": backward-word
+$endif
+
 $endif
