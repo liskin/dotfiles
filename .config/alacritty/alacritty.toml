@@ -1,0 +1,36 @@
+[window]
+resize_increments = true
+dynamic_padding = true
+
+[font.normal]
+family = 'Iosevka Fixed'
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.primary]
+background = '#000000'
+foreground = '#ffffff'
+
+[colors.normal]
+black   = '#000000'
+red     = '#cd0000'
+green   = '#00cd00'
+yellow  = '#cdcd00'
+blue    = '#0000cd'
+magenta = '#cd00cd'
+cyan    = '#00cdcd'
+white   = '#e5e5e5'
+
+[colors.bright]
+black   = '#4d4d4d'
+red     = '#ff0000'
+green   = '#00ff00'
+yellow  = '#ffff00'
+blue    = '#0000ff'
+magenta = '#ff00ff'
+cyan    = '#00ffff'
+white   = '#ffffff'
+
+[mouse]
+hide_when_typing = true
