@@ -489,7 +489,6 @@ endif
 if exists('$TMUX')
 	let g:fzf_layout = { 'tmux': '-p90%,60%' }
 else
-	let g:fzf_prefer_height = 1
 	let g:fzf_layout = { 'down': '60%' }
 endif
 let g:fzf_colors = {
@@ -676,10 +675,7 @@ nnoremap <silent> <C-Y> <Cmd>:FzfWindows<CR>
 
 nnoremap <C-J> :FzfRG<space>
 
-if !has('nvim')
-	nnoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
-	inoremap <silent> <C-_> <Cmd>:FzfSnippets<CR>
-else
+if has('nvim')
 	nmap <C-_> i<C-_>
 	imap <C-_> <Plug>(cmp_snippet)
 endif
