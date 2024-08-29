@@ -148,6 +148,7 @@ cmp.setup {
 		['<C-X><C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_current),
 		['<C-X><C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_current),
 		['<C-X><C-O>'] = cmp_or(cmp_select_prev, cmp_complete_omni),
+		['<C-_>'] = cmp_or(cmp_select_next, cmp_complete_snippet),
 	},
 	---@diagnostic disable-next-line: missing-fields
 	confirmation = {
@@ -169,8 +170,4 @@ cmp.event:on('menu_opened', function(data)
 	-- start with an active entry
 	-- work around https://github.com/hrsh7th/nvim-cmp/issues/835
 	data.window.active = true
-end)
-
-vim.keymap.set('i', '<Plug>(cmp_snippet)', function()
-	cmp_complete_snippet()
 end)

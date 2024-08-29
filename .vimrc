@@ -587,11 +587,6 @@ nnoremap <silent> <C-Y> <Cmd>:FzfWindows<CR>
 
 nnoremap <C-J> :FzfRG<space>
 
-if has('nvim')
-	nmap <C-_> i<C-_>
-	imap <C-_> <Plug>(cmp_snippet)
-endif
-
 " smart Tab completion (vim only) {{{2
 if !has('nvim')
 	function! LiskinTabComplete() abort
