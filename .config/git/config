@@ -73,6 +73,8 @@
 	indentHeuristic = true
 	colorMoved = default
 	colorMovedWS = allow-indentation-change
+	srcPrefix = ./
+	dstPrefix = ./
 [diff "hex"]
 	textconv = hexdump -v -C
 [interactive]
