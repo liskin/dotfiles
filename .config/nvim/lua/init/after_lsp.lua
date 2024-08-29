@@ -24,6 +24,13 @@ local function buf_filesize(bufnr)
 	end
 end
 
+local function try_require(mod)
+	local ok, source = pcall(require, mod)
+	if ok then
+		return source
+	end
+end
+
 neodev.setup {
 	override = function(root_dir, options)
 		-- don't enable neodev for roots having a lua subdirectory that aren't in neovim dirs
@@ -130,7 +137,10 @@ lsp_null_settings['diagnostics.proselint'] = vim.tbl_deep_extend("keep", lsp_nul
 
 for tool, handlers in pairs(vim.g.lsp_null_enabled) do
 	for _, handler in ipairs(handlers) do
-		local source = vim.tbl_get(null_ls.builtins, handler, tool)
+		local source =
+			try_require('none-ls-' .. tool .. '.' .. handler) or
+			try_require('none-ls.' .. handler .. '.' .. tool) or
+			vim.tbl_get(null_ls.builtins, handler, tool)
 		if source then
 			local settings = vim.tbl_deep_extend("keep", lsp_null_settings[handler .. '.' .. tool] or {}, lsp_null_settings[tool] or {})
 			table.insert(lsp_null_sources, source.with(settings))

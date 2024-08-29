@@ -159,6 +159,12 @@
 [submodule ".local/share/nvim/site/bundle/neodev.nvim"]
 	path = .local/share/nvim/site/bundle/neodev.nvim
 	url = https://github.com/folke/neodev.nvim
+[submodule ".local/share/nvim/site/bundle/none-ls-extras.nvim"]
+	path = .local/share/nvim/site/bundle/none-ls-extras.nvim
+	url = https://github.com/nvimtools/none-ls-extras.nvim
+[submodule ".local/share/nvim/site/bundle/none-ls-shellcheck.nvim"]
+	path = .local/share/nvim/site/bundle/none-ls-shellcheck.nvim
+	url = https://github.com/gbprod/none-ls-shellcheck.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
