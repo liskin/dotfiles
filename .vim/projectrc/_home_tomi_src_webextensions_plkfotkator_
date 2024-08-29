@@ -1,2 +1,1 @@
 let g:lsp_autostart_tsserver = v:true
-AleAddLinter javascript tsserver

@@ -366,10 +366,6 @@ if &t_Co >= 256 || has('gui_running')
 	hi def link diffChanged PreProc
 	hi def link diffRemoved Special
 
-	" distinguish ALE virtual text from comments
-	hi link ALEVirtualTextError DiagnosticError
-	hi link ALEVirtualTextWarning DiagnosticWarn
-
 	" nvim diagnostics like ALE signs
 	hi link DiagnosticSignError Error
 	hi link DiagnosticSignWarn Todo

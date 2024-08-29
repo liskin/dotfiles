@@ -340,79 +340,15 @@ function! s:AirlineInit()
 endfunction
 autocmd User AirlineAfterInit call s:AirlineInit()
 
-" async lint engine {{{2
-let g:ale_completion_enabled = 0
-let g:ale_fix_on_save = 1
-let g:ale_floating_preview = 1
-let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_text_changed = 0
-let g:ale_linters_explicit = 1
-let g:ale_maximum_file_size = 131072
-let g:ale_popup_menu_enabled = 1
-let g:ale_root = {}
-let g:ale_save_hidden = 1
-let g:ale_set_highlights = 0
-let g:ale_virtualtext_cursor = 0
-
-" vim signs
-let g:ale_sign_error = '>>'
-let g:ale_sign_info = '--'
-let g:ale_sign_warning = '--'
-
-" nvim signs
+" LSP {{{2
 sign define DiagnosticSignError text=>> texthl=DiagnosticSignError
 sign define DiagnosticSignWarn text=-- texthl=DiagnosticSignWarn
 sign define DiagnosticSignInfo text=-- texthl=DiagnosticSignInfo
 sign define DiagnosticSignHint text=-- texthl=DiagnosticSignHint
 
-let g:ale_fixers = {}
-let g:ale_linters = {}
-let g:ale_linter_aliases = {}
-
-function! s:ale_add_linter(bang, ale_linters, filetype, linter) abort
-	if empty(a:bang) && has('nvim') | return | endif
-
-	if !has_key(a:ale_linters, a:filetype)
-		let a:ale_linters[a:filetype] = []
-	endif
-
-	if index(a:ale_linters[a:filetype], a:linter) == -1
-		call add(a:ale_linters[a:filetype], a:linter)
-	endif
-endfunction
-
-function! s:ale_enable_linter(bang, var, filetype, linter) abort
-	if empty(a:bang) && has('nvim') | return | endif
-
-	if !exists('b:{a:var}')
-		let b:{a:var} = deepcopy(g:{a:var})
-	endif
-	call s:ale_add_linter(a:bang, b:{a:var}, a:filetype, a:linter)
-
-	ALELint
-	ALEFix
-endfunction
-
-function! s:ale_add_linters(bang, var, filetype, ...) abort
-	for l:linter in a:000
-		call s:ale_add_linter(a:bang, g:{a:var}, a:filetype, l:linter)
-	endfor
-endfunction
-
-command! -nargs=1 -bar -bang AleBufEnableLinter call s:ale_enable_linter('<bang>', 'ale_linters', &ft, <q-args>)
-command! -nargs=1 -bar -bang AleBufEnableFixer call s:ale_enable_linter('<bang>', 'ale_fixers', &ft, <q-args>)
-command! -nargs=+ -bar -bang AleAddLinter call s:ale_add_linters('<bang>', 'ale_linters', <f-args>)
-command! -nargs=+ -bar -bang AleAddFixer call s:ale_add_linters('<bang>', 'ale_fixers', <f-args>)
-
 let g:lsp_settings_elixirls = {}
 let g:lsp_settings_elixirls['elixirLS'] = #{dialyzerEnabled: v:false}
-let g:ale_elixir_elixir_ls_config = g:lsp_settings_elixirls
-let g:ale_elixir_elixir_ls_release = $HOME .. "/src-elixir/.build/elixir-ls"
-let g:lsp_cmd_elixirls = [g:ale_elixir_elixir_ls_release .. "/language_server.sh"]
-
-" FIXME: no equivalent in nvim-lspconfig
-let g:ale_c_build_dir_names = ['_build', 'build', 'bin']
+let g:lsp_cmd_elixirls = [$HOME .. "/src-elixir/.build/elixir-ls/language_server.sh"]
 
 let g:lsp_settings_pylsp = #{pylsp: #{plugins: {} } }
 let g:lsp_settings_pylsp['pylsp']['configurationSources'] = ['flake8']
@@ -431,24 +367,13 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['pyls_isort'] = #{enabled: v:true}
 let g:lsp_settings_pylsp['pylsp']['plugins']['black'] = #{enabled: v:false}
 let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
 
-let g:ale_python_pylsp_config = g:lsp_settings_pylsp
-
-let g:ale_haskell_ormolu_executable = 'fourmolu'
 let g:lsp_settings_hls = #{haskell: #{plugin: {} } }
 let g:lsp_settings_hls['haskell']['plugin']['stan'] = #{globalOn: v:false}
-let g:ale_haskell_hls_config = g:lsp_settings_hls
 
-" Set a global project root for rust-analyzer to avoid starting a separate
-" instance for dependencies. Assumes a single project, but that's how I use
-" vim anyway.
-let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
-let g:ale_root['analyzer'] = s:cargo_root
 let g:lsp_settings_rust_analyzer = #{rust-analyzer: {}}
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = {}
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['features'] = 'all'
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['allTargets'] = v:true
-let g:ale_rust_analyzer_config = g:lsp_settings_rust_analyzer['rust-analyzer']
-let g:ale_rust_rustfmt_options = '--edition 2021'
 
 " See .config/nvim/lua/init/after_lsp.lua for neovim LSP configs
 let g:lsp_autoformat_elixirls = v:true
@@ -463,27 +388,14 @@ let g:lsp_null_enabled['shellcheck'] = ['code_actions', 'diagnostics']
 let g:lsp_null_settings = {}
 let g:lsp_null_settings['proselint'] = #{filetypes: ["gitcommit", "mail", "markdown", "rst", "text"]}
 
-let g:ale_linter_aliases['gitcommit'] = ['mail']
-
-AleAddFixer elixir mix_format
-AleAddLinter dockerfile hadolint
-AleAddLinter gitcommit proselint
-AleAddLinter mail proselint
-AleAddLinter markdown proselint
-AleAddLinter python pylsp
-AleAddLinter rst proselint
-AleAddLinter sh shellcheck
-AleAddLinter text proselint
-AleAddLinter tiltfile buildifier
-AleAddLinter tiltfile tilt_lsp
-
+let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
 if isdirectory(s:cargo_root . '/target/debug')
 	" Enable only for projects that have been built at least once
 	let g:lsp_autoformat_rust_analyzer = v:true
 	let g:lsp_autostart_rust_analyzer = v:true
-	AleAddLinter rust analyzer
-	AleAddFixer rust rustfmt
 endif
+
+let g:lsp_maximum_file_size = 131072
 
 " fzf {{{2
 if exists('$TMUX')
@@ -619,7 +531,7 @@ autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 autocmd BufNewFile,BufRead */.config/git/include/* setf gitconfig
 
 " disable LSP before it's attached to the buffer
-autocmd FileType * if expand("<afile>:p") =~ glob2regpat("/dev/shm/pass.*") | let b:ale_enabled = 0 | let b:lsp_disabled = 1 | endif
+autocmd FileType * if expand("<afile>:p") =~ glob2regpat("/dev/shm/pass.*") | let b:lsp_disabled = 1 | endif
 
 " key maps {{{1
 
@@ -679,30 +591,6 @@ if has('nvim')
 	nmap <C-_> i<C-_>
 	imap <C-_> <Plug>(cmp_snippet)
 endif
-
-" ALE/LSP keys {{{2
-noremap <silent> <Plug>(lsp_hover) <Plug>(ale_hover)
-noremap <silent> <Plug>(lsp_detail) <Plug>(ale_detail)
-noremap <silent> <Plug>(lsp_code_action) <Plug>(ale_code_action)
-noremap <silent> <Plug>(lsp_hover_ins) <Plug>(lsp_hover)
-noremap <silent> <Plug>(lsp_detail_ins) <Plug>(lsp_detail)
-noremap <silent> <Plug>(lsp_code_action_ins) <Plug>(lsp_code_action)
-noremap <silent> <Plug>(lsp_go_to_definition) <Plug>(ale_tags_fallback_go_to_definition)
-noremap <silent> <Plug>(lsp_go_to_definition_hsplit) <Plug>(ale_tags_fallback_go_to_definition_in_split)
-noremap <silent> <Plug>(lsp_prev) <Plug>(ale_previous_wrap)
-noremap <silent> <Plug>(lsp_next) <Plug>(ale_next_wrap)
-
-nmap <C-]> <Plug>(lsp_go_to_definition)
-nmap <C-W><C-]> <Plug>(lsp_go_to_definition_hsplit)
-nmap <C-H> <Plug>(lsp_hover)
-imap <C-H> <C-\><C-O><Plug>(lsp_hover_ins)
-nmap <C-K> <Plug>(lsp_detail)
-imap <C-K> <C-\><C-O><Plug>(lsp_detail_ins)
-nmap <C-F> <Plug>(lsp_code_action)
-vmap <C-F> <Plug>(lsp_code_action)
-imap <C-F> <C-\><C-O><Plug>(lsp_code_action_ins)
-nmap [d <Plug>(lsp_prev)
-nmap ]d <Plug>(lsp_next)
 
 " smart Tab completion (vim only) {{{2
 if !has('nvim')

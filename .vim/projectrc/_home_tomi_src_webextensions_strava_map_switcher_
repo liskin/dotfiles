@@ -1,3 +1,2 @@
 let g:lsp_autostart_tsserver = v:true
-AleAddLinter javascript tsserver
 autocmd BufNewFile,BufRead manifest.json setlocal sw=2 et

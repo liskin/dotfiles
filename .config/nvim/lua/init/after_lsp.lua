@@ -97,6 +97,7 @@ end
 local lsps = {
 	'clangd',
 	'elixirls',
+	'gopls',
 	'hls',
 	'lua_ls',
 	'pylsp',
@@ -145,7 +146,7 @@ null_ls.setup {
 	debounce = debounce,
 	should_attach = function(bufnr)
 		-- disable for large files (FIXME: limit to proselint somehow?)
-		local max_filesize = vim.g.ale_maximum_file_size
+		local max_filesize = vim.g.lsp_maximum_file_size
 		if buf_filesize(bufnr) > max_filesize then
 			return false
 		end

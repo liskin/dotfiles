@@ -6,12 +6,25 @@ if !isdirectory(s:projectrc_dir)
 	call mkdir(s:projectrc_dir, "p")
 endif
 
+function! s:path_upwards(path) abort
+	let parts = split(a:path, '\v/+')
+	let path_list = []
+
+	while !empty(parts)
+		call add(path_list, join(parts, '/'))
+		let parts = parts[:-2]
+	endwhile
+
+	if a:path[0] is# '/'
+		call map(path_list, {_, p -> '/' . p})
+		call add(path_list, '/')
+	endif
+
+	return path_list
+endfunc
+
 function! s:projectrc_filenames() abort
-	try
-		let paths = ale#path#Upwards(getcwd())
-	catch /^Vim\%((\a\+)\)\=:E117:/
-		return []
-	endtry
+	let paths = s:path_upwards(getcwd())
 	return map(paths, {_, d -> s:projectrc_dir . fnamemodify(d, ":p:gs%[^A-Za-z0-9]%_%")})
 endfunc
 

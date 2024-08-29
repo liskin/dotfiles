@@ -3,9 +3,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(ev)
 		local buf_local = { buffer = ev.buf }
 
-		vim.keymap.set('n', '<Plug>(lsp_hover)', vim.lsp.buf.hover, buf_local)
-		vim.keymap.set('n', '<Plug>(lsp_detail_ins)', vim.lsp.buf.signature_help, buf_local)
-		vim.keymap.set({'n', 'v'}, '<Plug>(lsp_code_action)', vim.lsp.buf.code_action, buf_local)
+		vim.keymap.set({'n', 'v', 'i'}, '<C-H>', vim.lsp.buf.hover, buf_local)
+		vim.keymap.set({'n', 'v', 'i'}, '<C-F>', vim.lsp.buf.code_action, buf_local)
+
+		vim.keymap.set('i', '<C-K>', vim.lsp.buf.signature_help, buf_local)
 
 		vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, buf_local)
 		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, buf_local)
