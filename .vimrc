@@ -535,8 +535,8 @@ autocmd FileType * if expand("<afile>:p") =~ glob2regpat("/dev/shm/pass.*") | le
 
 " key maps {{{1
 
-nnoremap <silent> <F1> <Cmd>:FzfHelptags<CR>
-inoremap <silent> <F1> <Cmd>:FzfHelptags<CR>
+nnoremap <silent> <F1> <Cmd>:FzfLua helptags<CR>
+inoremap <silent> <F1> <Cmd>:FzfLua helptags<CR>
 
 nnoremap <silent> <F2> <Cmd>:w!<CR>
 inoremap <silent> <F2> <Cmd>:w!<CR>
@@ -569,23 +569,22 @@ if has('gui_running')
 	nnoremap <silent> <F10> <Cmd>:ToggleMenu<CR>
 	inoremap <silent> <F10> <Cmd>:ToggleMenu<CR>
 	command ToggleMenu if &go=~'m'|set go-=m|else|set go+=m|endif
+elseif has('nvim')
+	nnoremap <silent> <F10> <Cmd>:FzfLua menus<CR>
 endif
 
 nnoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
 inoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
 
-nnoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
-inoremap <silent> <F12> <Cmd>:GitGutterToggle<CR>
-
 " fzf keys {{{2
-nnoremap <silent> <C-B> <Cmd>:FzfBuffers<CR>
-nnoremap <silent> <C-G> <Cmd>:FzfTags<CR>
-nnoremap <silent> <C-P> <Cmd>:FzfFiles<CR>
-nnoremap <silent> <C-T> <Cmd>:FzfBTags<CR>
+nnoremap <silent> <F12> <Cmd>:FzfLua builtin<CR>
+nnoremap <silent> <C-B> <Cmd>:FzfLua buffers<CR>
+nnoremap <silent> <C-G> <Cmd>:FzfLua tags<CR>
+nnoremap <silent> <C-T> <Cmd>:FzfLua btags<CR>
+nnoremap <silent> <C-P> <Cmd>:FzfLua files<CR>
+nnoremap <silent> <C-Y> <Cmd>:FzfLua tabs<CR>
+nnoremap <silent> <C-J> <Cmd>:FzfLua grep<CR>
 nnoremap <silent> <C-X> <Cmd>:FzfCommands<CR>
-nnoremap <silent> <C-Y> <Cmd>:FzfWindows<CR>
-
-nnoremap <C-J> :FzfRG<space>
 
 " smart Tab completion (vim only) {{{2
 if !has('nvim')
