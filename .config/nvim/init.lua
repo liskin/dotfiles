@@ -14,5 +14,6 @@ require 'init.plug_lsp_lines'
 require 'init.plug_fidget'
 require 'init.plug_cmp'
 require 'init.plug_hop'
+require 'init.plug_fzf'
 
 -- see also 'init/after'

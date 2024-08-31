@@ -165,6 +165,10 @@
 [submodule ".local/share/nvim/site/bundle/none-ls-shellcheck.nvim"]
 	path = .local/share/nvim/site/bundle/none-ls-shellcheck.nvim
 	url = https://github.com/gbprod/none-ls-shellcheck.nvim
+[submodule ".local/share/nvim/site/bundle/fzf-lua"]
+	path = .local/share/nvim/site/bundle/fzf-lua
+	# url = https://github.com/ibhagwan/fzf-lua
+	url = https://github.com/liskin/fzf-lua
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf

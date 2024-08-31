@@ -310,7 +310,7 @@ if &t_Co >= 256 || has('gui_running')
 	hi link Whitespace SpecialKey
 
 	if &bg == "dark"
-		hi Normal guifg=white guibg=black
+		hi Normal ctermfg=15 guifg=white guibg=black
 
 		HiU ColorColumn ctermbg=235
 		HiU Comment ctermfg=45
@@ -386,6 +386,14 @@ if &t_Co >= 256 || has('gui_running')
 
 		hi link @string.yaml NONE
 	endif
+
+	" fzf-lua colors
+	hi def link FzfLuaFzfBorder SpecialKey
+	hi def link FzfLuaFzfCursorLine CursorColumn
+	hi def link FzfLuaFzfHeader Comment
+	hi def link FzfLuaFzfInfo PreProc
+	hi def link FzfLuaFzfPointer Exception
+	hi def link FzfLuaFzfPrompt Conditional
 endif
 
 delcommand HiU
