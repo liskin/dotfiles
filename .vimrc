@@ -185,11 +185,16 @@ set shortmess-=S " show number of matches
 set path=.,,
 set tags+=./tags;
 
-" filename completion {{{2
+" completion {{{2
+set completeopt=menu,menuone,longest
+if !has('nvim')
+	" see float_preview.nvim for the nvim version
+	set completeopt+=popup
+endif
 set wildmenu
 set wildmode=full:longest
 set wildoptions=pum
-if has('patch-8.2.4608')
+if has('patch-8.2.4608') || has('nvim')
 	set wildoptions+=fuzzy
 endif
 set wildignore+=*.o,*.d,*.hi,*.beam,*.p_o,*.p_hi,*.pyc
@@ -207,11 +212,6 @@ set directory=
 " other {{{2
 set autoread
 set backspace=indent,eol,start
-set completeopt=menu,menuone,longest
-if !has('nvim')
-	" see float_preview.nvim for the nvim version
-	set completeopt+=popup
-endif
 set diffopt+=indent-heuristic,algorithm:histogram
 if has('nvim')
 	set diffopt+=linematch:30
