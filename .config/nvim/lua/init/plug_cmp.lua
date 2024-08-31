@@ -86,6 +86,14 @@ local function cmp_complete_snippet()
 	}
 end
 
+local function map(modes, func)
+	local res = {}
+	for _, mode in ipairs(modes) do
+		res[mode] = func
+	end
+	return res
+end
+
 cmp.setup {
 	completion = {
 		autocomplete = false,
@@ -165,6 +173,41 @@ cmp.setup {
 		end
 	},
 }
+
+cmp.setup.cmdline(':', {
+	mapping = vim.tbl_map(function(f) return map({'c'}, f) end, {
+		['<Tab>'] = function(_fallback)
+			if cmp.visible() then
+				if #cmp.get_entries() == 1 then
+					cmp.confirm()
+				else
+					cmp_select_next()
+				end
+			else
+				cmp.complete()
+			end
+		end,
+		['<S-Tab>'] = cmp_or(cmp_select_prev),
+		['<Down>'] = cmp_or(cmp_select_next),
+		['<Up>'] = cmp_or(cmp_select_prev),
+		['<PageDown>'] = cmp_or(cmp_select_next_page),
+		['<PageUp>'] = cmp_or(cmp_select_prev_page),
+		['<Right>'] = cmp_or(cmp.confirm),
+		['<Left>'] = cmp_or(cmp.abort),
+		['<CR>'] = cmp_or(cmp.confirm),
+		['<C-N>'] = cmp_or(cmp_select_next),
+		['<C-P>'] = cmp_or(cmp_select_prev),
+	}),
+	sources = cmp.config.sources({{ name = 'cmdline' }}),
+	---@diagnostic disable-next-line: missing-fields
+	matching = {
+		disallow_symbol_nonprefix_matching = false,
+	},
+	---@diagnostic disable-next-line: missing-fields
+	formatting = {
+		fields = { 'abbr', 'menu' },
+	},
+})
 
 cmp.event:on('menu_opened', function(data)
 	-- start with an active entry
