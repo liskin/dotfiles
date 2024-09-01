@@ -399,6 +399,10 @@ if &t_Co >= 256 || has('gui_running')
 	hi def link FzfLuaFzfInfo PreProc
 	hi def link FzfLuaFzfPointer Exception
 	hi def link FzfLuaFzfPrompt Conditional
+
+	" trouble.nvim colors
+	hi def link TroubleNormal Normal
+	hi def link TroubleNormalNC NormalNC
 endif
 
 delcommand HiU
