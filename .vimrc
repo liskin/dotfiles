@@ -633,14 +633,14 @@ nnoremap <silent> <C-Q> <C-X>
 vnoremap <silent> <C-Q> <C-X>
 
 " prevent x from overriding what's in the clipboard. {{{2
-noremap <silent> x "_x
-noremap <silent> X "_X
+nnoremap <silent> x "_x
+nnoremap <silent> X "_X
 
 " seamlessly treat visual lines as actual lines when moving around. {{{2
 nnoremap <silent> j gj
 nnoremap <silent> k gk
-vnoremap <silent> j gj
-vnoremap <silent> k gk
+xnoremap <silent> j gj
+xnoremap <silent> k gk
 inoremap <silent> <Down> <C-O>gj
 inoremap <silent> <Up> <C-O>gk
 
