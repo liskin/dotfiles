@@ -89,4 +89,23 @@ command! -nargs=? GeneratePasswordXKCD call s:GeneratePasswordXKCD(<f-args>)
 
 command! -range=% JoinParagraphs <line1>,<line2>g/^./ .,/^$/-1 join | noh
 
+" {{{1 ConcealToggle
+
+function! s:ConcealOn() abort
+	set conceallevel=2 nowrap
+endfunction
+function! s:ConcealOff() abort
+	set conceallevel=0 wrap
+endfunction
+function! s:ConcealToggle() abort
+	if &conceallevel == 0
+		call s:ConcealOn()
+	else
+		call s:ConcealOff()
+	endif
+endfunction
+command! ConcealToggle call s:ConcealToggle()
+command! ConcealOn call s:ConcealOn()
+command! ConcealOff call s:ConcealOff()
+
 " vim:set foldenable foldmethod=marker: {{{1

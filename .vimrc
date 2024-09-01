@@ -170,7 +170,7 @@ set equalalways
 function s:equal_windows() abort
 	let save_pos = getpos(".")
 	let cur_tab = tabpagenr()
-	tabdo set cmdheight=1 | wincmd =
+	tabdo let &cmdheight=&cmdheight?1:0 | wincmd =
 	execute 'tabn ' . cur_tab
 	call setpos('.', save_pos)
 endfunction

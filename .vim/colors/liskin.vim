@@ -385,6 +385,11 @@ if &t_Co >= 256 || has('gui_running')
 		hi link @lsp.mod.attribute PreProc
 
 		hi link @string.yaml NONE
+
+		hi @text.emphasis cterm=italic
+		hi @text.strong cterm=bold
+		hi @text.underline cterm=underline
+		hi @text.strike cterm=strikethrough
 	endif
 
 	" fzf-lua colors

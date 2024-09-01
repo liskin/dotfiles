@@ -16,5 +16,6 @@ require 'init.plug_cmp'
 require 'init.plug_hop'
 require 'init.plug_fzf'
 require 'init.plug_indent_blankline'
+require 'init.plug_presenting'
 
 -- see also 'init/after'

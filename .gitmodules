@@ -166,6 +166,10 @@
 [submodule ".local/share/nvim/site/bundle/indent-blankline.nvim"]
 	path = .local/share/nvim/site/bundle/indent-blankline.nvim
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
+[submodule ".local/share/nvim/site/bundle/presenting.nvim"]
+	path = .local/share/nvim/site/bundle/presenting.nvim
+	# url = https://github.com/sotte/presenting.nvim
+	url = https://github.com/liskin/presenting.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
