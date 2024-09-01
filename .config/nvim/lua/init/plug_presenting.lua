@@ -19,10 +19,11 @@ vim.api.nvim_create_user_command('Present', function()
 			vim.o.guicursor = guicursor
 			vim.o.cmdheight = cmdheight
 		end
+		vim.o.guicursor = 'a:hor1'
+		vim.o.cmdheight = 0
 	end
 
-	vim.o.guicursor = 'a:hor1'
-	vim.o.cmdheight = 0
+	presenting.config.options.footer_text = vim.fn.expand('%:t')
 	vim.cmd.Presenting()
 end, {})
 
