@@ -160,7 +160,7 @@ set wrap
 set cursorlineopt=number
 set fillchars=vert:│,fold:-
 set list
-set listchars=tab:>\ ,trail:#,extends:→,precedes:←,nbsp:␣
+set listchars=tab:┝\ ,trail:#,extends:→,precedes:←,nbsp:␣
 set noshowmode
 set shortmess+=I " no intro
 set showcmd
@@ -541,18 +541,15 @@ inoremap <silent> <F1> <Cmd>:FzfLua helptags<CR>
 nnoremap <silent> <F2> <Cmd>:w!<CR>
 inoremap <silent> <F2> <Cmd>:w!<CR>
 
-nnoremap <silent> <F3> <Cmd>:IndentGuidesToggle<CR>
-inoremap <silent> <F3> <Cmd>:IndentGuidesToggle<CR>
+nnoremap <silent> <F13> <Cmd>:cprevious<CR>
+inoremap <silent> <F13> <Cmd>:cprevious<CR>
+nnoremap <silent> <F3> <Cmd>:cnext<CR>
+inoremap <silent> <F3> <Cmd>:cnext<CR>
 
-nnoremap <silent> <F14> <Cmd>:cprevious<CR>
-inoremap <silent> <F14> <Cmd>:cprevious<CR>
-nnoremap <silent> <F4> <Cmd>:cnext<CR>
-inoremap <silent> <F4> <Cmd>:cnext<CR>
-
-nnoremap <silent> <F15> <Cmd>:lprevious<CR>
-inoremap <silent> <F15> <Cmd>:lprevious<CR>
-nnoremap <silent> <F5> <Cmd>:lnext<CR>
-inoremap <silent> <F5> <Cmd>:lnext<CR>
+nnoremap <silent> <F14> <Cmd>:lprevious<CR>
+inoremap <silent> <F14> <Cmd>:lprevious<CR>
+nnoremap <silent> <F4> <Cmd>:lnext<CR>
+inoremap <silent> <F4> <Cmd>:lnext<CR>
 
 if has('nvim')
 	nnoremap <silent> <F6> <Cmd>:TroubleToggle<CR>

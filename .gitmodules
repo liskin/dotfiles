@@ -27,9 +27,6 @@
 [submodule ".vim/bundle/vim-gitgutter"]
 	path = .vim/bundle/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
-[submodule ".vim/bundle/vim-indent-guides"]
-	path = .vim/bundle/vim-indent-guides
-	url = https://github.com/preservim/vim-indent-guides.git
 [submodule ".vim/bundle/vim-mkdir"]
 	path = .vim/bundle/vim-mkdir
 	url = https://github.com/pbrisbin/vim-mkdir.git
@@ -166,6 +163,9 @@
 	path = .local/share/nvim/site/bundle/fzf-lua
 	# url = https://github.com/ibhagwan/fzf-lua
 	url = https://github.com/liskin/fzf-lua
+[submodule ".local/share/nvim/site/bundle/indent-blankline.nvim"]
+	path = .local/share/nvim/site/bundle/indent-blankline.nvim
+	url = https://github.com/lukas-reineke/indent-blankline.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
