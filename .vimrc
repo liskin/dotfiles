@@ -610,6 +610,19 @@ if !has('nvim')
 	inoremap <silent> <S-Tab> <C-R>=LiskinShiftTabComplete()<CR>
 endif
 
+" emulate vim's wildoptions=pum bindings in neovim {{{2
+if has('nvim')
+	cnoremap <expr> <Up> wildmenumode() ? "\<Left>" : "\<Up>"
+	cnoremap <expr> <Down> wildmenumode() ? "\<Right>" : "\<Down>"
+	cnoremap <expr> <Left> wildmenumode() ? "\<Up>" : "\<Left>"
+	cnoremap <expr> <Right> wildmenumode() ? "\<Down>" : "\<Right>"
+
+	" also make it behave slightly more like ins-completion
+	set wildcharm=<C-Z>
+	cnoremap <expr> <Tab> wildmenumode() ? "\<Right>" : "\<C-Z>"
+	cnoremap <expr> <CR> wildmenumode() ? "\<C-Y>" : "\<CR>"
+endif
+
 " cloning/closing tabs {{{2
 nnoremap <silent> <C-W>S <Cmd>:CloneBufTmp<CR>
 nnoremap <silent> <C-W>C <Cmd>:tabclose<CR>
