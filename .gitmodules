@@ -76,7 +76,8 @@
 	url = https://github.com/mg979/vim-visual-multi
 [submodule ".vim/bundle/ultisnips"]
 	path = .vim/bundle/ultisnips
-	url = https://github.com/SirVer/ultisnips
+	# url = https://github.com/SirVer/ultisnips
+	url = https://github.com/liskin/ultisnips
 [submodule ".vim/bundle/vim-snippets"]
 	path = .vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
