@@ -463,10 +463,6 @@ let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
 let g:snips_github = "https://github.com/liskin"
 
-" zepl {{{2
-let g:repl_config = {}
-let g:repl_config['python'] = #{cmd: 'ipython3', formatter: function('zepl#contrib#bracketedpaste#formatter')}
-
 " old-style debian vim addons {{{2
 set runtimepath+=/usr/share/vim/addons
 

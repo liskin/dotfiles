@@ -87,10 +87,6 @@
 [submodule ".vim/bundle/org.vim"]
 	path = .vim/bundle/org.vim
 	url = https://github.com/axvr/org.vim
-[submodule ".vim/bundle/zepl.vim"]
-	path = .vim/bundle/zepl.vim
-	# url = https://github.com/axvr/zepl.vim/
-	url = https://github.com/liskin/zepl.vim
 [submodule ".vim/bundle/vim-sleuth"]
 	path = .vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth
@@ -171,6 +167,9 @@
 	path = .local/share/nvim/site/bundle/presenting.nvim
 	# url = https://github.com/sotte/presenting.nvim
 	url = https://github.com/liskin/presenting.nvim
+[submodule ".local/share/nvim/site/bundle/iron.nvim"]
+	path = .local/share/nvim/site/bundle/iron.nvim
+	url = https://github.com/Vigemus/iron.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf

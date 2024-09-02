@@ -17,5 +17,6 @@ require 'init.plug_hop'
 require 'init.plug_fzf'
 require 'init.plug_indent_blankline'
 require 'init.plug_presenting'
+require 'init.plug_iron'
 
 -- see also 'init/after'
