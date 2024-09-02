@@ -6,6 +6,11 @@ if !isdirectory(s:projectrc_dir)
 	call mkdir(s:projectrc_dir, "p")
 endif
 
+let s:projectrc_untracked_dir = s:projectrc_dir .. ".untracked/"
+if !isdirectory(s:projectrc_untracked_dir)
+	call mkdir(s:projectrc_untracked_dir, "p")
+endif
+
 function! s:path_upwards(path) abort
 	let parts = split(a:path, '\v/+')
 	let path_list = []
@@ -16,7 +21,7 @@ function! s:path_upwards(path) abort
 	endwhile
 
 	if a:path[0] is# '/'
-		call map(path_list, {_, p -> '/' . p})
+		call map(path_list, {_, p -> '/' .. p})
 		call add(path_list, '/')
 	endif
 
@@ -25,7 +30,12 @@ endfunc
 
 function! s:projectrc_filenames() abort
 	let paths = s:path_upwards(getcwd())
-	return map(paths, {_, d -> s:projectrc_dir . fnamemodify(d, ":p:gs%[^A-Za-z0-9]%_%")})
+	let filenames = []
+	for path in paths
+		let filename = fnamemodify(path, ":p:gs%[^A-Za-z0-9]%_%")
+		let filenames += [s:projectrc_untracked_dir .. filename, s:projectrc_dir .. filename]
+	endfor
+	return filenames
 endfunc
 
 function! s:load_projectrc() abort
@@ -39,13 +49,14 @@ function! s:load_projectrc() abort
 	augroup END
 endfunc
 
-function! s:edit_projectrc() abort
-	let projectrc = s:projectrc_filenames()[0]
+function! s:edit_projectrc(untracked) abort
+	let projectrc = s:projectrc_filenames()[a:untracked ? 0 : 1]
 	execute "split" fnameescape(projectrc)
 endfunc
 
 command! LoadProjectRC call s:load_projectrc()
-command! EditProjectRC call s:edit_projectrc()
+command! EditProjectRC call s:edit_projectrc(0)
+command! EditProjectRCUntracked call s:edit_projectrc(1)
 
 augroup ProjectRC
 	autocmd!
@@ -53,6 +64,6 @@ augroup ProjectRC
 augroup END
 
 " utils for ProjectRCs:
-command! -nargs=1 SourceRelative execute "source" (fnameescape(expand('<sfile>:p:h')) . "/" . <q-args>)
+command! -nargs=1 SourceRelative execute "source" (fnameescape(expand('<sfile>:p:h')) .. "/" .. <q-args>)
 
 LoadProjectRC
