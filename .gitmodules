@@ -162,8 +162,8 @@
 	url = https://github.com/gbprod/none-ls-shellcheck.nvim
 [submodule ".local/share/nvim/site/bundle/fzf-lua"]
 	path = .local/share/nvim/site/bundle/fzf-lua
-	# url = https://github.com/ibhagwan/fzf-lua
-	url = https://github.com/liskin/fzf-lua
+	url = https://github.com/ibhagwan/fzf-lua
+	# url = https://github.com/liskin/fzf-lua
 [submodule ".local/share/nvim/site/bundle/indent-blankline.nvim"]
 	path = .local/share/nvim/site/bundle/indent-blankline.nvim
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
