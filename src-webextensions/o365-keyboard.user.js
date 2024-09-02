@@ -13,11 +13,23 @@ document.addEventListener('keydown', function (e) {
 		e.stopPropagation();
 		e.stopImmediatePropagation();
 	}
+
+	/* prevent Outlook from showing hints when Alt is released */
+	if (e.code == "AltLeft") {
+		e.stopPropagation();
+		e.stopImmediatePropagation();
+	}
 }, {capture: true});
 
 document.addEventListener('keyup', function (e) {
 	/* prevent Outlook Calendar from hijacking Alt+[0-9] */
 	if (e.altKey && e.key.match(/^\d+$/)) {
+		e.stopPropagation();
+		e.stopImmediatePropagation();
+	}
+
+	/* prevent Outlook from showing hints when Alt is released */
+	if (e.code == "AltLeft") {
 		e.stopPropagation();
 		e.stopImmediatePropagation();
 	}
