@@ -240,7 +240,6 @@ let g:netrw_http_cmd  = "curl"
 let g:netrw_http_xcmd = "-LSsf -o"
 let g:puppet_align_hashes = 0
 let g:scala_scaladoc_indent = 1
-let g:speeddating_no_mappings = 1
 let g:tcomment_mapleader1 = ''
 let g:tex_comment_nospell = 1
 
