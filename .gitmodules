@@ -97,9 +97,6 @@
 	path = .local/share/nvim/site/bundle/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
 	# url = https://github.com/liskin/nvim-treesitter
-[submodule ".local/share/nvim/site/bundle/float-preview.nvim"]
-	path = .local/share/nvim/site/bundle/float-preview.nvim
-	url = https://github.com/ncm2/float-preview.nvim
 [submodule ".local/share/nvim/site/bundle/nvim-lspconfig"]
 	path = .local/share/nvim/site/bundle/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
