@@ -15,6 +15,7 @@
 /jira
 /kind
 /lua-language-server
+/nvim
 /pandoc
 /rust-analyzer
 /tilt

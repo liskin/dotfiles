@@ -186,11 +186,7 @@ set path=.,,
 set tags+=./tags;
 
 " completion {{{2
-set completeopt=menu,menuone,longest
-if !has('nvim')
-	" see float_preview.nvim for the nvim version
-	set completeopt+=popup
-endif
+set completeopt=menu,menuone,longest,popup
 set wildmenu
 set wildmode=full:longest
 set wildoptions=pum
@@ -222,6 +218,9 @@ set formatoptions+=rj
 set hidden
 set scrolloff=10
 set sessionoptions-=options
+if exists('&smoothscroll')
+	set smoothscroll
+endif
 set spelllang=en
 set splitbelow
 set splitright
@@ -375,7 +374,7 @@ let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = {}
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['features'] = 'all'
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['allTargets'] = v:true
 
-" See .config/nvim/lua/init/after_lsp.lua for neovim LSP configs
+" See ~/.nvim/init/after_lsp.lua for neovim LSP configs
 let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_lua_ls = v:true
 let g:lsp_autostart_pylsp = v:true
@@ -547,6 +546,10 @@ inoremap <silent> <F14> <Cmd>:lprevious<CR>
 nnoremap <silent> <F4> <Cmd>:lnext<CR>
 inoremap <silent> <F4> <Cmd>:lnext<CR>
 
+" see ~/.nvim/init/lsp.lua
+nnoremap <silent> <F5> <Plug>(lsp_inlay_toggle)
+inoremap <silent> <F5> <Plug>(lsp_inlay_toggle)
+
 if has('nvim')
 	nnoremap <silent> <F6> <Cmd>:Trouble diagnostics toggle<CR>
 	inoremap <silent> <F6> <Cmd>:Trouble diagnostics toggle<CR>
@@ -583,6 +586,8 @@ nnoremap <silent> <C-P> <Cmd>:FzfLua files<CR>
 nnoremap <silent> <C-Y> <Cmd>:FzfLua tabs<CR>
 nnoremap <silent> <C-J> <Cmd>:FzfLua grep<CR>
 nnoremap <silent> <C-X> <Cmd>:FzfCommands<CR>
+
+" free: <C-K>, <C-H>
 
 " smart Tab completion (vim only) {{{2
 if !has('nvim')

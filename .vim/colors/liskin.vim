@@ -6,6 +6,10 @@ if exists("syntax_on")
 	syntax reset
 endif
 
+if has('nvim-0.10')
+	source $VIMRUNTIME/colors/vim.lua
+endif
+
 let colors_name = "liskin"
 
 let s:urxvt =
@@ -306,6 +310,9 @@ if &t_Co >= 256 || has('gui_running')
 	hi Type cterm=bold gui=bold
 	hi Underlined cterm=bold gui=bold
 	hi VertSplit cterm=NONE gui=NONE
+	hi Added cterm=bold gui=bold
+	hi Removed cterm=bold gui=bold
+	hi Changed cterm=bold gui=bold
 	hi link FloatBorder Pmenu
 	hi link Whitespace SpecialKey
 
@@ -342,13 +349,17 @@ if &t_Co >= 256 || has('gui_running')
 		HiU Type ctermfg=2
 		HiU Underlined ctermfg=81
 		HiU VertSplit ctermbg=250 ctermfg=232
-		HiU Visual ctermbg=238
+		HiU Visual ctermbg=238 ctermfg=NONE
 		HiU WarningMsg ctermfg=9
 		HiU DiagnosticHint ctermfg=242
 		HiU DiagnosticOk ctermfg=40
 		HiU DiagnosticInfo ctermfg=33
 		HiU DiagnosticWarn ctermfg=184
 		HiU DiagnosticError ctermfg=160
+		HiU LspInlayHint ctermfg=245
+		HiU Added ctermfg=14
+		HiU Removed ctermfg=9
+		HiU Changed ctermfg=81
 
 		" cterm only:
 		hi SpellBad cterm=underline,bold ctermfg=9 ctermbg=NONE
@@ -376,20 +387,16 @@ if &t_Co >= 256 || has('gui_running')
 		hi link @punctuation NONE
 		hi link @punctuation.bracket Special
 
-		hi link @text.todo.checked Special
-		hi link @text.todo.unchecked Special
-
 		hi link @variable NONE
+		hi link @variable.parameter NONE
 		hi link @lsp.type.variable NONE
 
 		hi link @lsp.mod.attribute PreProc
 
 		hi link @string.yaml NONE
 
-		hi @text.emphasis cterm=italic
-		hi @text.strong cterm=bold
-		hi @text.underline cterm=underline
-		hi @text.strike cterm=strikethrough
+		hi @markup.link.url cterm=underline gui=underline
+		hi @markup.underline cterm=underline gui=underline
 	endif
 
 	" fzf-lua colors
