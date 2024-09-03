@@ -313,6 +313,7 @@ if &t_Co >= 256 || has('gui_running')
 	hi Added cterm=bold gui=bold
 	hi Removed cterm=bold gui=bold
 	hi Changed cterm=bold gui=bold
+	hi LspReferenceText cterm=underline gui=underline
 	hi link FloatBorder Pmenu
 	hi link Whitespace SpecialKey
 

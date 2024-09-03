@@ -544,13 +544,16 @@ nnoremap <silent> <F4> <Cmd>:lnext<CR>
 inoremap <silent> <F4> <Cmd>:lnext<CR>
 
 " see ~/.nvim/init/lsp.lua
-nnoremap <silent> <F5> <Plug>(lsp_inlay_toggle)
-inoremap <silent> <F5> <Plug>(lsp_inlay_toggle)
+nnoremap <silent> <F5> <Cmd>:LspInlayToggle<CR>
+inoremap <silent> <F5> <Cmd>:LspInlayToggle<CR>
+nnoremap <silent> <F15> <Cmd>:LspReferenceHighlightsToggle<CR>
+inoremap <silent> <F15> <Cmd>:LspReferenceHighlightsToggle<CR>
 
 if has('nvim')
 	nnoremap <silent> <F6> <Cmd>:Trouble diagnostics toggle<CR>
 	inoremap <silent> <F6> <Cmd>:Trouble diagnostics toggle<CR>
 
+	" see ~/.nvim/init/plug_lsp_lines.lua
 	nnoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
 	inoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
 endif

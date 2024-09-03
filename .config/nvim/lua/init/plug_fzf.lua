@@ -37,7 +37,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local buf_local = { buffer = args.buf }
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-		if client.supports_method('textDocument/documentSymbol') then
+		if client.supports_method('textDocument/documentSymbol', { bufrn = args.buf }) then
 			vim.keymap.set({'n'}, '<C-T>', fzf_lua.lsp_document_symbols, buf_local)
 		end
 
