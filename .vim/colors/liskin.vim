@@ -372,11 +372,6 @@ if &t_Co >= 256 || has('gui_running')
 		" TODO
 	endif
 
-	" prevent vim-gitgutter from overriding diff colors
-	hi def link diffAdded Identifier
-	hi def link diffChanged PreProc
-	hi def link diffRemoved Special
-
 	" nvim diagnostics like ALE signs
 	hi link DiagnosticSignError Error
 	hi link DiagnosticSignWarn Todo
