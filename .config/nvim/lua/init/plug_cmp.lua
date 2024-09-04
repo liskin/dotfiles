@@ -171,15 +171,3 @@ cmp.event:on('menu_opened', function(data)
 	-- work around https://github.com/hrsh7th/nvim-cmp/issues/835
 	data.window.active = true
 end)
-
--- cmp doesn't support normal-mode mappings :-(
-vim.keymap.set('', '<Tab>', function()
-	if vim.fn['UltiSnips#CanJumpForwards']() then
-		vim.fn['UltiSnips#JumpForwards']()
-	end
-end)
-vim.keymap.set('', '<S-Tab>', function()
-	if vim.fn['UltiSnips#CanJumpBackwards']() then
-		vim.fn['UltiSnips#JumpBackwards']()
-	end
-end)
