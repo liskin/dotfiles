@@ -78,9 +78,6 @@
 [submodule ".vim/bundle/vim-snippets"]
 	path = .vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
-[submodule ".vim/bundle/tcomment_vim"]
-	path = .vim/bundle/tcomment_vim
-	url = https://github.com/tomtom/tcomment_vim
 [submodule ".vim/bundle/org.vim"]
 	path = .vim/bundle/org.vim
 	url = https://github.com/axvr/org.vim
