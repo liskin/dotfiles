@@ -367,6 +367,9 @@ if &t_Co >= 256 || has('gui_running')
 		hi SpellCap cterm=underline,bold ctermfg=87 ctermbg=NONE
 		hi SpellLocal cterm=underline,bold ctermfg=39 ctermbg=NONE
 		hi SpellRare cterm=underline,bold ctermfg=129 ctermbg=NONE
+
+		" iron.nvim colors
+		HiU IronLastSent ctermbg=18
 	else
 		hi Normal guifg=black guibg=white
 

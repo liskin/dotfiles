@@ -1,4 +1,7 @@
 require'iron.core'.setup {
+	highlight = {
+		default = true,
+	},
 	config = {
 		repl_open_cmd = require("iron.view").split.botright("40%"),
 		repl_definition = {
