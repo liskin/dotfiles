@@ -336,7 +336,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU LineNr ctermfg=246
 		HiU MatchParen ctermbg=30
 		HiU MoreMsg ctermfg=121
-		HiU NonText ctermfg=202
+		HiU NonText ctermfg=59
 		HiU Pmenu ctermbg=236 ctermfg=15
 		HiU PmenuSel ctermbg=236 ctermfg=15
 		HiU PreProc ctermfg=81
