@@ -572,6 +572,7 @@ if has('gui_running')
 	command ToggleMenu if &go=~'m'|set go-=m|else|set go+=m|endif
 elseif has('nvim')
 	nnoremap <silent> <F10> <Cmd>:FzfLua menus<CR>
+	nnoremap <silent> <F20> <Cmd>:DropbarToggle<CR>
 endif
 
 nnoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>

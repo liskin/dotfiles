@@ -370,6 +370,10 @@ if &t_Co >= 256 || has('gui_running')
 
 		" iron.nvim colors
 		HiU IronLastSent ctermbg=18
+
+		" dropbar.nvim colors
+		HiU WinBar ctermfg=85 ctermbg=236
+		HiU DropBarIconUISeparator ctermbg=236 ctermfg=246
 	else
 		hi Normal guifg=black guibg=white
 

@@ -162,6 +162,10 @@
 	path = .local/share/nvim/site/bundle/iron.nvim
 	# url = https://github.com/Vigemus/iron.nvim
 	url = https://github.com/liskin/iron.nvim
+[submodule ".local/share/nvim/site/bundle/dropbar.nvim"]
+	path = .local/share/nvim/site/bundle/dropbar.nvim
+	# url = https://github.com/Bekaboo/dropbar.nvim
+	url = https://github.com/liskin/dropbar.nvim
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf

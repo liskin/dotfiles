@@ -17,5 +17,6 @@ require 'init.plug_fzf'
 require 'init.plug_indent_blankline'
 require 'init.plug_presenting'
 require 'init.plug_iron'
+require 'init.plug_dropbar'
 
 -- see also 'init/after'
