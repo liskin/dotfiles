@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<direct>
+  <rule ipv="ipv6" table="raw" chain="OUTPUT" priority="0">-d FF02::C -p udp -m udp --dport 1900 --sport 32768:60999 -j CT --helper ssdp</rule>
+  <rule ipv="ipv6" table="raw" chain="OUTPUT" priority="0">-d FF05::C -p udp -m udp --dport 1900 --sport 32768:60999 -j CT --helper ssdp</rule>
+  <rule ipv="ipv4" table="raw" chain="OUTPUT" priority="0">-d 239.255.255.250/32 -p udp -m udp --dport 1900 --sport 32768:60999 -j CT --helper ssdp</rule>
+</direct>
