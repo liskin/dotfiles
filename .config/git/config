@@ -99,6 +99,7 @@
 	file-decoration-style = 39 235 ul ol
 	hunk-header-decoration-style = 245 235 box
 	hunk-header-line-number-style = 245 235
+	hunk-header-style = syntax 235
 	line-numbers-left-style = bold 245 233
 	line-numbers-right-style = bold 245 233
 	line-numbers-minus-style = 88 233
@@ -106,9 +107,9 @@
 	line-numbers-plus-style = 28 233
 	# colorMoved - newMoved, newMovedAlternative, oldMoved, oldMovedAlternative:
 	map-styles = bold 157 => syntax 24, bold 49 => syntax 29, bold 166 => syntax 54, bold 163 => syntax 89
+	syntax-theme = zenburn
 [delta "side-nonum"]
 	features = side
-	hunk-header-style = syntax
 	line-numbers-left-format = ""
 	line-numbers-right-format = "│ "
 	line-numbers-right-style = 245
