@@ -394,6 +394,9 @@ if &t_Co >= 256 || has('gui_running')
 		hi link @variable.parameter NONE
 		hi link @lsp.type.variable NONE
 
+		hi link @function.builtin @function
+		hi link @type.builtin @type
+
 		hi link @lsp.mod.attribute PreProc
 
 		hi link @string.yaml NONE
