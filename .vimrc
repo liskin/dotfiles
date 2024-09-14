@@ -370,6 +370,8 @@ let g:lsp_settings_rust_analyzer = #{rust-analyzer: {}}
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = {}
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['features'] = 'all'
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['allTargets'] = v:true
+let g:lsp_settings_rust_analyzer['rust-analyzer']['check'] = {}
+let g:lsp_settings_rust_analyzer['rust-analyzer']['check']['command'] = 'clippy'
 
 " See ~/.nvim/init/after_lsp.lua for neovim LSP configs
 let g:lsp_autoformat_elixirls = v:true
