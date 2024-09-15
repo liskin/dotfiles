@@ -1,6 +1,5 @@
 /.ext-*
 /buildifier
-/cargo-binstall
 /ctlptl
 /dive
 /docker-buildx

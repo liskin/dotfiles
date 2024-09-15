@@ -33,14 +33,15 @@ SUBDIRS_EXCLUDE := docs/resume-cv .xmonad-testing
 ## Invoke make for all subdirs with Makefiles
 all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
 
-.cargo/bin: bin/.ext
-.rustup: bin/.ext
+.cargo/bin: .local/share/mise
+.local/share/mise: bin/.ext .rustup
 
 ## Invoke "make gc" in sub-Makefiles
 gc: .cargo/bin%gc
 gc: bin/.ext%gc
 gc: bin/.ext-npm%gc
 gc: src-elixir%gc
+gc: .local/share/mise%gc
 
 .PHONY: $(filter bootstrap.sh,$(MAKECMDGOALS))
 all: bootstrap.sh

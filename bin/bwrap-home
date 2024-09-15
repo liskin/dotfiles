@@ -56,6 +56,7 @@ else
 	bwrap_opts+=(--bind /tmp{,})
 fi
 
+orig_HOME="$HOME"
 if [[ $home_tmpfs ]]; then
 	bwrap_opts+=(
 		--tmpfs "$HOME"
@@ -68,6 +69,13 @@ else
 	bwrap_opts+=(
 		--bind "$PWD"{,}
 		--bind "$HOME"{,}
+	)
+fi
+
+if [[ "$HOME" != "$orig_HOME" ]]; then
+	bwrap_opts+=(
+		--ro-bind {"$orig_HOME","$HOME"}/.config/mise
+		--ro-bind {"$orig_HOME","$HOME"}/.local/share/mise
 	)
 fi
 

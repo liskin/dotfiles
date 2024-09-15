@@ -4,7 +4,6 @@ all:
 CURL := curl -LSsf
 
 BUILDIFIER_VERSION := v7.1.2
-CARGO_BINSTALL_VERSION := v1.10.2
 CIRCLECI_CLI_VERSION := v0.1.30549
 CTLPTL_VERSION := v0.8.32
 DIVE_VERSION := v0.12.0
@@ -30,7 +29,6 @@ TZ_VERSION := v0.7.0
 UBI_VERSION := v0.1.1
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
-CARGO_BINSTALL_GITHUB := cargo-bins/cargo-binstall
 CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
 CTLPTL_GITHUB := tilt-dev/ctlptl
 DIVE_GITHUB := wagoodman/dive
@@ -164,14 +162,6 @@ kind: | .ext-kind ; ln -fsT $| $@
 .ext-kind-$(KIND_VERSION):
 	$(CURL) -o $@ https://github.com/$(KIND_GITHUB)/releases/download/$(KIND_VERSION)/kind-linux-amd64
 	chmod +x $@
-
-all: cargo-binstall
-cargo-binstall: | .ext-cargo-binstall ; ln -fsT $|/$@ $@
-.ext-cargo-binstall: .ext-cargo-binstall-$(CARGO_BINSTALL_VERSION) ; ln -fsT $< $@
-.ext-cargo-binstall-$(CARGO_BINSTALL_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(CARGO_BINSTALL_GITHUB)/releases/download/$(CARGO_BINSTALL_VERSION)/cargo-binstall-x86_64-unknown-linux-gnu.tgz \
-		| tar -x -z -C $@ cargo-binstall
 
 all: fclones
 fclones: | .ext-fclones ; ln -fsT $|/$@ $@

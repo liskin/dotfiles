@@ -1,0 +1,12 @@
+[settings]
+experimental = true
+not_found_auto_install = false
+paranoid = true
+
+[settings.status]
+missing_tools = "always"
+show_env = true
+
+[tools]
+"ubi:cargo-bins/cargo-binstall" = "v1.10.5"
+usage = "0.3.1"
