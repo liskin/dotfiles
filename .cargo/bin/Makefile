@@ -15,7 +15,6 @@ CARGO_EDIT_VERSION := v0.12.2
 CARGO_WATCH_VERSION := v8.5.2
 DIESEL_CLI_14_VERSION := v1.4.1
 DIESEL_CLI_VERSION := v2.1.1
-DUST_VERSION := v0.9.0
 TOKIO_CONSOLE_VERSION := tokio-console-v0.1.9
 WATCHEXEC_VERSION := v1.25.1
 
@@ -24,7 +23,6 @@ CARGO_CACHE_GITHUB_LASTTAG := matthiaskrgr/cargo-cache
 CARGO_EDIT_GITHUB := killercup/cargo-edit
 CARGO_WATCH_GITHUB := watchexec/cargo-watch
 DIESEL_CLI_GITHUB := diesel-rs/diesel
-DUST_GITHUB := bootandy/dust
 TOKIO_CONSOLE_GITHUB := tokio-rs/console
 WATCHEXEC_GITHUB := watchexec/watchexec
 
@@ -45,12 +43,6 @@ CARGO_BINSTALL := $(CARGO_BINSTALL_COMPILE) --disable-strategies compile
 
 .binstall:
 	mkdir -p $@
-
-all: dust
-dust: | .binstall/dust ; ln -fsT $|/bin/$@ $@
-.binstall/dust: .binstall/dust-$(DUST_VERSION) ; ln -fsrT $< $@
-.binstall/dust-$(DUST_VERSION): | .binstall
-	$(CARGO_BINSTALL) --root $@ --version =$(DUST_VERSION:v%=%) du-dust
 
 all: cargo-audit
 cargo-audit: | .binstall/cargo-audit ; ln -fsT $|/bin/$@ $@
