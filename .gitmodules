@@ -256,21 +256,9 @@
 [submodule "src-elixir/elixir-ls"]
 	path = src-elixir/elixir-ls
 	url = https://github.com/elixir-lsp/elixir-ls.git
-[submodule "src-python/strava-offline"]
-	path = src-python/strava-offline
-	url = https://github.com/liskin/strava-offline.git
 [submodule "src-python/arbtt-chart"]
 	path = src-python/arbtt-chart
 	url = https://github.com/liskin/arbtt-chart.git
-[submodule "src-python/strava-gear"]
-	path = src-python/strava-gear
-	url = https://github.com/liskin/strava-gear.git
-[submodule "src-python/foursquare-swarm-ical"]
-	path = src-python/foursquare-swarm-ical
-	url = https://github.com/liskin/foursquare-swarm-ical.git
-[submodule "src-python/liscopridge"]
-	path = src-python/liscopridge
-	url = https://github.com/liskin/liscopridge.git
 [submodule "src-rust/LiveBudsCli"]
 	path = src-rust/LiveBudsCli
 	url = https://github.com/JojiiOfficial/LiveBudsCli

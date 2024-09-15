@@ -2,6 +2,7 @@
 experimental = true
 not_found_auto_install = false
 paranoid = true
+pipx_uvx = true
 
 [settings.status]
 missing_tools = "always"
@@ -16,6 +17,18 @@ show_env = true
 "cargo:ripgrep_all" = "0.10.6"
 "cargo:tokio-console" = "0.1.12"
 "cargo:watchexec-cli" = "2.1.2"
+"pipx:gdbgui" = "0.15.2.0"
+"pipx:git-when-merged" = "1.2.1"
+"pipx:liskin/foursquare-swarm-ical" = "172e1d0336fdab568ab6b5ed505a06daafa5078c"
+"pipx:liskin/liscopridge" = "a9c2debe41d045ef184c87bbad331ee6fa20b13c"
+"pipx:liskin/strava-gear" = "6883fefc8a8f0a2e5144f271480e406a33540417"
+"pipx:liskin/strava-offline" = "1abe986b2d1ba6a300954df6ff648d88bead6c80"
+"pipx:markdown2ctags" = "0.3.3"
+"pipx:pandoc-plantuml-filter" = "0.1.5"
+"pipx:pushl" = "0.3.5"
+"pipx:python-dxf" = "12.1.0"
+"pipx:timezonefinder" = "6.5.2"
 "ubi:YodaEmbedding/frece" = "v1.0.6"
+"ubi:astral-sh/uv" = "0.4.10"
 "ubi:cargo-bins/cargo-binstall" = "v1.10.5"
 usage = "0.3.1"
