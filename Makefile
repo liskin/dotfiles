@@ -33,7 +33,7 @@ SUBDIRS_EXCLUDE := docs/resume-cv .xmonad-testing
 ## Invoke make for all subdirs with Makefiles
 all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
 
-.cargo/bin: .local/share/mise
+.cargo/bin: .rustup
 .local/share/mise: bin/.ext .rustup
 
 ## Invoke "make gc" in sub-Makefiles
@@ -45,7 +45,6 @@ gc: .local/share/mise%gc
 
 ## Invoke "make update" in sub-Makefiles
 update: .local/share/mise%update
-update: .cargo/bin%update
 update: bin/.ext%update
 update: bin/.ext-npm%update
 

@@ -271,13 +271,6 @@
 [submodule "src-python/liscopridge"]
 	path = src-python/liscopridge
 	url = https://github.com/liskin/liscopridge.git
-[submodule "src-rust/frece"]
-	path = src-rust/frece
-	url = https://github.com/YodaEmbedding/frece/
-[submodule "src-rust/ripgrep-all"]
-	path = src-rust/ripgrep-all
-	#url = https://github.com/phiresky/ripgrep-all
-	url = https://github.com/liskin/ripgrep-all
 [submodule "src-rust/LiveBudsCli"]
 	path = src-rust/LiveBudsCli
 	url = https://github.com/JojiiOfficial/LiveBudsCli
