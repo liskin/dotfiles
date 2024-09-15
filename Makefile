@@ -43,6 +43,12 @@ gc: bin/.ext-npm%gc
 gc: src-elixir%gc
 gc: .local/share/mise%gc
 
+## Invoke "make update" in sub-Makefiles
+update: .local/share/mise%update
+update: .cargo/bin%update
+update: bin/.ext%update
+update: bin/.ext-npm%update
+
 .PHONY: $(filter bootstrap.sh,$(MAKECMDGOALS))
 all: bootstrap.sh
 .SKIP_GITIGNORE: bootstrap.sh
