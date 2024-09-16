@@ -120,7 +120,7 @@ for _, lsp in ipairs(lsps) do
 		cmd = vim.g['lsp_cmd_' .. lsp],
 		on_attach = function(client, bufnr)
 			if vim.g['lsp_autoformat_' .. lsp] then
-				require'lsp-format'.on_attach(client, bufnr)
+				lsp_format.on_attach(client, bufnr)
 			end
 		end,
 		capabilities = cmp_nvim_lsp.default_capabilities(),
