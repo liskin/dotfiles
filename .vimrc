@@ -337,11 +337,6 @@ endfunction
 autocmd User AirlineAfterInit call s:AirlineInit()
 
 " LSP {{{2
-sign define DiagnosticSignError text=>> texthl=DiagnosticSignError
-sign define DiagnosticSignWarn text=-- texthl=DiagnosticSignWarn
-sign define DiagnosticSignInfo text=-- texthl=DiagnosticSignInfo
-sign define DiagnosticSignHint text=-- texthl=DiagnosticSignHint
-
 let g:lsp_settings_elixirls = {}
 let g:lsp_settings_elixirls['elixirLS'] = #{dialyzerEnabled: v:false}
 let g:lsp_cmd_elixirls = [$HOME .. "/src-elixir/.build/elixir-ls/language_server.sh"]
@@ -468,6 +463,12 @@ set runtimepath+=/usr/share/vim/addons
 " ft, syn {{{2
 filetype plugin indent on
 syntax on
+
+" diagnostic signs {{{2
+sign define DiagnosticSignError text=>> texthl=DiagnosticSignError
+sign define DiagnosticSignWarn text=>> texthl=DiagnosticSignWarn
+sign define DiagnosticSignInfo text=―― texthl=DiagnosticSignInfo
+sign define DiagnosticSignHint text=-- texthl=DiagnosticSignHint
 
 " detect background colour, load my colourscheme {{{2
 set bg&
