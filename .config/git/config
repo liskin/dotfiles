@@ -30,8 +30,9 @@
 [pull]
 	rebase = true
 [rebase]
-	autosquash = true
+	autoSquash = true
 	autoStash = true
+	updateRefs = true
 [branch]
 	autosetuprebase = always
 [init]
@@ -53,7 +54,7 @@
 	co-authored-by = log -1 --pretty=co-authored-by --regexp-ignore-case --author
 	unstatus = -c status.showUntrackedFiles=normal status
 	unigstatus = "!git ls-files | sed -n -e 's|^|./|; s|/\\.gitignore$||p' | xargs git unstatus"
-	resign = rebase -f --gpg-sign --update-refs --keep-base
+	resign = rebase -f --gpg-sign --keep-base
 	si-diff = -c pager.diff='delta --features=side' diff
 	si-show = -c pager.show='delta --features=side' show
 	si-range-diff = -c pager.range-diff='git-range-diff-delta-preproc | delta --features=side-range-diff' range-diff
@@ -139,6 +140,7 @@
 	generic = T !>git notes edit "%(commit)"
 [fetch]
 	prune = true
+	writeCommitGraph = true
 [completion]
 	commands = ls-files absorb
 [url "ssh://git@github.com/"]
