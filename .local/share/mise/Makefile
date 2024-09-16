@@ -1,3 +1,8 @@
+# dotfiles.git will get messed up otherwise,
+# and also some git operations won't work
+# (in uv, mise itself seems fine)
+undefine GIT_DIR
+
 .PHONY: all
 all: shims/cargo-binstall shims/uv
 	mise install

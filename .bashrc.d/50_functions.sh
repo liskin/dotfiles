@@ -65,3 +65,7 @@ function rg {
 		command rg "$@"
 	fi
 }
+
+# prevent git-dotfiles-export messing up stuff
+function mise { env -u GIT_DIR mise "$@"; }
+function uv { env -u GIT_DIR uv "$@"; }
