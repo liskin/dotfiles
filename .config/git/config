@@ -1,8 +1,14 @@
-[gui]
-	fontdiff = -family \"DejaVu Sans Mono\" -size 11 -weight normal -slant roman -underline 0 -overstrike 0
-	spellingdictionary = en_GB
+# authoring commits and patches
+[user]
+	name = Tomas Janousek
+	email = tomi@nomi.cz
+	signingKey = 639DFD7BBFF09178
 [sendemail]
 	smtpserver = /usr/bin/msmtp
+
+# colors
+[color]
+	ui = true
 [color "diff"]
 	new = cyan bold #17
 	old = red bold #52
@@ -19,12 +25,24 @@
 	untracked = yellow bold
 [color "branch"]
 	upstream = brightgreen
-[color]
-	ui = true
-[user]
-	name = Tomas Janousek
-	email = tomi@nomi.cz
-	signingKey = 639DFD7BBFF09178
+
+# aliases
+[alias]
+	# mega useful aliases with cool names
+	puf = push --force-with-lease
+	resign = rebase -f --gpg-sign --keep-base
+	# nicer git log
+	lg = log --color --graph --decorate
+	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
+	# word diffing
+	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
+	wdiff = -c pager.diff='less -FRX' diff --word-diff=color -w
+	wshow = show --word-diff=color -w
+	# git-dotfiles status alternatives
+	unstatus = -c status.showUntrackedFiles=normal status
+	unigstatus = "!git ls-files | sed -n -e 's|^|./|; s|/\\.gitignore$||p' | xargs git unstatus"
+
+# assortment of uncategorised settings
 [push]
 	default = upstream
 [pull]
@@ -37,27 +55,6 @@
 	autosetuprebase = always
 [init]
 	defaultBranch = main
-[pretty]
-	fixes = Fixes: %h (\"%s\")
-	co-authored-by = Co-authored-by: %an <%ae>
-[alias]
-	lg = log --color --graph --decorate
-	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
-	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
-	lgmarkdown = "log --reverse --pretty=format:'#### [%s](../commit/%H)%n%n%b'"
-	wdiff = -c pager.diff='less -FRX' diff --word-diff=color -w
-	wshow = show --word-diff=color -w
-	puf = push --force-with-lease
-	dcommit = svn dcommit --rmdir --interactive
-	rev-sort-topo-reverse = rev-list --topo-order --no-walk --reverse
-	fixes = -c core.abbrev=12 log -1 --pretty=fixes
-	co-authored-by = log -1 --pretty=co-authored-by --regexp-ignore-case --author
-	unstatus = -c status.showUntrackedFiles=normal status
-	unigstatus = "!git ls-files | sed -n -e 's|^|./|; s|/\\.gitignore$||p' | xargs git unstatus"
-	resign = rebase -f --gpg-sign --keep-base
-	si-diff = -c pager.diff='delta --features=side' diff
-	si-show = -c pager.show='delta --features=side' show
-	si-range-diff = -c pager.range-diff='git-range-diff-delta-preproc | delta --features=side-range-diff' range-diff
 [mergetool]
 	keepBackup = false
 [merge]
@@ -76,11 +73,43 @@
 	dstPrefix = ./
 [diff "hex"]
 	textconv = hexdump -v -C
-[interactive]
-	diffFilter = delta
 [core]
 	pager = less -FRX --tabs=1,5
 	hooksPath = ~/.config/git/hooks
+[stash]
+	showPatch = true
+[svn]
+	pushmergeinfo = true
+[commit]
+	verbose = 1
+	#cleanup = scissors
+[submodule]
+	fetchJobs = 0
+[status]
+	submoduleSummary = true
+[fetch]
+	prune = true
+	writeCommitGraph = true
+[completion]
+	commands = ls-files absorb
+[gui]
+	fontdiff = -family \"DejaVu Sans Mono\" -size 11 -weight normal -slant roman -underline 0 -overstrike 0
+	spellingdictionary = en_GB
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
+
+# commit message helpers (see ~/.vim/ftplugin/gitcommit/liskin.vim)
+[alias]
+	fixes = -c core.abbrev=12 log -1 --pretty=fixes
+	co-authored-by = log -1 --pretty=co-authored-by --regexp-ignore-case --author
+	lgmarkdown = "log --reverse --pretty=format:'#### [%s](../commit/%H)%n%n%b'"
+[pretty]
+	fixes = Fixes: %h (\"%s\")
+	co-authored-by = Co-authored-by: %an <%ae>
+
+# delta config
+[interactive]
+	diffFilter = delta
 [pager]
 	diff = delta
 	show = delta
@@ -90,6 +119,12 @@
 [delta "diff-highlight"]
 	color-only = true
 	commit-style = raw
+
+# delta side-diffing
+[alias]
+	si-diff = -c pager.diff='delta --features=side' diff
+	si-show = -c pager.show='delta --features=side' show
+	si-range-diff = -c pager.range-diff='git-range-diff-delta-preproc | delta --features=side-range-diff' range-diff
 [delta "side"]
 	side-by-side = true
 	paging = always
@@ -116,17 +151,8 @@
 [delta "side-range-diff"]
 	features = side-nonum
 	file-style = omit
-[stash]
-	showPatch = true
-[svn]
-	pushmergeinfo = true
-[commit]
-	verbose = 1
-	#cleanup = scissors
-[submodule]
-	fetchJobs = 0
-[status]
-	submoduleSummary = true
+
+# tig config
 [tig]
 	tab-size = 4
 	blame-options = -C -C -C
@@ -138,21 +164,14 @@
 	generic = E !>tmux-new-window-or-exec nvim +"%(lineno)" "fugitive://%(repo:git-dir)//%(commit)/%(file)"
 	generic = <Ctrl-S> !>tmux-new-window-or-exec git si-show "%(commit)"
 	generic = T !>git notes edit "%(commit)"
-[fetch]
-	prune = true
-	writeCommitGraph = true
-[completion]
-	commands = ls-files absorb
-[url "ssh://git@github.com/"]
-	pushInsteadOf = https://github.com/
+
+# workaround for gh's "No default remote repository has been set for this directory."
+# NB: never run "gh repo fork" as that renames origin, use the "gh fork" alias
+[remote "origin"]
+	gh-resolved = base
 
 # includes
 [includeIf "gitdir:~/src-haskell/xmonad*/"]
 	path = ~/.config/git/include/xmonad
 [includeIf "gitdir:~/work/"]
 	path = ~/work/.gitconfig
-
-# workaround for gh's "No default remote repository has been set for this directory."
-# NB: never run "gh repo fork" as that renames origin, use the "gh fork" alias
-[remote "origin"]
-	gh-resolved = base
