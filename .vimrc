@@ -377,6 +377,7 @@ let g:lsp_settings_rust_analyzer['rust-analyzer']['check']['command'] = 'clippy'
 let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_lua_ls = v:true
 let g:lsp_autostart_pylsp = v:true
+let g:lsp_autostart_taplo = v:true
 let g:lsp_autostart_tilt_ls = v:true
 let g:lsp_null_enabled = {}
 let g:lsp_null_enabled['hadolint'] = ['diagnostics']

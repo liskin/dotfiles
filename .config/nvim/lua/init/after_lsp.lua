@@ -109,6 +109,7 @@ local lsps = {
 	'lua_ls',
 	'pylsp',
 	'rust_analyzer',
+	'taplo',
 	'tilt_ls',
 	'tsserver',
 }
