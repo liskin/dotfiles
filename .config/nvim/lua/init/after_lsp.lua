@@ -11,6 +11,8 @@ local debounce = 5000
 local function is_nvim_path(path)
 	local config_root = vim.fn.stdpath("config")
 	local data_root = vim.fn.stdpath("data")
+	---@cast config_root string
+	---@cast data_root string
 	return vim.startswith(path, config_root) or vim.startswith(path, data_root)
 end
 

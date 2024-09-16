@@ -1,5 +1,8 @@
 require'lsp_lines'.setup()
 
+---@class vim.diagnostic.Opts
+---@field virtual_lines? boolean|OptsVirtualLines
+
 local virtual_lines_config = {
 	only_current_line = true,
 }
