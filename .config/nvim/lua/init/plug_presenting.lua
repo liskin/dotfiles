@@ -1,5 +1,6 @@
 local presenting = require'presenting'
 local lspconfig = require'lspconfig'
+local follow_md_links = require'init.lib.follow-md-links'
 
 local function present_in_argv()
 	return vim.tbl_contains(vim.v.argv, '-c') and vim.tbl_contains(vim.v.argv, 'Present')
@@ -86,16 +87,19 @@ local function to_uri(cfile)
 end
 
 local function view()
-	local cfile = vim.fn.expand('<cfile>')
-	if not cfile or #cfile == 0 then
-		vim.notify("no word here")
+	local dest, type = follow_md_links.resolve_link_destination()
+	if not dest or #dest == 0 then
+		vim.notify("no link here")
 		return
 	end
 
-	if is_image(cfile) then
-		vim.system({'feh', '--auto-zoom', '--image-bg', 'white', '--', cfile})
-	else
-		vim.system({'google-chrome', '--app=' .. to_uri(cfile)})
+	if is_image(dest) then
+		vim.system({ 'feh', '--auto-zoom', '--image-bg', 'white', '--', dest })
+	elseif type == "local" then
+		-- FIXME: only for markdown and source files, open binaries using the browser or xdg-open (vim.ui.open())
+		vim.cmd.tabe(dest)
+	elseif type == "web" then
+		vim.system({ 'google-chrome', '--app=' .. to_uri(dest) })
 	end
 end
 
