@@ -66,6 +66,39 @@ local function quit()
 	end
 end
 
+local function is_image(filename)
+	return vim.iter({
+		".jpeg",
+		".jpg",
+		".png",
+		".svg",
+		".webp",
+	}):any(function(ext) return vim.endswith(filename:lower(), ext) end)
+end
+
+local URI_SCHEME_PATTERN = '^([a-zA-Z]+[a-zA-Z0-9.+-]*):.*'
+local function to_uri(cfile)
+	if cfile:match(URI_SCHEME_PATTERN) then
+		return cfile
+	else
+		return vim.uri_from_fname(cfile)
+	end
+end
+
+local function view()
+	local cfile = vim.fn.expand('<cfile>')
+	if not cfile or #cfile == 0 then
+		vim.notify("no word here")
+		return
+	end
+
+	if is_image(cfile) then
+		vim.system({'feh', '--auto-zoom', '--image-bg', 'white', '--', cfile})
+	else
+		vim.system({'google-chrome', '--app=' .. to_uri(cfile)})
+	end
+end
+
 presenting.setup {
 	options = {
 		width = 80,
@@ -79,6 +112,7 @@ presenting.setup {
 		['<End>'] = presenting.last,
 		['<PageUp>'] = presenting.prev,
 		['<PageDown>'] = presenting.next,
+		['<CR>'] = view,
 		['q'] = quit,
 	},
 	configure_slide_buffer = lspconfig.util.add_hook_after(presenting.config.configure_slide_buffer,
