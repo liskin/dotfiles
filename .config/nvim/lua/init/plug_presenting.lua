@@ -53,6 +53,19 @@ local function configure_windows()
 	end
 end
 
+local function quit()
+	if restore_opts then
+		restore_opts()
+		restore_opts = nil
+	end
+
+	if present_in_argv() then
+		vim.cmd.qa()
+	else
+		presenting.quit()
+	end
+end
+
 presenting.setup {
 	options = {
 		width = 80,
@@ -62,22 +75,11 @@ presenting.setup {
 		['l'] = {},
 		['n'] = {},
 		['p'] = {},
-		['<Home>'] = function() presenting.first() end,
-		['<End>'] = function() presenting.last() end,
-		['<PageUp>'] = function() presenting.prev() end,
-		['<PageDown>'] = function() presenting.next() end,
-		['q'] = function()
-			if restore_opts then
-				restore_opts()
-				restore_opts = nil
-			end
-
-			if present_in_argv() then
-				vim.cmd.qa()
-			else
-				presenting.quit()
-			end
-		end,
+		['<Home>'] = presenting.first,
+		['<End>'] = presenting.last,
+		['<PageUp>'] = presenting.prev,
+		['<PageDown>'] = presenting.next,
+		['q'] = quit,
 	},
 	configure_slide_buffer = lspconfig.util.add_hook_after(presenting.config.configure_slide_buffer,
 		function(_buf)
