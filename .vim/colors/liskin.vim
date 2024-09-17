@@ -403,19 +403,21 @@ if &t_Co >= 256 || has('gui_running')
 
 		hi @markup.link.url cterm=underline gui=underline
 		hi @markup.underline cterm=underline gui=underline
+
+		hi link DiagnosticUnnecessary NONE
 	endif
 
 	" fzf-lua colors
-	hi def link FzfLuaFzfBorder SpecialKey
-	hi def link FzfLuaFzfCursorLine CursorColumn
-	hi def link FzfLuaFzfHeader Comment
-	hi def link FzfLuaFzfInfo PreProc
-	hi def link FzfLuaFzfPointer Exception
-	hi def link FzfLuaFzfPrompt Conditional
+	hi link FzfLuaFzfBorder SpecialKey
+	hi link FzfLuaFzfCursorLine CursorColumn
+	hi link FzfLuaFzfHeader Comment
+	hi link FzfLuaFzfInfo PreProc
+	hi link FzfLuaFzfPointer Exception
+	hi link FzfLuaFzfPrompt Conditional
 
 	" trouble.nvim colors
-	hi def link TroubleNormal Normal
-	hi def link TroubleNormalNC NormalNC
+	hi link TroubleNormal Normal
+	hi link TroubleNormalNC NormalNC
 endif
 
 delcommand HiU
