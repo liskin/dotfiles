@@ -166,6 +166,9 @@
 	path = .local/share/nvim/site/bundle/dropbar.nvim
 	# url = https://github.com/Bekaboo/dropbar.nvim
 	url = https://github.com/liskin/dropbar.nvim
+[submodule ".local/share/nvim/site/bundle/nvim-treesitter-textobjects"]
+	path = .local/share/nvim/site/bundle/nvim-treesitter-textobjects
+	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf

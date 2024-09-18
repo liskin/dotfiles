@@ -22,4 +22,16 @@ require'nvim-treesitter.configs'.setup {
 	highlight = {
 		enable = true,
 	},
+	textobjects = {
+		-- FIXME: doesn't work (https://github.com/nvim-treesitter/nvim-treesitter-textobjects/issues/479)
+		-- move = {
+		-- 	enable = true,
+		-- 	goto_next_start = {
+		-- 		["]l"] = "@markup.link.label"
+		-- 	},
+		-- 	goto_previous_start = {
+		-- 		["[l"] = "@markup.link.label"
+		-- 	},
+		-- },
+	},
 }
