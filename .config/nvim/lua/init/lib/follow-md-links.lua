@@ -1,5 +1,5 @@
 -- Origin: https://github.com/jghauser/follow-md-links.nvim/blob/caa85cad973c5e612662d04b55e07eefc88f1d6b/lua/follow-md-links.lua
--- SPDX-License-Identifier: GPL-3.0-or-later
+-- SPDX-License-Identifier: GPL-3.0-only
 
 local ts = require("vim.treesitter")
 local ts_utils = require("nvim-treesitter.ts_utils")

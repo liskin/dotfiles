@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # https://stackoverflow.com/a/44969582/3407728
-# LICENSE: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>
+# SPDX-License-Identifier: CC-BY-SA-3.0
 
 import sys
 

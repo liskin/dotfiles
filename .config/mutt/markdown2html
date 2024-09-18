@@ -30,6 +30,7 @@
 #
 # Copyright © 2019 martin f. krafft <madduck@madduck.net>
 # Released under the GPL-2+ licence, just like Mutt itself.
+# SPDX-License-Identifier: GPL-2.0-or-later
 #
 
 import pypandoc

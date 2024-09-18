@@ -10,6 +10,7 @@
 
 /* the following originates from https://github.com/834N5/proofskip/blob/684721fd090d2f1f713670f7afccd560fdba594c/src/proofskip.js */
 /* Copyright (c) 2023 834N5; MIT License */
+/* SPDX-License-Identifier: MIT */
 
 /* see also https://github.com/cphyc/thunderbird_remove_safelinks/blob/main/src/decoders.js for a different implementation */
 

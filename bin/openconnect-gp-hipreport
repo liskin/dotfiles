@@ -2,6 +2,7 @@
 
 # adapted from https://github.com/openconnect/openconnect/blob/master/trojans/hipreport.sh
 # license: LGPL 2.1, <https://www.infradead.org/openconnect/licence.html>
+# SPDX-License-Identifier: LGPL-2.1-only
 
 for bin in hostname sed base32 uuidgen; do
 	if ! command -v "$bin" >/dev/null 2>&1; then
