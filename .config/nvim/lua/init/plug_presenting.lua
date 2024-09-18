@@ -42,7 +42,7 @@ local function configure_windows()
 
 	for _, w in pairs({st.background_win, st.footer_win, st.slide_win}) do
 		if w then
-			vim.wo[w].winhighlight = 'NormalFloat:Normal'
+			vim.wo[w].winhighlight = 'NormalFloat:Normal,@markup.link:UnderlinedAlso'
 		end
 	end
 
@@ -50,6 +50,8 @@ local function configure_windows()
 	if w then
 		vim.wo[w].wrap = false
 		vim.wo[w].conceallevel = 2
+		vim.wo[w].concealcursor = 'n'
+		vim.wo[w].cursorline = true
 
 		local c = vim.api.nvim_win_get_config(w)
 		vim.api.nvim_win_set_config(w, {

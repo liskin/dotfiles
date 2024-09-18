@@ -157,7 +157,7 @@ set showbreak=↪\
 set wrap
 
 " visuals {{{2
-set cursorlineopt=number
+set cursorlineopt=number,screenline
 set fillchars=vert:│,fold:-
 set list
 set listchars=tab:┝\ ,trail:#,extends:→,precedes:←,nbsp:␣

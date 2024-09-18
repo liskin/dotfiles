@@ -291,7 +291,7 @@ command! -nargs=* HiU call s:urxvt_hi(<f-args>)
 if &t_Co >= 256 || has('gui_running')
 	hi Comment cterm=bold gui=bold
 	hi Constant cterm=bold gui=bold
-	hi CursorLine cterm=underline gui=underline guibg=NONE
+	hi CursorLine cterm=NONE gui=NONE
 	hi CursorLineNr cterm=bold gui=bold
 	hi DiffDelete gui=NONE
 	hi Folded cterm=bold gui=bold
@@ -309,11 +309,13 @@ if &t_Co >= 256 || has('gui_running')
 	hi Title cterm=bold gui=bold
 	hi Type cterm=bold gui=bold
 	hi Underlined cterm=bold gui=bold
+	hi UnderlinedOnly cterm=underline gui=underline
+	hi UnderlinedAlso cterm=bold,underline gui=bold,underline
 	hi VertSplit cterm=NONE gui=NONE
 	hi Added cterm=bold gui=bold
 	hi Removed cterm=bold gui=bold
 	hi Changed cterm=bold gui=bold
-	hi LspReferenceText cterm=underline gui=underline
+	hi link LspReferenceText UnderlinedOnly
 	hi link FloatBorder Pmenu
 	hi link Whitespace SpecialKey
 
@@ -324,6 +326,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU Comment ctermfg=45
 		HiU Conceal ctermbg=242
 		HiU Constant ctermfg=207
+		HiU CursorLine ctermbg=235
 		HiU CursorLineNr ctermfg=250
 		HiU DiffAdd ctermbg=4
 		HiU DiffChange ctermbg=5
@@ -349,6 +352,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU Title ctermfg=13
 		HiU Type ctermfg=2
 		HiU Underlined ctermfg=81
+		HiU UnderlinedAlso ctermfg=81
 		HiU VertSplit ctermbg=250 ctermfg=232
 		HiU Visual ctermbg=238 ctermfg=NONE
 		HiU WarningMsg ctermfg=9
@@ -401,8 +405,8 @@ if &t_Co >= 256 || has('gui_running')
 
 		hi link @string.yaml NONE
 
-		hi @markup.link.url cterm=underline gui=underline
-		hi @markup.underline cterm=underline gui=underline
+		hi link @markup.link.url UnderlinedOnly
+		hi link @markup.underline UnderlinedOnly
 
 		hi link DiagnosticUnnecessary NONE
 	endif
