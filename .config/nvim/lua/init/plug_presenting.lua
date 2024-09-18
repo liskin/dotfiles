@@ -24,6 +24,12 @@ vim.api.nvim_create_user_command('Present', function()
 		vim.o.cmdheight = 0
 	end
 
+	if present_in_argv() then
+		vim.cmd.cd(vim.fn.expand('%:p:h'))
+
+		vim.keymap.set('n', 'gx', follow_md_links.follow_link)
+	end
+
 	presenting.config.options.footer_text = vim.fn.expand('%:t')
 	vim.cmd.Presenting()
 end, {})
@@ -67,42 +73,6 @@ local function quit()
 	end
 end
 
-local function is_image(filename)
-	return vim.iter({
-		".jpeg",
-		".jpg",
-		".png",
-		".svg",
-		".webp",
-	}):any(function(ext) return vim.endswith(filename:lower(), ext) end)
-end
-
-local URI_SCHEME_PATTERN = '^([a-zA-Z]+[a-zA-Z0-9.+-]*):.*'
-local function to_uri(cfile)
-	if cfile:match(URI_SCHEME_PATTERN) then
-		return cfile
-	else
-		return vim.uri_from_fname(cfile)
-	end
-end
-
-local function view()
-	local dest, type = follow_md_links.resolve_link_destination()
-	if not dest or #dest == 0 then
-		vim.notify("no link here")
-		return
-	end
-
-	if is_image(dest) then
-		vim.system({ 'feh', '--auto-zoom', '--image-bg', 'white', '--', dest })
-	elseif type == "local" then
-		-- FIXME: only for markdown and source files, open binaries using the browser or xdg-open (vim.ui.open())
-		vim.cmd.tabe(dest)
-	elseif type == "web" then
-		vim.system({ 'google-chrome', '--app=' .. to_uri(dest) })
-	end
-end
-
 presenting.setup {
 	options = {
 		width = 80,
@@ -116,7 +86,7 @@ presenting.setup {
 		['<End>'] = presenting.last,
 		['<PageUp>'] = presenting.prev,
 		['<PageDown>'] = presenting.next,
-		['<CR>'] = view,
+		['<CR>'] = follow_md_links.follow_link,
 		['q'] = quit,
 	},
 	configure_slide_buffer = lspconfig.util.add_hook_after(presenting.config.configure_slide_buffer,

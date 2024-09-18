@@ -103,10 +103,60 @@ local function resolve_link(link)
 	end
 end
 
-function M.resolve_link_destination()
+local function resolve_link_destination()
 	local link_destination = get_link_destination()
 	if link_destination then
 		return resolve_link(link_destination)
+	end
+end
+
+local URI_SCHEME_PATTERN = '^([a-zA-Z]+[a-zA-Z0-9.+-]*):.*'
+local function to_uri(cfile)
+	if cfile:match(URI_SCHEME_PATTERN) then
+		return cfile
+	else
+		return vim.uri_from_fname(cfile)
+	end
+end
+
+local function is_image(filename)
+	return vim.iter({
+		".jpeg",
+		".jpg",
+		".png",
+		".svg",
+		".webp",
+	}):any(function(ext) return vim.endswith(filename:lower(), ext) end)
+end
+
+local function mime_type(filename)
+	if vim.fn.filereadable(filename) then
+		local ret = vim.system({ 'file', '--brief', '--dereference', '--mime-type', '--', filename }, { text = true }):wait()
+		if ret.code == 0 then
+			return ret.stdout:match("^(%S+)")
+		end
+	end
+end
+
+function M.follow_link()
+	local dest, type = resolve_link_destination()
+	if not dest or #dest == 0 then
+		vim.notify("no link here")
+		return
+	end
+
+	if is_image(dest) then
+		vim.system({ 'feh', '--auto-zoom', '--image-bg', 'white', '--', dest })
+	elseif type == "local" then
+		local mime = mime_type(dest)
+		print(vim.inspect(mime))
+		if mime and mime ~= "text/html" and vim.startswith(mime, "text/") then
+			vim.cmd.tabe(dest)
+		else
+			vim.system({ 'google-chrome', '--app=' .. to_uri(dest) })
+		end
+	elseif type == "web" then
+		vim.system({ 'google-chrome', '--app=' .. to_uri(dest) })
 	end
 end
 
