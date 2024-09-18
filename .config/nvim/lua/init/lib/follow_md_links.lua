@@ -1,14 +1,14 @@
 -- Origin: https://github.com/jghauser/follow-md-links.nvim/blob/caa85cad973c5e612662d04b55e07eefc88f1d6b/lua/follow-md-links.lua
 -- SPDX-License-Identifier: GPL-3.0-only
 
-local ts = require("vim.treesitter")
-local ts_utils = require("nvim-treesitter.ts_utils")
+local ts = vim.treesitter
+local ts_utils = require'nvim-treesitter.ts_utils'
+local ts_lib = require'init.lib.treesitter'
 
 local M = {}
 
 local function get_reference_link_destination(link_label)
-	local syntax_trees = vim.treesitter.get_parser():parse(true)
-	local root = syntax_trees[1]:root()
+	local _, root = ts_lib.parse()
 
 	local link_defs = {}
 	local query_link_defs = vim.treesitter.query.parse("markdown", [[

@@ -1,6 +1,7 @@
 local presenting = require'presenting'
 local lspconfig = require'lspconfig'
-local follow_md_links = require'init.lib.follow-md-links'
+local follow_md_links = require'init.lib.follow_md_links'
+local plug_hop_ts = require'init.lib.hop_treesitter_objects'
 
 local function present_in_argv()
 	return vim.tbl_contains(vim.v.argv, '-c') and vim.tbl_contains(vim.v.argv, 'Present')
@@ -89,6 +90,9 @@ presenting.setup {
 		['<PageUp>'] = presenting.prev,
 		['<PageDown>'] = presenting.next,
 		['<CR>'] = follow_md_links.follow_link,
+		['<Tab>'] = function()
+			plug_hop_ts.text_objects({'markup.link.label'})
+		end,
 		['q'] = quit,
 	},
 	configure_slide_buffer = lspconfig.util.add_hook_after(presenting.config.configure_slide_buffer,
