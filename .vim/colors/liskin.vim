@@ -378,6 +378,9 @@ if &t_Co >= 256 || has('gui_running')
 		" dropbar.nvim colors
 		HiU WinBar ctermfg=85 ctermbg=236
 		HiU DropBarIconUISeparator ctermbg=236 ctermfg=246
+
+		" presenting.nvim colors
+		HiU PresentingMarkupRawBlock ctermbg=234
 	else
 		hi Normal guifg=black guibg=white
 

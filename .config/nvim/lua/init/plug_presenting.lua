@@ -43,7 +43,11 @@ local function configure_windows()
 
 	for _, w in pairs({st.background_win, st.footer_win, st.slide_win}) do
 		if w then
-			vim.wo[w].winhighlight = 'NormalFloat:Normal,@markup.link:UnderlinedAlso'
+			vim.wo[w].winhighlight = table.concat({
+				'NormalFloat:Normal',
+				'@markup.link:UnderlinedAlso',
+				'@markup.raw.block:PresentingMarkupRawBlock',
+			}, ',')
 		end
 	end
 
