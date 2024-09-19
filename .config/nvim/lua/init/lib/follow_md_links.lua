@@ -146,17 +146,19 @@ function M.follow_link()
 	end
 
 	if is_image(dest) then
-		vim.system({ 'feh', '--auto-zoom', '--image-bg', 'white', '--', dest })
+		vim.system({ 'feh', '--auto-zoom', '--scale-down', '--image-bg', 'white', '--', dest })
+	elseif type == "local" and vim.endswith(dest:lower(), '.m3u') then
+		vim.system({ 'feh', '--auto-zoom', '--scale-down', '--image-bg', 'white', '--on-last-slide', 'hold', '--filelist', dest })
 	elseif type == "local" then
 		local mime = mime_type(dest)
 		print(vim.inspect(mime))
 		if mime and mime ~= "text/html" and vim.startswith(mime, "text/") then
 			vim.cmd.tabe(dest)
 		else
-			vim.system({ 'google-chrome', '--app=' .. to_uri(dest) })
+			vim.system({ 'google-chrome', '--new-window', to_uri(dest) })
 		end
 	elseif type == "web" then
-		vim.system({ 'google-chrome', '--app=' .. to_uri(dest) })
+		vim.system({ 'google-chrome', '--new-window', to_uri(dest) })
 	end
 end
 
