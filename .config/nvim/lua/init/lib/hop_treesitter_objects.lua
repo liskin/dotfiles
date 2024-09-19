@@ -59,9 +59,11 @@ end
 
 function M.register(opts)
 	M.opts = opts
-	vim.api.nvim_create_user_command('HopTextObjects', function()
-		M.text_objects()
-	end, {})
+	vim.api.nvim_create_user_command('HopTextObjects', function(info)
+		M.text_objects(#info.fargs > 0 and info.fargs)
+	end, {
+		nargs = '*',
+	})
 end
 
 return M

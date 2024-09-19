@@ -674,6 +674,8 @@ if has('nvim')
 	noremap <silent> St <Cmd>:HopNodes<CR>
 	noremap <silent> S/ <Cmd>:HopPattern<CR>
 	noremap <silent> SS <Cmd>:HopAnywhere<CR>
+	noremap <silent> S. <Cmd>:HopTextObjects<CR>
+	noremap <silent> S_ <Cmd>:HopTextObjects markup.link.label<CR>
 
 	noremap <silent> Hs <Cmd>:HopChar1MW<CR>
 	noremap <silent> Hw <Cmd>:HopWordMW<CR>
