@@ -15,12 +15,14 @@ local function text_objects(root_parser)
 
 	root_parser:for_each_tree(function(tree, parser)
 		local query = ts.query.get(parser:lang(), 'textobjects')
-		for _, match, _metadata in query:iter_matches(tree:root(), 0, nil, nil, { all = true }) do
-			for id, nodes in pairs(match) do
-				table.insert(objects, {
-					capture = query.captures[id],
-					nodes = nodes,
-				})
+		if query then
+			for _, match, _metadata in query:iter_matches(tree:root(), 0, nil, nil, { all = true }) do
+				for id, nodes in pairs(match) do
+					table.insert(objects, {
+						capture = query.captures[id],
+						nodes = nodes,
+					})
+				end
 			end
 		end
 	end)
