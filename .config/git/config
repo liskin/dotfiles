@@ -93,7 +93,7 @@
 [completion]
 	commands = ls-files absorb
 [gui]
-	fontdiff = -family \"DejaVu Sans Mono\" -size 11 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = "-family \"DejaVu Sans Mono\" -size 11 -weight normal -slant roman -underline 0 -overstrike 0"
 	spellingdictionary = en_GB
 [url "ssh://git@github.com/"]
 	pushInsteadOf = https://github.com/
@@ -104,7 +104,7 @@
 	co-authored-by = log -1 --pretty=co-authored-by --regexp-ignore-case --author
 	lgmarkdown = "log --reverse --pretty=format:'#### [%s](../commit/%H)%n%n%b'"
 [pretty]
-	fixes = Fixes: %h (\"%s\")
+	fixes = "Fixes: %h (\"%s\")"
 	co-authored-by = Co-authored-by: %an <%ae>
 
 # delta config
@@ -144,7 +144,7 @@
 	syntax-theme = zenburn
 [delta "side-nonum"]
 	features = side
-	line-numbers-left-format = ""
+	line-numbers-left-format =
 	line-numbers-right-format = "│ "
 	line-numbers-right-style = 245
 	file-decoration-style = 39 235

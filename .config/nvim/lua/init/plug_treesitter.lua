@@ -5,6 +5,7 @@ require'nvim-treesitter.configs'.setup {
 		"c",
 		"cpp",
 		"css",
+		"git_config",
 		"go",
 		"html",
 		"javascript",
