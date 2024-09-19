@@ -39,4 +39,30 @@ function M.text_objects()
 	end
 end
 
+local function for_each_named_child_node(node, fn)
+	fn(node)
+	for i = 0, node:named_child_count() - 1, 1 do
+		for_each_named_child_node(node:named_child(i), fn)
+	end
+end
+
+local function named_nodes(root_parser)
+	local nodes = {}
+	root_parser:for_each_tree(function(tree, _parser)
+		for_each_named_child_node(tree:root(), function(node)
+			table.insert(nodes, node)
+		end)
+	end)
+	return nodes
+end
+
+function M.named_nodes()
+	local parser = M.parse()
+	if parser then
+		return named_nodes(parser)
+	else
+		return {}
+	end
+end
+
 return M

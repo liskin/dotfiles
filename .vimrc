@@ -672,6 +672,7 @@ if has('nvim')
 	noremap <silent> Sl <Cmd>:HopLineStart<CR>
 	noremap <silent> SL <Cmd>:HopLine<CR>
 	noremap <silent> St <Cmd>:HopNodes<CR>
+	noremap <silent> Sn <Cmd>:HopNodesNamed<CR>
 	noremap <silent> S/ <Cmd>:HopPattern<CR>
 	noremap <silent> SS <Cmd>:HopAnywhere<CR>
 	noremap <silent> S. <Cmd>:HopTextObjects<CR>
