@@ -39,6 +39,7 @@ local function ts_find_child(node, type)
 	end
 end
 
+-- TODO: nvim-0.11 - just use https://github.com/neovim/neovim/blob/e268fcbdaa1e0e0cee3b513e62581d35bb937d40/runtime/lua/vim/ui.lua#L177
 local function get_link_destination()
 	local node_at_cursor = ts.get_node({ ignore_injections = false })
 	local node = node_at_cursor
