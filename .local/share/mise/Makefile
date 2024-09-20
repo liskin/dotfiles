@@ -30,8 +30,11 @@ update:
 	# mise use --global --pin …
 
 .PHONY: gc
-## Delete unused versions of tools
+## Delete unused versions of tools; hardlink duplicates in node_modules
 gc:
 	mise prune
+ifneq "$(wildcard installs/npm-*/*/lib/node_modules)" ""
+	fclones group --no-ignore --hidden $(wildcard installs/npm-*/*/lib/node_modules) | fclones link
+endif
 
 include ~/_help.mk
