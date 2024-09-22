@@ -5,64 +5,38 @@ CURL := curl -LSsf
 
 BUILDIFIER_VERSION := v7.1.2
 CIRCLECI_CLI_VERSION := v0.1.30549
-CTLPTL_VERSION := v0.8.32
-DIVE_VERSION := v0.12.0
 DOCKER_BUILDX_VERSION := v0.16.2
 DOCKER_COMPOSE_VERSION := v2.29.2
-EVCXR_VERSION := v0.17.0
-FCLONES_VERSION := v0.34.0
 FITSDK_VERSION := 21.84.00
 GLAB_VERSION := v1.45.0
-HADOLINT_VERSION := v2.12.0
 HLINT_VERSION := v3.8
 HLS_GHC_VERSION := 9.4.7
 HLS_VERSION := 2.4.0.0
 JIRA_CLI_VERSION := v1.5.1
-KIND_VERSION := v0.22.0
 LANGUAGETOOL_VERSION := v6.4
 LUALS_VERSION := 3.10.5
 NVIM_VERSION := v0.10.1
 PANDOC_VERSION := 3.2
-RUST_ANALYZER_VERSION := 2024-08-19
-TILT_VERSION := v0.33.19
-TZ_VERSION := v0.7.0
 UBI_VERSION := v0.1.1
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
 CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
-CTLPTL_GITHUB := tilt-dev/ctlptl
-DIVE_GITHUB := wagoodman/dive
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
-EVCXR_GITHUB := evcxr/evcxr
-FCLONES_GITHUB := pkolaczk/fclones
 GLAB_GITLAB := gitlab-org/cli
-HADOLINT_GITHUB := hadolint/hadolint
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 JIRA_CLI_GITHUB := ankitpokhrel/jira-cli
-KIND_GITHUB := kubernetes-sigs/kind
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
 LUALS_GITHUB := LuaLS/lua-language-server
 NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
-RUST_ANALYZER_GITHUB := rust-analyzer/rust-analyzer
-TILT_GITHUB := tilt-dev/tilt
-TZ_GITHUB := oz/tz
 UBI_GITHUB := houseabsolute/ubi
 
 .PHONY: update
 ## Check for updates
 update: update-github
 update: update-gitlab
-
-all: rust-analyzer
-rust-analyzer: | .ext-rust-analyzer ; ln -fsT $| $@
-.ext-rust-analyzer: .ext-rust-analyzer-$(RUST_ANALYZER_VERSION) ; ln -fsT $< $@
-.ext-rust-analyzer-$(RUST_ANALYZER_VERSION):
-	$(CURL) https://github.com/$(RUST_ANALYZER_GITHUB)/releases/download/$(RUST_ANALYZER_VERSION)/rust-analyzer-x86_64-unknown-linux-gnu.gz \
-		| gunzip >$@
-	chmod +x $@
 
 all: haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper
 haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .ext-hls ; ln -fsT $|/bin/$@ $@
@@ -83,14 +57,6 @@ haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .e
 .INTERMEDIATE: .ext-hls-$(HLS_VERSION).tar.xz
 .ext-hls-$(HLS_VERSION).tar.xz:
 	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-x86_64-linux-deb10.tar.xz
-
-all: tz
-tz: | .ext-tz ; ln -fsT $|/$@ $@
-.ext-tz: .ext-tz-$(TZ_VERSION) ; ln -fsT $< $@
-.ext-tz-$(TZ_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(TZ_GITHUB)/releases/download/$(TZ_VERSION)/tz-$(TZ_VERSION)-linux-amd64.tar.gz \
-		| tar -x -z -C $@ tz
 
 all: pandoc
 pandoc: | .ext-pandoc ; ln -fsT $|/bin/$@ $@
@@ -121,55 +87,12 @@ all: .ext-languagetool
 .ext-languagetool-$(LANGUAGETOOL_VERSION).zip:
 	$(CURL) -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION:v%=%).zip
 
-all: hadolint
-hadolint: | .ext-hadolint ; ln -fsT $| $@
-.ext-hadolint: .ext-hadolint-$(HADOLINT_VERSION) ; ln -fsT $< $@
-.ext-hadolint-$(HADOLINT_VERSION):
-	$(CURL) -o $@ https://github.com/$(HADOLINT_GITHUB)/releases/download/$(HADOLINT_VERSION)/hadolint-Linux-x86_64
-	chmod +x $@
-
 all: buildifier
 buildifier: | .ext-buildifier ; ln -fsT $| $@
 .ext-buildifier: .ext-buildifier-$(BUILDIFIER_VERSION) ; ln -fsT $< $@
 .ext-buildifier-$(BUILDIFIER_VERSION):
 	$(CURL) -o $@ https://github.com/$(BUILDIFIER_GITHUB)/releases/download/$(BUILDIFIER_VERSION)/buildifier-linux-amd64
 	chmod +x $@
-
-all: tilt
-tilt: | .ext-tilt
-	ln -fsT $|/$@ $@
-	./$@ analytics opt out
-.ext-tilt: .ext-tilt-$(TILT_VERSION) ; ln -fsT $< $@
-.ext-tilt-$(TILT_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(TILT_GITHUB)/releases/download/$(TILT_VERSION)/tilt.$(TILT_VERSION:v%=%).linux.x86_64.tar.gz \
-		| tar -x -z -C $@ tilt
-	sudo setcap cap_net_bind_service+ep $@/tilt
-
-all: ctlptl
-ctlptl: | .ext-ctlptl
-	ln -fsT $|/$@ $@
-	./$@ analytics opt out
-.ext-ctlptl: .ext-ctlptl-$(CTLPTL_VERSION) ; ln -fsT $< $@
-.ext-ctlptl-$(CTLPTL_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(CTLPTL_GITHUB)/releases/download/$(CTLPTL_VERSION)/ctlptl.$(CTLPTL_VERSION:v%=%).linux.x86_64.tar.gz \
-		| tar -x -z -C $@ ctlptl
-
-all: kind
-kind: | .ext-kind ; ln -fsT $| $@
-.ext-kind: .ext-kind-$(KIND_VERSION) ; ln -fsT $< $@
-.ext-kind-$(KIND_VERSION):
-	$(CURL) -o $@ https://github.com/$(KIND_GITHUB)/releases/download/$(KIND_VERSION)/kind-linux-amd64
-	chmod +x $@
-
-all: fclones
-fclones: | .ext-fclones ; ln -fsT $|/$@ $@
-.ext-fclones: .ext-fclones-$(FCLONES_VERSION) ; ln -fsT $< $@
-.ext-fclones-$(FCLONES_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(FCLONES_GITHUB)/releases/download/$(FCLONES_VERSION)/fclones-$(FCLONES_VERSION:v%=%)-linux-glibc-x86_64.tar.gz \
-		| tar -x -z -C $@ --strip-components=3 ./usr/bin/fclones
 
 all: docker-buildx
 docker-buildx: | .ext-docker-buildx ; ln -fsT $| $@
@@ -195,22 +118,6 @@ all: .ext-fitsdk
 .INTERMEDIATE: .ext-fitsdk-$(FITSDK_VERSION).zip
 .ext-fitsdk-$(FITSDK_VERSION).zip:
 	$(CURL) -C - -o $@ https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_$(FITSDK_VERSION).zip
-
-all: dive
-dive: | .ext-dive ; ln -fsT $|/$@ $@
-.ext-dive: .ext-dive-$(DIVE_VERSION) ; ln -fsT $< $@
-.ext-dive-$(DIVE_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(DIVE_GITHUB)/releases/download/$(DIVE_VERSION)/dive_$(DIVE_VERSION:v%=%)_linux_amd64.tar.gz \
-		| tar -x -z -C $@ dive
-
-all: evcxr
-evcxr: | .ext-evcxr ; ln -fsT $|/$@ $@
-.ext-evcxr: .ext-evcxr-$(EVCXR_VERSION) ; ln -fsT $< $@
-.ext-evcxr-$(EVCXR_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(EVCXR_GITHUB)/releases/download/$(EVCXR_VERSION)/evcxr-$(EVCXR_VERSION)-x86_64-unknown-linux-gnu.tar.gz \
-		| tar -x -z -C $@ --strip-components=1 --wildcards "*/evcxr"
 
 all: glab
 glab: | .ext-glab ; ln -fsT $|/$@ $@
