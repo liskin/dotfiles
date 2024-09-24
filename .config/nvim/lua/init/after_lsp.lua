@@ -1,3 +1,5 @@
+-- vim:set path^=./..:
+
 local cmp_nvim_lsp = require 'cmp_nvim_lsp'
 local lsp_format = require 'lsp-format'
 local lspconfig = require 'lspconfig'
@@ -116,6 +118,7 @@ local lsps = {
 	'tsserver',
 }
 
+-- see '~/.vimrc' and 'init.lsp_settings' for the actual settings
 for _, lsp in ipairs(lsps) do
 	lspconfig[lsp].setup {
 		autostart = vim.g['lsp_autostart_' .. lsp] or false,
