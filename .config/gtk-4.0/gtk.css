@@ -1,0 +1,4 @@
+/* disable rounded corners */
+window {
+	border-radius: 0;
+}
