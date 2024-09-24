@@ -354,7 +354,7 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false
 let g:lsp_settings_pylsp['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
 
 " disable black (formatting) and ruff (formatting + linting) by default, only enable isort
-let g:lsp_settings_pylsp['pylsp']['plugins']['pyls_isort'] = #{enabled: v:true}
+let g:lsp_settings_pylsp['pylsp']['plugins']['isort'] = #{enabled: v:true}
 let g:lsp_settings_pylsp['pylsp']['plugins']['black'] = #{enabled: v:false}
 let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
 
