@@ -34,8 +34,7 @@ fixup-tilt:
 .PHONY: update
 ## Check for updates
 update:
-	mise ls --global --json | jq -r 'keys[] | "\(.)@latest"' | xargs mise upgrade --dry-run
-	# mise use --global --pin …
+	mise upgrade --interactive --bump
 
 .PHONY: gc
 ## Delete unused versions of tools; hardlink duplicates in node_modules
