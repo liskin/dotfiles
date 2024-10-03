@@ -9,6 +9,7 @@ missing_tools = "always"
 show_env = true
 
 [tools]
+"cargo:JojiiOfficial/LiveBudsCli" = "rev:4a2d75f5bede545738110dccbac033954b1d6087"
 "cargo:ast-grep" = "0.27.1"
 "cargo:cargo-audit" = "0.20.1"
 "cargo:cargo-cache" = "0.8.3"
