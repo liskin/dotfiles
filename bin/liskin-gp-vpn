@@ -9,12 +9,12 @@ options=$(
 	unset GETOPT_COMPATIBLE POSIXLY_CORRECT
 	getopt \
 		-o "" \
-		--long "help,start,stop,vpnns:,name:" \
+		--long "help,start,stop,suspend,resume,vpnns:,name:" \
 		-- "$@"
 )
 eval "set -- $options"
 
-unset start_stop
+unset action
 unset vpnns
 unset name
 while (( $# )); do
@@ -22,10 +22,13 @@ while (( $# )); do
 	case "$opt" in
 		--help)
 			echo "Usage: liskin-gp-vpn --start --name=NAME [--vpnns=VPNNS] -- <openconnect-gp-okta args> -- <openconnect args>"
+			echo "   or: liskin-gp-vpn --stop"
+			echo "   or: liskin-gp-vpn --suspend"
+			echo "   or: liskin-gp-vpn --resume"
 			exit
 			;;
 
-		--start | --stop) start_stop="${opt#--}" ;;
+		--start | --stop | --suspend | --resume) action="${opt#--}" ;;
 		--vpnns) vpnns=$1; shift ;;
 		--name) name=$1; shift ;;
 		--) break ;;
@@ -50,7 +53,7 @@ while (( $# )); do
 	esac
 done
 
-case "${start_stop:?}" in
+case "${action:?}" in
 	start)
 		: "${name:?}"
 		if [[ ${vpnns-} ]]; then
@@ -92,5 +95,13 @@ case "${start_stop:?}" in
 		;;
 	stop)
 		o systemctl --user stop "liskin-vpnns-tun@*.service" "liskin-gp-vpn@*.service"
+		;;
+	suspend)
+		# see /etc/NetworkManager/dispatcher.d/liskin-gp-vpn
+		o systemctl --user freeze "liskin-vpnns-tun@*.service" "liskin-gp-vpn@*.service"
+		;;
+	resume)
+		# see /etc/NetworkManager/dispatcher.d/liskin-gp-vpn
+		o systemctl --user thaw "liskin-vpnns-tun@*.service" "liskin-gp-vpn@*.service"
 		;;
 esac
