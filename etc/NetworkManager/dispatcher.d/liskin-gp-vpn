@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# openconnect might try to reconnect after resume but fail because network isn't up yet.
+# Freeze/thaw it while the network is down to prevent it from disconnecting.
+
+set -eu -o pipefail
+
+iface="${1?}"
+event="${2?}"
+
+user=tomi
+if [[ "$(loginctl show-user --property=State "$user")" != "State=active" ]]; then
+	exit 0
+fi
+
+function run-as-user {
+	systemd-run \
+		--quiet --collect --wait \
+		--user --machine "$user"@ \
+		-- "$@"
+}
+
+case "$event" in
+	down | pre-down)
+		if [[ $iface == @(wlan*|eth*|bnep*) ]]; then
+			run-as-user sh -c 'liskin-gp-vpn --suspend'
+		fi
+		;;
+
+	connectivity-change)
+		if [[ $CONNECTIVITY_STATE == FULL ]]; then
+			run-as-user sh -c 'liskin-gp-vpn --resume'
+		fi
+		;;
+esac
