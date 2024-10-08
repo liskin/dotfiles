@@ -2,7 +2,9 @@
 experimental = true
 not_found_auto_install = false
 paranoid = true
+pin = true
 pipx_uvx = true
+trusted_config_paths = ['~/.config/mise/config.toml']
 
 [settings.status]
 missing_tools = "always"

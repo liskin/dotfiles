@@ -66,6 +66,13 @@ function rg {
 	fi
 }
 
-# prevent git-dotfiles-export messing up stuff
-function mise { env -u GIT_DIR mise "$@"; }
-function uv { env -u GIT_DIR uv "$@"; }
+function mise {
+	unset GIT_DIR  # prevent git-dotfiles-export messing up stuff
+
+	GITHUB_API_TOKEN=$(keyring get gh:github.com '') \
+		command mise "$@"
+}
+function uv {
+	unset GIT_DIR  # prevent git-dotfiles-export messing up stuff
+	command uv "$@"
+}

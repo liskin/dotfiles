@@ -3,16 +3,18 @@
 # (in uv, mise itself seems fine)
 undefine GIT_DIR
 
+TOKEN_ENV=GITHUB_API_TOKEN=$$(keyring get gh:github.com '')
+
 .PHONY: all
 all: shims/cargo-binstall shims/uv
-	mise install
+	$(TOKEN_ENV) mise install
 	$(MAKE) fixup
 
 # FIXME: workaround for https://github.com/jdx/mise/issues/2260
 shims/cargo-binstall:
-	mise install ubi:cargo-bins/cargo-binstall
+	$(TOKEN_ENV) mise install ubi:cargo-bins/cargo-binstall
 shims/uv:
-	mise install ubi:astral-sh/uv
+	$(TOKEN_ENV) mise install ubi:astral-sh/uv
 
 .PHONY: fixup
 fixup: fixup-bottle-py
@@ -34,7 +36,7 @@ fixup-tilt:
 .PHONY: update
 ## Check for updates
 update:
-	mise upgrade --interactive --bump
+	$(TOKEN_ENV) mise upgrade --interactive --bump
 
 .PHONY: gc
 ## Delete unused versions of tools; hardlink duplicates in node_modules
