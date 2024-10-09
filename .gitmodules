@@ -103,7 +103,8 @@
 	url = https://github.com/liskin/lsp_lines.nvim
 [submodule ".local/share/nvim/site/bundle/lsp-format.nvim"]
 	path = .local/share/nvim/site/bundle/lsp-format.nvim
-	url = https://github.com/lukas-reineke/lsp-format.nvim
+	# url = https://github.com/lukas-reineke/lsp-format.nvim
+	url = https://github.com/liskin/lsp-format.nvim
 [submodule ".local/share/nvim/site/bundle/fidget.nvim"]
 	path = .local/share/nvim/site/bundle/fidget.nvim
 	url = https://github.com/j-hui/fidget.nvim
