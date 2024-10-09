@@ -271,6 +271,10 @@ let s:urxvt =
 	\, "#eeeeee"
 	\]
 
+" ~/.bashrc.d/20_colors.sh
+let s:urxvt[4] = "#5080cd"
+let s:urxvt[12] = "#5080ff"
+
 function! s:urxvt_hi(hl, ...) abort
 	exe "hi " . a:hl . " " . join(a:000)
 
@@ -330,7 +334,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU CursorLineNr ctermfg=250
 		HiU DiffAdd ctermbg=4
 		HiU DiffChange ctermbg=5
-		HiU DiffDelete ctermbg=6 ctermfg=12
+		HiU DiffDelete ctermbg=6 ctermfg=19
 		HiU Directory ctermfg=159
 		HiU EndOfBuffer ctermfg=238
 		HiU ErrorMsg ctermbg=1
