@@ -1,15 +1,28 @@
 vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
 	callback = function(ev)
-		local buf_local = { buffer = ev.buf }
-
-		vim.keymap.set({'n', 'v', 'i'}, '<C-F>', vim.lsp.buf.code_action, buf_local)
+		vim.keymap.set({ 'n', 'v', 'i' }, '<C-F>', vim.lsp.buf.code_action, {
+			buffer = ev.buf,
+			desc = "LSP code action",
+		})
 
 		-- neovim 0.11 mappings
-		vim.keymap.set('n', 'grn', vim.lsp.buf.rename, buf_local)
-		vim.keymap.set('n', 'grr', vim.lsp.buf.references, buf_local)
-		vim.keymap.set({'n', 'x'}, 'gra', vim.lsp.buf.code_action, buf_local)
-		vim.keymap.set('i', '<C-S>', vim.lsp.buf.signature_help, buf_local)
+		vim.keymap.set('n', 'grn', vim.lsp.buf.rename, {
+			buffer = ev.buf,
+			desc = "LSP rename",
+		})
+		vim.keymap.set('n', 'grr', vim.lsp.buf.references, {
+			buffer = ev.buf,
+			desc = "LSP references",
+		})
+		vim.keymap.set({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action, {
+			buffer = ev.buf,
+			desc = "LSP code action",
+		})
+		vim.keymap.set('i', '<C-S>', vim.lsp.buf.signature_help, {
+			buffer = ev.buf,
+			desc = "LSP signature help",
+		})
 	end,
 })
 

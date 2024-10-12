@@ -28,9 +28,9 @@ fzf_lua.setup {
 
 fzf_lua.register_ui_select()
 
-vim.keymap.set('n', 'gX', fzf_lua.lsp_finder)
-vim.keymap.set('n', 'gT', fzf_lua.lsp_document_symbols)
-vim.keymap.set('n', 'gG', fzf_lua.lsp_live_workspace_symbols)
+vim.keymap.set('n', 'gX', fzf_lua.lsp_finder, { desc = "fzf lsp_finder" })
+vim.keymap.set('n', 'gT', fzf_lua.lsp_document_symbols, { desc = "fzf lsp_document_symbols" })
+vim.keymap.set('n', 'gG', fzf_lua.lsp_live_workspace_symbols, { desc = "fzf lsp_live_workspace_symbols" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
