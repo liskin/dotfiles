@@ -17,7 +17,6 @@ LANGUAGETOOL_VERSION := v6.4
 LUALS_VERSION := 3.10.5
 NVIM_VERSION := v0.10.1
 PANDOC_VERSION := 3.2
-UBI_VERSION := v0.1.1
 
 BUILDIFIER_GITHUB := bazelbuild/buildtools
 CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
@@ -31,7 +30,6 @@ LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
 LUALS_GITHUB := LuaLS/lua-language-server
 NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
-UBI_GITHUB := houseabsolute/ubi
 
 .PHONY: update
 ## Check for updates
@@ -167,15 +165,6 @@ jira: | .ext-jira ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(JIRA_CLI_GITHUB)/releases/download/$(JIRA_CLI_VERSION)/jira_$(JIRA_CLI_VERSION:v%=%)_linux_x86_64.tar.gz \
 		| tar -x -z -C $@ --strip-components=2 --wildcards "*/bin/jira"
-
-# TODO: drop when https://github.com/jdx/mise/pull/2290 merged
-all: ubi
-ubi: | .ext-ubi ; ln -fsT $|/$@ $@
-.ext-ubi: .ext-ubi-$(UBI_VERSION) ; ln -fsT $< $@
-.ext-ubi-$(UBI_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(UBI_GITHUB)/releases/download/$(UBI_VERSION)/ubi-Linux-x86_64-musl.tar.gz \
-		| tar -x -z -C $@ ubi
 
 .PHONY: gc
 ## Remove old versions
