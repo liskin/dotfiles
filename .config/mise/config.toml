@@ -34,6 +34,7 @@ show_env = true
 "pipx:python-dxf" = "12.1.0"
 "pipx:timezonefinder" = "6.5.3"
 "ubi:YodaEmbedding/frece" = "v1.0.6"
+"ubi:ankitpokhrel/jira-cli" = { version = "v1.5.2", exe = "jira" }
 "ubi:astral-sh/uv" = "0.4.20"
 "ubi:cargo-bins/cargo-binstall" = "v1.10.7"
 "ubi:evcxr/evcxr" = "v0.17.0"
