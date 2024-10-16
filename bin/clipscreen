@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# create a virtual monitor for screensharing a selected part of the screen
+# inspired by https://github.com/splitbrain/clipscreen and https://news.ycombinator.com/item?id=41839538
+
+set -eu -o pipefail
+
+geo=$(slop -f '%w/1x%h/1+%x+%y')
+xrandr --delmonitor screenshare >/dev/null 2>&1 || :
+xrandr --setmonitor screenshare "$geo" none
