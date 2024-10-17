@@ -25,12 +25,13 @@ import Text.RE.Replace
 import Text.RE.TDFA.String
 import qualified Data.Map as M
 
-import XMonad
+import XMonad hiding (rescreen)
 import qualified XMonad.StackSet as W
 
 import XMonad.Actions.CycleWS
 import XMonad.Actions.MessageFeedback
 import XMonad.Actions.NoBorders
+import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.WorkspaceNames hiding (renameWorkspace)
 import XMonad.Hooks.EwmhDesktops
@@ -520,6 +521,8 @@ main = do
         keepLayoutHistory $
         addAfterRescreenHook (spawnExec "~/bin/.xlayout/post.sh") $
         addRandrChangeHook (spawnExec "if-session-unlocked layout-auto") $
+        setRescreenWorkspacesHook (rescreen def) $
+        setRescreenDelay 250000 $
         dynamicSBs (pure . myStatusBars) $
         docks $
         workspaceNamesEwmh $
