@@ -3,7 +3,6 @@ all:
 
 CURL := curl -LSsf
 
-BUILDIFIER_VERSION := v7.1.2
 CIRCLECI_CLI_VERSION := v0.1.30549
 DOCKER_BUILDX_VERSION := v0.16.2
 DOCKER_COMPOSE_VERSION := v2.29.2
@@ -17,7 +16,6 @@ LUALS_VERSION := 3.10.5
 NVIM_VERSION := v0.10.1
 PANDOC_VERSION := 3.2
 
-BUILDIFIER_GITHUB := bazelbuild/buildtools
 CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
@@ -82,13 +80,6 @@ all: .ext-languagetool
 .INTERMEDIATE: .ext-languagetool-$(LANGUAGETOOL_VERSION).zip
 .ext-languagetool-$(LANGUAGETOOL_VERSION).zip:
 	$(CURL) -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION:v%=%).zip
-
-all: buildifier
-buildifier: | .ext-buildifier ; ln -fsT $| $@
-.ext-buildifier: .ext-buildifier-$(BUILDIFIER_VERSION) ; ln -fsT $< $@
-.ext-buildifier-$(BUILDIFIER_VERSION):
-	$(CURL) -o $@ https://github.com/$(BUILDIFIER_GITHUB)/releases/download/$(BUILDIFIER_VERSION)/buildifier-linux-amd64
-	chmod +x $@
 
 all: docker-buildx
 docker-buildx: | .ext-docker-buildx ; ln -fsT $| $@

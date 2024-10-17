@@ -36,6 +36,7 @@ show_env = true
 "ubi:YodaEmbedding/frece" = "v1.0.6"
 "ubi:ankitpokhrel/jira-cli" = { version = "v1.5.2", exe = "jira" }
 "ubi:astral-sh/uv" = "0.4.20"
+"ubi:bazelbuild/buildtools" = { version = "v7.3.1", exe = "buildifier", matching = "buildifier" }
 "ubi:cargo-bins/cargo-binstall" = "v1.10.7"
 "ubi:evcxr/evcxr" = "v0.17.0"
 "ubi:hadolint/hadolint" = "v2.12.0"
