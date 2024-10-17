@@ -7,7 +7,6 @@ CIRCLECI_CLI_VERSION := v0.1.30549
 DOCKER_BUILDX_VERSION := v0.16.2
 DOCKER_COMPOSE_VERSION := v2.29.2
 FITSDK_VERSION := 21.84.00
-GLAB_VERSION := v1.45.0
 HLINT_VERSION := v3.8
 HLS_GHC_VERSION := 9.4.7
 HLS_VERSION := 2.4.0.0
@@ -19,7 +18,6 @@ PANDOC_VERSION := 3.2
 CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
-GLAB_GITLAB := gitlab-org/cli
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
@@ -105,14 +103,6 @@ all: .ext-fitsdk
 .INTERMEDIATE: .ext-fitsdk-$(FITSDK_VERSION).zip
 .ext-fitsdk-$(FITSDK_VERSION).zip:
 	$(CURL) -C - -o $@ https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_$(FITSDK_VERSION).zip
-
-all: glab
-glab: | .ext-glab ; ln -fsT $|/$@ $@
-.ext-glab: .ext-glab-$(GLAB_VERSION) ; ln -fsT $< $@
-.ext-glab-$(GLAB_VERSION):
-	mkdir -p $@
-	$(CURL) https://gitlab.com/$(GLAB_GITLAB)/-/releases/$(GLAB_VERSION)/downloads/glab_$(GLAB_VERSION:v%=%)_Linux_x86_64.tar.gz \
-		| tar -x -z -C $@ --strip-components=1 bin/glab
 
 all: .ext-circleci-cli
 .SKIP_GITIGNORE: .ext-circleci-cli
