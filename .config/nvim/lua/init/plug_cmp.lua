@@ -80,9 +80,18 @@ local function cmp_complete_omni()
 	}
 end
 
-local function cmp_complete_snippet()
-	cmp_complete_sources {
-		{ name = 'ultisnips' },
+local function cmp_complete_ultisnips()
+	cmp.complete {
+		config = {
+			sources = {
+				{ name = 'ultisnips' },
+			},
+			snippet = {
+				expand = function(args)
+					vim.fn["UltiSnips#Anon"](args.body)
+				end,
+			},
+		},
 	}
 end
 
@@ -102,11 +111,6 @@ cmp.setup {
 		documentation = {
 			border = { '', '', '', '│', '', '', '', ' ' },
 		},
-	},
-	snippet = {
-		expand = function(args)
-			vim.fn["UltiSnips#Anon"](args.body)
-		end,
 	},
 	sources = cmp.config.sources(
 		{
@@ -148,7 +152,7 @@ cmp.setup {
 		['<C-X><C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_current),
 		['<C-X><C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_current),
 		['<C-X><C-O>'] = cmp_or(cmp_select_prev, cmp_complete_omni),
-		['<C-_>'] = cmp_or(cmp_select_next, cmp_complete_snippet),
+		['<C-_>'] = cmp_or(cmp_select_next, cmp_complete_ultisnips),
 	},
 	---@diagnostic disable-next-line: missing-fields
 	confirmation = {
@@ -171,3 +175,23 @@ cmp.event:on('menu_opened', function(data)
 	-- work around https://github.com/hrsh7th/nvim-cmp/issues/835
 	data.window.active = true
 end)
+
+-- smart Tab - snippet placeholders if any
+vim.keymap.set({ 'n', 'v' }, '<Tab>', function()
+	if vim.snippet.active({ direction = 1 }) then
+		return '<Cmd>lua vim.snippet.jump(1)<CR>'
+	elseif vim.fn['UltiSnips#CanJumpForwards']() then
+		return '<Cmd>call UltiSnips#JumpForwards()<CR>'
+	else
+		return '<Tab>'
+	end
+end, { expr = true })
+vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
+	if vim.snippet.active({ direction = -1 }) then
+		return '<Cmd>lua vim.snippet.jump(-1)<CR>'
+	elseif vim.fn['UltiSnips#CanJumpBackwards']() then
+		return '<Cmd>call UltiSnips#JumpBackwards()<CR>'
+	else
+		return '<S-Tab>'
+	end
+end, { expr = true })

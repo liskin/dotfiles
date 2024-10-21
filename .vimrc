@@ -617,14 +617,7 @@ if !has('nvim')
 	inoremap <silent> <Tab> <C-R>=LiskinTabComplete()<CR>
 	inoremap <silent> <S-Tab> <C-R>=LiskinShiftTabComplete()<CR>
 endif
-
-" smart Tab - snippet placeholders if any
-if has('nvim')
-	noremap <expr> <Tab>
-		\ UltiSnips#CanJumpForwards() ? "\<Cmd>call UltiSnips#JumpForwards()\<CR>" : "\<Tab>"
-	noremap <expr> <S-Tab>
-		\ UltiSnips#CanJumpBackwards() ? "\<Cmd>call UltiSnips#JumpBackwards()\<CR>" : "\<S-Tab>"
-endif
+" nvim - see ~/.nvim/init/plug_cmp.lua for nvim
 
 " emulate vim's wildoptions=pum bindings in neovim {{{2
 if has('nvim')
