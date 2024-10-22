@@ -3,7 +3,7 @@ color quoted brightblue default
 color signature red default
 color indicator brightyellow red
 color error brightred default
-color status yellow blue
+color status yellow color18
 color tree magenta default      # the thread tree in the index menu
 color tilde magenta default
 color message brightcyan default
