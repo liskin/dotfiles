@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Continually sync file changes to a GitHub Codespace
+# (a wrapper for watchexec/rsync)
+
+set -eu -o pipefail
+
+function usage {
+	echo "Usage: $0 [-n|--dry-run] cs.my-space.my-branch"
+}
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o hn --long help,dry-run -- "$@")
+eval "set -- $options"
+
+dry_run=
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		-h|--help) usage; exit ;;
+		-n|--dry-run) dry_run=: ;;
+		--) break ;;
+	esac
+done
+
+if (( $# != 1 )); then
+	usage
+	exit 1
+fi
+
+workspace=$(ssh "${1:?}" -- bash -l -c pwd | tail -1)
+: "${workspace:?}"
+
+rsync_flags=(
+	${dry_run:+--dry-run}
+	--checksum
+	--itemize-changes
+	--links
+	--executability
+	--from0
+	--files-from=-
+)
+
+exec watchexec -- "git ls-files -z | rsync ${rsync_flags[*]} ./ $(printf %q:%q "$1" "$workspace")"
