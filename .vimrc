@@ -639,6 +639,8 @@ nnoremap <silent> <C-W>C <Cmd>tabclose<CR>
 " git (fugitive) shortcuts {{{2
 nnoremap <silent> <Leader>gg <Cmd>0tab G<CR>
 nnoremap <silent> <Leader>gv <Cmd>Gvdiffsplit<CR>
+noremap <silent> <Leader>gb <Cmd>FzfLua git_blame<CR>
+noremap <silent> <Leader>gB <Cmd>FzfLua git_bcommits<CR>
 
 " C-X is commands, remap decrement to C-Q {{{2
 nnoremap <silent> <C-Q> <C-X>
