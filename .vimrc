@@ -531,66 +531,66 @@ autocmd FileType * if expand("<afile>:p") =~ glob2regpat("/dev/shm/pass.*") | le
 
 " key maps {{{1
 
-nnoremap <silent> <F1> <Cmd>:FzfLua helptags<CR>
-inoremap <silent> <F1> <Cmd>:FzfLua helptags<CR>
+nnoremap <silent> <F1> <Cmd>FzfLua helptags<CR>
+inoremap <silent> <F1> <Cmd>FzfLua helptags<CR>
 
-nnoremap <silent> <F2> <Cmd>:w!<CR>
-inoremap <silent> <F2> <Cmd>:w!<CR>
+nnoremap <silent> <F2> <Cmd>w!<CR>
+inoremap <silent> <F2> <Cmd>w!<CR>
 
-nnoremap <silent> <F13> <Cmd>:cprevious<CR>
-inoremap <silent> <F13> <Cmd>:cprevious<CR>
-nnoremap <silent> <F3> <Cmd>:cnext<CR>
-inoremap <silent> <F3> <Cmd>:cnext<CR>
+nnoremap <silent> <F13> <Cmd>cprevious<CR>
+inoremap <silent> <F13> <Cmd>cprevious<CR>
+nnoremap <silent> <F3> <Cmd>cnext<CR>
+inoremap <silent> <F3> <Cmd>cnext<CR>
 
-nnoremap <silent> <F14> <Cmd>:lprevious<CR>
-inoremap <silent> <F14> <Cmd>:lprevious<CR>
-nnoremap <silent> <F4> <Cmd>:lnext<CR>
-inoremap <silent> <F4> <Cmd>:lnext<CR>
+nnoremap <silent> <F14> <Cmd>lprevious<CR>
+inoremap <silent> <F14> <Cmd>lprevious<CR>
+nnoremap <silent> <F4> <Cmd>lnext<CR>
+inoremap <silent> <F4> <Cmd>lnext<CR>
 
 " see ~/.nvim/init/lsp.lua
-nnoremap <silent> <F5> <Cmd>:LspInlayToggle<CR>
-inoremap <silent> <F5> <Cmd>:LspInlayToggle<CR>
-nnoremap <silent> <F15> <Cmd>:LspReferenceHighlightsToggle<CR>
-inoremap <silent> <F15> <Cmd>:LspReferenceHighlightsToggle<CR>
+nnoremap <silent> <F5> <Cmd>LspInlayToggle<CR>
+inoremap <silent> <F5> <Cmd>LspInlayToggle<CR>
+nnoremap <silent> <F15> <Cmd>LspReferenceHighlightsToggle<CR>
+inoremap <silent> <F15> <Cmd>LspReferenceHighlightsToggle<CR>
 
 if has('nvim')
-	nnoremap <silent> <F6> <Cmd>:Trouble diagnostics toggle<CR>
-	inoremap <silent> <F6> <Cmd>:Trouble diagnostics toggle<CR>
+	nnoremap <silent> <F6> <Cmd>Trouble diagnostics toggle<CR>
+	inoremap <silent> <F6> <Cmd>Trouble diagnostics toggle<CR>
 
 	" see ~/.nvim/init/plug_lsp_lines.lua
-	nnoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
-	inoremap <silent> <F16> <Cmd>:LspLinesToggle<CR>
+	nnoremap <silent> <F16> <Cmd>LspLinesToggle<CR>
+	inoremap <silent> <F16> <Cmd>LspLinesToggle<CR>
 endif
 
-nnoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
-inoremap <silent> <F8> <Cmd>:TagbarToggle<CR>
+nnoremap <silent> <F8> <Cmd>TagbarToggle<CR>
+inoremap <silent> <F8> <Cmd>TagbarToggle<CR>
 
 if has('nvim')
-	nnoremap <silent> <F18> <Cmd>:Trouble symbols toggle<CR>
-	inoremap <silent> <F18> <Cmd>:Trouble symbols toggle<CR>
+	nnoremap <silent> <F18> <Cmd>Trouble symbols toggle<CR>
+	inoremap <silent> <F18> <Cmd>Trouble symbols toggle<CR>
 endif
 
 if has('gui_running')
-	nnoremap <silent> <F10> <Cmd>:ToggleMenu<CR>
-	inoremap <silent> <F10> <Cmd>:ToggleMenu<CR>
+	nnoremap <silent> <F10> <Cmd>ToggleMenu<CR>
+	inoremap <silent> <F10> <Cmd>ToggleMenu<CR>
 	command ToggleMenu if &go=~'m'|set go-=m|else|set go+=m|endif
 elseif has('nvim')
-	nnoremap <silent> <F10> <Cmd>:FzfLua menus<CR>
-	nnoremap <silent> <F20> <Cmd>:DropbarToggle<CR>
+	nnoremap <silent> <F10> <Cmd>FzfLua menus<CR>
+	nnoremap <silent> <F20> <Cmd>DropbarToggle<CR>
 endif
 
-nnoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
-inoremap <silent> <F11> <Cmd>:NERDTreeToggle<CR>
+nnoremap <silent> <F11> <Cmd>NERDTreeToggle<CR>
+inoremap <silent> <F11> <Cmd>NERDTreeToggle<CR>
 
 " fzf keys {{{2
-nnoremap <silent> <F12> <Cmd>:FzfLua builtin<CR>
-nnoremap <silent> <C-B> <Cmd>:FzfLua buffers<CR>
-nnoremap <silent> <C-G> <Cmd>:FzfLua tags<CR>
-nnoremap <silent> <C-T> <Cmd>:FzfLua btags<CR>
-nnoremap <silent> <C-P> <Cmd>:FzfLua files<CR>
-nnoremap <silent> <C-Y> <Cmd>:FzfLua tabs<CR>
-nnoremap <silent> <C-J> <Cmd>:FzfLua grep<CR>
-nnoremap <silent> <C-X> <Cmd>:FzfCommands<CR>
+nnoremap <silent> <F12> <Cmd>FzfLua builtin<CR>
+nnoremap <silent> <C-B> <Cmd>FzfLua buffers<CR>
+nnoremap <silent> <C-G> <Cmd>FzfLua tags<CR>
+nnoremap <silent> <C-T> <Cmd>FzfLua btags<CR>
+nnoremap <silent> <C-P> <Cmd>FzfLua files<CR>
+nnoremap <silent> <C-Y> <Cmd>FzfLua tabs<CR>
+nnoremap <silent> <C-J> <Cmd>FzfLua grep<CR>
+nnoremap <silent> <C-X> <Cmd>FzfCommands<CR>
 
 " free: <C-K>, <C-H>
 
@@ -633,12 +633,12 @@ if has('nvim')
 endif
 
 " cloning/closing tabs {{{2
-nnoremap <silent> <C-W>S <Cmd>:CloneBufTmp<CR>
-nnoremap <silent> <C-W>C <Cmd>:tabclose<CR>
+nnoremap <silent> <C-W>S <Cmd>CloneBufTmp<CR>
+nnoremap <silent> <C-W>C <Cmd>tabclose<CR>
 
 " git (fugitive) shortcuts {{{2
-nnoremap <silent> <Leader>gg <Cmd>:0tab G<CR>
-nnoremap <silent> <Leader>gv <Cmd>:Gvdiffsplit<CR>
+nnoremap <silent> <Leader>gg <Cmd>0tab G<CR>
+nnoremap <silent> <Leader>gv <Cmd>Gvdiffsplit<CR>
 
 " C-X is commands, remap decrement to C-Q {{{2
 nnoremap <silent> <C-Q> <C-X>
@@ -660,23 +660,23 @@ inoremap <silent> <Up> <C-O>gk
 
 " hop keys {{{2
 if has('nvim')
-	noremap <silent> s <Cmd>:HopChar1<CR>
-	noremap <silent> Sw <Cmd>:HopWord<CR>
-	noremap <silent> Sl <Cmd>:HopLineStart<CR>
-	noremap <silent> SL <Cmd>:HopLine<CR>
-	noremap <silent> St <Cmd>:HopNodes<CR>
-	noremap <silent> Sn <Cmd>:HopNodesNamed<CR>
-	noremap <silent> S/ <Cmd>:HopPattern<CR>
-	noremap <silent> SS <Cmd>:HopAnywhere<CR>
-	noremap <silent> S. <Cmd>:HopTextObjects<CR>
-	noremap <silent> S_ <Cmd>:HopTextObjects markup.link.label<CR>
+	noremap <silent> s <Cmd>HopChar1<CR>
+	noremap <silent> Sw <Cmd>HopWord<CR>
+	noremap <silent> Sl <Cmd>HopLineStart<CR>
+	noremap <silent> SL <Cmd>HopLine<CR>
+	noremap <silent> St <Cmd>HopNodes<CR>
+	noremap <silent> Sn <Cmd>HopNodesNamed<CR>
+	noremap <silent> S/ <Cmd>HopPattern<CR>
+	noremap <silent> SS <Cmd>HopAnywhere<CR>
+	noremap <silent> S. <Cmd>HopTextObjects<CR>
+	noremap <silent> S_ <Cmd>HopTextObjects markup.link.label<CR>
 
-	noremap <silent> Hs <Cmd>:HopChar1MW<CR>
-	noremap <silent> Hw <Cmd>:HopWordMW<CR>
-	noremap <silent> Hl <Cmd>:HopLineStartMW<CR>
-	noremap <silent> HL <Cmd>:HopLineMW<CR>
-	noremap <silent> H/ <Cmd>:HopPatternMW<CR>
-	noremap <silent> HH <Cmd>:HopAnywhereMW<CR>
+	noremap <silent> Hs <Cmd>HopChar1MW<CR>
+	noremap <silent> Hw <Cmd>HopWordMW<CR>
+	noremap <silent> Hl <Cmd>HopLineStartMW<CR>
+	noremap <silent> HL <Cmd>HopLineMW<CR>
+	noremap <silent> H/ <Cmd>HopPatternMW<CR>
+	noremap <silent> HH <Cmd>HopAnywhereMW<CR>
 endif
 
 " vim:set foldenable foldmethod=marker: {{{1
