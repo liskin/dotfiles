@@ -13,10 +13,12 @@
 --
 module XMonad.Util.My where
 
+import Control.Concurrent (forkOS, threadDelay)
 import Data.List.Split (splitOneOf)
 import System.Directory (getCurrentDirectory)
 import System.Environment (getEnv)
 import System.IO.Unsafe (unsafePerformIO)
+import System.Posix.Signals (sigUSR2)
 import qualified Data.Map as M
 
 import XMonad
@@ -27,6 +29,7 @@ import XMonad.Actions.CycleRecentWS (cycleWindowSets)
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.StatusBar
 import XMonad.Layout.Inspect
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.WorkspaceDir
@@ -195,3 +198,15 @@ spawnTerm s = do
 
 cmdExecJournal :: String -> String
 cmdExecJournal s = unwords $ ["exec"] ++ cmdLogJournal ++ [s]
+
+repositionStatusBars :: X ()
+repositionStatusBars =
+    doLater 500_000 $ -- wait until xmobars start and install their signal handlers
+        signalStatusBars sigUSR2 ("/xmobar" `isInfixOf`)
+  where
+    doLater delay action = do
+        xc <- ask
+        xs <- get
+        void $ io $ forkOS $ do
+            threadDelay delay
+            void $ runX xc xs action
