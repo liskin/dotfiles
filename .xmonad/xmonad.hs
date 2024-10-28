@@ -21,6 +21,7 @@ import Graphics.X11.ExtraTypes.XF86
 import System.Environment
 import System.Exit
 import System.Info
+import System.Posix.Signals (sigUSR2)
 import Text.RE.Replace
 import Text.RE.TDFA.String
 import qualified Data.Map as M
@@ -519,6 +520,7 @@ main = do
     xmonad $
         writeStateHook $
         keepLayoutHistory $
+        addAfterRescreenHook (signalStatusBars sigUSR2 ("/xmobar" `isInfixOf`)) $
         addAfterRescreenHook (spawnExec "~/bin/.xlayout/post.sh") $
         addRandrChangeHook (spawnExec "if-session-unlocked layout-auto") $
         setRescreenWorkspacesHook (rescreen def) $
