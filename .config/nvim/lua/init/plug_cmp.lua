@@ -117,6 +117,7 @@ cmp.setup {
 			{ name = 'nvim_lsp' },
 			{ name = 'omni' },
 			{ name = 'path' },
+			{ name = 'conventionalcommits' },
 		}, {
 			{ name = 'buffer' },
 			{ name = 'spell' },

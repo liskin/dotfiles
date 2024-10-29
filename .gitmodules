@@ -170,6 +170,10 @@
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter-textobjects"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+[submodule ".local/share/nvim/site/bundle/cmp-conventionalcommits"]
+	path = .local/share/nvim/site/bundle/cmp-conventionalcommits
+	# url = https://github.com/cultab/cmp-conventionalcommits/
+	url = https://github.com/liskin/cmp-conventionalcommits/
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
