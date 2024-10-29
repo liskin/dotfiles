@@ -332,9 +332,10 @@ if &t_Co >= 256 || has('gui_running')
 		HiU Constant ctermfg=207
 		HiU CursorLine ctermbg=235
 		HiU CursorLineNr ctermfg=250
-		HiU DiffAdd ctermbg=4
-		HiU DiffChange ctermbg=5
-		HiU DiffDelete ctermbg=6 ctermfg=19
+		HiU DiffAdd ctermbg=22
+		HiU DiffChange ctermbg=19
+		HiU DiffText ctermbg=26
+		HiU DiffDelete ctermbg=52 ctermfg=NONE
 		HiU Directory ctermfg=159
 		HiU EndOfBuffer ctermfg=238
 		HiU ErrorMsg ctermbg=1
