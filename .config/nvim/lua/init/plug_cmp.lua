@@ -1,4 +1,24 @@
 local cmp = require'cmp'
+local cmp_nvim_ultisnips_source = require'cmp_nvim_ultisnips.source'
+
+-- avoid Select mode after snippet expansion
+vim.keymap.set({ 'n', 'v', 's', 'i' }, '<Plug>(noselectmode)', function()
+	if vim.fn.mode() == 's' then
+		return '<C-G>'
+	else
+		return ''
+	end
+end, { expr = true })
+local function snippet_noselectmode()
+	local keys = vim.api.nvim_replace_termcodes('<Plug>(noselectmode)', true, false, true)
+	vim.api.nvim_feedkeys(keys, '', true)
+end
+---@diagnostic disable-next-line: duplicate-set-field
+function cmp_nvim_ultisnips_source:execute(completion_item, callback)
+	vim.call("UltiSnips#ExpandSnippet")
+	snippet_noselectmode()
+	callback(completion_item)
+end
 
 local function has_words_before()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -89,6 +109,7 @@ local function cmp_complete_ultisnips()
 			snippet = {
 				expand = function(args)
 					vim.fn["UltiSnips#Anon"](args.body)
+					snippet_noselectmode()
 				end,
 			},
 		},
@@ -168,6 +189,12 @@ cmp.setup {
 				unpack(commit_characters)
 			}
 		end
+	},
+	snippet = {
+		expand = function(args)
+			vim.snippet.expand(args.body)
+			snippet_noselectmode()
+		end,
 	},
 }
 
