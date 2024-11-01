@@ -3,16 +3,18 @@
 # (in uv, mise itself seems fine)
 undefine GIT_DIR
 
-TOKEN_ENV=GITHUB_API_TOKEN=$$(keyring get gh:github.com '')
+TOKEN_ENV := GITHUB_API_TOKEN=$$(keyring get gh:github.com '')
+
+# FIXME: workaround for https://github.com/jdx/mise/issues/2886
+PATH_ENV := PATH=$(CURDIR)/installs/ubi-astral-sh-uv/latest/bin:$$PATH
 
 .PHONY: all
-all: shims/cargo-binstall shims/uv
-	$(TOKEN_ENV) mise install
+all: shims/uv
+	$(TOKEN_ENV) $(PATH_ENV) mise install
 	$(MAKE) fixup
 
-# FIXME: workaround for https://github.com/jdx/mise/issues/2260
-shims/cargo-binstall:
-	$(TOKEN_ENV) mise install ubi:cargo-bins/cargo-binstall
+# FIXME: workaround for https://github.com/jdx/mise/issues/2885
+.PHONY: shims/uv
 shims/uv:
 	$(TOKEN_ENV) mise install ubi:astral-sh/uv
 
