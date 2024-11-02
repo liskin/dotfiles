@@ -38,16 +38,18 @@ while (( $# )); do
 	esac
 done
 
-if [[ "$(readlink -f "$PWD")" == "$(readlink -f "$HOME")" ]]; then
-	echo "\$PWD == \$HOME, would mount \$HOME read-write, exiting"
+real_HOME=$(readlink -f "$HOME")
+if [[ "${real_HOME%/}"/ == "${PWD%/}"/* ]]; then
+	echo "\$HOME under \$PWD, would mount \$HOME read-write, exiting"
 	exit 1
 fi
 
 bwrap_opts=()
 
 if [[ $tmpfs ]]; then
-	if [[ "$(readlink -f "$PWD")" == "$(readlink -f /tmp)" ]]; then
-		echo "\$PWD == /tmp, would mount /tmp read-write, exiting"
+	real_tmp=$(readlink -f /tmp)
+	if [[ "${real_tmp%/}"/ == "${PWD%/}"/* ]]; then
+		echo "/tmp under \$PWD, would mount /tmp read-write, exiting"
 		exit 1
 	fi
 
