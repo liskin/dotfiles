@@ -1,0 +1,7 @@
+#!/bin/sh
+exec bwrap-home \
+	--home-tmpfs --tmpfs \
+	--mount ~/.local/share/nvim/site/pack/bundle/opt/copilot.lua/copilot \
+	--mount-rw ~/.config/github-copilot \
+	-- \
+	node "$@"
