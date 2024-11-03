@@ -173,7 +173,7 @@ cmp.setup {
 		['<C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_all),
 		['<C-X><C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_current),
 		['<C-X><C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_current),
-		['<C-X><C-O>'] = cmp_or(cmp_select_prev, cmp_complete_omni),
+		['<C-X><C-O>'] = cmp_or(cmp_select_next, cmp_complete_omni),
 		['<C-_>'] = cmp_or(cmp_select_next, cmp_complete_ultisnips),
 	},
 	---@diagnostic disable-next-line: missing-fields
