@@ -14,8 +14,8 @@ set -eu -o pipefail
 options=$(
 	unset GETOPT_COMPATIBLE
 	getopt \
-		-o hH:Tt \
-		--long "help,home:,home-tmpfs,tmpfs" \
+		-o hH:Ttm:M: \
+		--long "help,home:,home-tmpfs,tmpfs,mount:,mount-rw:" \
 		-- "$@"
 )
 eval "set -- $options"
@@ -23,17 +23,21 @@ eval "set -- $options"
 home=$PWD/.home
 home_tmpfs=
 tmpfs=
+mount=()
+mount_rw=()
 while (( $# )); do
 	opt=$1; shift
 	case "$opt" in
 		-h|--help)
-			echo "Usage: bwrap-home [-h|--home=PATH] [-T|--home-tmpfs] [-t|--tmpfs] -- <command> [<args>…]"
+			echo "Usage: bwrap-home [-h|--home=PATH] [-T|--home-tmpfs] [-t|--tmpfs] [-m|--mount=PATH] [-M|--mount-rw=PATH] -- <command> [<args>…]"
 			exit
 			;;
 
 		-H|--home) home=$1; shift ;;
 		-T|--home-tmpfs) home_tmpfs=: ;;
 		-t|--tmpfs) tmpfs=: ;;
+		-m|--mount) mount+=("$1"); shift ;;
+		-M|--mount-rw) mount_rw+=("$1"); shift ;;
 		--) break ;;
 	esac
 done
@@ -80,6 +84,28 @@ if [[ "$HOME" != "$orig_HOME" ]]; then
 		--ro-bind {"$orig_HOME","$HOME"}/.local/share/mise
 	)
 fi
+
+for m in "${mount[@]}" "${mount_rw[@]}"; do
+	if [[ "${real_HOME%/}"/ == "${m%/}"/* ]]; then
+		echo "\$HOME under $m, would make \$HOME accessible, exiting"
+		exit 1
+	fi
+	if [[ $tmpfs && "${real_tmp%/}"/ == "${m%/}"/* ]]; then
+		echo "/tmp under $m, would make /tmp accessible, exiting"
+		exit 1
+	fi
+done
+
+for m in "${mount[@]}"; do
+	bwrap_opts+=(
+		--ro-bind "$m"{,}
+	)
+done
+for m in "${mount_rw[@]}"; do
+	bwrap_opts+=(
+		--bind "$m"{,}
+	)
+done
 
 (( $# )) || set -- bash
 
