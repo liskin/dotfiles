@@ -30,6 +30,9 @@ require'nvim-treesitter.configs'.setup {
 	},
 	highlight = {
 		enable = true,
+		disable = {
+			"bash", -- too buggy (but stays enabled in injections)
+		},
 	},
 	textobjects = {
 		-- FIXME: doesn't work (https://github.com/nvim-treesitter/nvim-treesitter-textobjects/issues/479)
