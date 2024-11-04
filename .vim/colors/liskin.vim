@@ -416,6 +416,13 @@ if &t_Co >= 256 || has('gui_running')
 		hi link @markup.link.url UnderlinedOnly
 		hi link @markup.underline UnderlinedOnly
 
+		hi link @comment.note Todo
+		hi link @comment.error Todo
+		hi link @comment.warning Todo
+
+		hi link @variable.bash Identifier
+		hi link @function.call.bash NONE
+
 		hi link DiagnosticUnnecessary NONE
 	endif
 
