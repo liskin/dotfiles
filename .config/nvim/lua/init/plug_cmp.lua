@@ -208,7 +208,7 @@ end)
 vim.keymap.set({ 'n', 'v' }, '<Tab>', function()
 	if vim.snippet.active({ direction = 1 }) then
 		return '<Cmd>lua vim.snippet.jump(1)<CR>'
-	elseif vim.fn['UltiSnips#CanJumpForwards']() then
+	elseif vim.fn['UltiSnips#CanJumpForwards']() ~= 0 then
 		return '<Cmd>call UltiSnips#JumpForwards()<CR>'
 	else
 		return '<Tab>'
@@ -217,7 +217,7 @@ end, { expr = true })
 vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
 	if vim.snippet.active({ direction = -1 }) then
 		return '<Cmd>lua vim.snippet.jump(-1)<CR>'
-	elseif vim.fn['UltiSnips#CanJumpBackwards']() then
+	elseif vim.fn['UltiSnips#CanJumpBackwards']() ~= 0 then
 		return '<Cmd>call UltiSnips#JumpBackwards()<CR>'
 	else
 		return '<S-Tab>'
