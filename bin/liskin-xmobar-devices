@@ -128,6 +128,8 @@ function check-sys-libvirt {
 			libvirt_sys_domains+=("$name")
 		fi
 	done
+
+	(( ${#libvirt_sys_domains[@]} ))
 }
 
 function check-user-libvirt {
@@ -144,6 +146,8 @@ function check-user-libvirt {
 			libvirt_user_domains+=("$name")
 		fi
 	done
+
+	(( ${#libvirt_user_domains[@]} ))
 }
 
 function check-bt-battery {
