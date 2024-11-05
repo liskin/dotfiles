@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Run a command with /home and /tmp mounted as tmpfs overlay over a read-only system.
+# Allows making destructive changes without affecting the real system.
+
+set -eu -o pipefail
+
+# shellcheck source-path=..
+. "$HOME"/bin/.o
+
+options=$(
+	unset GETOPT_COMPATIBLE
+	getopt \
+		-o h \
+		--long "help" \
+		-- "$@"
+)
+eval "set -- $options"
+
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		-h|--help)
+			echo "Usage: bwrap-overlay -- <command> [<args>…]"
+			exit
+			;;
+
+		--) break ;;
+	esac
+done
+
+(( $# )) || set -- bash
+
+o exec bwrap \
+	--ro-bind /{,} \
+	--dev /dev \
+	--proc /proc \
+	--overlay-src /home --tmp-overlay /home \
+	--overlay-src /tmp --tmp-overlay /tmp \
+	-- "$@"
