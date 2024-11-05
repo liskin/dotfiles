@@ -1,4 +1,12 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+if [[ "${HOME%/}"/ == "${PWD%/}"/* ]]; then
+	mkdir -p "${XDG_RUNTIME_DIR:?}"/bwrap-node-copilot
+	cd "${XDG_RUNTIME_DIR:?}"/bwrap-node-copilot
+fi
+
 exec bwrap-home \
 	--home-tmpfs --tmpfs \
 	--mount ~/.local/share/nvim/site/pack/bundle/opt/copilot.lua/copilot \
