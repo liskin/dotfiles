@@ -1,4 +1,5 @@
 local copilot = require'copilot'
+local copilot_chat = require'CopilotChat'
 
 copilot.setup {
 	copilot_node_command = 'bwrap-node-copilot', -- restricted jail for the proprietary crap
@@ -30,4 +31,8 @@ copilot.setup {
 			return true
 		end,
 	},
+}
+
+copilot_chat.setup {
+	model = 'claude-3.5-sonnet',
 }
