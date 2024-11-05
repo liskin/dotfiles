@@ -17,10 +17,6 @@ copilot.setup {
 			if vim.b.lsp_disabled or vim.g.lsp_disabled then
 				return false
 			end
-			if not vim.bo.modifiable or vim.bo.buftype ~= "" then
-				-- https://github.com/zbirenbaum/copilot.lua/pull/333
-				return false
-			end
 
 			local name = vim.api.nvim_buf_get_name(0)
 			local basename = vim.fs.basename(name)

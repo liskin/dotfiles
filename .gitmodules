@@ -176,7 +176,8 @@
 	url = https://github.com/liskin/cmp-conventionalcommits/
 [submodule ".local/share/nvim/site/optbundle/copilot.lua"]
 	path = .local/share/nvim/site/optbundle/copilot.lua
-	url = https://github.com/zbirenbaum/copilot.lua
+	# url = https://github.com/zbirenbaum/copilot.lua
+	url = https://github.com/liskin/copilot.lua
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
 	url = https://github.com/h3xx/tig-colors-neonwolf
