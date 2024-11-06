@@ -175,6 +175,7 @@ cmp.setup {
 		['<C-X><C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_current),
 		['<C-X><C-O>'] = cmp_or(cmp_select_next, cmp_complete_omni),
 		['<C-_>'] = cmp_or(cmp_select_next, cmp_complete_ultisnips),
+		['<LeftMouse>'] = function() end,
 	},
 	---@diagnostic disable-next-line: missing-fields
 	confirmation = {
