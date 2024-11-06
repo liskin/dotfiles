@@ -562,6 +562,10 @@ if has('nvim')
 	inoremap <silent> <F16> <Cmd>LspLinesToggle<CR>
 endif
 
+if has('nvim')
+	noremap <silent> <F7> <Cmd>CopilotChatToggle<CR>
+endif
+
 nnoremap <silent> <F8> <Cmd>TagbarToggle<CR>
 inoremap <silent> <F8> <Cmd>TagbarToggle<CR>
 
