@@ -20,6 +20,16 @@ function trailers-auto {
 	fi
 }
 
+function in-rebase {
+	local f
+	f=$(git rev-parse --git-path rebase-merge) || return
+	[[ -e "$f" ]]
+}
+
 case "${2-}" in
-	""|message|template|commit) trailers-auto "$1" ;;
+	""|message|template|commit)
+		if ! in-rebase; then
+			trailers-auto "$1"
+		fi
+		;;
 esac
