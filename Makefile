@@ -34,6 +34,7 @@ SUBDIRS_EXCLUDE := docs/resume-cv .xmonad-testing
 all: $(filter-out $(SUBDIRS_EXCLUDE),$(SUBDIRS))
 
 .local/share/mise: bin/.ext .rustup
+.local/share/bash-completion: .local/share/mise
 
 ## Invoke "make gc" in sub-Makefiles
 gc: bin/.ext%gc

@@ -1,22 +1,46 @@
 #!/usr/bin/env bash
+# shellcheck external-sources=false
 
 # Continually sync file changes to a GitHub Codespace
 # (a wrapper for watchexec/rsync)
 
 set -eu -o pipefail
 
-function usage {
+function help {
 	echo "Usage: $0 [-n|--dry-run] cs.my-space.my-branch"
 }
 
-options=$(unset GETOPT_COMPATIBLE && getopt -o hn --long help,dry-run -- "$@")
+function usage {
+	cat <<-"END"
+		name "git-gh-codespace-rsync"
+		bin "git-gh-codespace-rsync"
+
+		flag "-h --help" help="Print the CLI help"
+		flag "-n --dry-run" help="Pass --dry-run to rsync"
+
+		arg "<codespace>" help="hostname of the Codespace to ssh to"
+		complete "codespace" run="git-gh-codespace-rsync --usage-complete-host"
+END
+}
+
+function usage-complete-host {
+	# shellcheck disable=SC1091
+	. /usr/share/bash-completion/bash_completion
+	if _comp_compgen_known_hosts -a "cs."; then
+		printf "%s\n" "${COMPREPLY[@]}"
+	fi
+}
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o hn --long help,usage,usage-complete-host,dry-run -- "$@")
 eval "set -- $options"
 
 dry_run=
 while (( $# )); do
 	opt=$1; shift
 	case "$opt" in
-		-h|--help) usage; exit ;;
+		-h|--help) help; exit ;;
+		--usage) usage; exit ;;
+		--usage-complete-host) usage-complete-host; exit ;;
 		-n|--dry-run) dry_run=: ;;
 		--) break ;;
 	esac
