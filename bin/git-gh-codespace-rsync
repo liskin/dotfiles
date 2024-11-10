@@ -51,7 +51,16 @@ if (( $# != 1 )); then
 	exit 1
 fi
 
-workspace=$(ssh "${1:?}" -- bash -l -c pwd | tail -1)
+: "${1:?}"
+if [[ $1 == *:* ]]; then
+	codespace=${1%%:*}
+	path=${1#*:}
+else
+	codespace=${1}
+	path=
+fi
+
+workspace=$(ssh "$codespace" -- "bash -l -c $(printf %q "cd $(printf %q "$path") && pwd")" | tail -1)
 : "${workspace:?}"
 
 rsync_flags=(
@@ -64,4 +73,4 @@ rsync_flags=(
 	--files-from=-
 )
 
-exec watchexec -- "git ls-files -z | rsync ${rsync_flags[*]} ./ $(printf %q:%q "$1" "$workspace")"
+exec watchexec -- "git ls-files -z | rsync ${rsync_flags[*]} ./ $(printf "%q:%q/" "$1" "$workspace")"
