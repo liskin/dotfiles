@@ -19,6 +19,22 @@ function cmp_nvim_ultisnips_source:execute(completion_item, callback)
 	snippet_noselectmode()
 	callback(completion_item)
 end
+vim.keymap.set({ 'n', 'v' }, '<Plug>(vim_snippet_next_noselectmode)', function()
+	vim.snippet.jump(1)
+	snippet_noselectmode()
+end)
+vim.keymap.set({ 'n', 'v' }, '<Plug>(vim_snippet_prev_noselectmode)', function()
+	vim.snippet.jump(-1)
+	snippet_noselectmode()
+end)
+vim.keymap.set({ 'n', 'v' }, '<Plug>(ultisnip_next_noselectmode)', function()
+	vim.fn['UltiSnips#JumpForwards']()
+	snippet_noselectmode()
+end)
+vim.keymap.set({ 'n', 'v' }, '<Plug>(ultisnip_prev_noselectmode)', function()
+	vim.fn['UltiSnips#JumpBackwards']()
+	snippet_noselectmode()
+end)
 
 local function has_words_before()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -208,18 +224,18 @@ end)
 -- smart Tab - snippet placeholders if any
 vim.keymap.set({ 'n', 'v' }, '<Tab>', function()
 	if vim.snippet.active({ direction = 1 }) then
-		return '<Cmd>lua vim.snippet.jump(1)<CR>'
+		return '<Plug>(vim_snippet_next_noselectmode)'
 	elseif vim.fn['UltiSnips#CanJumpForwards']() ~= 0 then
-		return '<Cmd>call UltiSnips#JumpForwards()<CR>'
+		return '<Plug>(ultisnip_next_noselectmode)'
 	else
 		return '<Tab>'
 	end
 end, { expr = true })
 vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
 	if vim.snippet.active({ direction = -1 }) then
-		return '<Cmd>lua vim.snippet.jump(-1)<CR>'
+		return '<Plug>(vim_snippet_prev_noselectmode)'
 	elseif vim.fn['UltiSnips#CanJumpBackwards']() ~= 0 then
-		return '<Cmd>call UltiSnips#JumpBackwards()<CR>'
+		return '<Plug>(ultisnip_prev_noselectmode)'
 	else
 		return '<S-Tab>'
 	end
