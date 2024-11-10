@@ -6,11 +6,9 @@ all:
 all: gh-codespaces.conf
 ##
 gh-codespaces.conf:
-	gh codespace ssh --config | sed -e 's| -i.*codespaces.auto||; /IdentityFile/d;' >$@
-# ^ sed because https://github.com/cli/cli/issues/9817
+	-gh codespace ssh --config >$@
 
 include ~/_gitignore.mk
 include ~/_help.mk
 
 .DELETE_ON_ERROR:
-
