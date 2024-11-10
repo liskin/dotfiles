@@ -16,7 +16,15 @@ xset -dpms
 out_wide=$(find-xrandr-connected-output '!(eDP-*)')
 wide_width=3440; wide_height=1440
 wide_width_mm=820; wide_height_mm=346
-wide_width_left=${1:-1040}
+
+if [[ ${1-} ]]; then
+	wide_width_left="$1"
+elif [[ ${LAYOUT_ALT-} ]]; then
+	wide_width_left=1720
+else
+	wide_width_left=1040
+fi
+
 if (( wide_width_left < wide_width )); then
 	wide_width_left_mm=$((wide_width_mm * wide_width_left / wide_width))
 	wide_width_right=$((wide_width - wide_width_left))

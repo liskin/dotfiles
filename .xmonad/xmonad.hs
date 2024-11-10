@@ -117,6 +117,7 @@ myKeys XConfig{..} = M.fromList $
     , ((0,         xF86XK_Favorites     ), spawnExec "liskin-media toggle-camera")
     , ((ctrlMask,  xF86XK_WebCam        ), spawnExec "liskin-touchscreen-toggle")
     , ((0,         xF86XK_Display       ), spawnExec "layout-auto layout-vertical")
+    , ((shiftMask, xF86XK_Display       ), spawnExec "env LAYOUT_ALT=: layout-auto layout-vertical")
     , ((ctrlMask,  xF86XK_Display       ), spawnExec "layout-normal")
     , ((0,         xF86XK_Tools         ), spawn "sleep 0.5; xset dpms force off")
     , ((shiftMask, xK_Menu              ), unGrab >> spawnExec "flameshot gui")
