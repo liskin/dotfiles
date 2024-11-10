@@ -32,7 +32,7 @@ show_env = true
 "pipx:pushl" = "0.3.5"
 "pipx:python-dxf" = "12.1.0"
 "pipx:timezonefinder" = "6.5.4"
-"ubi:JohnnyMorganz/StyLua[exe=stylua]" = "0.20.0"
+"ubi:JohnnyMorganz/StyLua" = { version = "0.20.0", exe = "stylua" }
 "ubi:YodaEmbedding/frece" = "1.0.6"
 "ubi:ankitpokhrel/jira-cli" = { version = "1.5.2", exe = "jira" }
 "ubi:astral-sh/uv" = "0.4.29"
@@ -43,10 +43,10 @@ show_env = true
 "ubi:pkolaczk/fclones" = "0.34.0"
 "ubi:rust-analyzer/rust-analyzer" = "2024-10-21"
 "ubi:tilt-dev/ctlptl" = "0.8.35"
-"ubi:tilt-dev/tilt" = "0.33.20"
-cargo-binstall = "1.10.9"
+"ubi:tilt-dev/tilt" = "0.33.21"
+cargo-binstall = "1.10.12"
 dive = "0.12.0"
 hadolint = "2.12.0"
 taplo = "0.9.3"
-usage = "1.0.1"
+usage = "1.2.0"
 watchexec = "2.2.0"
