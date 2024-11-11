@@ -495,6 +495,7 @@ workspaceIcons = s [re|\<irc\>|] (fnNerd "\xf198")
                . s [re|\<strava\>|] (fnAweBrand "\xf428")
                . s [re|\<foursquare\>|] (fnAweBrand "\xf180")
                . s [re|\<python\>|] (fnNerd "\xf81f")
+               . s [re|\<MiniFort\>|] (fnNerd "\xf286")
   where
     s r sub x = replaceAll sub $ x *=~ r
 
