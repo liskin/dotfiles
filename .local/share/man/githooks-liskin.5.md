@@ -20,10 +20,24 @@ githooks-liskin - Extra global git hooks
 
 # DESCRIPTION
 
-`liskin.trailersJiraBase` - base URI for Jira issues (any XYZ-123 in branch name).
+**`liskin.trailersJiraBase`**
+: base URI for Jira issues (any XYZ-123 in branch name).
 
-`liskin.ensureSignedPush` - remote names (may be specified multiple times)
-where all commits pushed must be signed.
+**`liskin.ensureSignedPush`**
+: remote names (may be specified multiple times) where all commits pushed must
+  be signed.
 
-`liskin.ensureBranchJira` - remote names (may be specified multiple times)
-where all branches must have a Jira reference in their name.
+**`liskin.ensureBranchJira`**
+: remote names (may be specified multiple times) where all branches must have
+  a Jira reference in their name.
+
+# ENVIRONMENT VARIABLES
+
+**`_LISKIN_ENSUREBRANCHJIRA_SKIP`**
+: bypass the `liskin.ensureBranchJira` check
+
+**`_LISKIN_ENSURESIGNEDPUSH_SKIP`**
+: bypass the `liskin.ensureSignedPush` check
+
+**`_LISKIN_BRANCHTRAILERS_REBASE_OK`**
+: add Jira trailers when rebasing

@@ -28,7 +28,7 @@ function in-rebase {
 
 case "${2-}" in
 	""|message|template|commit)
-		if ! in-rebase; then
+		if ! in-rebase || [[ ${_LISKIN_BRANCHTRAILERS_REBASE_OK-} ]]; then
 			trailers-auto "$1"
 		fi
 		;;
