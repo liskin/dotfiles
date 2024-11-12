@@ -40,8 +40,9 @@ if ! has-cmds "${cmds_essential[@]}"; then
 fi
 
 [[ "$(id -u)" == 0 ]] && root=: || root=
+[[ "${CODESPACES-}" == true ]] && codespaces=: || codespaces=
 
-[[ $root ]] && branch=root || branch=home
+[[ $root ]] && branch=root || [[ $codespaces ]] && branch=codespaces || branch=home
 [[ $root ]] && worktree=/ || worktree=~
 dotfiles=~/src/dotfiles.git
 
@@ -58,30 +59,16 @@ o git-dotfiles config branch."$branch".rebase true
 
 missing=()
 o git-dotfiles reset
-o git-dotfiles diff --no-renames --name-only --diff-filter=D --line-prefix="${worktree%/}/" -z | readarray -d '' missing
-o git-dotfiles checkout "${missing[@]}"
-o git-dotfiles checkout -p
+if [[ $codespaces ]]; then
+	o git-dotfiles checkout -f
+else
+	o git-dotfiles diff --no-renames --name-only --diff-filter=D --line-prefix="${worktree%/}/" -z | readarray -d '' missing
+	o git-dotfiles checkout "${missing[@]}"
+	o git-dotfiles checkout -p
+fi
 o git-dotfiles submodule update --init
 
-cmds_required=(
-	bwrap
-	fzf
-	getcap
-	jq
-	setcap
-)
-files_required=(
-	/etc/profile.d/bash_completion.sh
-)
-pkgs_required=(
-	bash-completion
-	bubblewrap
-	fzf
-	jq
-	libcap2-bin
-)
-if ! has-cmds "${cmds_required[@]}" || ! has-files "${files_required[@]}"; then
-	oo "# apt install ${pkgs_required[*]}"
+if [[ -e ~/bootstrap-phase2.sh ]]; then
+	# shellcheck disable=SC1090
+	. ~/bootstrap-phase2.sh
 fi
-
-oo "# bash -l -c make"
