@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+treeish=${1:?}
+path=${2:?}
+
+mkdir -p $(dirname "$path")
+
+mode=$(git-dotfiles ls-tree --format="%(objectmode)" --full-tree "$treeish" "$path")
+case "$mode" in
+	100644|100755)
+		tmp=$(mktemp)
+		git-dotfiles show "$treeish":"$path" > "$tmp"
+		chmod "${mode#100}" "$tmp"
+		mv "$tmp" "$path"
+		;;
+	*)
+		echo "unexpected mode $mode" >&2
+		exit 1
+		;;
+esac
