@@ -26,6 +26,7 @@ $(strip
 	.vimrc
 	_gitignore.mk
 	_help.mk
+	bin/git-repo-name
 	bin/liskin-make-gitignore
 	bootstrap.sh
 )
