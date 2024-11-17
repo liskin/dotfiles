@@ -41,6 +41,7 @@ show_env = true
 "ubi:kubernetes-sigs/kind" = "0.22.0"
 "ubi:oz/tz" = "0.7.0"
 "ubi:pkolaczk/fclones" = "0.34.0"
+"ubi:regclient/regclient" = { version = "0.7.2", exe = "regctl", matching = "regctl" }
 "ubi:rust-analyzer/rust-analyzer" = "2024-10-21"
 "ubi:tilt-dev/ctlptl" = "0.8.35"
 "ubi:tilt-dev/tilt" = "0.33.21"
