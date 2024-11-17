@@ -102,7 +102,7 @@
 [alias]
 	fixes = -c core.abbrev=12 log -1 --pretty=fixes
 	co-authored-by = log -1 --all --author-date-order --pretty=co-authored-by --regexp-ignore-case --author
-	lgmarkdown = "log --reverse --pretty=format:'#### [%s](../commit/%H)%n%n%b'"
+	lgmarkdown = "log --reverse --pretty=format:'### %s%n%n%b'"
 [pretty]
 	fixes = "Fixes: %h (\"%s\")"
 	co-authored-by = Co-authored-by: %an <%ae>
