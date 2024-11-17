@@ -32,23 +32,26 @@ show_env = true
 "pipx:pushl" = "0.3.5"
 "pipx:python-dxf" = "12.1.0"
 "pipx:timezonefinder" = "6.5.4"
-"ubi:JohnnyMorganz/StyLua" = { version = "0.20.0", exe = "stylua" }
+"ubi:JohnnyMorganz/StyLua" = { version = "2.0.0", exe = "stylua" }
 "ubi:YodaEmbedding/frece" = "1.0.6"
 "ubi:ankitpokhrel/jira-cli" = { version = "1.5.2", exe = "jira" }
-"ubi:astral-sh/uv" = "0.4.29"
 "ubi:bazelbuild/buildtools" = { version = "7.3.1", exe = "buildifier", matching = "buildifier" }
 "ubi:evcxr/evcxr" = "0.17.0"
-"ubi:kubernetes-sigs/kind" = "0.22.0"
 "ubi:oz/tz" = "0.7.0"
 "ubi:pkolaczk/fclones" = "0.34.0"
-"ubi:regclient/regclient" = { version = "0.7.2", exe = "regctl", matching = "regctl" }
-"ubi:rust-analyzer/rust-analyzer" = "2024-10-21"
-"ubi:tilt-dev/ctlptl" = "0.8.35"
-"ubi:tilt-dev/tilt" = "0.33.21"
 cargo-binstall = "1.10.12"
+ctlptl = "0.8.36"
 dive = "0.12.0"
-gh = "2.61.0"
+gh = "2.62.0"
 hadolint = "2.12.0"
+kind = "0.22.0"
+regctl = "0.7.2"
+rust-analyzer = "2024-10-21"
 taplo = "0.9.3"
-usage = "1.3.0"
+tilt = "0.33.21"
+usage = "1.3.2"
+uv = "0.5.2"
 watchexec = "2.2.0"
+
+[alias]
+rust-analyzer = "ubi:rust-analyzer/rust-analyzer"

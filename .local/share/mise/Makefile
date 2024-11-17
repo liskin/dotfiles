@@ -5,18 +5,10 @@ undefine GIT_DIR
 
 TOKEN_ENV := GITHUB_API_TOKEN=$$(keyring get gh:github.com '')
 
-# FIXME: workaround for https://github.com/jdx/mise/issues/2886
-PATH_ENV := PATH=$(CURDIR)/installs/ubi-astral-sh-uv/latest/bin:$$PATH
-
 .PHONY: all
-all: shims/uv
-	$(TOKEN_ENV) $(PATH_ENV) mise install
+all:
+	$(TOKEN_ENV) mise install
 	$(MAKE) fixup
-
-# FIXME: workaround for https://github.com/jdx/mise/issues/2885
-.PHONY: shims/uv
-shims/uv:
-	$(TOKEN_ENV) mise install ubi:astral-sh/uv
 
 .PHONY: fixup
 fixup: fixup-bottle-py
