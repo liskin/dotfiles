@@ -10,7 +10,7 @@ end, { expr = true })
 
 local function snippet_noselectmode()
 	local keys = vim.api.nvim_replace_termcodes('<Plug>(noselectmode)', true, false, true)
-	vim.api.nvim_feedkeys(keys, '', true)
+	vim.api.nvim_feedkeys(keys, '', false)
 end
 
 vim.keymap.set({ 'n', 'v' }, '<Plug>(vim_snippet_next_noselectmode)', function()

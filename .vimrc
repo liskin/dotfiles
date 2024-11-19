@@ -637,6 +637,10 @@ if has('nvim')
 	set wildcharm=<C-Z>
 	cnoremap <expr> <Tab> wildmenumode() ? "\<Right>" : "\<C-Z>"
 	cnoremap <expr> <CR> wildmenumode() ? "\<C-Y>" : "\<CR>"
+
+	" tweak ins-completion popup menu to behave like my cmp config
+	inoremap <expr> <Tab> pumvisible() ? "\<Down>" : "\<Tab>"
+	inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
 endif
 
 " cloning/closing tabs {{{2
@@ -664,8 +668,8 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 xnoremap <silent> j gj
 xnoremap <silent> k gk
-inoremap <silent> <Down> <C-O>gj
-inoremap <silent> <Up> <C-O>gk
+inoremap <silent> <expr> <Down> pumvisible() ? "\<Down>" : "\<C-O>gj"
+inoremap <silent> <expr> <Up> pumvisible() ? "\<Up>" : "\<C-O>gk"
 
 " hop keys {{{2
 if has('nvim')

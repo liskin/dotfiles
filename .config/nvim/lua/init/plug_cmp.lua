@@ -17,7 +17,9 @@ end
 
 local function cmp_or(if_cmp, fallback1)
 	return function(fallback2)
-		if cmp.visible() then
+		if vim.fn.pumvisible() ~= 0 then
+			fallback2()
+		elseif cmp.visible() then
 			if_cmp()
 		else
 			(fallback1 or fallback2)()
@@ -136,7 +138,9 @@ cmp.setup {
 	),
 	mapping = {
 		['<Tab>'] = function(fallback)
-			if cmp.visible() then
+			if vim.fn.pumvisible() ~= 0 then
+				fallback()
+			elseif cmp.visible() then
 				if #cmp.get_entries() == 1 then
 					cmp.confirm()
 				else
