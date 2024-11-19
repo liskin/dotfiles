@@ -174,6 +174,9 @@
 	path = .local/share/nvim/site/bundle/cmp-conventionalcommits
 	# url = https://github.com/cultab/cmp-conventionalcommits/
 	url = https://github.com/liskin/cmp-conventionalcommits/
+[submodule ".local/share/nvim/site/bundle/CopilotChat.nvim"]
+	path = .local/share/nvim/site/bundle/CopilotChat.nvim
+	url = https://github.com/CopilotC-Nvim/CopilotChat.nvim
 [submodule ".local/share/nvim/site/optbundle/copilot.lua"]
 	path = .local/share/nvim/site/optbundle/copilot.lua
 	# url = https://github.com/zbirenbaum/copilot.lua
@@ -288,6 +291,3 @@
 [submodule "src/docker-libgourou"]
 	path = src/docker-libgourou
 	url = https://github.com/bcliang/docker-libgourou
-[submodule ".local/share/nvim/site/optbundle/CopilotChat.nvim"]
-	path = .local/share/nvim/site/optbundle/CopilotChat.nvim
-	url = https://github.com/CopilotC-Nvim/CopilotChat.nvim

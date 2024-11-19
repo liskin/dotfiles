@@ -21,5 +21,6 @@ require 'init.plug_presenting'
 require 'init.plug_iron'
 require 'init.plug_dropbar'
 require 'init.plug_copilot_lazy' -- see also 'init.plug_copilot'
+require 'init.plug_copilotchat'
 
 -- see also 'init.after'
