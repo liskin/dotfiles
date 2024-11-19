@@ -140,6 +140,9 @@ cmp.setup {
 		['<Tab>'] = function(fallback)
 			if vim.fn.pumvisible() ~= 0 then
 				fallback()
+			elseif vim.fn.maparg('<Plug>(tab_complete)', 'i') ~= '' then
+				local keys = vim.api.nvim_replace_termcodes('<Plug>(tab_complete)', true, false, true)
+				vim.api.nvim_feedkeys(keys, 'im', false)
 			elseif cmp.visible() then
 				if #cmp.get_entries() == 1 then
 					cmp.confirm()

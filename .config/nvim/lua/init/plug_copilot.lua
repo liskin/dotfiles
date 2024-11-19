@@ -1,7 +1,6 @@
 local copilot = require'copilot'
 local copilot_chat = require'CopilotChat'
 local copilot_chat_actions = require'CopilotChat.actions'
-local copilot_chat_cmp = require'CopilotChat.integrations.cmp'
 local copilot_chat_fzflua = require'CopilotChat.integrations.fzflua'
 
 copilot.setup {
@@ -38,18 +37,14 @@ copilot.setup {
 
 copilot_chat.setup {
 	model = 'claude-3.5-sonnet',
+	chat_autocomplete = false,
 	mappings = {
 		complete = {
-			insert = '',
+			insert = '<Plug>(tab_complete)',
 		},
 	},
 }
 
-copilot_chat_cmp.setup()
-
-vim.keymap.set('n', '<Leader>cch', function()
-	copilot_chat_fzflua.pick(copilot_chat_actions.help_actions())
-end)
-vim.keymap.set('n', '<Leader>ccp', function()
+vim.keymap.set('n', '<Leader>cc', function()
 	copilot_chat_fzflua.pick(copilot_chat_actions.prompt_actions())
 end)
