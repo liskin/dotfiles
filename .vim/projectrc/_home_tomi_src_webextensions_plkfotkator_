@@ -1,1 +1,1 @@
-let g:lsp_autostart_tsserver = v:true
+let g:lsp_autostart_ts_ls = v:true

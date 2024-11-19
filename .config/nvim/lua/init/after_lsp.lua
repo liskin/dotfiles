@@ -115,7 +115,7 @@ local lsps = {
 	'rust_analyzer',
 	'taplo',
 	'tilt_ls',
-	'tsserver',
+	'ts_ls',
 }
 
 -- see '~/.vimrc' and 'init.lsp_settings' for the actual settings
