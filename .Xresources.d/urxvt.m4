@@ -113,3 +113,16 @@ URxvt.keysym.4-colon: aAtt:word-complete
 URxvt.keysym.4-quotedbl: aAtt:WORD-complete
 URxvt.keysym.4-question: aAtt:fuzzy-WORD-complete
 URxvt.keysym.4-greater: aAtt:fuzzy-word-complete
+dnl
+URxvt.keysym.S-F1: \033[11$
+URxvt.keysym.S-F2: \033[12$
+URxvt.keysym.S-F3: \033[13$
+URxvt.keysym.S-F4: \033[14$
+URxvt.keysym.S-F5: \033[15$
+URxvt.keysym.S-F6: \033[17$
+URxvt.keysym.S-F7: \033[18$
+URxvt.keysym.S-F8: \033[19$
+URxvt.keysym.S-F9: \033[20$
+URxvt.keysym.S-F10: \033[21$
+URxvt.keysym.S-F11: \033[23$
+URxvt.keysym.S-F12: \033[24$

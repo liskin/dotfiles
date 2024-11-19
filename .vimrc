@@ -4,7 +4,7 @@ set nocompatible
 
 " term tweaks {{{2
 
-for fn in range(13, 24) " {{{3
+for fn in range(13, 26) " {{{3
 	exe "noremap <silent> <F" . fn . "> <Nop>"
 	exe "noremap! <silent> <F" . fn . "> <Nop>"
 endfor
@@ -20,10 +20,10 @@ if !has('nvim')
 		let &t_EI = "\<Esc>[2 q"
 
 		" ctrl+pgup/down to switch tabs {{{4
-		exe "set <F21>=\<Esc>[5^"
-		exe "set <F22>=\<Esc>[6^"
-		nmap <silent> <F21> <C-PageUp>
-		nmap <silent> <F22> <C-PageDown>
+		exe "set <F25>=\<Esc>[5^"
+		exe "set <F26>=\<Esc>[6^"
+		nmap <silent> <F25> <C-PageUp>
+		nmap <silent> <F26> <C-PageDown>
 
 		" fix keycodes {{{4
 		exe "set <S-Up>=\<Esc>[a"
@@ -31,13 +31,18 @@ if !has('nvim')
 		exe "set <C-Left>=\<Esc>Od"
 		exe "set <C-Right>=\<Esc>Oc"
 		exe "set <A-n>=\<Esc>n"
-		exe "set <F14>=\<Esc>[26;*~"
-		exe "set <F15>=\<Esc>[28;*~"
-		exe "set <F16>=\<Esc>[29;*~"
-		exe "set <F17>=\<Esc>[31;*~"
-		exe "set <F18>=\<Esc>[32;*~"
-		exe "set <F19>=\<Esc>[33;*~"
-		exe "set <F20>=\<Esc>[34;*~"
+		exe "set <F13>=\<Esc>[11$"
+		exe "set <F14>=\<Esc>[12$"
+		exe "set <F15>=\<Esc>[13$"
+		exe "set <F16>=\<Esc>[14$"
+		exe "set <F17>=\<Esc>[15$"
+		exe "set <F18>=\<Esc>[17$"
+		exe "set <F19>=\<Esc>[18$"
+		exe "set <F20>=\<Esc>[19$"
+		exe "set <F21>=\<Esc>[20$"
+		exe "set <F22>=\<Esc>[21$"
+		exe "set <F23>=\<Esc>[23$"
+		exe "set <F24>=\<Esc>[24$"
 		exe "set <Undo>="
 		exe "set <Help>="
 	endif
@@ -56,10 +61,10 @@ if !has('nvim')
 		let &t_fd = "\<Esc>[?1004l"
 
 		" ctrl+pgup/down to switch tabs {{{4
-		exe "set <F21>=\<Esc>[5;5~"
-		exe "set <F22>=\<Esc>[6;5~"
-		nmap <silent> <F21> <C-PageUp>
-		nmap <silent> <F22> <C-PageDown>
+		exe "set <F25>=\<Esc>[5;5~"
+		exe "set <F26>=\<Esc>[6;5~"
+		nmap <silent> <F25> <C-PageUp>
+		nmap <silent> <F26> <C-PageDown>
 
 		" fix keycodes {{{4
 		exe "set <A-n>=\<Esc>n"
@@ -71,14 +76,18 @@ if !has('nvim')
 		exe "set <F18>=\<Esc>[17;2~"
 		exe "set <F19>=\<Esc>[18;2~"
 		exe "set <F20>=\<Esc>[19;2~"
+		exe "set <F21>=\<Esc>[20;2~"
+		exe "set <F22>=\<Esc>[21;2~"
+		exe "set <F23>=\<Esc>[23;2~"
+		exe "set <F24>=\<Esc>[24;2~"
 	endif
 else " {{{3
 	" cursor shape {{{4
 	set guicursor=n-v-c-sm:block-Cursor,i-ci-ve:ver25-blinkoff500-blinkon500-Cursor,r-cr-o:hor20-blinkoff500-blinkon500-Cursor
 
 	" ctrl+pgup/down to switch tabs {{{4
-	nmap <silent> <F21> <C-PageUp>
-	nmap <silent> <F22> <C-PageDown>
+	nmap <silent> <F25> <C-PageUp>
+	nmap <silent> <F26> <C-PageDown>
 endif
 
 " rxvt background switching {{{3
@@ -540,29 +549,29 @@ inoremap <silent> <F1> <Cmd>FzfLua helptags<CR>
 nnoremap <silent> <F2> <Cmd>w!<CR>
 inoremap <silent> <F2> <Cmd>w!<CR>
 
-nnoremap <silent> <F13> <Cmd>cprevious<CR>
-inoremap <silent> <F13> <Cmd>cprevious<CR>
+nnoremap <silent> <F15> <Cmd>cprevious<CR>
+inoremap <silent> <F15> <Cmd>cprevious<CR>
 nnoremap <silent> <F3> <Cmd>cnext<CR>
 inoremap <silent> <F3> <Cmd>cnext<CR>
 
-nnoremap <silent> <F14> <Cmd>lprevious<CR>
-inoremap <silent> <F14> <Cmd>lprevious<CR>
+nnoremap <silent> <F16> <Cmd>lprevious<CR>
+inoremap <silent> <F16> <Cmd>lprevious<CR>
 nnoremap <silent> <F4> <Cmd>lnext<CR>
 inoremap <silent> <F4> <Cmd>lnext<CR>
 
 " see ~/.nvim/init/lsp.lua
 nnoremap <silent> <F5> <Cmd>LspInlayToggle<CR>
 inoremap <silent> <F5> <Cmd>LspInlayToggle<CR>
-nnoremap <silent> <F15> <Cmd>LspReferenceHighlightsToggle<CR>
-inoremap <silent> <F15> <Cmd>LspReferenceHighlightsToggle<CR>
+nnoremap <silent> <F17> <Cmd>LspReferenceHighlightsToggle<CR>
+inoremap <silent> <F17> <Cmd>LspReferenceHighlightsToggle<CR>
 
 if has('nvim')
 	nnoremap <silent> <F6> <Cmd>Trouble diagnostics toggle<CR>
 	inoremap <silent> <F6> <Cmd>Trouble diagnostics toggle<CR>
 
 	" see ~/.nvim/init/plug_lsp_lines.lua
-	nnoremap <silent> <F16> <Cmd>LspLinesToggle<CR>
-	inoremap <silent> <F16> <Cmd>LspLinesToggle<CR>
+	nnoremap <silent> <F18> <Cmd>LspLinesToggle<CR>
+	inoremap <silent> <F18> <Cmd>LspLinesToggle<CR>
 endif
 
 if has('nvim')
@@ -573,8 +582,8 @@ nnoremap <silent> <F8> <Cmd>TagbarToggle<CR>
 inoremap <silent> <F8> <Cmd>TagbarToggle<CR>
 
 if has('nvim')
-	nnoremap <silent> <F18> <Cmd>Trouble symbols toggle<CR>
-	inoremap <silent> <F18> <Cmd>Trouble symbols toggle<CR>
+	nnoremap <silent> <F20> <Cmd>Trouble symbols toggle<CR>
+	inoremap <silent> <F20> <Cmd>Trouble symbols toggle<CR>
 endif
 
 if has('gui_running')
@@ -583,7 +592,7 @@ if has('gui_running')
 	command ToggleMenu if &go=~'m'|set go-=m|else|set go+=m|endif
 elseif has('nvim')
 	nnoremap <silent> <F10> <Cmd>FzfLua menus<CR>
-	nnoremap <silent> <F20> <Cmd>DropbarToggle<CR>
+	nnoremap <silent> <F22> <Cmd>DropbarToggle<CR>
 endif
 
 nnoremap <silent> <F11> <Cmd>NERDTreeToggle<CR>
