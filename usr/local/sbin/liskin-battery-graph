@@ -34,13 +34,16 @@ def get_log(since, until):
         if entry['__REALTIME_TIMESTAMP'] > until:
             break
 
-        values = {}
-        for kv in entry['MESSAGE'].split():
-            [k, v] = kv.split(sep='=', maxsplit=1)
-            values[k] = v
-        values['time'] = entry['__REALTIME_TIMESTAMP']
+        try:
+            values = {}
+            for kv in entry['MESSAGE'].split():
+                [k, v] = kv.split(sep='=', maxsplit=1)
+                values[k] = v
+            values['time'] = entry['__REALTIME_TIMESTAMP']
 
-        yield values
+            yield values
+        except ValueError:
+            pass
 
 
 @contextlib.contextmanager
