@@ -19,6 +19,7 @@ show_env = true
 "cargo:cargo-watch" = "8.5.3"
 "cargo:ripgrep_all" = "0.10.6"
 "cargo:tokio-console" = "0.1.13"
+"npm:@mermaid-js/mermaid-cli" = "11.4.0"
 "npm:prettier" = "3.3.3"
 "npm:typescript-language-server" = "4.3.3"
 "pipx:gdbgui" = "0.15.2.0"
@@ -36,6 +37,7 @@ show_env = true
 "ubi:YodaEmbedding/frece" = "1.0.6"
 "ubi:ankitpokhrel/jira-cli" = { version = "1.5.2", exe = "jira" }
 "ubi:bazelbuild/buildtools" = { version = "7.3.1", exe = "buildifier", matching = "buildifier" }
+"ubi:chrishrb/go-grip" = "0.3.0"
 "ubi:evcxr/evcxr" = "0.17.0"
 "ubi:oz/tz" = "0.7.0"
 "ubi:pkolaczk/fclones" = "0.34.0"
