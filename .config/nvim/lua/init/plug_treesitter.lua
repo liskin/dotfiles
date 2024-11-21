@@ -20,6 +20,7 @@ require'nvim-treesitter.configs'.setup {
 		"lua",
 		"markdown",
 		"markdown_inline",
+		"mermaid",
 		"python",
 		"query",
 		"regex",
