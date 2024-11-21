@@ -1,0 +1,1 @@
+../../../../src-pandoc/diagram/_extensions/diagram/diagram.lua
