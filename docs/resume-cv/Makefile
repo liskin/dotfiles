@@ -17,8 +17,7 @@ PANDOC_FLAGS_COMMON=\
 	$(PANDOC_FLAGS)
 PANDOC_INPUTS_COMMON=\
 	pandoc-meta-variables.lua \
-	meta-public.yaml \
-	meta-private.yaml
+	meta-$(if $(PUBLIC),public,private).yaml
 
 %.html: %.md Makefile $(PANDOC_INPUTS_COMMON)
 	$(PANDOC) $(PANDOC_FLAGS_COMMON) --output=$@ $<
