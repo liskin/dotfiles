@@ -181,22 +181,6 @@
 	path = .local/share/nvim/site/optbundle/copilot.lua
 	# url = https://github.com/zbirenbaum/copilot.lua
 	url = https://github.com/liskin/copilot.lua
-[submodule "src/tig-colors-neonwolf"]
-	path = src/tig-colors-neonwolf
-	url = https://github.com/h3xx/tig-colors-neonwolf
-[submodule "src/emoji-rofi-menu"]
-	path = src/emoji-rofi-menu
-	url = https://github.com/liskin/emoji-rofi-menu
-[submodule "src/urxvt-scripts"]
-	path = src/urxvt-scripts
-	#url = https://github.com/pkkolos/urxvt-scripts.git
-	url = https://github.com/liskin/urxvt-scripts.git
-[submodule "src/urxvt-aAtt"]
-	path = src/urxvt-aAtt
-	url = https://github.com/Vifon/autocomplete-ALL-the-things
-[submodule "src/pandoc-lua-filters"]
-	path = src/pandoc-lua-filters
-	url = https://github.com/pandoc/lua-filters
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
@@ -277,6 +261,25 @@
 [submodule "src-rust/LiveBudsCli"]
 	path = src-rust/LiveBudsCli
 	url = https://github.com/JojiiOfficial/LiveBudsCli
+[submodule "src-pandoc/lua-filters"]
+	path = src-pandoc/lua-filters
+	url = https://github.com/pandoc/lua-filters
+[submodule "src-pandoc/diagram"]
+	path = src-pandoc/diagram
+	url = https://github.com/pandoc-ext/diagram
+[submodule "src/tig-colors-neonwolf"]
+	path = src/tig-colors-neonwolf
+	url = https://github.com/h3xx/tig-colors-neonwolf
+[submodule "src/emoji-rofi-menu"]
+	path = src/emoji-rofi-menu
+	url = https://github.com/liskin/emoji-rofi-menu
+[submodule "src/urxvt-scripts"]
+	path = src/urxvt-scripts
+	#url = https://github.com/pkkolos/urxvt-scripts.git
+	url = https://github.com/liskin/urxvt-scripts.git
+[submodule "src/urxvt-aAtt"]
+	path = src/urxvt-aAtt
+	url = https://github.com/Vifon/autocomplete-ALL-the-things
 [submodule "src/tmux-bash-completion"]
 	path = src/tmux-bash-completion
 	url = https://github.com/imomaliev/tmux-bash-completion
