@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+transparency="${1:-50}"
+(( opacity = 0xff & ((100 - transparency) * 255 / 100) ))
+exec xprop  -f _NET_WM_WINDOW_OPACITY 32c  -set _NET_WM_WINDOW_OPACITY 0x"$(printf %x "$opacity")"ffffff
