@@ -19,6 +19,14 @@ fzf_lua.setup {
 		file_icons = false,
 	},
 
+	files = {
+		fd_opts = '--no-require-git ' .. fzf_lua.config.defaults.files.fd_opts,
+	},
+
+	grep = {
+		rg_opts = '--hidden --follow --no-require-git ' .. fzf_lua.config.defaults.grep.rg_opts,
+	},
+
 	lsp = {
 		symbols = {
 			symbol_style = 3,
