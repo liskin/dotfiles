@@ -114,16 +114,11 @@ function! vimwiki#liskin#selected_tasks_annotations() abort
 	silent return py3eval("[a['description'] for t in SelectedTasks().tasks for a in t['annotations']]")
 endfunction
 
-function! vimwiki#liskin#xdg_open(uri) abort
-	if len(a:uri) is 1
-		call vimwiki#base#system_open_link(a:uri[0])
-	endif
-endfunction
-
 function! vimwiki#liskin#TaskWikiOpen() range abort
 	call vimwiki#liskin#SetVimCurrentRange(a:firstline, a:lastline)
 	let annotations = vimwiki#liskin#selected_tasks_annotations()
-	call fzf#run(fzf#wrap({'source': annotations, 'sink*': function('vimwiki#liskin#xdg_open')}))
+	let On_choice = luaeval('function(url) if url then vim.fn["vimwiki#base#system_open_link"](url) end end')
+	call v:lua.vim.ui.select(annotations, {}, On_choice)
 endfunction
 
 function! vimwiki#liskin#SetVimCurrentRange(xfirstline, xlastline) abort
