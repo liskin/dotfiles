@@ -84,6 +84,12 @@ function decodeV3(req) {
 	return verifyUrl(url) ? url : null;
 }
 
+function dropClickEventListeners(el) {
+	const el2 = el.cloneNode(true);
+	el2.addEventListener('click', (e) => e.stopImmediatePropagation());
+	el.parentNode.replaceChild(el2, el);
+}
+
 document.arrive('a', function(link) {
 	if (!link.href || !reUrldefense.test(link.href))
 		return;
@@ -95,9 +101,11 @@ document.arrive('a', function(link) {
 	switch (version[1]) {
 		case '3':
 			const decoded = decodeV3(link.href);
-			if (decoded)
+			if (decoded) {
 				link.href = decoded;
-			else
+				dropClickEventListeners(link);
+			} else {
 				console.log(`o365-proofpoint-urldefense: could not decode ${link.href}`);
+			}
 	}
 });
