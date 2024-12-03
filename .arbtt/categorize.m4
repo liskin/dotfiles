@@ -9,7 +9,7 @@ any window $active ==> tag Desktop:$desktop,
 any window (! $hidden && (
 	($program == "google-chrome" && $title =~ m|:: https?://meet\.google|)
 	|| ($program == "google-chrome" && $title =~ m|:: https?://[^/]*zoom\.us/|)
-	|| ($program == "google-chrome" && $title =~ m|:: https?://teams\.microsoft|)
+	|| ($program == "google-chrome" && $title =~ m!Meet App \| .* :: https?://teams\.microsoft!)
 	|| ($program == "google-chrome" && $title =~ m|Slack - .* - Huddle|)
 	|| $program =~ /^zoom/ || ($program =~ /^join\?/ && $title =~ /Zoom Meeting/)
 	|| $program == "crx_cifhbcnohmdccbgoicgdjpfamggdegmo"
@@ -28,6 +28,7 @@ $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	current window $program == "google-chrome" ==> {
 		current window $title =~ m!:: https?://app\.slack\.com/! ==> tag Activity:Chat,
 		current window $title =~ m!:: https?://web.whatsapp.com/! ==> tag Activity:Chat,
+		current window $title =~ m!(Chat|Teams and Channels) \| .* :: https?://teams\.microsoft! ==> tag Activity:Chat,
 		current window $title =~ m!:: https?://mail\.google\.com/! ==> tag Activity:Mail,
 		current window $title =~ m!:: https?://calendar\.google\.com/! ==> tag Activity:Org,
 		current window $title =~ m!:: https?://outlook\.office\.com/mail/! ==> tag Activity:Mail,
