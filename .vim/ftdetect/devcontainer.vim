@@ -1,1 +1,1 @@
-au BufRead,BufNewFile devcontainer.json set ft=jsonc
+au BufRead,BufNewFile devcontainer*.json set ft=jsonc
