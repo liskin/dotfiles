@@ -258,9 +258,6 @@
 [submodule "src-python/arbtt-chart"]
 	path = src-python/arbtt-chart
 	url = https://github.com/liskin/arbtt-chart.git
-[submodule "src-rust/LiveBudsCli"]
-	path = src-rust/LiveBudsCli
-	url = https://github.com/JojiiOfficial/LiveBudsCli
 [submodule "src-pandoc/lua-filters"]
 	path = src-pandoc/lua-filters
 	url = https://github.com/pandoc/lua-filters
