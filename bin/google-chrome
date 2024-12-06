@@ -20,6 +20,9 @@ exec \
 		HighEfficiencyModeAvailable \
 		VaapiVideoEncoder \
 		VaapiVideoDecodeLinuxGL \
+		AcceleratedVideoEncoder \
+		AcceleratedVideoDecodeLinuxGL \
+		AcceleratedVideoDecodeLinuxZeroCopyGL \
 	)" \
 	"$@"
 
