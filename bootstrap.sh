@@ -42,10 +42,15 @@ fi
 [[ "$(id -u)" == 0 ]] && root=: || root=
 [[ "${CODESPACES-}" == true ]] && codespaces=: || codespaces=
 
-[[ $root ]] && branch=root || [[ $codespaces ]] && branch=codespaces || branch=home
-[[ $root ]] && worktree=/ || worktree=~
-dotfiles=~/src/dotfiles.git
+if [[ $root ]]; then
+	branch=root; worktree=/
+elif [[ $codespaces ]]; then
+	branch=codespaces; worktree=~
+else
+	branch=home; worktree=~
+fi
 
+dotfiles=~/src/dotfiles.git
 [[ -e "$dotfiles" ]] && o rm -rI "$dotfiles"
 o mkdir -p ~/src
 o git clone --no-checkout -b "$branch" --separate-git-dir="$dotfiles" https://github.com/liskin/dotfiles.git "$(mktemp -d)"
