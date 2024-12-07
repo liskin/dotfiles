@@ -1,0 +1,11 @@
+[Unit]
+Description=Spice guest session agent
+ConditionFileIsExecutable=/usr/bin/spice-vdagent
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/spice-vdagent -x
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
