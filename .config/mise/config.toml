@@ -12,11 +12,14 @@ show_env = true
 
 [tools]
 "cargo:JojiiOfficial/LiveBudsCli" = "rev:4a2d75f5bede545738110dccbac033954b1d6087"
+"cargo:YodaEmbedding/frece" = "rev:d4071c6c852e68dda82b7ab0bfb0f141b39d4484"
 "cargo:ast-grep" = "0.28.0"
 "cargo:cargo-audit" = "0.21.0"
 "cargo:cargo-cache" = "0.8.3"
 "cargo:cargo-edit" = "0.13.0"
 "cargo:cargo-watch" = "8.5.3"
+"cargo:evcxr" = "0.17.0"
+"cargo:fclones" = "0.34.0"
 "cargo:ripgrep_all" = "0.10.6"
 "cargo:tokio-console" = "0.1.13"
 "npm:@mermaid-js/mermaid-cli" = "11.4.0"
@@ -34,13 +37,10 @@ show_env = true
 "pipx:python-dxf" = "12.1.0"
 "pipx:timezonefinder" = "6.5.4"
 "ubi:JohnnyMorganz/StyLua" = { version = "2.0.0", exe = "stylua" }
-"ubi:YodaEmbedding/frece" = "1.0.6"
 "ubi:ankitpokhrel/jira-cli" = { version = "1.5.2", exe = "jira" }
 "ubi:bazelbuild/buildtools" = { version = "7.3.1", exe = "buildifier", matching = "buildifier" }
 "ubi:chrishrb/go-grip" = "0.3.0"
-"ubi:evcxr/evcxr" = "0.17.0"
 "ubi:oz/tz" = "0.7.0"
-"ubi:pkolaczk/fclones" = "0.34.0"
 cargo-binstall = "1.10.12"
 ctlptl = "0.8.36"
 dive = "0.12.0"

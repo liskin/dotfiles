@@ -1,6 +1,9 @@
 .PHONY: all
 all:
 
+ARCH := $(shell uname -m)
+ARM64 := $(if $(filter aarch64,$(ARCH)),1)
+
 CURL := curl -LSsf
 
 CIRCLECI_CLI_VERSION := v0.1.30549
@@ -48,16 +51,17 @@ haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .e
 
 .INTERMEDIATE: .ext-hls-$(HLS_VERSION).tar.xz
 .ext-hls-$(HLS_VERSION).tar.xz:
-	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-x86_64-linux-deb10.tar.xz
+	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-$(if $(ARM64),aarch64-linux-ubuntu20,x86_64-linux-deb10).tar.xz
 
 all: pandoc
 pandoc: | .ext-pandoc ; ln -fsT $|/bin/$@ $@
 .ext-pandoc: .ext-pandoc-$(PANDOC_VERSION) ; ln -fsT $< $@
 .ext-pandoc-$(PANDOC_VERSION):
 	mkdir -p $@
-	$(CURL) https://github.com/$(PANDOC_GITHUB)/releases/download/$(PANDOC_VERSION)/pandoc-$(PANDOC_VERSION)-linux-amd64.tar.gz \
+	$(CURL) https://github.com/$(PANDOC_GITHUB)/releases/download/$(PANDOC_VERSION)/pandoc-$(PANDOC_VERSION)-linux-$(if $(ARM64),arm64,amd64).tar.gz \
 		| tar -x -z -C $@ --strip-components=1
 
+ifeq "$(ARM64)" ""
 all: hlint
 hlint: | .ext-hlint ; ln -fsT $|/$@ $@
 .ext-hlint: .ext-hlint-$(HLINT_VERSION) ; ln -fsT $< $@
@@ -65,6 +69,7 @@ hlint: | .ext-hlint ; ln -fsT $|/$@ $@
 	mkdir -p $@
 	$(CURL) https://github.com/$(HLINT_GITHUB)/releases/download/$(HLINT_VERSION)/hlint-$(HLINT_VERSION:v%=%)-x86_64-linux.tar.gz \
 		| tar -x -z -C $@ --strip-components=1
+endif
 
 all: .ext-languagetool
 .SKIP_GITIGNORE: .ext-languagetool
@@ -83,14 +88,14 @@ all: docker-buildx
 docker-buildx: | .ext-docker-buildx ; ln -fsT $| $@
 .ext-docker-buildx: .ext-docker-buildx-$(DOCKER_BUILDX_VERSION) ; ln -fsT $< $@
 .ext-docker-buildx-$(DOCKER_BUILDX_VERSION):
-	$(CURL) -o $@ https://github.com/$(DOCKER_BUILDX_GITHUB)/releases/download/$(DOCKER_BUILDX_VERSION)/buildx-$(DOCKER_BUILDX_VERSION).linux-amd64
+	$(CURL) -o $@ https://github.com/$(DOCKER_BUILDX_GITHUB)/releases/download/$(DOCKER_BUILDX_VERSION)/buildx-$(DOCKER_BUILDX_VERSION).linux-$(if $(ARM64),arm64,amd64)
 	chmod +x $@
 
 all: docker-compose
 docker-compose: | .ext-docker-compose ; ln -fsT $| $@
 .ext-docker-compose: .ext-docker-compose-$(DOCKER_COMPOSE_VERSION) ; ln -fsT $< $@
 .ext-docker-compose-$(DOCKER_COMPOSE_VERSION):
-	$(CURL) -o $@ https://github.com/$(DOCKER_COMPOSE_GITHUB)/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-linux-x86_64
+	$(CURL) -o $@ https://github.com/$(DOCKER_COMPOSE_GITHUB)/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-linux-$(if $(ARM64),aarch64,x86_64)
 	chmod +x $@
 
 all: .ext-fitsdk
@@ -113,8 +118,9 @@ all: .ext-circleci-cli
 
 .INTERMEDIATE: .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz
 .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(CIRCLECI_CLI_GITHUB)/releases/download/$(CIRCLECI_CLI_VERSION)/circleci-cli_$(CIRCLECI_CLI_VERSION:v%=%)_linux_amd64.tar.gz
+	wget -O $@ https://github.com/$(CIRCLECI_CLI_GITHUB)/releases/download/$(CIRCLECI_CLI_VERSION)/circleci-cli_$(CIRCLECI_CLI_VERSION:v%=%)_linux_$(if $(ARM64),arm64,amd64).tar.gz
 
+ifeq "$(ARM64)" ""
 all: nvim
 nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 .ext-nvim: .ext-nvim-$(NVIM_VERSION) ; ln -fsT $< $@
@@ -125,6 +131,7 @@ nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 .INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
 .ext-nvim-$(NVIM_VERSION).tar.gz:
 	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux64.tar.gz
+endif
 
 all: lua-language-server
 lua-language-server: | .ext-luals ; ln -fsT $|/bin/$@ $@
@@ -135,7 +142,7 @@ lua-language-server: | .ext-luals ; ln -fsT $|/bin/$@ $@
 
 .INTERMEDIATE: .ext-luals-$(LUALS_VERSION).tar.gz
 .ext-luals-$(LUALS_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(LUALS_GITHUB)/releases/download/$(LUALS_VERSION)/lua-language-server-$(LUALS_VERSION)-linux-x64.tar.gz
+	wget -O $@ https://github.com/$(LUALS_GITHUB)/releases/download/$(LUALS_VERSION)/lua-language-server-$(LUALS_VERSION)-linux-$(if $(ARM64),arm64,x64).tar.gz
 
 .PHONY: gc
 ## Remove old versions

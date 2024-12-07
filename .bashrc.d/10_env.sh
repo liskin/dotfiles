@@ -47,7 +47,7 @@ export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
 export MPD_HOST="$XDG_RUNTIME_DIR"/mpd/socket
 
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/default-java
 export JDKHOME="$JAVA_HOME"
 
 export ANDROID_HOME=/home/tomi/android/android-sdk-linux
