@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+shopt -s nullglob
+
 sudo /usr/local/sbin/liskin-battery "$@"
 
 thresholds=""

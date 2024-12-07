@@ -71,7 +71,8 @@ class Main():
         self.ac.refresh()
 
     def low(self) -> bool:
-        return all([b.capacity <= 5 for b in self.batteries if b.present])
+        lows = [b.capacity <= 5 for b in self.batteries if b.present]
+        return bool(lows) and all(lows)
 
     def tick(self) -> None:
         self.refresh()
