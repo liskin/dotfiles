@@ -10,7 +10,10 @@ main = xmobar =<< configFromArgs =<< myConfig
 
 myConfig = do
     hasEth0 <- doesPathExist "/sys/class/net/eth0"
+    hasWlan1 <- doesPathExist "/sys/class/net/wlan1"
+    hasBat0 <- doesPathExist "/sys/class/power_supply/BAT0"
     hasBat1 <- doesPathExist "/sys/class/power_supply/BAT1"
+    hasCoretemp <- doesPathExist "/sys/bus/platform/devices/coretemp.0"
     let netCmds =
             [ Run $ Network "wlan1" ["-L","0","-H","32768","--normal","green","--high","red","-t",fnNerd "\xfaa8" <> "<rx>KB|<tx>KB "] 10 ] <>
             [ Run $ Network "eth0" ["-L","0","-H","32768","--normal","green","--high","red","-t",fnNerd "\xf6ff" <> "<rx>KB:<tx>KB "] 10 | hasEth0 ]
@@ -24,17 +27,17 @@ myConfig = do
             [ "%_XMOBAR_DND%" ] <>
             [ "%_XMOBAR_DEVICES%" ] <>
             [ " " ] <>
-            [ "%BAT0%" ] <>
+            [ "%BAT0%" | hasBat0 ] <>
             [ "%BAT1%" | hasBat1 ] <>
             [ "%_XMOBAR_BATTERY_EXTRA%" ] <>
             [ " " ] <>
-            [ "%coretemp%" ] <>
+            [ "%coretemp%" | hasCoretemp ] <>
             [ " " ] <>
             [ "%multicpu%" ] <>
             [ "%_XMOBAR_DEVICES_PP%" ] <>
             [ " " ] <>
             [ "%eth0%" | hasEth0 ] <>
-            [ "%wlan1%" ] <>
+            [ "%wlan1%" | hasWlan1 ] <>
             [ "<fc=white>%theDate%</fc>" ]
         , commands =
             [ Run $ Date (fnNerd "\xf5ef" <> "%a <action=`echo %F | xclip -r`>%F</action> %H:%M:%S") "theDate" 10
