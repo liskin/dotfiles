@@ -17,7 +17,7 @@ function set-thresholds {
 	fi
 }
 
-case "$1" in
+case "${1-}" in
 	normal) for b in BAT*; do set-thresholds "$b" 60 100; done ;;
 	charge) for b in BAT*; do set-thresholds "$b" 90 100; done ;;
 	full) for b in BAT*; do set-thresholds "$b" 96 100; done ;;
