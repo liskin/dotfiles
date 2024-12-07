@@ -9,6 +9,11 @@ export LC_ALL=C
 exec {lock_fd}>"${XDG_RUNTIME_DIR:?}/liskin-layout-auto.lock"
 flock --nonblock "$lock_fd" || exit
 
+if liskin-dmi-product QEMU; then
+	xrandr --output Virtual-1 --auto
+	exit 0
+fi
+
 function fingerprint-outputs {
 	local out h
 

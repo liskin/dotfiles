@@ -27,6 +27,7 @@ xsetroot -cursor_name left_ptr
 setxkbmap ${_LISKIN_NVIDIA:+-option terminate:ctrl_alt_bksp}
 xmodmap ~/.Xmodmap
 if liskin-dmi-product 20VX 21HE; then xmodmap ~/.Xmodmap-thinkpad-6row; fi
+if liskin-dmi-product QEMU; then xmodmap ~/.Xmodmap-qemu-utm; fi
 
 if xi_touchpad=$(
 	xinput list --name-only | grep -i -m 1 'touchpad$'
@@ -45,6 +46,12 @@ if xi_touchpad=$(
 		xinput set-prop "$xi_touchpad" 'libinput Accel Speed' 0.1 || :
 		xinput set-prop "$xi_trackpoint" 'libinput Accel Speed' -0.7 || :
 	fi
+fi
+
+if liskin-dmi-product QEMU; then
+	xinput set-prop 'QEMU QEMU USB Mouse' 'libinput Natural Scrolling Enabled' 1 || :
+	xinput set-prop 'QEMU QEMU USB Tablet' 'libinput Natural Scrolling Enabled' 1 || :
+	xinput set-prop 'spice vdagent tablet' 'libinput Natural Scrolling Enabled' 1 || :
 fi
 
 liskin-thinkpad-battery update-xmobar
