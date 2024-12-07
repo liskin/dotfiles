@@ -21,7 +21,7 @@ all: .build/elixir-ls
 .build/elixir-ls-$(ELIXIR_LS_VERSION):
 	cd $(ELIXIR_LS_SRC) && \
 		mix deps.get && \
-		mix elixir_ls.release -o $(CURDIR)/$@
+		mix elixir_ls.release2 -o $(CURDIR)/$@
 
 .PHONY: gc
 ## Remove old versions
