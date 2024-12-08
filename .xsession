@@ -49,6 +49,7 @@ if xi_touchpad=$(
 fi
 
 if liskin-dmi-product QEMU; then
+	xinput set-prop 'QEMU QEMU USB Mouse' 'libinput Accel Speed' -0.5 || :
 	xinput set-prop 'QEMU QEMU USB Mouse' 'libinput Natural Scrolling Enabled' 1 || :
 	xinput set-prop 'QEMU QEMU USB Tablet' 'libinput Natural Scrolling Enabled' 1 || :
 	xinput set-prop 'spice vdagent tablet' 'libinput Natural Scrolling Enabled' 1 || :
