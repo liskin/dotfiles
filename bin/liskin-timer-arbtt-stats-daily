@@ -28,8 +28,10 @@ if (( $# )); then
 	send-stats "$@"
 else
 	today=$(date -d today +%F)
+	set +e  # $(< …) exits the whole script otherwise
 	next_daily=$(< ~/.cache/liskin-arbtt-stats-next-daily) || next_daily=$(date -d yesterday +%F)
 	next_weekly=$(< ~/.cache/liskin-arbtt-stats-next-weekly) || next_weekly=$(date -d monday +%F)
+	set -e
 
 	while [[ "$next_daily" < "$today" ]]; do
 		send-stats "$next_daily"
