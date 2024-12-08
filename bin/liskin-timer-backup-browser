@@ -17,15 +17,22 @@ export TMPDIR
 # shellcheck disable=SC2064
 trap "rm -rf $(printf %q "$TMPDIR")" EXIT
 
+profile=~/.config/google-chrome/Default
+[[ -d "$profile" ]] || profile=~/.config/chromium/Default
+if [[ ! -d "$profile" ]]; then
+	echo "no profile found" >&2
+	exit 1
+fi
+
 # backup bookmarks
-cp ~/.config/google-chrome/Default/Bookmarks ./chrome-bookmarks.json
+cp "$profile"/Bookmarks ./chrome-bookmarks.json
 
 # backup history
-cp ~/.config/google-chrome/Default/History* "$TMPDIR"/
+cp "$profile"/History* "$TMPDIR"/
 sqlite3 "$TMPDIR"/History .dump >./chrome-history.sql
 
 # backup keywords
-cp ~/.config/google-chrome/Default/Web\ Data* "$TMPDIR"/
+cp "$profile"/Web\ Data* "$TMPDIR"/
 sqlite3 "$TMPDIR"/Web\ Data ".dump keywords" >./chrome-keywords.sql
 
 # commit
