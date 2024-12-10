@@ -1,3 +1,8 @@
+-- common abstractions
+condition browser = $program == ["google-chrome", "chromium"] in
+condition current_window_browser = current window $browser in
+{
+
 -- inactivity
 if $screensaver then tag inactive else tag active,
 
@@ -7,10 +12,10 @@ any window $active ==> tag Desktop:$desktop,
 
 -- unambiguous activities (general)
 any window (! $hidden && (
-	($program == "google-chrome" && $title =~ m|:: https?://meet\.google|)
-	|| ($program == "google-chrome" && $title =~ m|:: https?://[^/]*zoom\.us/|)
-	|| ($program == "google-chrome" && $title =~ m!Meet App \| .* :: https?://teams\.microsoft!)
-	|| ($program == "google-chrome" && $title =~ m|Slack - .* - Huddle|)
+	($browser && $title =~ m|:: https?://meet\.google|)
+	|| ($browser && $title =~ m|:: https?://[^/]*zoom\.us/|)
+	|| ($browser && $title =~ m!Meet App \| .* :: https?://teams\.microsoft!)
+	|| ($browser && $title =~ m|Slack - .* - Huddle|)
 	|| $program =~ /^zoom/ || ($program =~ /^join\?/ && $title =~ /Zoom Meeting/)
 	|| $program == "crx_cifhbcnohmdccbgoicgdjpfamggdegmo"
 ) && (
@@ -25,7 +30,7 @@ $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	current window $title =~ /^(t\[N\] |weechat\S+: )/ ==> tag Activity:Chat,
 	current window $title =~ /^(t\[m\]|m\[[A-Z]\])[  ]/ ==> tag Activity:Mail,
 	current window $title =~ m|~/taskwiki.* - N?VIM$| ==> tag Activity:Org,
-	current window $program == "google-chrome" ==> {
+	$current_window_browser ==> {
 		current window $title =~ m!:: https?://app\.slack\.com/! ==> tag Activity:Chat,
 		current window $title =~ m!:: https?://web.whatsapp.com/! ==> tag Activity:Chat,
 		current window $title =~ m!(Chat|Teams and Channels) \| .* :: https?://teams\.microsoft! ==> tag Activity:Chat,
@@ -37,7 +42,7 @@ $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 	},
 },
 current window $program == "liferea" ==> tag Activity:Web-RSS,
-current window $program == "google-chrome" ==> {
+$current_window_browser ==> {
 	current window $title =~ m|:: https?://.*muni.*/discussion/| ==> tag Activity:Web-Plkarna,
 	current window $title =~ m|:: https?://news\.ycombinator| ==> tag Activity:Web-HN,
 	current window $title =~ m!( / Twitter|\bFacebook) (::|-) ! ==> tag Activity:Web-Social,
@@ -66,7 +71,7 @@ any window $active && $desktop =~ /^W?\d+$/ && any window ($desktop == $wdesktop
 include(`categorize-priv.m4')dnl
 
 -- unambiguous activities (projects)
-current window $program == "google-chrome" ==> {
+$current_window_browser ==> {
 	current window $title =~ m|:: https?://github.*/xmonad| ==> tag Activity:Proj-XMonad,
 	current window $title =~ m|:: https?://.*reddit.*/xmonad| ==> tag Activity:Proj-XMonad,
 },
@@ -74,7 +79,7 @@ any window $active && $desktop =~ /^W?\d+:\.?xmonad/ ==> tag Activity:Proj-XMona
 
 -- possibly ambiguous fallback activities
 any window $active && !( $desktop == ["1:irc", "2:web", "12:watch"] ) && $desktop =~ m|^W?\d+:([^:]*)| ==> tag Activity:Proj-$1ⁱ,
-current window $program == "google-chrome" ==> {
+$current_window_browser ==> {
 	-- assume that browsing while a project-related terminal window is visible
 	-- on another monitor means that browsing is related to that project
 	$desktop == ["1:irc", "2:web"] && any window (
@@ -89,5 +94,7 @@ current window $program == "google-chrome" ==> {
 -- focus outside any visible windows, possibly being used as a KVM for another
 -- computer?
 !(any window $active) && any window $hidden ==> tag Activity:KVM,
+
+} -- end of condition let
 
 -- vim:set ft=haskell noet:
