@@ -22,6 +22,9 @@ document.arrive('a', function(link) {
 	if (!link.href || link.xxxNoClick)
 		return;
 
+	if (link.dataset?.testid != "atp-safelink")
+		return;
+
 	dropClickEventListeners(link);
 });
 
