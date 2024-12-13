@@ -28,7 +28,7 @@ while IFS= read -r l; do
 		tput setaf 39; tput setab 235; printf %"$(tput cols)"s | sed 's/ /─/g'; tput sgr0
 		printf "%s\n" "$l"
 
-		if [[ $ll =~ ^[[:digit:]][[:digit:]]*:"  "([[:alnum:]][[:alnum:]]*)" ! "[[:digit:]][[:digit:]]*:"  "([[:alnum:]][[:alnum:]]*)" " ]]; then
+		if [[ $ll =~ ^" "*[[:digit:]][[:digit:]]*:"  "([[:alnum:]][[:alnum:]]*)" !  "*[[:digit:]][[:digit:]]*:"  "([[:alnum:]][[:alnum:]]*)" " ]]; then
 			# fake file header for delta to syntax highlight as patch
 			echo "--- ${BASH_REMATCH[1]}.patch"
 			echo "+++ ${BASH_REMATCH[2]}.patch"
