@@ -35,6 +35,6 @@ copilot_chat.setup {
 	},
 }
 
-vim.keymap.set('n', '<Leader>cc', function()
+vim.keymap.set({'n', 'v'}, '<Leader>cc', function()
 	copilot_chat_fzflua.pick(copilot_chat_actions.prompt_actions())
 end)
