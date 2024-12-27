@@ -76,11 +76,3 @@ function uv {
 	unset GIT_DIR  # prevent git-dotfiles-export messing up stuff
 	command uv "$@"
 }
-
-# workaround for https://github.com/junegunn/fzf/issues/4099
-function fzf {
-	local ret
-	command fzf "$@" && ret=$? || ret=$?
-	tput -S <<<$'smcup\nsmam\nrmcup' >/dev/tty 2>/dev/null || :
-	return $ret
-}
