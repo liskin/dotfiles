@@ -156,6 +156,7 @@
 [tig]
 	blame-options = -C -C -C
 	diff-highlight = true
+	ignore-case = smart-case
 	line-graphics = auto
 	mouse = true
 	tab-size = 4
