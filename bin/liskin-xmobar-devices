@@ -195,14 +195,14 @@ function refresh-pp {
 }
 
 function monitor {
-	{
+	(
 		echo force initial refresh
 
 		trap 'pkill -P $BASHPID' EXIT
 		udevadm monitor -k &
 		liskin-xmobar-devices-dbus.py --systemd-unit-regex 'docker|vpnns_2dtun' &
 		wait -n
-	} | while :; do
+	) | while :; do
 		if read -r -t $poll_frequency _; then
 			debounce_start=$SECONDS
 			while read -r -t $debounce_read_timeout _ && (( debounce_start + debounce_loop_timeout > SECONDS )); do :; done
