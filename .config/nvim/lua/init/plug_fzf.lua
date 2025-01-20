@@ -24,7 +24,7 @@ fzf_lua.setup {
 	},
 
 	grep = {
-		rg_opts = '--hidden --follow --no-require-git ' .. fzf_lua.config.defaults.grep.rg_opts,
+		rg_opts = '--hidden --follow --glob=!.git --no-require-git ' .. fzf_lua.config.defaults.grep.rg_opts,
 	},
 
 	lsp = {
