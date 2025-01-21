@@ -43,6 +43,10 @@ function goto-outlook-calendar {
 	find-tab "https://outlook.office.com/calendar/" | activate-tab
 }
 
+function goto-teams {
+	find-tab "https://teams.microsoft.com/" | activate-tab
+}
+
 function goto-irc {
 	xdotool search --name weechat: windowactivate
 }
