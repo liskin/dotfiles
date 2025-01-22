@@ -215,6 +215,10 @@ set grepformat=%f:%l:%c:%m,%f:%l:%m
 " vim to warn me about other vim instances.)
 set directory=
 
+" CursorHold after half sec {{{2
+" (would also affect swapfiles if we didn't disable them)
+set updatetime=500
+
 " other {{{2
 set autoread
 set backspace=indent,eol,start
