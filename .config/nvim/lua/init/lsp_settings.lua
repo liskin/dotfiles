@@ -1,6 +1,4 @@
-local lspconfig_util = require 'lspconfig.util'
-
-local git_root = lspconfig_util.find_git_ancestor(vim.uv.cwd())
+local git_root = vim.fs.root(vim.uv.cwd() or error(), ".git")
 
 local function has(filename)
 	return git_root and vim.fn.filereadable(vim.fs.joinpath(git_root, filename))
