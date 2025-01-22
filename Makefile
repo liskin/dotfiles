@@ -19,10 +19,6 @@ endef
 
 define HOMEFILES
 $(strip
-	.terminfo/.gitignore
-	.terminfo/Makefile
-	.terminfo/terminfo.src
-	.tmux.conf
 	.vim/colors/liskin.vim
 	.vimrc
 	_gitignore.mk
