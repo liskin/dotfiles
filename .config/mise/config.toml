@@ -36,11 +36,10 @@ show_env = true
 "pipx:pushl" = "0.3.5"
 "pipx:python-dxf" = "12.1.0"
 "pipx:timezonefinder" = "6.5.4"
-"ubi:JohnnyMorganz/StyLua" = { version = "2.0.0", exe = "stylua" }
 "ubi:ankitpokhrel/jira-cli" = { version = "1.5.2", exe = "jira" }
-"ubi:bazelbuild/buildtools" = { version = "7.3.1", exe = "buildifier", matching = "buildifier" }
 "ubi:chrishrb/go-grip" = "0.3.0"
 "ubi:oz/tz" = "0.7.0"
+buildifier = "8.0.1"
 cargo-binstall = "1.10.22"
 ctlptl = "0.8.36"
 difftastic = "0.62.0"
@@ -58,4 +57,5 @@ uv = "0.5.2"
 watchexec = "2.2.0"
 
 [alias]
+buildifier = "ubi:bazelbuild/buildtools[exe=buildifier,matching=buildifier]"
 rust-analyzer = "ubi:rust-analyzer/rust-analyzer"
