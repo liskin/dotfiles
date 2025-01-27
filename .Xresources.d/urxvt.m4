@@ -111,8 +111,8 @@ URxvt.font-size-auto-mixed-dpi.hidpi.boldItalicFont: hidpi_boldItalicFont
 URxvt.keysym.4-bar: aAtt:undo
 URxvt.keysym.4-colon: aAtt:word-complete
 URxvt.keysym.4-quotedbl: aAtt:WORD-complete
-URxvt.keysym.4-question: aAtt:fuzzy-WORD-complete
-URxvt.keysym.4-greater: aAtt:fuzzy-word-complete
+URxvt.keysym.4-braceleft: aAtt:fuzzy-word-complete
+URxvt.keysym.4-braceright: aAtt:fuzzy-WORD-complete
 dnl
 URxvt.keysym.S-F1: \033[11$
 URxvt.keysym.S-F2: \033[12$
