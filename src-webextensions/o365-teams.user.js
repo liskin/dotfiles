@@ -25,6 +25,10 @@ document.arrive('a', function(link) {
 	if (link.dataset?.testid != "atp-safelink")
 		return;
 
+	// let Teams handle its own links, we don't want a new tab
+	if (link.href.startsWith("https://teams.microsoft.com/"))
+		return;
+
 	dropClickEventListeners(link);
 });
 
