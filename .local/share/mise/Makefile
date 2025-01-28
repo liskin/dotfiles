@@ -30,9 +30,7 @@ fixup-tilt:
 .PHONY: update
 ## Check for updates
 update:
-	# dry-run and update manually until https://github.com/jdx/mise/issues/2704 is fixed
-	$(TOKEN_ENV) mise upgrade --dry-run --bump
-	# mise use --global --pin …
+	$(TOKEN_ENV) mise upgrade --bump --interactive
 
 .PHONY: gc
 ## Delete unused versions of tools; hardlink duplicates in node_modules
