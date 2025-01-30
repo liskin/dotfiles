@@ -9,6 +9,16 @@ for f in "$@"; do
 	f=$(readlink -f "$f")
 	[[ -e "$f" ]]
 	b=$(basename -- "$f")
+
+	if [[ $b == LWN_*.epub ]]; then
+		lwn_title=$(exiftool -T -Title "$f")
+		if [[ $lwn_title == "LWN.net Weekly Edition for "* ]]; then
+			lwn_date=${lwn_title##* for }
+			lwn_date=$(TZ=UTC LC_ALL=C date -d "$lwn_date" +%F)
+			b=lwn-"$lwn_date".epub
+		fi
+	fi
+
 	d=~/docs/news/"$b"
 	d=$(readlink -f "$d")
 	if [[ "$f" != "$d" ]]; then
