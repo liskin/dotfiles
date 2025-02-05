@@ -397,7 +397,7 @@ let g:lsp_null_settings = {}
 let g:lsp_null_settings['proselint'] = #{filetypes: ["gitcommit", "mail", "markdown", "rst", "text"]}
 
 let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
-if isdirectory(s:cargo_root . '/target/debug')
+if isdirectory(s:cargo_root . '/target/debug') || isdirectory(s:cargo_root . '/target/release')
 	" Enable only for projects that have been built at least once
 	let g:lsp_autoformat_rust_analyzer = v:true
 	let g:lsp_autostart_rust_analyzer = v:true
