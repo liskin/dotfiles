@@ -31,6 +31,7 @@
 	# mega useful aliases with cool names
 	puf = push --force-with-lease
 	resign = rebase -f --gpg-sign --keep-base
+	sign = commit --amend --no-edit --gpg-sign
 	# nicer git log
 	lg = log --color --graph --decorate
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
