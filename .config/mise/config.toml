@@ -33,9 +33,9 @@ show_env = true
 "pipx:liskin/strava-offline" = "1abe986b2d1ba6a300954df6ff648d88bead6c80"
 "pipx:markdown2ctags" = "0.3.3"
 "pipx:pandoc-plantuml-filter" = "0.1.5"
-"pipx:pushl" = "0.3.5"
+"pipx:pushl" = "0.4.0"
 "pipx:python-dxf" = "12.1.0"
-"pipx:timezonefinder" = "6.5.4"
+"pipx:timezonefinder" = "6.5.8"
 "ubi:ankitpokhrel/jira-cli" = { version = "1.5.2", exe = "jira" }
 "ubi:chrishrb/go-grip" = "0.3.0"
 "ubi:oz/tz" = "0.7.0"
@@ -52,8 +52,8 @@ rust-analyzer = "2025-01-13"
 stylua = "2.0.2"
 taplo = "0.9.3"
 tilt = "0.33.22"
-usage = "2.0.3"
-uv = "0.5.2"
+usage = "2.0.4"
+uv = "0.5.29"
 watchexec = "2.2.0"
 
 [alias]
