@@ -96,6 +96,8 @@
 [gui]
 	fontdiff = "-family \"DejaVu Sans Mono\" -size 11 -weight normal -slant roman -underline 0 -overstrike 0"
 	spellingdictionary = en_GB
+[notes]
+	rewriteRef = refs/notes/commits
 [url "ssh://git@github.com/"]
 	pushInsteadOf = https://github.com/
 
