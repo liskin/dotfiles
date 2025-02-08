@@ -15,7 +15,7 @@ HLS_GHC_VERSION := 9.4.7
 HLS_VERSION := 2.4.0.0
 LANGUAGETOOL_VERSION := v6.4
 LUALS_VERSION := 3.13.0
-NVIM_VERSION := v0.10.3
+NVIM_VERSION := v0.10.4
 PANDOC_VERSION := 3.5
 
 CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
@@ -120,7 +120,6 @@ all: .ext-circleci-cli
 .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz:
 	wget -O $@ https://github.com/$(CIRCLECI_CLI_GITHUB)/releases/download/$(CIRCLECI_CLI_VERSION)/circleci-cli_$(CIRCLECI_CLI_VERSION:v%=%)_linux_$(if $(ARM64),arm64,amd64).tar.gz
 
-ifeq "$(ARM64)" ""
 all: nvim
 nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 .ext-nvim: .ext-nvim-$(NVIM_VERSION) ; ln -fsT $< $@
@@ -130,8 +129,7 @@ nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 
 .INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
 .ext-nvim-$(NVIM_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux64.tar.gz
-endif
+	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux-$(if $(ARM64),arm64,x86_64).tar.gz
 
 all: lua-language-server
 lua-language-server: | .ext-luals ; ln -fsT $|/bin/$@ $@
