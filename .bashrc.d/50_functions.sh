@@ -76,3 +76,7 @@ function uv {
 	unset GIT_DIR  # prevent git-dotfiles-export messing up stuff
 	command uv "$@"
 }
+
+function jira {
+	LESS="$LESS -R" command jira "$@"
+}
