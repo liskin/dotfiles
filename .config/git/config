@@ -169,6 +169,7 @@
 	generic = E !>tmux-new-window-or-exec nvim +"%(lineno)" "fugitive://%(repo:git-dir)//%(commit)/%(file)"
 	generic = <Ctrl-S> !>tmux-new-window-or-exec git si-show "%(commit)"
 	generic = T !>git notes edit "%(commit)"
+	generic = <Ctrl-R> !>git commit --fixup=reword:"%(commit)"
 
 # workaround for gh's "No default remote repository has been set for this directory."
 # NB: never run "gh repo fork" as that renames origin, use the "gh fork" alias
