@@ -60,3 +60,69 @@
 	div[data-app-section="NavigationPane"] div.ms-FocusZone > div { padding-right: 0; }
 
 }
+
+@-moz-document url-prefix("https://teams.microsoft.com/v2/") {
+	div[id|="message-body"] > div {
+		padding: 4px;
+	}
+
+	div[id|="message-body"] > div:has(> div[data-tid="post-message-header-avatar"]) {
+		height: unset;
+	}
+
+	div[id|="message-body"] > div:has(> span[data-tid="app-profile-card-trigger"]) {
+		height: unset;
+	}
+
+	div[data-tid="channel-pane-message"] div[id|="message-body"] > div[data-tid="channel-message-reaction-summary"] {
+		height: 0;
+		justify-content: right;
+	}
+
+	div[data-tid="channel-replies-pane-message"] {
+		background-color: unset;
+	}
+
+	div[data-tid="channel-replies-pane-message"] div[id|="message-body"] {
+		padding: 4px;
+		margin: 0;
+	}
+
+	div[data-tid="channel-replies-pane-message"] div[id|="message-body"] div[data-tid="channel-message-reaction-summary"] {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		margin: unset;
+	}
+
+	div[id|="response-surface"] div[id|="message-body"] div[data-tid="diverse-reaction-summary"] {
+		position: absolute;
+		right: 0;
+		margin: unset;
+		transform: translateY(-100%);
+	}
+
+	div[id|="reply-chain-summary"] div:has(> div[data-tid="post-message-quick-reply-avatar"]) {
+		min-height: unset;
+		padding: 2px;
+	}
+
+	div[id|="message-body"] div.ac-adaptiveCard {
+		padding: 8px !important;
+	}
+
+	div[id|="message-body"] div.ac-adaptiveCard > div > div.ac-container:has(div.ac-actionSet) {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
+
+	div[id|="message-body"] div.ac-adaptiveCard div.ac-actionSet button {
+		padding: 2px;
+		opacity: 0.4;
+	}
+
+	div[id|="message-body"] div.ac-adaptiveCard div.ac-horizontal-separator {
+		height: 2px !important;
+	}
+}
