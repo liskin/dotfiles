@@ -79,6 +79,10 @@
 		justify-content: right;
 	}
 
+	div[data-tid="channel-pane-message"] div[id|="message-body"] > div[data-tid="channel-message-reaction-summary"] > div {
+		position: absolute;
+	}
+
 	div[data-tid="channel-replies-pane-message"] {
 		background-color: unset;
 	}
