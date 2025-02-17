@@ -15,7 +15,7 @@ function history-put { tcbmgr put "$history_db" "$1" "$2"; }
 function get-history-key {
 	# needs https://github.com/erichgoldman/add-url-to-window-title
 	local window_title_url_pattern
-	window_title_url_pattern='^.* :: (https?://[^[:space:]]*)( \[Input Name: "([^"]*)"\] \[Input ID: "([^"]*)"\])? - (Google Chrome|Mozilla Firefox)$'
+	window_title_url_pattern='^.* :: (https?://[^[:space:]]*)( \[Input Name: "([^"]*)"\] \[Input ID: "([^"]*)"\])? - (Google Chrome|Mozilla Firefox|Chromium)$'
 	if [[ "$(xdotool getwindowfocus getwindowname)" =~ $window_title_url_pattern ]]; then
 		printf -- "%s?%s" "${BASH_REMATCH[1]%%\?*}" "${BASH_REMATCH[3]}"
 	else
