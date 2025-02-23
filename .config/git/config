@@ -54,6 +54,9 @@
 	updateRefs = true
 [branch]
 	autosetuprebase = always
+	sort = -committerdate
+[tag]
+	sort = version:refname
 [init]
 	defaultBranch = main
 [mergetool]
