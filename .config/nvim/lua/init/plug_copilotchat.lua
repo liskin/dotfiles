@@ -1,9 +1,9 @@
 local copilot_chat = require'CopilotChat'
 local copilot_chat_actions = require'CopilotChat.actions'
 local copilot_chat_fzflua = require'CopilotChat.integrations.fzflua'
-local copilot_chat_prompts = require'CopilotChat.prompts'
+local copilot_chat_prompts = require'CopilotChat.config.prompts'
 
-local base_sys_prompt = vim.iter(vim.split(copilot_chat_prompts.COPILOT_INSTRUCTIONS, "\n")):skip(1):join("\n")
+local base_sys_prompt = vim.iter(vim.split(copilot_chat_prompts.COPILOT_INSTRUCTIONS.system_prompt, "\n")):skip(1):join("\n")
 
 copilot_chat.setup {
 	model = 'claude-3.5-sonnet',
@@ -18,10 +18,7 @@ copilot_chat.setup {
 			prompt = 'Improve grammar in the selected commit message.',
 		},
 		RoastMyCode = {
-			prompt = '> /SysBrogrammer\n\nWrite an explanation for the selected code and diagnostics as paragraphs of text.',
-		},
-		SysBrogrammer = {
-			system_prompt = "Explain it to me like you're a senior level brogrammer who thinks you're way better than you really are, and you're frustrated that you have to explain this to me.\n" .. base_sys_prompt
+			prompt = "Write an explanation for the selected code and diagnostics as paragraphs of text. Explain it to me like you're a senior level brogrammer who thinks you're way better than you really are, and you're frustrated that you have to explain this to me.",
 		},
 		CommitRicky = {
 			prompt =
