@@ -181,6 +181,9 @@
 	path = .local/share/nvim/site/optbundle/copilot.lua
 	url = https://github.com/zbirenbaum/copilot.lua
 	# url = https://github.com/liskin/copilot.lua
+[submodule ".local/share/nvim/site/bundle/ferris.nvim"]
+	path = .local/share/nvim/site/bundle/ferris.nvim
+	url = https://github.com/vxpm/ferris.nvim
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
