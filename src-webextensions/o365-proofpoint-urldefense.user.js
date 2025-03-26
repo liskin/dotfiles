@@ -8,14 +8,9 @@
 // @require     https://cdn.jsdelivr.net/gh/uzairfarooq/arrive@v2.4.1/minified/arrive.min.js
 // ==/UserScript==
 
-/* the following originates from https://github.com/834N5/proofskip/blob/684721fd090d2f1f713670f7afccd560fdba594c/src/proofskip.js */
-/* Copyright (c) 2023 834N5; MIT License */
+/* the following originates from https://github.com/cphyc/thunderbird_remove_safelinks/blob/07e3fcf2589352368062f12392d058f3de977304/src/decoders.js */
+/* Copyright (c) 2020 Corentin Cadiou; MIT License */
 /* SPDX-License-Identifier: MIT */
-
-/* see also https://github.com/cphyc/thunderbird_remove_safelinks/blob/main/src/decoders.js for a different implementation */
-
-const reUrldefense = /^https?:\/\/urldefense(?:\.proofpoint)?\.com\/.*/;
-const reVersion = /^[^:]+:\/\/[^\/]+\/v([123])\/.+?/;
 
 function verifyUrl(url) {
 	try {
@@ -26,62 +21,44 @@ function verifyUrl(url) {
 	}
 }
 
-function decryptBase64(base64) {
-	base64 = atob(base64.replace(/_/g, '/').replace(/-/g, '+'));
-	base64 = Uint8Array.from(base64, (m) => m.codePointAt(0));
-	return(new TextDecoder().decode(base64));
-}
+const reVersion = /^https:\/\/urldefense(?:\.proofpoint)?\.com\/(v[0-9])\/.*/;
+const reV1 = /^https:\/\/urldefense(?:\.proofpoint)?\.com\/v1\/url\?u=([^&]*)&k=.*/;
+const reV2 = /^https:\/\/urldefense(?:\.proofpoint)?\.com\/v2\/url\?u=([^&]*)&[dc]=.*/;
+const reV3 = /^https:\/\/urldefense(?:\.proofpoint)?\.com\/v3\/__(.+)__;([^\!]*).*/;
+const reV3token = /\*(\*.)?/g;
 
-/* proofpoint V3 is explained well here
- * https://github.com/cardi/proofpoint-url-decoder/blob/main/decode.py
- */
-function decodeV3(req) {
-	const REPLACEMENT_MAPPING_NUM = new Map();
-	let repStr =
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-		"abcdefghijklmnopqrstuvwxyz" +
-		"0123456789-_";
-	for (let i = 0; i < repStr.length; ++i) {
-		REPLACEMENT_MAPPING_NUM.set(repStr[i], i+2);
-	}
+function proofPointDecoder(href) {
+	const version = href.match(reVersion);
+	if (!version)
+		return;
 
-	let redirect = req.match(/^.+?__(.+)__;.*$/);
-	let base64 = req.match(/^.+;(.*)!!.*$/);
-	if (!redirect || !base64)
-		return null;
+	switch (version[1]) {
+		case 'v1': {
+			return decodeURIComponent(href.match(reV1)[1]);
+		}
+		case 'v2': {
+			const url = href.match(reV2)[1].replace(/-/g, '%').replace(/_/g, '/');
+			return decodeURIComponent(url);
+		}
+		case 'v3': {
+			/* proofpoint V3 is explained well here
+			 * https://github.com/cardi/proofpoint-url-decoder/blob/main/decode.py
+			 */
+			const length_codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+			const url = href.match(reV3);
+			const encbytes = atob(url[2].replace(/_/g, '/').replace(/-/g, '+'));
+			let encbytes_off = 0;
 
-	redirect = redirect[1];
-	if (base64[1] == "")
-		return redirect;
-	else
-		base64 = decryptBase64(base64[1]);
-
-	let url = "";
-	for (let i = 0, tmpReplace; i < base64.length;) {
-		if (tmpReplace = redirect.match(/^[^\*]*\*\*(.+?)/)) {
-			// tmpReplace is the char for REPLACEMENT_MAPPING_NUM
-			tmpReplace = tmpReplace[1];
-			// url += stuff before **
-			// url += replacement
-			// redirect = stuff after **
-			url += redirect.match(/^([^\*]*)\*\*/)[1];
-			url += base64.substring(i, i + REPLACEMENT_MAPPING_NUM.get(tmpReplace));
-			i += REPLACEMENT_MAPPING_NUM.get(tmpReplace);
-			redirect = redirect.match(/^[^\*]*\*\*(.*)/)[1];
-		} else if (tmpReplace = redirect.match(/^([^\*]*)\*(.*)/)) {
-			// url += stuff before * + replacement
-			// redirect = stuff after *
-			url += tmpReplace[1] + base64[i++];
-			redirect = tmpReplace[2];
-		} else {
-			return null;
+			return url[1].replace(reV3token, (chunk) => {
+				let len = 1;
+				if (chunk.length > 1)
+				   len = length_codes.search(chunk[2]) + 2;
+				const out = encbytes.substring(encbytes_off, encbytes_off + len);
+				encbytes_off += len;
+				return out;
+			});
 		}
 	}
-	if (redirect.includes("*"))
-		return null;
-	url += redirect;
-
-	return verifyUrl(url) ? url : null;
 }
 
 function dropClickEventListeners(el) {
@@ -91,21 +68,12 @@ function dropClickEventListeners(el) {
 }
 
 document.arrive('a', function(link) {
-	if (!link.href || !reUrldefense.test(link.href))
+	if (!link.href)
 		return;
 
-	const version = reVersion.exec(link.href);
-	if (!version)
-		return;
-
-	switch (version[1]) {
-		case '3':
-			const decoded = decodeV3(link.href);
-			if (decoded) {
-				link.href = decoded;
-				dropClickEventListeners(link);
-			} else {
-				console.log(`o365-proofpoint-urldefense: could not decode ${link.href}`);
-			}
+	const decoded = proofPointDecoder(link.href);
+	if (decoded && verifyUrl(decoded)) {
+		link.href = decoded;
+		dropClickEventListeners(link);
 	}
 });
