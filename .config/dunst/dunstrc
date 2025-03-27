@@ -1,7 +1,7 @@
 [global]
 	follow = mouse
 	width = (0, 1000)
-	offset = 20x20
+	offset = (20, 20)
 	shrink = true
 	transparency = 10
 	padding = 4
