@@ -37,7 +37,7 @@
 	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
 	# word diffing
 	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
-	wdiff = -c pager.diff='less -FRX' diff --word-diff=color -w
+	wdiff = -c pager.diff=less diff --word-diff=color -w
 	wshow = show --word-diff=color -w
 	# git-dotfiles status alternatives
 	unstatus = -c status.showUntrackedFiles=normal status
@@ -78,7 +78,7 @@
 [diff "hex"]
 	textconv = hexdump -v -C
 [core]
-	pager = less -FRX --tabs=1,5
+	pager = less --tabs=1,5
 	hooksPath = ~/.config/git/hooks
 [stash]
 	showPatch = true

@@ -60,7 +60,7 @@ function uplfileperm {
 
 function rg {
 	if [[ -t 0 && -t 1 && -t 2 ]]; then
-		command rg -p "$@" | less -FRX
+		command rg -p "$@" | less
 	else
 		command rg "$@"
 	fi
