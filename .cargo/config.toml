@@ -6,3 +6,6 @@ rustflags = ["-C", "link-arg=-fuse-ld=mold"]
 
 [net]
 git-fetch-with-cli = true
+
+[registry]
+global-credential-providers = ["cargo:token", "cargo:libsecret"]
