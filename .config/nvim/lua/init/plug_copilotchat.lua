@@ -2,7 +2,6 @@ local copilot_chat = require'CopilotChat'
 local copilot_chat_prompts = require'CopilotChat.config.prompts'
 
 copilot_chat.setup {
-	model = 'claude-3.5-sonnet',
 	chat_autocomplete = false,
 	mappings = {
 		complete = {
