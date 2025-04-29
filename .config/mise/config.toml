@@ -11,6 +11,7 @@ missing_tools = "always"
 show_env = true
 
 [tools]
+"aqua:nextest-rs/nextest/cargo-nextest" = "0.9.94"
 "cargo:JojiiOfficial/LiveBudsCli" = "rev:4a2d75f5bede545738110dccbac033954b1d6087"
 "cargo:YodaEmbedding/frece" = "rev:d4071c6c852e68dda82b7ab0bfb0f141b39d4484"
 "cargo:ast-grep" = "0.28.0"
@@ -48,7 +49,7 @@ gh = "2.65.0"
 hadolint = "2.12.0"
 kind = "0.26.0"
 regctl = "0.8.0"
-rust-analyzer = "2025-04-07"
+rust-analyzer = "2025-04-21"
 stylua = "2.0.2"
 taplo = "0.9.3"
 tilt = "0.33.22"
