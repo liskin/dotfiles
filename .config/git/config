@@ -106,12 +106,14 @@
 
 # commit message helpers (see ~/.vim/ftplugin/gitcommit/liskin.vim)
 [alias]
-	fixes = -c core.abbrev=12 log -1 --pretty=fixes
-	co-authored-by = log -1 --all --author-date-order --pretty=co-authored-by --regexp-ignore-case --author
+	lg1-co-authored-by = log -1 --all --author-date-order --pretty=co-authored-by --regexp-ignore-case --author
+	lg1-fixes = -c core.abbrev=12 log -1 --pretty=fixes
+	lg1-related = -c core.abbrev=12 log -1 --pretty=related
 	lgmarkdown = "log --reverse --pretty=format:'### %s%n%n%b'"
 [pretty]
-	fixes = "Fixes: %h (\"%s\")"
 	co-authored-by = Co-authored-by: %an <%ae>
+	fixes = "Fixes: %h (\"%s\")"
+	related = "Related: %h (\"%s\")"
 
 # delta config
 [interactive]
