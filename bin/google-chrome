@@ -36,6 +36,7 @@ exec \
 		AcceleratedVideoEncoder \
 		AcceleratedVideoDecodeLinuxGL \
 		AcceleratedVideoDecodeLinuxZeroCopyGL \
+		FluentOverlayScrollbar \
 	)" \
 	"$@"
 
