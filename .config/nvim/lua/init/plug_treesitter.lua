@@ -16,6 +16,7 @@ require'nvim-treesitter.configs'.setup {
 		"javascript",
 		"jsdoc",
 		"json",
+		"json5",
 		"jsonc",
 		"lua",
 		"markdown",
