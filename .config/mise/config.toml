@@ -5,6 +5,7 @@ paranoid = true
 pin = true
 pipx_uvx = true
 trusted_config_paths = ['~/.config/mise/config.toml']
+idiomatic_version_file_enable_tools = []
 
 [settings.status]
 missing_tools = "always"
