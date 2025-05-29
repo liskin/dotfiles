@@ -1,6 +1,7 @@
 /.ext-*
 /docker-buildx
 /docker-compose
+/dotnet
 /haskell-language-server-9.4.7
 /haskell-language-server-wrapper
 /hlint

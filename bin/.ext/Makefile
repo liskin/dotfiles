@@ -1,6 +1,8 @@
 .PHONY: all
 all:
 
+HOSTNAME := $(shell hostname)
+
 ARCH := $(shell uname -m)
 ARM64 := $(if $(filter aarch64,$(ARCH)),1)
 
@@ -15,6 +17,7 @@ HLS_VERSION := 2.4.0.0
 LANGUAGETOOL_VERSION := v6.4
 NVIM_VERSION := v0.10.4
 PANDOC_VERSION := 3.5
+DOTNET_VERSION := 8.0.410
 
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
@@ -115,6 +118,17 @@ nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 .INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
 .ext-nvim-$(NVIM_VERSION).tar.gz:
 	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux-$(if $(ARM64),arm64,x86_64).tar.gz
+
+all: $(if $(filter pf%,$(HOSTNAME)),dotnet)
+dotnet: | .ext-dotnet ; ln -fsT $|/$@ $@
+.ext-dotnet: .ext-dotnet-$(DOTNET_VERSION) ; ln -fsT $< $@
+.ext-dotnet-$(DOTNET_VERSION): .ext-dotnet-$(DOTNET_VERSION).tar.gz
+	mkdir -p $@
+	tar -xzf $< -C $@
+
+.INTERMEDIATE: .ext-dotnet-$(DOTNET_VERSION).tar.gz
+.ext-dotnet-$(DOTNET_VERSION).tar.gz:
+	$(CURL) -C - -o $@ https://builds.dotnet.microsoft.com/dotnet/Sdk/$(DOTNET_VERSION)/dotnet-sdk-$(DOTNET_VERSION)-linux-$(if $(ARM64),arm64,x64).tar.gz
 
 .PHONY: gc
 ## Remove old versions
