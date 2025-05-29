@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+CIRCLECI_CLI_SKIP_UPDATE_CHECK=true exec -a circleci mise "$@"

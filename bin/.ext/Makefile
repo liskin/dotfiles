@@ -6,7 +6,6 @@ ARM64 := $(if $(filter aarch64,$(ARCH)),1)
 
 CURL := curl -LSsf
 
-CIRCLECI_CLI_VERSION := v0.1.30549
 DOCKER_BUILDX_VERSION := v0.18.0
 DOCKER_COMPOSE_VERSION := v2.30.3
 FITSDK_VERSION := 21.84.00
@@ -14,17 +13,14 @@ HLINT_VERSION := v3.8
 HLS_GHC_VERSION := 9.4.7
 HLS_VERSION := 2.4.0.0
 LANGUAGETOOL_VERSION := v6.4
-LUALS_VERSION := 3.13.0
 NVIM_VERSION := v0.10.4
 PANDOC_VERSION := 3.5
 
-CIRCLECI_CLI_GITHUB := CircleCI-Public/circleci-cli
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
-LUALS_GITHUB := LuaLS/lua-language-server
 NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
 
@@ -109,17 +105,6 @@ all: .ext-fitsdk
 .ext-fitsdk-$(FITSDK_VERSION).zip:
 	$(CURL) -C - -o $@ https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_$(FITSDK_VERSION).zip
 
-all: .ext-circleci-cli
-.SKIP_GITIGNORE: .ext-circleci-cli
-.ext-circleci-cli: .ext-circleci-cli-$(CIRCLECI_CLI_VERSION) ; ln -fsT $< $@
-.ext-circleci-cli-$(CIRCLECI_CLI_VERSION): .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz
-	mkdir -p $@
-	tar -xzf $< -C $@ --strip-components=1 --wildcards "*/circleci"
-
-.INTERMEDIATE: .ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz
-.ext-circleci-cli-$(CIRCLECI_CLI_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(CIRCLECI_CLI_GITHUB)/releases/download/$(CIRCLECI_CLI_VERSION)/circleci-cli_$(CIRCLECI_CLI_VERSION:v%=%)_linux_$(if $(ARM64),arm64,amd64).tar.gz
-
 all: nvim
 nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 .ext-nvim: .ext-nvim-$(NVIM_VERSION) ; ln -fsT $< $@
@@ -130,17 +115,6 @@ nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
 .INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
 .ext-nvim-$(NVIM_VERSION).tar.gz:
 	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux-$(if $(ARM64),arm64,x86_64).tar.gz
-
-all: lua-language-server
-lua-language-server: | .ext-luals ; ln -fsT $|/bin/$@ $@
-.ext-luals: .ext-luals-$(LUALS_VERSION) ; ln -fsT $< $@
-.ext-luals-$(LUALS_VERSION): .ext-luals-$(LUALS_VERSION).tar.gz
-	mkdir -p $@
-	tar -xzf $< -C $@
-
-.INTERMEDIATE: .ext-luals-$(LUALS_VERSION).tar.gz
-.ext-luals-$(LUALS_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(LUALS_GITHUB)/releases/download/$(LUALS_VERSION)/lua-language-server-$(LUALS_VERSION)-linux-$(if $(ARM64),arm64,x64).tar.gz
 
 .PHONY: gc
 ## Remove old versions
