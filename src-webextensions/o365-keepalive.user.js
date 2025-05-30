@@ -13,10 +13,17 @@ that it shouldn't reset the session idle timer; rewrite it to UA=1 to keep the
 session alive
 */
 
+function shouldPatchUrl(url) {
+	if (url.includes("/owa/notificationchannel/"))
+		return false;
+
+	return url.includes("UA=0");
+}
+
 const oldFetch = window.fetch;
 window.fetch = async function () {
 	const args = [...arguments];
-	if (`${args[0]}`.includes("UA=0")) {
+	if (shouldPatchUrl(`${args[0]}`)) {
 		args[0] = `${args[0]}`.replaceAll("UA=0", "UA=1");
 	}
 	return await oldFetch(...args);
@@ -25,7 +32,7 @@ window.fetch = async function () {
 const oldXMLHttpRequestOpen = window.XMLHttpRequest.prototype.open;
 window.XMLHttpRequest.prototype.open = function () {
 	const args = [...arguments];
-	if (`${args[1]}`.includes("UA=0")) {
+	if (shouldPatchUrl(`${args[1]}`)) {
 		args[1] = `${args[1]}`.replaceAll("UA=0", "UA=1");
 	}
 	return oldXMLHttpRequestOpen.call(this, ...args);
