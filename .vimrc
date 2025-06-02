@@ -372,9 +372,6 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['isort'] = #{enabled: v:true}
 let g:lsp_settings_pylsp['pylsp']['plugins']['black'] = #{enabled: v:false}
 let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
 
-let g:lsp_settings_hls = #{haskell: #{plugin: {} } }
-let g:lsp_settings_hls['haskell']['plugin']['stan'] = #{globalOn: v:false}
-
 let g:lsp_settings_rust_analyzer = #{rust-analyzer: {}}
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = {}
 let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['features'] = 'all'
