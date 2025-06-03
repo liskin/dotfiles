@@ -50,7 +50,7 @@ haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .e
 
 .INTERMEDIATE: .ext-hls-$(HLS_VERSION).tar.xz
 .ext-hls-$(HLS_VERSION).tar.xz:
-	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-$(if $(ARM64),aarch64-linux-ubuntu20,x86_64-linux-deb10).tar.xz
+	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-$(if $(ARM64),aarch64-linux-ubuntu20,x86_64-linux-deb11).tar.xz
 
 all: pandoc
 pandoc: | .ext-pandoc ; ln -fsT $|/bin/$@ $@
