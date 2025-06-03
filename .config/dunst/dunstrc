@@ -38,6 +38,11 @@
 [fullscreen_delay_everything]
 	fullscreen = delay
 
+[fix_chrome_urgency]
+	appname = "*Chrom*"
+	msg_urgency = critical
+	urgency = normal
+
 [urgency_low]
 	background = "#222222"
 	foreground = "#aaaaaa"
