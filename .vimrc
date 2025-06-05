@@ -349,6 +349,14 @@ function! s:AirlineInit()
 	let g:airline_section_z = airline#section#create(['windowswap', 'obsession', '%3p%%'.spc, 'linenr', 'maxlinenr', spc.': %c%V'])
 endfunction
 autocmd User AirlineAfterInit call s:AirlineInit()
+function! s:AirlineAfterTheme()
+	" StatusLine colors combine with airline colors since nvim 0.11
+	hi StatusLine cterm=NONE gui=NONE
+	hi StatusLineNC cterm=NONE gui=NONE
+	hi StatusLineTerm cterm=NONE gui=NONE
+	hi StatusLineTermNC cterm=NONE gui=NONE
+endfunction
+autocmd User AirlineAfterTheme call s:AirlineAfterTheme()
 
 " LSP {{{2
 let g:lsp_settings_elixirls = {}
