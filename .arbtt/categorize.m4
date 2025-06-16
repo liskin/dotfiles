@@ -88,6 +88,9 @@ $current_window_browser ==> {
 		&& $program == ["urxvt", "x-terminal-emulator"]
 		&& $wdesktop =~ m|^W?\d+:([^:]*)|
 	) ==> tag Activity:Proj-$1ⁱ,
+
+	current window $title =~ m|:: https?://github| ==> tag Activity:Web-GitHub,
+
 	tag Activity:Web-UNKNOWN,
 },
 
