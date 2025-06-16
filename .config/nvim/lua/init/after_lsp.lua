@@ -1,7 +1,6 @@
 -- vim:set path^=./..:
 
 local cmp_nvim_lsp = require 'cmp_nvim_lsp'
-local lsp_format = require 'lsp-format'
 local lspconfig = require 'lspconfig'
 local lspconfig_manager = require 'lspconfig.manager'
 local neodev = require 'neodev'
@@ -125,11 +124,6 @@ for _, lsp in ipairs(lsps) do
 		autostart = vim.g['lsp_autostart_' .. lsp] or false,
 		settings = vim.g['lsp_settings_' .. lsp],
 		cmd = vim.g['lsp_cmd_' .. lsp],
-		on_attach = function(client, bufnr)
-			if vim.g['lsp_autoformat_' .. lsp] then
-				lsp_format.on_attach(client, bufnr)
-			end
-		end,
 		capabilities = cmp_nvim_lsp.default_capabilities(),
 	}
 end
@@ -157,7 +151,6 @@ end
 
 null_ls.setup {
 	sources = lsp_null_sources,
-	on_attach = lsp_format.on_attach,
 	-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 	-- (this needs to be the same as debounce_text_changes for LSPs, neovim uses the minimum)
 	debounce = debounce,
