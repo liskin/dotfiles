@@ -15,7 +15,6 @@ HLINT_VERSION := v3.8
 HLS_GHC_VERSION := 9.6.6
 HLS_VERSION := 2.9.0.1
 LANGUAGETOOL_VERSION := v6.4
-NVIM_VERSION := v0.10.4
 PANDOC_VERSION := 3.5
 DOTNET_VERSION := 8.0.410
 
@@ -24,7 +23,6 @@ DOCKER_COMPOSE_GITHUB := docker/compose
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
-NVIM_GITHUB_LASTTAG := neovim/neovim
 PANDOC_GITHUB := jgm/pandoc
 
 .PHONY: update
@@ -107,17 +105,6 @@ all: .ext-fitsdk
 .INTERMEDIATE: .ext-fitsdk-$(FITSDK_VERSION).zip
 .ext-fitsdk-$(FITSDK_VERSION).zip:
 	$(CURL) -C - -o $@ https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_$(FITSDK_VERSION).zip
-
-all: nvim
-nvim: | .ext-nvim ; ln -fsT $|/bin/$@ $@
-.ext-nvim: .ext-nvim-$(NVIM_VERSION) ; ln -fsT $< $@
-.ext-nvim-$(NVIM_VERSION): .ext-nvim-$(NVIM_VERSION).tar.gz
-	mkdir -p $@
-	tar -xzf $< -C $@ --strip-components=1
-
-.INTERMEDIATE: .ext-nvim-$(NVIM_VERSION).tar.gz
-.ext-nvim-$(NVIM_VERSION).tar.gz:
-	wget -O $@ https://github.com/$(NVIM_GITHUB_LASTTAG)/releases/download/$(NVIM_VERSION)/nvim-linux-$(if $(ARM64),arm64,x86_64).tar.gz
 
 all: $(if $(filter pf%,$(HOSTNAME)),dotnet)
 dotnet: | .ext-dotnet ; ln -fsT $|/$@ $@
