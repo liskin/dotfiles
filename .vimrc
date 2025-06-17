@@ -484,12 +484,6 @@ set runtimepath+=/usr/share/vim/addons
 filetype plugin indent on
 syntax on
 
-" diagnostic signs {{{2
-sign define DiagnosticSignError text=>> texthl=DiagnosticSignError
-sign define DiagnosticSignWarn text=>> texthl=DiagnosticSignWarn
-sign define DiagnosticSignInfo text=―― texthl=DiagnosticSignInfo
-sign define DiagnosticSignHint text=-- texthl=DiagnosticSignHint
-
 " detect background colour, load my colourscheme {{{2
 if has('nvim') || v:version >= 900
 	set bg&
