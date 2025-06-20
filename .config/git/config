@@ -94,6 +94,8 @@
 [fetch]
 	prune = true
 	writeCommitGraph = true
+[remote "origin"]
+	followRemoteHead = always
 [completion]
 	commands = ls-files absorb
 [gui]
