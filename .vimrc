@@ -198,6 +198,9 @@ set tags+=./tags;
 
 " completion {{{2
 set completeopt=menu,menuone,longest,popup
+if has('nvim-0.11') || has("patch-9.1.0463")
+	set completeopt+=fuzzy
+endif
 set wildmenu
 set wildmode=full:longest
 if has('nvim') || v:version >= 900
@@ -223,9 +226,6 @@ set updatetime=500
 set autoread
 set backspace=indent,eol,start
 set diffopt+=indent-heuristic,algorithm:histogram
-if has('nvim')
-	set diffopt+=linematch:30
-endif
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
 set formatoptions+=rj
@@ -238,6 +238,9 @@ endif
 set spelllang=en
 set splitbelow
 set splitright
+if exists('&tabclose')
+	set tabclose=left,uselast
+endif
 set viewoptions-=options
 
 " plugins {{{1
