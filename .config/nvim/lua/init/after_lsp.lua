@@ -18,7 +18,7 @@ local function is_nvim_path(path)
 end
 
 local function buf_filesize(bufnr)
-	local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+	local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
 	if ok and stats then
 		return stats.size
 	else
@@ -34,6 +34,7 @@ local function try_require(mod)
 	end
 end
 
+---@diagnostic disable-next-line: missing-fields
 neodev.setup {
 	override = function(root_dir, options)
 		-- don't enable neodev for roots having a lua subdirectory that aren't in neovim dirs

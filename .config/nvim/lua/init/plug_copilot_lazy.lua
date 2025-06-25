@@ -1,3 +1,5 @@
+-- vim:set path^=./..:
+
 vim.api.nvim_create_autocmd("SourcePost", {
 	pattern = "*/plugin/copilot.lua",
 	callback = function()
