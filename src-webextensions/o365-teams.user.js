@@ -29,6 +29,10 @@ document.arrive('a', function(link) {
 	if (link.href.startsWith("https://teams.microsoft.com/"))
 		return;
 
+	// Teams seems to choke if we mess with its weird malformed mailto: links (wtf)
+	if (!link.href.startsWith("http"))
+		return;
+
 	dropClickEventListeners(link);
 });
 
