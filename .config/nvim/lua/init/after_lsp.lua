@@ -4,7 +4,6 @@ local cmp_nvim_lsp = require 'cmp_nvim_lsp'
 local lspconfig = require 'lspconfig'
 local lspconfig_manager = require 'lspconfig.manager'
 local neodev = require 'neodev'
-local neodev_util = require 'neodev.util'
 local null_ls = require 'null-ls'
 
 local debounce = 5000
@@ -56,23 +55,6 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 	-- nvim-lspconfig doesn't handle dot-separated filetypes (https://github.com/neovim/nvim-lspconfig/issues/1220)
 	if config.name == 'tilt_ls' then
 		config.filetypes = {'*.tiltfile', unpack(config.filetypes)}
-	end
-
-	if config.name == 'lua_ls' then
-		-- resolve symlinks before looking for root_dir
-		local orig_root_dir = config.root_dir
-		config.root_dir = function(fname)
-			return orig_root_dir(vim.loop.fs_realpath(fname) or fname)
-		end
-
-		-- resolve symlinks before looking for lua_root in neodev
-		-- https://github.com/folke/neodev.nvim/commit/a34a9e7e775f1513466940c31285292b7b8375de#r134948856
-		local orig_neodev_util_find_root = neodev_util.find_root
-		---@diagnostic disable-next-line: duplicate-set-field
-		function neodev_util.find_root(path)
-			path = path or vim.api.nvim_buf_get_name(0)
-			return orig_neodev_util_find_root(vim.loop.fs_realpath(path) or path)
-		end
 	end
 
 	config.flags = vim.tbl_deep_extend("keep", config.flags or {}, {

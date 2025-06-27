@@ -483,6 +483,9 @@ let g:snips_github = "https://github.com/liskin"
 " old-style debian vim addons {{{2
 set runtimepath+=/usr/share/vim/addons
 
+" resolve symlinks before filetype detection and LSP {{{2
+runtime plugin/canon_filename.vim
+
 " ft, syn {{{2
 filetype plugin indent on
 syntax on
