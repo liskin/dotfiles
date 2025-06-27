@@ -3,18 +3,9 @@
 local cmp_nvim_lsp = require 'cmp_nvim_lsp'
 local lspconfig = require 'lspconfig'
 local lspconfig_manager = require 'lspconfig.manager'
-local neodev = require 'neodev'
 local null_ls = require 'null-ls'
 
 local debounce = 5000
-
-local function is_nvim_path(path)
-	local config_root = vim.fn.stdpath("config")
-	local data_root = vim.fn.stdpath("data")
-	---@cast config_root string
-	---@cast data_root string
-	return vim.startswith(path, config_root) or vim.startswith(path, data_root)
-end
 
 local function buf_filesize(bufnr)
 	local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
@@ -32,16 +23,6 @@ local function try_require(mod)
 		return source
 	end
 end
-
----@diagnostic disable-next-line: missing-fields
-neodev.setup {
-	override = function(root_dir, options)
-		-- don't enable neodev for roots having a lua subdirectory that aren't in neovim dirs
-		if not is_nvim_path(root_dir) then
-			options.enabled = false
-		end
-	end,
-}
 
 lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup, function(config)
 	-- flake8_lint in pylsp needs root_dir, so add a fallback to the directory of the file
@@ -93,7 +74,6 @@ local lsps = {
 	'elixirls',
 	'gopls',
 	'hls',
-	'lua_ls',
 	'pylsp',
 	'rust_analyzer',
 	'taplo',

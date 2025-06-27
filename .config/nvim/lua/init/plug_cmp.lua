@@ -1,4 +1,5 @@
 local cmp = require'cmp'
+local cmp_nvim_lsp = require'cmp_nvim_lsp'
 local cmp_nvim_ultisnips_source = require'cmp_nvim_ultisnips.source'
 local snippet_noselectmode = require'init.lib.snippet_noselect'.snippet_noselectmode
 
@@ -8,12 +9,6 @@ function cmp_nvim_ultisnips_source:execute(completion_item, callback)
 	vim.call("UltiSnips#ExpandSnippet")
 	snippet_noselectmode()
 	callback(completion_item)
-end
-
--- disable nvim 0.11 default vim.snippet.jump mapping in Insert/Select mode
-if vim.fn.has("nvim-0.11") == 1 then
-	vim.keymap.del({ 'i', 's' }, '<Tab>')
-	vim.keymap.del({ 'i', 's' }, '<S-Tab>')
 end
 
 local function has_words_before()
@@ -227,3 +222,16 @@ vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
 		return '<S-Tab>'
 	end
 end, { expr = true })
+
+-- XXX: nvim-0.11 only
+if vim.fn.has('nvim-0.11') == 0 then
+	return
+end
+
+-- disable nvim 0.11 default vim.snippet.jump mapping in Insert/Select mode
+vim.keymap.del({ 'i', 's' }, '<Tab>')
+vim.keymap.del({ 'i', 's' }, '<S-Tab>')
+
+vim.lsp.config('*', {
+	capabilities = cmp_nvim_lsp.default_capabilities(),
+})

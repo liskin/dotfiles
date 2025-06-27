@@ -135,9 +135,6 @@
 [submodule ".local/share/nvim/site/bundle/hop.nvim"]
 	path = .local/share/nvim/site/bundle/hop.nvim
 	url = https://github.com/smoka7/hop.nvim
-[submodule ".local/share/nvim/site/bundle/neodev.nvim"]
-	path = .local/share/nvim/site/bundle/neodev.nvim
-	url = https://github.com/folke/neodev.nvim
 [submodule ".local/share/nvim/site/bundle/none-ls-extras.nvim"]
 	path = .local/share/nvim/site/bundle/none-ls-extras.nvim
 	url = https://github.com/nvimtools/none-ls-extras.nvim
@@ -180,6 +177,9 @@
 [submodule ".local/share/nvim/site/bundle/ferris.nvim"]
 	path = .local/share/nvim/site/bundle/ferris.nvim
 	url = https://github.com/vxpm/ferris.nvim
+[submodule ".local/share/nvim/site/bundle/lazydev.nvim"]
+	path = .local/share/nvim/site/bundle/lazydev.nvim
+	url = https://github.com/folke/lazydev.nvim
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title

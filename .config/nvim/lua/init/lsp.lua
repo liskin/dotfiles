@@ -54,4 +54,14 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
--- see "after_lsp" for individual LSP configs
+-- XXX: nvim-0.11 only
+if vim.fn.has('nvim-0.11') == 0 then
+	return
+end
+
+--- LSP defaults
+vim.lsp.enable({
+	'lua_ls',
+})
+
+-- see "after_lsp" for legacy LSP setup
