@@ -54,10 +54,27 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
+-- force longer debounce for vim.lsp.semantic_tokens (not configurable otherwise)
+-- to avoid wasting too much CPU in the LSP
+local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
+---@diagnostic disable-next-line: duplicate-set-field
+function vim.lsp.semantic_tokens.start(bufnr, client_id, opts)
+	opts = opts or {}
+	opts.debounce = vim.g.lsp_debounce
+	return orig_vim_lsp_semantic_tokens_start(bufnr, client_id, opts)
+end
+
 -- XXX: nvim-0.11 only
 if vim.fn.has('nvim-0.11') == 0 then
 	return
 end
+
+-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
+vim.lsp.config('*', {
+	flags = {
+		debounce_text_changes = vim.g.lsp_debounce,
+	},
+})
 
 --- LSP defaults
 vim.lsp.enable({

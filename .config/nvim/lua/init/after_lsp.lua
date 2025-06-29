@@ -5,8 +5,6 @@ local lspconfig = require 'lspconfig'
 local lspconfig_manager = require 'lspconfig.manager'
 local null_ls = require 'null-ls'
 
-local debounce = 5000
-
 local function buf_filesize(bufnr)
 	local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
 	if ok and stats then
@@ -40,7 +38,7 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 
 	config.flags = vim.tbl_deep_extend("keep", config.flags or {}, {
 		-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
-		debounce_text_changes = debounce,
+		debounce_text_changes = vim.g.lsp_debounce,
 	})
 
 	-- -- disable semantic tokens to avoid wasting CPU in the LSP
@@ -57,16 +55,6 @@ function lspconfig_manager.add(...)
 	if not vim.b[bufnr].lsp_disabled and not vim.g.lsp_disabled then
 		return orig_lspconfig_manager_add(...)
 	end
-end
-
--- force longer debounce for vim.lsp.semantic_tokens (not configurable otherwise)
--- to avoid wasting too much CPU in the LSP
-local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
----@diagnostic disable-next-line: duplicate-set-field
-function vim.lsp.semantic_tokens.start(bufnr, client_id, opts)
-	opts = opts or {}
-	opts.debounce = debounce
-	return orig_vim_lsp_semantic_tokens_start(bufnr, client_id, opts)
 end
 
 local lsps = {
@@ -116,7 +104,7 @@ null_ls.setup {
 	sources = lsp_null_sources,
 	-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 	-- (this needs to be the same as debounce_text_changes for LSPs, neovim uses the minimum)
-	debounce = debounce,
+	debounce = vim.g.lsp_debounce,
 	should_attach = function(bufnr)
 		-- disable for large files (FIXME: limit to proselint somehow?)
 		local max_filesize = vim.g.lsp_maximum_file_size

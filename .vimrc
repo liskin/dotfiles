@@ -411,6 +411,7 @@ if isdirectory(s:cargo_root . '/target/debug') || isdirectory(s:cargo_root . '/t
 	let g:lsp_autostart_rust_analyzer = v:true
 endif
 
+let g:lsp_debounce = 5000
 let g:lsp_maximum_file_size = 131072
 
 " fzf {{{2
