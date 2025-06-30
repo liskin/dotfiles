@@ -383,18 +383,9 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['isort'] = #{enabled: v:true}
 let g:lsp_settings_pylsp['pylsp']['plugins']['black'] = #{enabled: v:false}
 let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
 
-let g:lsp_settings_rust_analyzer = #{rust-analyzer: {}}
-let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo'] = {}
-let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['features'] = 'all'
-let g:lsp_settings_rust_analyzer['rust-analyzer']['cargo']['allTargets'] = v:true
-let g:lsp_settings_rust_analyzer['rust-analyzer']['check'] = {}
-let g:lsp_settings_rust_analyzer['rust-analyzer']['check']['command'] = 'clippy'
-let g:lsp_settings_rust_analyzer['rust-analyzer']['check']['extraArgs'] = ['--no-deps']
-
 " See ~/.nvim/init/after_lsp.lua for neovim LSP configs
 let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_pylsp = v:true
-let g:lsp_autostart_taplo = v:true
 let g:lsp_null_enabled = {}
 let g:lsp_null_enabled['hadolint'] = ['diagnostics']
 let g:lsp_null_enabled['buildifier'] = ['diagnostics', 'formatting']
@@ -402,13 +393,6 @@ let g:lsp_null_enabled['proselint'] = ['code_actions', 'diagnostics']
 let g:lsp_null_enabled['shellcheck'] = ['code_actions', 'diagnostics']
 let g:lsp_null_settings = {}
 let g:lsp_null_settings['proselint'] = #{filetypes: ["gitcommit", "mail", "markdown", "rst", "text"]}
-
-let s:cargo_root = fnamemodify(findfile('Cargo.toml', fnameescape(getcwd()) . ';'), ':p:h')
-if isdirectory(s:cargo_root . '/target/debug') || isdirectory(s:cargo_root . '/target/release')
-	" Enable only for projects that have been built at least once
-	let g:lsp_autoformat_rust_analyzer = v:true
-	let g:lsp_autostart_rust_analyzer = v:true
-endif
 
 let g:lsp_debounce = 5000
 let g:lsp_maximum_file_size = 131072

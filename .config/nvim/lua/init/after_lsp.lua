@@ -47,8 +47,6 @@ local lsps = {
 	'gopls',
 	'hls',
 	'pylsp',
-	'rust_analyzer',
-	'taplo',
 	'ts_ls',
 }
 
