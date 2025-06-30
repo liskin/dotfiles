@@ -2,7 +2,6 @@
 
 local cmp_nvim_lsp = require 'cmp_nvim_lsp'
 local lspconfig = require 'lspconfig'
-local lspconfig_manager = require 'lspconfig.manager'
 local null_ls = require 'null-ls'
 
 local function buf_filesize(bufnr)
@@ -46,16 +45,6 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 	-- 	client.server_capabilities.semanticTokensProvider = nil
 	-- end)
 end)
-
--- implement "should_attach" for nvim-lspconfig
-local orig_lspconfig_manager_add = lspconfig_manager.add
----@diagnostic disable-next-line: duplicate-set-field
-function lspconfig_manager.add(...)
-	local _, _, _, bufnr = ...
-	if not vim.b[bufnr].lsp_disabled and not vim.g.lsp_disabled then
-		return orig_lspconfig_manager_add(...)
-	end
-end
 
 local lsps = {
 	'clangd',

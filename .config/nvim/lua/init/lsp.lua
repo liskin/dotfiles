@@ -64,6 +64,20 @@ function vim.lsp.semantic_tokens.start(bufnr, client_id, opts)
 	return orig_vim_lsp_semantic_tokens_start(bufnr, client_id, opts)
 end
 
+-- implement "should_attach" for vim.lsp.start
+vim.lsp.start = (function(orig)
+	return function(config, opts)
+		opts = opts or {}
+		local bufnr = vim._resolve_bufnr(opts.bufnr)
+
+		if vim.b[bufnr].lsp_disabled or vim.g.lsp_disabled then
+			return
+		end
+
+		return orig(config, opts)
+	end
+end)(vim.lsp.start)
+
 -- XXX: nvim-0.11 only
 if vim.fn.has('nvim-0.11') == 0 then
 	return
