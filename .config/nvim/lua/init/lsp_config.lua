@@ -1,3 +1,5 @@
+local null_ls = require 'null-ls'
+
 -- XXX: nvim-0.11 only
 if vim.fn.has('nvim-0.11') == 0 then
 	return
@@ -56,3 +58,26 @@ vim.lsp.config('elixirls', {
 	},
 })
 vim.g.lsp_autoformat_elixirls = true
+
+-- none-ls/null-ls
+vim.g.lsp_null_enabled = {
+	hadolint = { 'diagnostics' },
+	buildifier = { 'diagnostics', 'formatting' },
+	proselint = { 'code_actions', 'diagnostics' },
+	shellcheck = { 'code_actions', 'diagnostics' },
+}
+vim.g.lsp_null_settings = {
+	proselint = {
+		filetypes = {
+			'gitcommit',
+			'mail',
+			'markdown',
+			'rst',
+			'text',
+		},
+	},
+	['diagnostics.proselint'] = {
+		-- don't waste time proselinting before saving, we won't see the diagnostics before save anyway
+		method = { null_ls.methods.DIAGNOSTICS_ON_OPEN, null_ls.methods.DIAGNOSTICS_ON_SAVE },
+	},
+}

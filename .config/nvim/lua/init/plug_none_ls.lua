@@ -1,5 +1,10 @@
 local null_ls = require 'null-ls'
 
+-- XXX: nvim-0.11 only
+if vim.fn.has('nvim-0.11') == 0 then
+	return
+end
+
 local function buf_filesize(bufnr)
 	local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
 	if ok and stats then
@@ -18,12 +23,6 @@ local function try_require(mod)
 end
 
 local lsp_null_sources = {}
-local lsp_null_settings = vim.g.lsp_null_settings or {}
-
--- don't waste time proselinting before saving, we won't see the diagnostics before save anyway
-lsp_null_settings['diagnostics.proselint'] = vim.tbl_deep_extend("keep", lsp_null_settings['diagnostics.proselint'] or {}, {
-	method = {null_ls.methods.DIAGNOSTICS_ON_OPEN, null_ls.methods.DIAGNOSTICS_ON_SAVE}
-})
 
 for tool, handlers in pairs(vim.g.lsp_null_enabled) do
 	for _, handler in ipairs(handlers) do
@@ -32,7 +31,11 @@ for tool, handlers in pairs(vim.g.lsp_null_enabled) do
 			try_require('none-ls.' .. handler .. '.' .. tool) or
 			vim.tbl_get(null_ls.builtins, handler, tool)
 		if source then
-			local settings = vim.tbl_deep_extend("keep", lsp_null_settings[handler .. '.' .. tool] or {}, lsp_null_settings[tool] or {})
+			local settings = vim.tbl_deep_extend(
+				"keep",
+				vim.g.lsp_null_settings[handler .. "." .. tool] or {},
+				vim.g.lsp_null_settings[tool] or {}
+			)
 			table.insert(lsp_null_sources, source.with(settings))
 		end
 	end

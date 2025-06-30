@@ -381,13 +381,6 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
 
 " See ~/.nvim/init/after_lsp.lua for neovim LSP configs
 let g:lsp_autostart_pylsp = v:true
-let g:lsp_null_enabled = {}
-let g:lsp_null_enabled['hadolint'] = ['diagnostics']
-let g:lsp_null_enabled['buildifier'] = ['diagnostics', 'formatting']
-let g:lsp_null_enabled['proselint'] = ['code_actions', 'diagnostics']
-let g:lsp_null_enabled['shellcheck'] = ['code_actions', 'diagnostics']
-let g:lsp_null_settings = {}
-let g:lsp_null_settings['proselint'] = #{filetypes: ["gitcommit", "mail", "markdown", "rst", "text"]}
 
 let g:lsp_debounce = 5000
 let g:lsp_maximum_file_size = 131072
