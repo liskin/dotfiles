@@ -13,6 +13,10 @@ local function has_dir(path, dirname)
 	return path and vim.fn.isdirectory(vim.fs.joinpath(path, dirname)) == 1
 end
 
+-- global
+vim.g.lsp_debounce = 5000 -- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
+vim.g.lsp_maximum_file_size = 131072 -- none-ls/null-ls only for now
+
 -- Lua
 vim.lsp.enable('lua_ls')
 

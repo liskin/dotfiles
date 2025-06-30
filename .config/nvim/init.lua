@@ -6,8 +6,8 @@ vim.loader.enable()
 require 'init.vimrc' -- ~/.vimrc
 require 'init.diagnostic'
 require 'init.diagnostic_delay'
-require 'init.lsp' -- see also 'init.after_lsp'
 require 'init.lsp_config' -- see also ~/.vim/projectrc
+require 'init.lsp' -- see also 'init.after_lsp'
 require 'init.plug_treesitter'
 require 'init.plug_trouble'
 require 'init.plug_lsp_format'

@@ -382,9 +382,6 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
 " See ~/.nvim/init/after_lsp.lua for neovim LSP configs
 let g:lsp_autostart_pylsp = v:true
 
-let g:lsp_debounce = 5000
-let g:lsp_maximum_file_size = 131072
-
 " fzf {{{2
 if exists('$TMUX')
 	let g:fzf_layout = { 'tmux': '-p90%,60%' }
