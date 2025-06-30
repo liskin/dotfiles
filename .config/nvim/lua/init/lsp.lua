@@ -93,6 +93,9 @@ vim.lsp.config('*', {
 --- LSP defaults
 vim.lsp.enable({
 	'lua_ls',
+	'tilt_ls',
 })
+
+vim.lsp.config('tilt_ls', { filetypes = { 'bzl.tiltfile' } })
 
 -- see "after_lsp" for legacy LSP setup

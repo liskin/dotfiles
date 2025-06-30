@@ -30,11 +30,6 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 		end
 	end
 
-	-- nvim-lspconfig doesn't handle dot-separated filetypes (https://github.com/neovim/nvim-lspconfig/issues/1220)
-	if config.name == 'tilt_ls' then
-		config.filetypes = {'*.tiltfile', unpack(config.filetypes)}
-	end
-
 	config.flags = vim.tbl_deep_extend("keep", config.flags or {}, {
 		-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 		debounce_text_changes = vim.g.lsp_debounce,
@@ -54,7 +49,6 @@ local lsps = {
 	'pylsp',
 	'rust_analyzer',
 	'taplo',
-	'tilt_ls',
 	'ts_ls',
 }
 
