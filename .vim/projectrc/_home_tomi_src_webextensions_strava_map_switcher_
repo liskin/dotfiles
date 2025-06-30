@@ -1,2 +1,2 @@
-let g:lsp_autostart_ts_ls = v:true
+lua vim.lsp.enable('ts_ls')
 autocmd BufNewFile,BufRead manifest.json setlocal sw=2 et

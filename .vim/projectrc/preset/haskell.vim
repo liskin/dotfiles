@@ -1,1 +1,1 @@
-let g:lsp_autostart_hls = v:true
+lua vim.lsp.enable('hls')

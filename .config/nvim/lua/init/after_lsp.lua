@@ -24,9 +24,7 @@ lspconfig.util.on_setup = lspconfig.util.add_hook_after(lspconfig.util.on_setup,
 end)
 
 local lsps = {
-	'hls',
 	'pylsp',
-	'ts_ls',
 }
 
 -- see '~/.vimrc' and 'init.lsp_settings' for the actual settings
