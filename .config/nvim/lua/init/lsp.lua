@@ -92,3 +92,4 @@ vim.lsp.config('*', {
 
 -- see "lsp_config" and ~/.vim/projectrc for LSP config
 -- see "after_lsp" for legacy LSP setup
+-- see "plug_none_ls" for null-ls/none-ls
