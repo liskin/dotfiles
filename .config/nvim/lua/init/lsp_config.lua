@@ -41,6 +41,31 @@ if has_dir(cargo_root, 'target/debug') or has_dir(cargo_root, 'target/release') 
 	vim.g.lsp_autoformat_rust_analyzer = true
 end
 
+-- Python
+vim.lsp.config('pylsp', {
+	settings = {
+		pylsp = {
+			configurationSources = { 'flake8' },
+			plugins = {
+				-- disable mypy by default to prevent .mypy_cache appearing all over the filesystem
+				pylsp_mypy = { enabled = false },
+
+				-- use flake8 (covers functionality of pyflakes, pycodestyle, mccabe)
+				flake8 = { enabled = true },
+				pyflakes = { enabled = false },
+				pycodestyle = { enabled = false },
+				mccabe = { enabled = false },
+
+				-- disable black (formatting) and ruff (formatting + linting) by default, only enable isort
+				isort = { enabled = true },
+				black = { enabled = false },
+				ruff = { enabled = false },
+			},
+		},
+	},
+})
+vim.lsp.enable('pylsp')
+
 -- Tilt (Starlark)
 vim.lsp.enable('tilt_ls')
 vim.lsp.config('tilt_ls', { filetypes = { 'bzl.tiltfile' } })

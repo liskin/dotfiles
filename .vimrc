@@ -361,27 +361,6 @@ function! s:AirlineAfterTheme()
 endfunction
 autocmd User AirlineAfterTheme call s:AirlineAfterTheme()
 
-" LSP {{{2
-let g:lsp_settings_pylsp = #{pylsp: #{plugins: {} } }
-let g:lsp_settings_pylsp['pylsp']['configurationSources'] = ['flake8']
-
-" disable mypy by default to prevent .mypy_cache appearing all over the filesystem
-let g:lsp_settings_pylsp['pylsp']['plugins']['pylsp_mypy'] = #{enabled: v:false}
-
-" use flake8 (covers functionality of pyflakes, pycodestyle, mccabe)
-let g:lsp_settings_pylsp['pylsp']['plugins']['flake8'] = #{enabled: v:true}
-let g:lsp_settings_pylsp['pylsp']['plugins']['pyflakes'] = #{enabled: v:false}
-let g:lsp_settings_pylsp['pylsp']['plugins']['pycodestyle'] = #{enabled: v:false}
-let g:lsp_settings_pylsp['pylsp']['plugins']['mccabe'] = #{enabled: v:false}
-
-" disable black (formatting) and ruff (formatting + linting) by default, only enable isort
-let g:lsp_settings_pylsp['pylsp']['plugins']['isort'] = #{enabled: v:true}
-let g:lsp_settings_pylsp['pylsp']['plugins']['black'] = #{enabled: v:false}
-let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
-
-" See ~/.nvim/init/after_lsp.lua for neovim LSP configs
-let g:lsp_autostart_pylsp = v:true
-
 " fzf {{{2
 if exists('$TMUX')
 	let g:fzf_layout = { 'tmux': '-p90%,60%' }
