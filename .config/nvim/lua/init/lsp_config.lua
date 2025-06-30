@@ -45,3 +45,14 @@ local git_root = vim.fs.root(vim.uv.cwd() or error(), '.git')
 if has_file(git_root, '.taplo.toml') or has_file(git_root, 'taplo.toml') then
 	vim.g.lsp_autoformat_taplo = true
 end
+
+-- Elixir
+vim.lsp.config('elixirls', {
+	cmd = {vim.env.HOME .. '/src-elixir/.build/elixir-ls/language_server.sh'},
+	settings = {
+		elixirLS = {
+			dialyzerEnabled = false,
+		},
+	},
+})
+vim.g.lsp_autoformat_elixirls = true

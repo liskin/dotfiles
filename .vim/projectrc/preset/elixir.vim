@@ -1,1 +1,1 @@
-let g:lsp_autostart_elixirls = v:true
+lua vim.lsp.enable('elixirls')

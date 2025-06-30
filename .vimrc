@@ -362,10 +362,6 @@ endfunction
 autocmd User AirlineAfterTheme call s:AirlineAfterTheme()
 
 " LSP {{{2
-let g:lsp_settings_elixirls = {}
-let g:lsp_settings_elixirls['elixirLS'] = #{dialyzerEnabled: v:false}
-let g:lsp_cmd_elixirls = [$HOME .. "/src-elixir/.build/elixir-ls/language_server.sh"]
-
 let g:lsp_settings_pylsp = #{pylsp: #{plugins: {} } }
 let g:lsp_settings_pylsp['pylsp']['configurationSources'] = ['flake8']
 
@@ -384,7 +380,6 @@ let g:lsp_settings_pylsp['pylsp']['plugins']['black'] = #{enabled: v:false}
 let g:lsp_settings_pylsp['pylsp']['plugins']['ruff'] = #{enabled: v:false}
 
 " See ~/.nvim/init/after_lsp.lua for neovim LSP configs
-let g:lsp_autoformat_elixirls = v:true
 let g:lsp_autostart_pylsp = v:true
 let g:lsp_null_enabled = {}
 let g:lsp_null_enabled['hadolint'] = ['diagnostics']

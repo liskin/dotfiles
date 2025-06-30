@@ -1,1 +1,1 @@
-let g:lsp_autostart_clangd = v:true
+lua vim.lsp.enable('clangd')
