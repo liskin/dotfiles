@@ -35,6 +35,7 @@ o exec bwrap \
 	--ro-bind /{,} \
 	--dev /dev \
 	--proc /proc \
+	${XDG_RUNTIME_DIR+--tmpfs "$XDG_RUNTIME_DIR"} \
 	--overlay-src /home --tmp-overlay /home \
 	--overlay-src /tmp --tmp-overlay /tmp \
 	-- "$@"
