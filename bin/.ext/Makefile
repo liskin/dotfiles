@@ -16,7 +16,8 @@ HLS_GHC_VERSION := 9.6.6
 HLS_VERSION := 2.9.0.1
 LANGUAGETOOL_VERSION := v6.4
 PANDOC_VERSION := 3.5
-DOTNET_VERSION := 9.0.301
+DOTNET8_VERSION := 8.0.410
+DOTNET9_VERSION := 9.0.301
 
 DOCKER_BUILDX_GITHUB := docker/buildx
 DOCKER_COMPOSE_GITHUB := docker/compose
@@ -108,14 +109,18 @@ all: .ext-fitsdk
 
 all: $(if $(filter pf%,$(HOSTNAME)),dotnet)
 dotnet: | .ext-dotnet ; ln -fsT $|/$@ $@
-.ext-dotnet: .ext-dotnet-$(DOTNET_VERSION) ; ln -fsT $< $@
-.ext-dotnet-$(DOTNET_VERSION): .ext-dotnet-$(DOTNET_VERSION).tar.gz
+.ext-dotnet: .ext-dotnet-$(DOTNET8_VERSION)-$(DOTNET9_VERSION) ; ln -fsT $< $@
+.ext-dotnet-$(DOTNET8_VERSION)-$(DOTNET9_VERSION): .ext-dotnet-$(DOTNET8_VERSION).tar.gz .ext-dotnet-$(DOTNET9_VERSION).tar.gz
 	mkdir -p $@
-	tar -xzf $< -C $@
+	tar -xzf .ext-dotnet-$(DOTNET8_VERSION).tar.gz -C $@
+	tar -xzf .ext-dotnet-$(DOTNET9_VERSION).tar.gz -C $@
+	touch $@
 
-.INTERMEDIATE: .ext-dotnet-$(DOTNET_VERSION).tar.gz
-.ext-dotnet-$(DOTNET_VERSION).tar.gz:
-	$(CURL) -C - -o $@ https://builds.dotnet.microsoft.com/dotnet/Sdk/$(DOTNET_VERSION)/dotnet-sdk-$(DOTNET_VERSION)-linux-$(if $(ARM64),arm64,x64).tar.gz
+.INTERMEDIATE: .ext-dotnet-$(DOTNET8_VERSION).tar.gz .ext-dotnet-$(DOTNET9_VERSION).tar.gz
+.ext-dotnet-$(DOTNET8_VERSION).tar.gz:
+	$(CURL) -C - -o $@ https://builds.dotnet.microsoft.com/dotnet/Sdk/$(DOTNET8_VERSION)/dotnet-sdk-$(DOTNET8_VERSION)-linux-$(if $(ARM64),arm64,x64).tar.gz
+.ext-dotnet-$(DOTNET9_VERSION).tar.gz:
+	$(CURL) -C - -o $@ https://builds.dotnet.microsoft.com/dotnet/Sdk/$(DOTNET9_VERSION)/dotnet-sdk-$(DOTNET9_VERSION)-linux-$(if $(ARM64),arm64,x64).tar.gz
 
 .PHONY: gc
 ## Remove old versions
