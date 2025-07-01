@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s nullglob
+
+for bin in ~/.var/app/com.visualstudio.code/data/vscode/extensions/ms-dotnettools.csharp-*/.roslyn/Microsoft.CodeAnalysis.LanguageServer; do
+	break
+done
+
+DOTNET_ROOT=~/bin/.ext/.ext-dotnet \
+exec bwrap-home \
+	--home ~/.roslyn-home \
+	--mount-rw "$(dirname "$bin")" \
+	-- \
+	"$bin" "$@"
