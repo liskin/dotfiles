@@ -180,6 +180,9 @@
 [submodule ".local/share/nvim/site/bundle/lazydev.nvim"]
 	path = .local/share/nvim/site/bundle/lazydev.nvim
 	url = https://github.com/folke/lazydev.nvim
+[submodule ".local/share/nvim/site/bundle/roslyn.nvim"]
+	path = .local/share/nvim/site/bundle/roslyn.nvim
+	url = https://github.com/seblyng/roslyn.nvim
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title

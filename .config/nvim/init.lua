@@ -23,5 +23,6 @@ require 'init.plug_copilot_lazy' -- see also 'init.plug_copilot'
 require 'init.plug_copilotchat'
 require 'init.plug_ferris'
 require 'init.plug_lazydev'
+require 'init.plug_roslyn'
 
 -- see also 'init.after'
