@@ -1,4 +1,5 @@
 #!bash
+# shellcheck disable=SC2239
 
 # "interactive" cache that refreshes in the background so that we get a
 # possibly stale result immediately and a correct result as soon as it's ready
@@ -9,7 +10,7 @@ set -eu
 function file_older_than {
 	local last now
 	last=$(date +%s --reference="${1:?}")
-	now=$(date +%s)
+	now=$EPOCHSECONDS
 	(( last + ${2:?} < now ))
 }
 

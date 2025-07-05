@@ -12,7 +12,7 @@ function _init_completion_cache {
 function _completion_cache_file_older_than {
 	local last now
 	last=$(date +%s --reference="${1:?}")
-	now=$(date +%s)
+	now=$EPOCHSECONDS
 	(( last + ${2:?} < now ))
 }
 
