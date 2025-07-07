@@ -178,6 +178,13 @@
 	generic = T !>git notes edit "%(commit)"
 	generic = <Ctrl-R> !>git commit --fixup=reword:"%(commit)"
 
+# git-machete config
+[advice]
+	macheteEditorSelection = false
+[machete "github"]
+	annotateWithUrls = true
+	forceDescriptionFromCommitMessage = true
+
 # workaround for gh's "No default remote repository has been set for this directory."
 # NB: never run "gh repo fork" as that renames origin, use the "gh fork" alias
 [remote "origin"]
