@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 from collections import defaultdict
+import itertools
 import json
 import re
 import subprocess
 import sys
 import tempfile
+from typing import Iterable
 from typing import Optional
 
 import anytree
@@ -39,9 +41,9 @@ def git_is_ancestor(ancestor: str, descendant: str) -> bool:
         p.check_returncode()
 
 
-def git_rev_parse(branch: str) -> str:
+def git_rev_parse(rev: str) -> str:
     return subprocess.run(
-        ["git", "rev-parse", "--verify", branch],
+        ["git", "rev-parse", "--verify", rev],
         stdout=subprocess.PIPE,
         check=True,
         text=True,
@@ -57,16 +59,9 @@ def git_rev_parse_sym_full(branch: str) -> str:
     ).stdout.strip()
 
 
-def git_expand_refs(branch_patterns: list[str]) -> dict[str, str]:
-    """
-    Expand branch patterns (globs) to their corresponding commit hashes and reference names.
-    Also, ensures that each commit hash maps to exactly one ref (branch);
-    if a commit hash is associated with multiple refs, a ValueError is raised.
-    """
-
-    commit_refs_all: dict[str, list] = defaultdict(list)
+def git_for_each_ref(patterns: list[str]) -> Iterable[tuple[str, str]]:
     for line in subprocess.run(
-        ["git", "for-each-ref"] + [f"refs/heads/{branch}" for branch in branch_patterns],
+        ["git", "for-each-ref"] + patterns,
         stdout=subprocess.PIPE,
         text=True,
         check=True,
@@ -78,7 +73,19 @@ def git_expand_refs(branch_patterns: list[str]) -> dict[str, str]:
 
         objectname, objecttype, refname = m.groups()
         assert objecttype == "commit"
-        commit_refs_all[objectname].append(refname)
+        yield objectname, refname
+
+
+def git_expand_refs(branch_patterns: list[str]) -> dict[str, str]:
+    """
+    Expand branch patterns (globs) to their corresponding commit hashes and reference names.
+    Also, ensures that each commit hash maps to exactly one ref (branch);
+    if a commit hash is associated with multiple refs, a ValueError is raised.
+    """
+
+    commit_refs_all: dict[str, list] = defaultdict(list)
+    for commit, ref in git_for_each_ref([f"refs/heads/{branch}" for branch in branch_patterns]):
+        commit_refs_all[commit].append(ref)
 
     commit_refs: dict[str, str] = dict()
     for commit, refs in commit_refs_all.items():
@@ -377,7 +384,7 @@ def cli() -> None:
     "--chain/--no-chain",
     help="Update PR descriptions with dependency chains",
 )
-@click.argument("branches", nargs=-1, type=str)
+@click.argument("branches", nargs=-1, required=True, type=str)
 def cli_sync(debug, cache, base, chain, branches):
     """
     Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
@@ -466,6 +473,65 @@ def cli_sync(debug, cache, base, chain, branches):
         ) as bar:
             for ref_remote_name, deps in bar:
                 gh_pr_describe_deps(ref_remote_name, deps)
+
+
+@cli.group(name="branch")
+def cli_branch():
+    pass
+
+
+@cli_branch.command(name="create")
+@click.argument("start-point", type=str, default="@")
+def cli_branch_create(start_point):
+    """
+    Create an automatically named branch at START_POINT (or at HEAD).
+    """
+
+    # If any branch with __ghstack__ in its name points at start_point, nothing to do.
+    for _commit, ref in git_for_each_ref(
+        # FIXME: *__ghstack__* doesn't match branches with / in their name
+        [f"--points-at={start_point}", "refs/heads/*__ghstack__*"]
+    ):
+        return
+
+    # Get the best (closest) non-__ghstack__ branch containing start_point
+    # (mathematically, we're looking for the "least" element in the poset candidate_branches
+    # where ≤ is git_is_ancestor)
+    candidate_branches = [
+        ref
+        for _commit, ref in git_for_each_ref(
+            # FIXME: *__ghstack__* doesn't match branches with / in their name
+            [f"--contains={start_point}", "--exclude=refs/heads/*__ghstack__*", "refs/heads"]
+        )
+    ]
+    best_branch = None
+    for branch1 in candidate_branches:
+        for branch2 in candidate_branches:
+            if branch1 != branch2 and git_is_ancestor(branch2, branch1):
+                break  # branch1 not the closest, no longer a candidate
+        else:
+            if best_branch is None:
+                best_branch = branch1  # best so far
+            else:
+                best_branch = None
+                break  # multiple "best" branches, fail
+    if best_branch is None:
+        click.echo(f"Cannot find best branch containing {start_point}")
+        click.get_current_context().abort()
+
+    # Find the first(-ish) available __ghstack__ branch name
+    conflicting_new_branches = set(
+        ref for _commit, ref in git_for_each_ref([f"{best_branch}__ghstack__*"])
+    )
+    for i in itertools.count(len(conflicting_new_branches) + 1):
+        new_branch = f"{best_branch}__ghstack__{i:04d}"
+        if new_branch not in conflicting_new_branches:
+            break
+
+    # Create the branch
+    subprocess.run(
+        ["git", "branch", new_branch.removeprefix("refs/heads/"), start_point], check=True
+    )
 
 
 if __name__ == "__main__":
