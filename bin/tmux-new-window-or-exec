@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
+# workaround for less exiting immediately
+if [[ "${LESS-}" ]]; then
+	LESS=${LESS/--quit-if-one-screen/}
+fi
+
 if [[ $TMUX ]]; then
-	tmux new-window -- "$@"
+	tmux new-window ${LESS+-e "LESS=$LESS"} -- "$@"
 else
 	exec -- "$@"
 fi
