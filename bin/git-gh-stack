@@ -1,0 +1,472 @@
+#!/usr/bin/env python3
+
+from collections import defaultdict
+import json
+import re
+import subprocess
+import sys
+import tempfile
+from typing import Optional
+
+import anytree
+import click
+import diskcache
+from icecream import ic
+import platformdirs
+
+
+class DiskCache:
+    _cache = diskcache.Cache(platformdirs.user_cache_dir("liskin-gh-stack"))
+
+    gh_pr_list = property(
+        lambda self: self._cache.get("gh_pr_list"),
+        lambda self, value: self._cache.set("gh_pr_list", value, expire=3600),
+        lambda self: self._cache.delete("gh_pr_list"),
+    )
+
+    def clear(self):
+        self._cache.clear()
+
+
+DISK_CACHE = DiskCache()
+
+
+def git_is_ancestor(ancestor: str, descendant: str) -> bool:
+    p = subprocess.run(["git", "merge-base", "--is-ancestor", ancestor, descendant])
+    if p.returncode in [0, 1]:
+        return p.returncode == 0
+    else:
+        p.check_returncode()
+
+
+def git_rev_parse(branch: str) -> str:
+    return subprocess.run(
+        ["git", "rev-parse", "--verify", branch],
+        stdout=subprocess.PIPE,
+        check=True,
+        text=True,
+    ).stdout.strip()
+
+
+def git_rev_parse_sym_full(branch: str) -> str:
+    return subprocess.run(
+        ["git", "rev-parse", "--symbolic-full-name", branch],
+        stdout=subprocess.PIPE,
+        check=True,
+        text=True,
+    ).stdout.strip()
+
+
+def git_expand_refs(branch_patterns: list[str]) -> dict[str, str]:
+    """
+    Expand branch patterns (globs) to their corresponding commit hashes and reference names.
+    Also, ensures that each commit hash maps to exactly one ref (branch);
+    if a commit hash is associated with multiple refs, a ValueError is raised.
+    """
+
+    commit_refs_all: dict[str, list] = defaultdict(list)
+    for line in subprocess.run(
+        ["git", "for-each-ref"] + [f"refs/heads/{branch}" for branch in branch_patterns],
+        stdout=subprocess.PIPE,
+        text=True,
+        check=True,
+    ).stdout.splitlines():
+        # line: %(objectname) SPC %(objecttype) TAB %(refname)
+        m = re.match(r"^([0-9a-f]+) (\w+)\t(\S+)$", line)
+        if not m:
+            raise ValueError(f"Failed to parse line: {line!r}")
+
+        objectname, objecttype, refname = m.groups()
+        assert objecttype == "commit"
+        commit_refs_all[objectname].append(refname)
+
+    commit_refs: dict[str, str] = dict()
+    for commit, refs in commit_refs_all.items():
+        match refs:
+            case [ref]:
+                commit_refs[commit] = ref
+            case _:
+                raise ValueError(f"Commit {commit} has multiple refs: {refs}")
+
+    return commit_refs
+
+
+def git_branch_graph(branch_patterns: list[str], base: str) -> dict[str, str]:
+    """
+    Given a list of branch patterns (globs) and a base branch, expand into a list of branches and
+    construct a tree of how the branches stack on each other, for the purposes of creating stacked
+    pull requests.
+
+    Returns:
+        dict[str, str]:
+            A mapping from each branch ref to its parent branch ref in the stack.
+            Topologically ordered, starting with the branch that should merge into base.
+    """
+
+    commit_refs = git_expand_refs(branch_patterns)
+
+    ref_parents: dict[str, str] = {}
+    for line in subprocess.run(
+        [
+            "git",
+            "log",
+            "--reverse",
+            "--topo-order",
+            "--pretty=tformat:%H %P",
+            "--simplify-by-decoration",
+            "--clear-decorations",
+        ]
+        + [arg for ref in commit_refs.values() for arg in ["--decorate-refs", ref]]
+        + list(commit_refs.values())
+        + [f"^{base}"],
+        stdout=subprocess.PIPE,
+        text=True,
+        check=True,
+    ).stdout.splitlines():
+        match line.strip().split():
+            case [commit, parent]:
+                ref = commit_refs[commit]
+
+                if parent in commit_refs:
+                    ref_parents[ref] = commit_refs[parent]
+                elif git_is_ancestor(parent, base):
+                    ref_parents[ref] = base
+                else:
+                    raise ValueError(f"Branch {ref} has an unresolved parent: {parent}")
+            case [commit, *parents] if len(parents) > 1:
+                ref = commit_refs[commit]
+                raise ValueError(f"Branch {ref} has multiple parents: {parents}")
+            case _:
+                raise ValueError(f"Failed to parse line: {line!r}")
+
+    return ref_parents
+
+
+def pp_branch_graph(ref_parents_topo: dict[str, str], base: str, pull_requests: dict[str, dict]):
+    """
+    Pretty-prints the branch graph using anytree.
+    If a branch has an associated pull request, its URL is appended to the label.
+
+    Args:
+        ref_parents_topo (dict[str, str]): Mapping of refs to their parent refs in topological order.
+        base (str): The base reference (root of the tree).
+        pull_requests (dict[str, dict]): Mapping of branch names to pull request metadata.
+    """
+
+    def style_ref(ref):
+        if ref.startswith("refs/remotes/"):
+            return click.style("R/", fg="yellow") + click.style(
+                ref.removeprefix("refs/remotes/"), fg="bright_white", bold=True
+            )
+        elif ref.startswith("refs/heads/"):
+            return click.style("H/", fg="yellow") + click.style(
+                ref.removeprefix("refs/heads/"), fg="bright_white", bold=True
+            )
+        else:
+            return ref
+
+    nodes = {}
+    nodes[base] = anytree.Node(base, label=style_ref(base))
+    for ref, parent in ref_parents_topo.items():
+        label = style_ref(ref)
+
+        if ref_remote := git_ref_remote(ref, ensure=False):
+            ref_remote_name = ref_remote.removeprefix("refs/remotes/origin/")
+            if pull_request := pull_requests.get(ref_remote_name):
+                label = f"{label}\t({pull_request["url"]})"
+
+        nodes[ref] = anytree.Node(ref, label=label, parent=nodes.get(parent))
+
+    style = anytree.AbstractStyle("\u2502 ", "\u251c ", "\u2514 ")
+    click.echo(anytree.RenderTree(nodes[base], style=style).by_attr("label"))
+
+
+def git_ref_remote(ref: str, ensure: bool = True) -> Optional[str]:
+    """
+    Given a local or remote-tracking branch ref, ensure it is pushed to 'origin' and return its
+    remote-tracking ref.
+
+    Args:
+        ref (str): The git ref, e.g., 'refs/heads/branch' or 'refs/remotes/origin/branch'.
+        ensure (bool): Whether to ensure the branch is pushed to 'origin' and up to date.
+
+    Returns:
+        Optional[str]:
+            The corresponding remote-tracking ref (e.g., 'refs/remotes/origin/branch'),
+            or None if not found and ensure is False.
+
+    Behavior:
+        - If the branch has no upstream, prompts to push and sets upstream to 'origin'.
+        - If the branch has unpushed commits, prompts to push.
+        - If the branch has unpulled commits, aborts.
+        - If the branch diverged from upstream, prompts to force push.
+    """
+
+    if ref.startswith("refs/remotes/"):
+        remote_ref = ref
+    elif ref.startswith("refs/heads/"):
+        try:
+            remote_ref = git_rev_parse_sym_full(ref.removeprefix("refs/heads/") + "@{push}")
+        except subprocess.CalledProcessError:
+            remote_ref = None
+    else:
+        raise ValueError(f"Ref {ref} is neither a branch nor a remote-tracking branch")
+
+    if ensure:
+        if remote_ref is None:
+            click.confirm(
+                f"Branch {ref} has no upstream. Push it to origin?",
+                abort=True,
+                default=True,
+            )
+            subprocess.run(["git", "push", "--set-upstream", "origin", ref], check=True)
+            remote_ref = git_rev_parse_sym_full(ref.removeprefix("refs/heads/") + "@{push}")
+        else:
+            commit_ref = git_rev_parse(ref)
+            commit_remote_ref = git_rev_parse(remote_ref)
+            if commit_ref != commit_remote_ref:
+                if git_is_ancestor(commit_ref, commit_remote_ref):
+                    click.echo(f"Branch {ref} has unpulled commits.", err=True)
+                    click.get_current_context().abort()
+                elif git_is_ancestor(commit_remote_ref, commit_ref):
+                    click.confirm(
+                        f"Branch {ref} has unpushed commits. Push?",
+                        abort=True,
+                        default=True,
+                    )
+                    subprocess.run(["git", "push", "origin", ref], check=True)
+                else:
+                    click.confirm(
+                        f"Branch {ref} diverged from its upstream branch (push target). Force push?",
+                        abort=True,
+                        default=True,
+                    )
+                    subprocess.run(["git", "push", "--force-with-lease", "origin", ref], check=True)
+
+    if remote_ref is not None and not remote_ref.startswith("refs/remotes/origin/"):
+        raise ValueError(f"Remotes other than 'origin' unsupported: {remote_ref}")
+
+    return remote_ref
+
+
+def gh_pr_list(cache: bool) -> list[dict]:
+    """
+    Retrieve a list of all PRs (± limit) from the API.
+
+    Args:
+        cache (bool): If True, use cached results if available.
+
+    Returns:
+        list[dict]:
+            List of dicts containing the 'number', 'headRefName', 'baseRefName', 'url' fields.
+    """
+
+    if not cache or (prs := DISK_CACHE.gh_pr_list) is None:
+        prs = json.loads(
+            subprocess.run(
+                [
+                    "gh",
+                    "pr",
+                    "list",
+                    "--limit",
+                    "1000",
+                    "--json",
+                    "number,headRefName,baseRefName,url",
+                ],
+                stdout=subprocess.PIPE,
+                text=True,
+                check=True,
+            ).stdout.strip()
+        )
+        DISK_CACHE.gh_pr_list = prs
+
+    return prs
+
+
+def gh_pr_get(pr: str, fields: str = "number,headRefName,baseRefName,url") -> dict:
+    """
+    Retrieve PR from the API.
+
+    Args:
+        pr (str): This can be the PR number, URL, or head branch.
+    """
+
+    return json.loads(
+        subprocess.run(
+            ["gh", "pr", "view", "--json", fields, pr],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
+        ).stdout.strip()
+    )
+
+
+DEPS_START_MARKER = "<!-- gh-stack:deps:start -->"
+DEPS_END_MARKER = "<!-- gh-stack:deps:end -->"
+DEPS_PATTERN = re.compile(
+    rf"{re.escape(DEPS_START_MARKER)}.*?{re.escape(DEPS_END_MARKER)}", re.DOTALL
+)
+
+
+def gh_pr_describe_deps(pr: str, deps: list[str]):
+    """
+    Updates the body (description) of the PR to include a list of PRs it depends on.
+
+    This function uses special HTML comment markers to ensure the dependency block can be safely
+    updated or replaced, making the operation idempotent and resilient against manual edits
+    elsewhere in the PR description.
+
+    Args:
+        pr (str): This can be the PR number, URL, or head branch.
+        deps (list[str]): List of PR dependencies to include in the body.
+    """
+
+    if deps:
+        deps_block = "\n".join(
+            [
+                DEPS_START_MARKER,
+                "### Depends on these PRs:",
+            ]
+            + [f"- {dep}" for dep in deps]
+            + [
+                "---",
+                DEPS_END_MARKER,
+            ]
+        )
+    else:
+        deps_block = "\n".join([DEPS_START_MARKER, DEPS_END_MARKER])
+
+    body = gh_pr_get(pr, fields="body")["body"]
+    if DEPS_START_MARKER in body and DEPS_END_MARKER in body:
+        new_body = DEPS_PATTERN.sub(deps_block, body)
+    else:
+        new_body = f"{deps_block}\n\n{body}"
+
+    if new_body != body:
+        with tempfile.NamedTemporaryFile(mode="w+") as fp:
+            fp.write(new_body)
+            fp.flush()
+            subprocess.run(
+                ["gh", "pr", "edit", "--body-file", fp.name, pr],
+                stdout=subprocess.DEVNULL,
+                check=True,
+            )
+
+
+@click.group(context_settings={"show_default": True, "max_content_width": 120})
+def cli() -> None:
+    """
+    Stacked GitHub PRs, keeping it simple stupid (using native git functionality where possible).
+    """
+
+    def exception_handler(exception_type, exception, traceback, debug_hook=sys.excepthook):
+        match exception:
+            case subprocess.CalledProcessError():
+                sys.tracebacklimit = 0
+
+        debug_hook(exception_type, exception, traceback)
+
+    sys.excepthook = exception_handler
+
+
+@cli.command(name="sync")
+@click.option("--debug/--no-debug")
+@click.option("--cache/--no-cache", default=True)
+@click.option("--base", type=str, default="origin/HEAD")
+@click.option(
+    "--chain/--no-chain",
+    help="Update PR descriptions with dependency chains",
+)
+@click.argument("branches", nargs=-1, type=str)
+def cli_sync(debug, cache, base, chain, branches):
+    """
+    Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
+    """
+
+    base = git_rev_parse_sym_full(base)
+    ref_parents_topo = git_branch_graph(branches, base=base)
+    pull_requests = {pr["headRefName"]: pr for pr in gh_pr_list(cache=cache)}
+    pull_request_deps: dict[str, list] = defaultdict(list)
+
+    pp_branch_graph(ref_parents_topo, base, pull_requests)
+    click.confirm(
+        "Sync the above branch/PR layout?",
+        abort=True,
+        default=True,
+    )
+
+    for ref, parent in ref_parents_topo.items():
+        ref_remote = git_ref_remote(ref)
+        ref_remote_name = ref_remote.removeprefix("refs/remotes/origin/")
+        parent_remote = git_ref_remote(parent)
+        parent_remote_name = parent_remote.removeprefix("refs/remotes/origin/")
+        pull_request = pull_requests.get(ref_remote_name)
+
+        if debug:
+            ic(ref)
+            ic(ref_remote)
+            ic(parent)
+            ic(parent_remote)
+            ic(pull_request)
+            print("", flush=True)
+
+        if pull_request:
+            pr_num = pull_request["number"]
+            pr_base = pull_request["baseRefName"]
+            if pr_base != parent_remote_name:
+                click.confirm(
+                    f"Retarget PR #{pr_num} to {parent_remote_name} (was: {pr_base})?",
+                    abort=True,
+                    default=True,
+                )
+                del DISK_CACHE.gh_pr_list
+                subprocess.run(
+                    ["gh", "pr", "edit", "--base", parent_remote_name, f"{pr_num}"], check=True
+                )
+                pull_request = gh_pr_get(f"{pr_num}")
+                if click.confirm(
+                    f"Edit PR #{pr_num} after retargeting? (title/description might be outdated)",
+                    default=False,
+                ):
+                    subprocess.run(["gh", "pr", "edit", f"{pr_num}"], check=True)
+        else:
+            click.confirm(
+                f"Branch {ref} has no pull request. Create one targeting {parent_remote_name}?",
+                abort=True,
+                default=True,
+            )
+            del DISK_CACHE.gh_pr_list
+            subprocess.run(
+                [
+                    "gh",
+                    "pr",
+                    "create",
+                    "--base",
+                    parent_remote_name,
+                    "--head",
+                    ref_remote_name,
+                    "--fill-verbose",
+                    "--editor",
+                ],
+                check=True,
+            )
+            pull_request = gh_pr_get(ref_remote_name)
+
+        pull_requests[ref_remote_name] = pull_request
+        if parent_remote_name in pull_requests:
+            pull_request_deps[ref_remote_name].extend(pull_request_deps[parent_remote_name])
+            pull_request_deps[ref_remote_name].append(pull_requests[parent_remote_name]["url"])
+
+    click.echo("Final branch/PR layout:")
+    pp_branch_graph(ref_parents_topo, base, pull_requests)
+
+    if chain:
+        with click.progressbar(
+            pull_request_deps.items(), label="Updating PR descriptions (deps chains)"
+        ) as bar:
+            for ref_remote_name, deps in bar:
+                gh_pr_describe_deps(ref_remote_name, deps)
+
+
+if __name__ == "__main__":
+    cli()

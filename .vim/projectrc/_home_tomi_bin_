@@ -8,3 +8,7 @@ endif
 if fnamemodify(expand('%'), ':~') ==# '~/bin/liskin-include-preproc.py'
 	lua vim.lsp.config('pylsp', { settings = { pylsp = { plugins = { black = { enabled = true, line_length = 100 } } } } })
 endif
+
+if fnamemodify(expand('%'), ':~') ==# '~/bin/git-gh-stack'
+	lua vim.lsp.config('pylsp', { settings = { pylsp = { plugins = { black = { enabled = true, line_length = 100 } } } } })
+endif
