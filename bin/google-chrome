@@ -26,7 +26,6 @@ exec \
 	--enable-easy-off-store-extension-install \
 	--disable-font-subpixel-positioning \
 	--disable-features="$(join "," \
-		Vulkan \
 	)" \
 	--enable-features="$(join "," \
 		BatterySaverModeAvailable \
@@ -37,6 +36,9 @@ exec \
 		AcceleratedVideoDecodeLinuxGL \
 		AcceleratedVideoDecodeLinuxZeroCopyGL \
 		FluentOverlayScrollbar \
+		Vulkan \
+		DefaultANGLEVulkan \
+		VulkanFromANGLE \
 	)" \
 	"$@"
 
