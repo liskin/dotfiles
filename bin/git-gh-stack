@@ -174,6 +174,7 @@ def pp_branch_graph(
         ref_parents_topo (dict[str, str]): Mapping of refs to their parent refs in topological order.
         base (str): The base reference (root of the tree).
         pull_requests (dict[str, dict]): Mapping of branch names to pull request metadata.
+        list_commits (bool): Whether to list commits between each parent and child branch in the graph.
     """
 
     def style_ref(ref):
@@ -329,6 +330,7 @@ def gh_pr_get(pr: str, fields: str = "number,headRefName,baseRefName,url") -> di
 
     Args:
         pr (str): This can be the PR number, URL, or head branch.
+        fields (str): Comma-separated list of fields to retrieve from the GitHub API.
     """
 
     return json.loads(
