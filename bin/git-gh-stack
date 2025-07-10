@@ -408,13 +408,14 @@ def cli() -> None:
 @click.option("--debug/--no-debug")
 @click.option("--cache/--no-cache", default=True)
 @click.option("--base", type=str, default="origin/HEAD")
+@click.option("--draft/--no-draft")
 @click.option(
     "--chain/--no-chain",
     help="Update PR descriptions with dependency chains",
 )
 @click.option("-l", "--list-commits/--no-list-commits")
 @click.argument("branches", nargs=-1, required=True, type=str)
-def cli_sync(debug, cache, base, chain, list_commits, branches):
+def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
     """
     Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
     """
@@ -488,7 +489,8 @@ def cli_sync(debug, cache, base, chain, list_commits, branches):
                     ref_remote_name,
                     "--fill-verbose",
                     "--editor",
-                ],
+                ]
+                + (["--draft"] if draft else []),
                 check=True,
             )
             pull_request = gh_pr_get(ref_remote_name)
