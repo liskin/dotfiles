@@ -59,6 +59,15 @@ def git_rev_parse_sym_full(branch: str) -> str:
     ).stdout.strip()
 
 
+def git_log_oneline_rev(args: list[str]) -> list[str]:
+    return subprocess.run(
+        ["git", "log", "--oneline", "--reverse"] + args,
+        stdout=subprocess.PIPE,
+        check=True,
+        text=True,
+    ).stdout.splitlines()
+
+
 def git_for_each_ref(patterns: list[str]) -> Iterable[tuple[str, str]]:
     for line in subprocess.run(
         ["git", "for-each-ref"] + patterns,
@@ -149,7 +158,9 @@ def git_branch_graph(branch_patterns: list[str], base: str) -> dict[str, str]:
     return ref_parents
 
 
-def pp_branch_graph(ref_parents_topo: dict[str, str], base: str, pull_requests: dict[str, dict]):
+def pp_branch_graph(
+    ref_parents_topo: dict[str, str], base: str, pull_requests: dict[str, dict], list_commits: bool
+):
     """
     Pretty-prints the branch graph using anytree.
     If a branch has an associated pull request, its URL is appended to the label.
@@ -173,7 +184,7 @@ def pp_branch_graph(ref_parents_topo: dict[str, str], base: str, pull_requests: 
             return ref
 
     nodes = {}
-    nodes[base] = anytree.Node(base, label=style_ref(base))
+    nodes[base] = anytree.Node(base, lines=[style_ref(base)])
     for ref, parent in ref_parents_topo.items():
         label = style_ref(ref)
 
@@ -182,10 +193,27 @@ def pp_branch_graph(ref_parents_topo: dict[str, str], base: str, pull_requests: 
             if pull_request := pull_requests.get(ref_remote_name):
                 label = f"{label}\t({pull_request["url"]})"
 
-        nodes[ref] = anytree.Node(ref, label=label, parent=nodes.get(parent))
+        commits = []
+        if list_commits:
+            commits = [f"∙ {commit}" for commit in git_log_oneline_rev([f"{parent}..{ref}"])]
+            if commits:
+                commits = [""] + commits
+
+        nodes[ref] = anytree.Node(ref, lines=commits + [label], parent=nodes.get(parent))
 
     style = anytree.AbstractStyle("\u2502 ", "\u251c ", "\u2514 ")
-    click.echo(anytree.RenderTree(nodes[base], style=style).by_attr("label"))
+
+    # We can't use the following:
+    #   click.echo(anytree.RenderTree(nodes[base], style=style).by_attr("lines"))
+    # because we want to fill _before_ the label line, not _after_
+    for pre, fill, node in anytree.RenderTree(nodes[base], style=style):
+        # A hack to make the fill look good before the label line
+        if len(fill) >= len(style.vertical):
+            fill = fill[: -len(style.vertical)] + style.vertical
+
+        for line in node.lines[:-1]:
+            click.echo("%s%s" % (fill, line))
+        click.echo("%s%s" % (pre, node.lines[-1]))
 
 
 def git_ref_remote(ref: str, ensure: bool = True) -> Optional[str]:
@@ -384,8 +412,9 @@ def cli() -> None:
     "--chain/--no-chain",
     help="Update PR descriptions with dependency chains",
 )
+@click.option("-l", "--list-commits/--no-list-commits")
 @click.argument("branches", nargs=-1, required=True, type=str)
-def cli_sync(debug, cache, base, chain, branches):
+def cli_sync(debug, cache, base, chain, list_commits, branches):
     """
     Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
     """
@@ -395,7 +424,12 @@ def cli_sync(debug, cache, base, chain, branches):
     pull_requests = {pr["headRefName"]: pr for pr in gh_pr_list(cache=cache)}
     pull_request_deps: dict[str, list] = defaultdict(list)
 
-    pp_branch_graph(ref_parents_topo, base, pull_requests)
+    pp_branch_graph(
+        ref_parents_topo=ref_parents_topo,
+        base=base,
+        pull_requests=pull_requests,
+        list_commits=list_commits,
+    )
     click.confirm(
         "Sync the above branch/PR layout?",
         abort=True,
@@ -465,7 +499,12 @@ def cli_sync(debug, cache, base, chain, branches):
             pull_request_deps[ref_remote_name].append(pull_requests[parent_remote_name]["url"])
 
     click.echo("Final branch/PR layout:")
-    pp_branch_graph(ref_parents_topo, base, pull_requests)
+    pp_branch_graph(
+        ref_parents_topo=ref_parents_topo,
+        base=base,
+        pull_requests=pull_requests,
+        list_commits=list_commits,
+    )
 
     if chain:
         with click.progressbar(
