@@ -415,6 +415,7 @@ def cli() -> None:
 @click.option("--base", type=str, default="origin/HEAD")
 @click.option("--draft/--no-draft")
 @click.option(
+    "-c",
     "--chain/--no-chain",
     help="Update PR descriptions with dependency chains",
 )
@@ -507,6 +508,8 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
         if parent_remote_name in pull_requests:
             pull_request_deps[ref_remote_name].extend(pull_request_deps[parent_remote_name])
             pull_request_deps[ref_remote_name].append(pull_requests[parent_remote_name]["url"])
+        else:
+            pull_request_deps[ref_remote_name].extend([])
 
     click.echo("Final branch/PR layout:")
     pp_branch_graph(
