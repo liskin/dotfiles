@@ -92,8 +92,13 @@ def git_expand_refs(branch_patterns: list[str]) -> dict[str, str]:
     if a commit hash is associated with multiple refs, a ValueError is raised.
     """
 
+    branch_patterns = [
+        branch if branch.startswith("refs/") else f"refs/heads/{branch}"
+        for branch in branch_patterns
+    ]
+
     commit_refs_all: dict[str, list] = defaultdict(list)
-    for commit, ref in git_for_each_ref([f"refs/heads/{branch}" for branch in branch_patterns]):
+    for commit, ref in git_for_each_ref(branch_patterns):
         commit_refs_all[commit].append(ref)
 
     commit_refs: dict[str, str] = dict()
@@ -414,11 +419,14 @@ def cli() -> None:
     help="Update PR descriptions with dependency chains",
 )
 @click.option("-l", "--list-commits/--no-list-commits")
-@click.argument("branches", nargs=-1, required=True, type=str)
+@click.argument("branches", nargs=-1, type=str)
 def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
     """
     Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
     """
+
+    if not branches:
+        branches = ["refs/heads/*__ghstack__*"]
 
     base = git_rev_parse_sym_full(base)
     ref_parents_topo = git_branch_graph(branches, base=base)
