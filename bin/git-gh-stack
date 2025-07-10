@@ -411,7 +411,7 @@ def cli() -> None:
 
 @cli.command(name="sync")
 @click.option("--debug/--no-debug")
-@click.option("--cache/--no-cache", default=True)
+@click.option("--cache/--no-cache", default=False)
 @click.option("--base", type=str, default="origin/HEAD")
 @click.option("--draft/--no-draft")
 @click.option(
