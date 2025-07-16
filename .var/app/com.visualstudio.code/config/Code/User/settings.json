@@ -1,0 +1,16 @@
+{
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "editor.fontFamily": "'monospace', monospace",
+    "editor.fontSize": 12,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "vscode-neovim.neovimExecutablePaths.linux": "/home/tomi/.local/share/mise/installs/neovim/latest/nvim-linux-x86_64/bin/nvim",
+    "update.mode": "none",
+    "window.restoreWindows": "none"
+}
