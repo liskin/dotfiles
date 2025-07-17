@@ -41,20 +41,3 @@ exec \
 		VulkanFromANGLE \
 	)" \
 	"$@"
-
-# XXX: Vulkan
-# exec \
-# 	"$bin" \
-# 	--disable-smooth-scrolling \
-# 	--disk-cache-size=2000000000 \
-# 	--enable-easy-off-store-extension-install \
-# 	--disable-font-subpixel-positioning \
-# 	--enable-features="$(join "," \
-# 		BatterySaverModeAvailable \
-# 		HighEfficiencyModeAvailable \
-# 		VaapiVideoEncoder \
-# 		Vulkan \
-# 		DefaultANGLEVulkan \
-# 		VulkanFromANGLE \
-# 	)" \
-# 	"$@"
