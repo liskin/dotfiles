@@ -8,6 +8,28 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	end,
 })
 
+-- :LspCodeLensToggle
+local codelens_enabled = false
+vim.api.nvim_create_autocmd('BufWritePost', {
+	group = vim.api.nvim_create_augroup('LspCodeLensRefresh', {}),
+	callback = function()
+		if codelens_enabled then
+			vim.lsp.codelens.refresh()
+		end
+	end
+})
+vim.api.nvim_create_user_command("LspCodeLensToggle", function()
+	codelens_enabled = not codelens_enabled
+	vim.notify("LSP code lenses " .. (codelens_enabled and "enabled" or "disabled"))
+	if codelens_enabled then
+		vim.lsp.codelens.refresh()
+	else
+		vim.lsp.codelens.clear(nil, nil)
+	end
+end, {
+	desc = "Toggle LSP code lenses"
+})
+
 -- :LspInlayToggle
 vim.api.nvim_create_user_command("LspInlayToggle", function()
 	local enable = not vim.lsp.inlay_hint.is_enabled()

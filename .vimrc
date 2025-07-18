@@ -527,7 +527,7 @@ if has('nvim')
 	nnoremap <silent> <F6> <Cmd>Trouble diagnostics toggle<CR>
 	inoremap <silent> <F6> <Cmd>Trouble diagnostics toggle<CR>
 
-	" see ~/.nvim/init/plug_lsp_lines.lua
+	" see ~/.nvim/init/diagnostic.lua
 	nnoremap <silent> <F18> <Cmd>LspLinesToggle<CR>
 	inoremap <silent> <F18> <Cmd>LspLinesToggle<CR>
 endif
@@ -542,6 +542,11 @@ inoremap <silent> <F8> <Cmd>TagbarToggle<CR>
 if has('nvim')
 	nnoremap <silent> <F20> <Cmd>Trouble symbols toggle<CR>
 	inoremap <silent> <F20> <Cmd>Trouble symbols toggle<CR>
+endif
+
+if has('nvim')
+	nnoremap <silent> <F9> <Cmd>lua vim.lsp.codelens.run()<CR>
+	nnoremap <silent> <F21> <Cmd>LspCodeLensToggle<CR>
 endif
 
 if has('gui_running')
