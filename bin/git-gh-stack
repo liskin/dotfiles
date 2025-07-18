@@ -429,7 +429,7 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
     """
 
     if not branches:
-        branches = ["refs/heads/*__ghstack__*"]
+        branches = ["refs/heads/*--ghstack--*"]
 
     base = git_rev_parse_sym_full(base)
     ref_parents_topo = git_branch_graph(branches, base=base)
@@ -541,21 +541,21 @@ def cli_branch_create(start_point):
     Create an automatically named branch at START_POINT (or at HEAD).
     """
 
-    # If any branch with __ghstack__ in its name points at start_point, nothing to do.
+    # If any branch with --ghstack-- in its name points at start_point, nothing to do.
     for _commit, ref in git_for_each_ref(
-        # FIXME: *__ghstack__* doesn't match branches with / in their name
-        [f"--points-at={start_point}", "refs/heads/*__ghstack__*"]
+        # FIXME: *--ghstack--* doesn't match branches with / in their name
+        [f"--points-at={start_point}", "refs/heads/*--ghstack--*"]
     ):
         return
 
-    # Get the best (closest) non-__ghstack__ branch containing start_point
+    # Get the best (closest) non---ghstack-- branch containing start_point
     # (mathematically, we're looking for the "least" element in the poset candidate_branches
     # where ≤ is git_is_ancestor)
     candidate_branches = [
         ref
         for _commit, ref in git_for_each_ref(
-            # FIXME: *__ghstack__* doesn't match branches with / in their name
-            [f"--contains={start_point}", "--exclude=refs/heads/*__ghstack__*", "refs/heads"]
+            # FIXME: *--ghstack--* doesn't match branches with / in their name
+            [f"--contains={start_point}", "--exclude=refs/heads/*--ghstack--*", "refs/heads"]
         )
     ]
     best_branch = None
@@ -573,12 +573,12 @@ def cli_branch_create(start_point):
         click.echo(f"Cannot find best branch containing {start_point}")
         click.get_current_context().abort()
 
-    # Find the first(-ish) available __ghstack__ branch name
+    # Find the first(-ish) available --ghstack-- branch name
     conflicting_new_branches = set(
-        ref for _commit, ref in git_for_each_ref([f"{best_branch}__ghstack__*"])
+        ref for _commit, ref in git_for_each_ref([f"{best_branch}--ghstack--*"])
     )
     for i in itertools.count(len(conflicting_new_branches) + 1):
-        new_branch = f"{best_branch}__ghstack__{i:04d}"
+        new_branch = f"{best_branch}--ghstack--{i:04d}"
         if new_branch not in conflicting_new_branches:
             break
 
