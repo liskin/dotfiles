@@ -183,6 +183,9 @@
 [submodule ".local/share/nvim/site/bundle/roslyn.nvim"]
 	path = .local/share/nvim/site/bundle/roslyn.nvim
 	url = https://github.com/seblyng/roslyn.nvim
+[submodule ".local/share/nvim/site/bundle/incr.nvim"]
+	path = .local/share/nvim/site/bundle/incr.nvim
+	url = https://github.com/daliusd/incr.nvim
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
