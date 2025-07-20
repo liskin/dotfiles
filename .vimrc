@@ -507,16 +507,6 @@ inoremap <silent> <F1> <Cmd>FzfLua helptags<CR>
 nnoremap <silent> <F2> <Cmd>w!<CR>
 inoremap <silent> <F2> <Cmd>w!<CR>
 
-nnoremap <silent> <F15> <Cmd>cprevious<CR>
-inoremap <silent> <F15> <Cmd>cprevious<CR>
-nnoremap <silent> <F3> <Cmd>cnext<CR>
-inoremap <silent> <F3> <Cmd>cnext<CR>
-
-nnoremap <silent> <F16> <Cmd>lprevious<CR>
-inoremap <silent> <F16> <Cmd>lprevious<CR>
-nnoremap <silent> <F4> <Cmd>lnext<CR>
-inoremap <silent> <F4> <Cmd>lnext<CR>
-
 " see ~/.nvim/init/lsp.lua
 nnoremap <silent> <F5> <Cmd>LspInlayToggle<CR>
 inoremap <silent> <F5> <Cmd>LspInlayToggle<CR>
