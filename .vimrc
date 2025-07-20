@@ -503,6 +503,8 @@ autocmd FileType * if expand("<afile>:p") =~ glob2regpat("/dev/shm/pass.*") | le
 
 nnoremap <silent> <F1> <Cmd>FzfLua helptags<CR>
 inoremap <silent> <F1> <Cmd>FzfLua helptags<CR>
+nnoremap <silent> <F13> <Cmd>FzfLua keymaps<CR>
+inoremap <silent> <F13> <Cmd>FzfLua keymaps<CR>
 
 nnoremap <silent> <F2> <Cmd>w!<CR>
 inoremap <silent> <F2> <Cmd>w!<CR>
