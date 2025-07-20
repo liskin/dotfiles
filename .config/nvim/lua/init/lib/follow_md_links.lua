@@ -2,7 +2,6 @@
 -- SPDX-License-Identifier: GPL-3.0-only
 
 local ts = vim.treesitter
-local ts_utils = require'nvim-treesitter.ts_utils'
 local ts_lib = require'init.lib.treesitter'
 
 local M = {}
@@ -32,11 +31,7 @@ local function get_reference_link_destination(link_label)
 end
 
 local function ts_find_child(node, type)
-	for _, child in pairs(ts_utils.get_named_children(node)) do
-		if child:type() == type then
-			return child
-		end
-	end
+	return vim.iter(node:named_children()):find(function(child) return child:type() == type end)
 end
 
 -- TODO: nvim-0.11 - just use https://github.com/neovim/neovim/blob/e268fcbdaa1e0e0cee3b513e62581d35bb937d40/runtime/lua/vim/ui.lua#L177

@@ -4,9 +4,11 @@ local M = {}
 
 function M.parse()
 	local ok, parser = pcall(ts.get_parser)
-	if ok then
+	if ok and parser then
 		local syntax_trees = parser:parse(true)
-		return parser, syntax_trees[1]:root()
+		if syntax_trees then
+			return parser, syntax_trees[1]:root()
+		end
 	end
 end
 
