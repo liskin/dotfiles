@@ -34,6 +34,10 @@ local ensure_installed = {
 local disabled = {
 	-- "bash",
 }
+local disabled_indent = {
+}
+local disabled_fold = {
+}
 
 vim.api.nvim_create_user_command("TSUpdateSync", function()
 	ts.install(ensure_installed):wait(300000)
@@ -44,15 +48,46 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function(ev)
 		local bufnr = ev.buf
 		local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
-
 		if not filetype or filetype == '' then
 			return
 		end
 
+		-- skip if a parser for this language is disabled
 		local parser_name = vim.treesitter.language.get_lang(filetype)
-		local parser_installed = pcall(vim.treesitter.get_parser, bufnr, parser_name)
-		if parser_installed and not vim.list_contains(disabled, parser_name) then
-			vim.treesitter.start(bufnr, parser_name)
+		if not parser_name or vim.list_contains(disabled, parser_name) then
+			return
+		end
+
+		-- skip if a parser for this language isn't available
+		if not pcall(vim.treesitter.get_parser, bufnr, parser_name) then
+			return
+		end
+
+		vim.treesitter.start(bufnr, parser_name)
+
+		-- set indentexpr if indents are enabled and available
+		if
+			not vim.list_contains(disabled_indent, parser_name)
+			and not vim.tbl_isempty(vim.treesitter.query.get_files(parser_name, "indents"))
+		then
+			vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		end
+
+		-- set foldexpr if folds are enabled and available
+		if
+			not vim.list_contains(disabled_fold, parser_name)
+			and not vim.tbl_isempty(vim.treesitter.query.get_files(parser_name, "folds"))
+		then
+			vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+			vim.wo.foldmethod = "expr"
+
+			-- refresh folds
+			local winnr = vim.api.nvim_get_current_win()
+			vim.defer_fn(function()
+				pcall(vim.api.nvim_win_call, winnr, function()
+					vim.cmd("normal! zx")
+				end)
+			end, 500)
 		end
 	end,
 })

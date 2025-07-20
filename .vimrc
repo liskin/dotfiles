@@ -228,6 +228,7 @@ set backspace=indent,eol,start
 set diffopt+=indent-heuristic,algorithm:histogram
 set fileencodings=ucs-bom,utf-8,iso-8859-2
 set foldlevelstart=99
+set foldtext=
 set formatoptions+=rj
 set hidden
 set scrolloff=10
@@ -470,7 +471,6 @@ autocmd FileType gitcommit setlocal tw=72 et fo=tcq spell spelllang=en
 autocmd FileType happy setlocal tw=78 et
 autocmd FileType haskell setlocal tw=78 et
 autocmd FileType html setlocal indentkeys&
-autocmd FileType json,jsonc setlocal foldmethod=indent
 autocmd FileType lhaskell setlocal tw=78 ai et
 autocmd FileType markdown setlocal ai et tw=78
 autocmd FileType meson setlocal et
