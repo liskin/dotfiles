@@ -497,6 +497,9 @@ autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile et
 autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 autocmd BufNewFile,BufRead */.config/git/include/* setf gitconfig
 
+" fix for `gh pr merge` subject edit
+autocmd BufNewFile,BufRead /tmp/[0-9]\+.md setlocal nofixeol
+
 " disable LSP before it's attached to the buffer
 autocmd FileType * if expand("<afile>:p") =~ glob2regpat("/dev/shm/pass.*") | let b:lsp_disabled = 1 | endif
 
