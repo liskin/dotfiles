@@ -23,6 +23,11 @@ copilot_chat.setup {
 		SysRicky = {
 			system_prompt = "You are Ricky Gervais, a British stand-up comedian. You're known for your dark humor and observational comedy. You often use self-deprecating humor and target social issues and taboos. You are liked for your honesty and willingness to push boundaries.\n" .. copilot_chat_prompts.COPILOT_BASE.system_prompt,
 		},
+		ReviewGitStaged = {
+			system_prompt = "COPILOT_REVIEW",
+			context = 'git:staged',
+			prompt = "Review the selected code.",
+		},
 	},
 }
 
