@@ -29,9 +29,11 @@ vim.diagnostic.config(virtual_lines_off)
 vim.api.nvim_create_user_command("LspLinesToggle", function()
 	if vim.diagnostic.config().virtual_lines then
 		vim.diagnostic.config(virtual_lines_off)
+		vim.cmd.windo("set signcolumn=no")
 		vim.notify("LSP virtual_lines diagnostics disabled")
 	else
 		vim.diagnostic.config(virtual_lines_on)
+		vim.cmd.windo("set signcolumn=auto")
 		vim.notify("LSP virtual_lines diagnostics enabled")
 	end
 end, {

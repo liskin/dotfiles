@@ -170,11 +170,14 @@ set wrap
 " visuals {{{2
 set cursorlineopt=number,screenline
 set fillchars=vert:│,fold:-
+set foldlevelstart=99
+set foldtext=
 set list
 set listchars=tab:┝\ ,trail:#,extends:→,precedes:←,nbsp:␣
 set noshowmode
 set shortmess+=I " no intro
 set showcmd
+set signcolumn=no
 
 " keep windows equally tiled {{{2
 set equalalways
@@ -227,8 +230,6 @@ set autoread
 set backspace=indent,eol,start
 set diffopt+=indent-heuristic,algorithm:histogram
 set fileencodings=ucs-bom,utf-8,iso-8859-2
-set foldlevelstart=99
-set foldtext=
 set formatoptions+=rj
 set hidden
 set scrolloff=10
