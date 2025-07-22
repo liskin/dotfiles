@@ -17,6 +17,9 @@ local function run_tests_handler(err, result, ctx)
 		return
 	end
 
+	fidget.notification.clear_history({
+		group_key = "roslyn_tests",
+	})
 	for _i, r in ipairs(result) do
 		if vim.startswith(r.stage, "Running ") then
 			fidget.notify(r.message, vim.log.levels.INFO, {
