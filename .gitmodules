@@ -186,6 +186,9 @@
 [submodule ".local/share/nvim/site/bundle/incr.nvim"]
 	path = .local/share/nvim/site/bundle/incr.nvim
 	url = https://github.com/daliusd/incr.nvim
+[submodule ".local/share/nvim/site/bundle/nvim-treesitter-context"]
+	path = .local/share/nvim/site/bundle/nvim-treesitter-context
+	url = https://github.com/nvim-treesitter/nvim-treesitter-context
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title

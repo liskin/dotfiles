@@ -389,6 +389,9 @@ if &t_Co >= 256 || has('gui_running')
 
 		" presenting.nvim colors
 		HiU PresentingMarkupRawBlock ctermbg=234
+
+		" nvim-treesitter-context colors
+		hi TreesitterContextBottom cterm=underline gui=underline
 	else
 		hi Normal guifg=black guibg=white
 
