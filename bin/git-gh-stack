@@ -16,21 +16,7 @@ import diskcache
 from icecream import ic
 import platformdirs
 
-
-class DiskCache:
-    _cache = diskcache.Cache(platformdirs.user_cache_dir("liskin-gh-stack"))
-
-    gh_pr_list = property(
-        lambda self: self._cache.get("gh_pr_list"),
-        lambda self, value: self._cache.set("gh_pr_list", value, expire=3600),
-        lambda self: self._cache.delete("gh_pr_list"),
-    )
-
-    def clear(self):
-        self._cache.clear()
-
-
-DISK_CACHE = DiskCache()
+DISK_CACHE = diskcache.Cache(platformdirs.user_cache_dir("liskin-gh-stack"))
 
 
 def git_is_ancestor(ancestor: str, descendant: str) -> bool:
@@ -290,40 +276,35 @@ def git_ref_remote(ref: str, ensure: bool = True) -> Optional[str]:
     return remote_ref
 
 
-def gh_pr_list(cache: bool) -> list[dict]:
+@DISK_CACHE.memoize(expire=3600)
+def gh_pr_list() -> list[dict]:
     """
     Retrieve a list of all PRs (± limit) from the API.
-
-    Args:
-        cache (bool): If True, use cached results if available.
 
     Returns:
         list[dict]:
             List of dicts containing the 'number', 'headRefName', 'baseRefName', 'url' fields.
     """
 
-    if not cache or (prs := DISK_CACHE.gh_pr_list) is None:
-        prs = json.loads(
-            subprocess.run(
-                [
-                    "gh",
-                    "pr",
-                    "list",
-                    "--limit",
-                    "1000",
-                    "--json",
-                    "number,headRefName,baseRefName,url",
-                ],
-                stdout=subprocess.PIPE,
-                text=True,
-                check=True,
-            ).stdout.strip()
-        )
-        DISK_CACHE.gh_pr_list = prs
-
-    return prs
+    return json.loads(
+        subprocess.run(
+            [
+                "gh",
+                "pr",
+                "list",
+                "--limit",
+                "1000",
+                "--json",
+                "number,headRefName,baseRefName,url",
+            ],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
+        ).stdout.strip()
+    )
 
 
+@DISK_CACHE.memoize(expire=3600, typed=True)
 def gh_pr_get(pr: str, fields: str = "number,headRefName,baseRefName,url") -> dict:
     """
     Retrieve PR from the API.
@@ -378,7 +359,8 @@ def gh_pr_describe_deps(pr: str, deps: list[str]):
     else:
         deps_block = "\n".join([DEPS_START_MARKER, DEPS_END_MARKER])
 
-    body = gh_pr_get(pr, fields="body")["body"]
+    gh_pr_get_fields = "body"
+    body = gh_pr_get(pr, fields=gh_pr_get_fields)["body"]
     if DEPS_START_MARKER in body and DEPS_END_MARKER in body:
         new_body = DEPS_PATTERN.sub(deps_block, body)
     else:
@@ -388,6 +370,7 @@ def gh_pr_describe_deps(pr: str, deps: list[str]):
         with tempfile.NamedTemporaryFile(mode="w+") as fp:
             fp.write(new_body)
             fp.flush()
+            DISK_CACHE.delete(gh_pr_get.__cache_key__(pr, fields=gh_pr_get_fields))
             subprocess.run(
                 ["gh", "pr", "edit", "--body-file", fp.name, pr],
                 stdout=subprocess.DEVNULL,
@@ -428,12 +411,16 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
     Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
     """
 
+    if not cache:
+        # monkey-patch diskcache.Cache to always miss
+        DISK_CACHE.get = lambda ley, default=None, **kwargs: default
+
     if not branches:
         branches = ["refs/heads/*--ghstack--*"]
 
     base = git_rev_parse_sym_full(base)
     ref_parents_topo = git_branch_graph(branches, base=base)
-    pull_requests = {pr["headRefName"]: pr for pr in gh_pr_list(cache=cache)}
+    pull_requests = {pr["headRefName"]: pr for pr in gh_pr_list()}
     pull_request_deps: dict[str, list] = defaultdict(list)
 
     pp_branch_graph(
@@ -472,7 +459,7 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
                     abort=True,
                     default=True,
                 )
-                del DISK_CACHE.gh_pr_list
+                DISK_CACHE.delete(gh_pr_list.__cache_key__())
                 subprocess.run(
                     ["gh", "pr", "edit", "--base", parent_remote_name, f"{pr_num}"], check=True
                 )
@@ -488,7 +475,7 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
                 abort=True,
                 default=True,
             )
-            del DISK_CACHE.gh_pr_list
+            DISK_CACHE.delete(gh_pr_list.__cache_key__())
             subprocess.run(
                 [
                     "gh",
