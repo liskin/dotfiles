@@ -18,5 +18,11 @@ require'fidget'.setup {
 		display = {
 			done_ttl = 1,
 		},
+		ignore = {
+			function(msg)
+				-- hide annoying flake8 progress updates every few seconds
+				return msg.lsp_client.name == "pylsp" and msg.title == "lint: flake8"
+			end,
+		},
 	},
 }
