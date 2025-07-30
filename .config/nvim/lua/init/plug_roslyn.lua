@@ -33,9 +33,6 @@ local function run_tests_handler(err, result, ctx)
 end
 
 vim.lsp.config('roslyn', {
-	-- roslyn.nvim assumes mason, reset cmd
-	cmd = vim.lsp.config.roslyn_ls.cmd,
-
 	settings = {
 		['csharp|inlay_hints'] = {
 			csharp_enable_inlay_hints_for_implicit_object_creation = true,

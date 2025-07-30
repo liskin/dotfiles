@@ -91,6 +91,7 @@
 	path = .local/share/nvim/site/bundle/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
 	# url = https://github.com/liskin/nvim-treesitter
+	branch = main
 [submodule ".local/share/nvim/site/bundle/nvim-lspconfig"]
 	path = .local/share/nvim/site/bundle/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
@@ -164,6 +165,7 @@
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter-textobjects"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+	branch = main
 [submodule ".local/share/nvim/site/bundle/cmp-conventionalcommits"]
 	path = .local/share/nvim/site/bundle/cmp-conventionalcommits
 	# url = https://github.com/cultab/cmp-conventionalcommits/

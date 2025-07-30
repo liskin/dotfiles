@@ -11,5 +11,6 @@ DOTNET_ROOT=~/bin/.ext/.ext-dotnet \
 exec bwrap-home \
 	--home ~/.roslyn-home \
 	--mount-rw "$(dirname "$bin")" \
+	--mount-rw ~/.local/state/nvim \
 	-- \
 	"$bin" "$@"
