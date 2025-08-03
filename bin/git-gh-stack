@@ -141,8 +141,12 @@ def git_branch_graph(branch_patterns: list[str], base: str) -> dict[str, str]:
                 else:
                     raise ValueError(f"Branch {ref} has an unresolved parent: {parent}")
             case [commit, *parents] if len(parents) > 1:
-                ref = commit_refs[commit]
-                raise ValueError(f"Branch {ref} has multiple parents: {parents}")
+                if commit in commit_refs:
+                    raise ValueError(
+                        f"Branch {commit_refs[commit]} has multiple parents: {parents}"
+                    )
+                else:
+                    raise ValueError(f"Commit {commit} has multiple parents: {parents}")
             case _:
                 raise ValueError(f"Failed to parse line: {line!r}")
 
