@@ -3,8 +3,10 @@
 
 # like ~/bin/.o, but confirm/edit each command before executing
 
+# shellcheck disable=SC2218,SC2120
 exec {_oc_stdin}<&0
 exec {_oc_stderr}>&2
+function exec { if (( $# )); then builtin exec {_oc_stdin}<&- {_oc_stderr}>&- "$@"; else builtin exec "$@"; fi; }
 
 if [[ -t $_oc_stderr ]]; then
 	_oc_tput_bold=$(tput bold || :)
