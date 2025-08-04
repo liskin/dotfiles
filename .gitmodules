@@ -192,6 +192,15 @@
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter-context"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter-context
 	url = https://github.com/nvim-treesitter/nvim-treesitter-context
+[submodule ".local/share/nvim/site/bundle/nvim-nio"]
+	path = .local/share/nvim/site/bundle/nvim-nio
+	url = https://github.com/nvim-neotest/nvim-nio
+[submodule ".local/share/nvim/site/bundle/neotest"]
+	path = .local/share/nvim/site/bundle/neotest
+	url = https://github.com/nvim-neotest/neotest
+[submodule ".local/share/nvim/site/bundle/neotest-vstest"]
+	path = .local/share/nvim/site/bundle/neotest-vstest
+	url = https://github.com/Nsidorenco/neotest-vstest
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
