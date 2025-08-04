@@ -3,13 +3,16 @@
 set -eu
 shopt -s nullglob
 
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export DOTNET_ROOT=~/bin/.ext/.ext-dotnet
+
 for bin in ~/.var/app/com.visualstudio.code/data/vscode/extensions/ms-dotnettools.csharp-*/.roslyn/Microsoft.CodeAnalysis.LanguageServer; do
 	break
 done
 
-DOTNET_ROOT=~/bin/.ext/.ext-dotnet \
+_LISKIN_DOTNET_BWRAP=: \
 exec bwrap-home \
-	--home ~/.roslyn-home \
+	--home ~/.dotnet-home \
 	--mount-rw "$(dirname "$bin")" \
 	--mount-rw ~/.local/state/nvim \
 	-- \
