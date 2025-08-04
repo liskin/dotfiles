@@ -29,6 +29,10 @@ all: xrandr-smart
 xrandr-smart: liskin-include-preproc.py .o
 	liskin-include-preproc.py $@
 
+all: nvim
+nvim:
+	ln -sfn ../.local/share/mise/installs/neovim/latest/nvim-linux-$(shell uname -m)/bin/nvim $@
+
 include ~/_gitignore.mk
 include ~/_help.mk
 
