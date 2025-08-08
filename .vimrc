@@ -178,7 +178,9 @@ set noshowmode
 set shortmess+=I " no intro
 set showcmd
 set signcolumn=no
-set winborder=rounded
+if exists('&winborder')
+	set winborder=rounded
+endif
 
 " keep windows equally tiled {{{2
 set equalalways
