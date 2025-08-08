@@ -200,7 +200,8 @@
 	url = https://github.com/nvim-neotest/neotest
 [submodule ".local/share/nvim/site/bundle/neotest-vstest"]
 	path = .local/share/nvim/site/bundle/neotest-vstest
-	url = https://github.com/Nsidorenco/neotest-vstest
+	# url = https://github.com/Nsidorenco/neotest-vstest
+	url = https://github.com/liskin/neotest-vstest
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title

@@ -15,13 +15,14 @@ options=$(
 	unset GETOPT_COMPATIBLE
 	getopt \
 		-o hH:Ttm:M: \
-		--long "help,home:,home-tmpfs,tmpfs,mount:,mount-rw:" \
+		--long "help,home:,home-tmpfs,tmp:,tmpfs,mount:,mount-rw:" \
 		-- "$@"
 )
 eval "set -- $options"
 
 home=$PWD/.home
 home_tmpfs=
+tmpdir=
 tmpfs=
 mount=()
 mount_rw=()
@@ -29,12 +30,13 @@ while (( $# )); do
 	opt=$1; shift
 	case "$opt" in
 		-h|--help)
-			echo "Usage: bwrap-home [-h|--home=PATH] [-T|--home-tmpfs] [-t|--tmpfs] [-m|--mount=PATH] [-M|--mount-rw=PATH] -- <command> [<args>…]"
+			echo "Usage: bwrap-home [-h|--home=PATH] [-T|--home-tmpfs] [--tmp=PATH] [-t|--tmpfs] [-m|--mount=PATH] [-M|--mount-rw=PATH] -- <command> [<args>…]"
 			exit
 			;;
 
 		-H|--home) home=$1; shift ;;
 		-T|--home-tmpfs) home_tmpfs=: ;;
+		--tmp) tmpdir=$1; shift ;;
 		-t|--tmpfs) tmpfs=: ;;
 		-m|--mount) mount+=("$1"); shift ;;
 		-M|--mount-rw) mount_rw+=("$1"); shift ;;
@@ -58,6 +60,17 @@ if [[ $tmpfs ]]; then
 	fi
 
 	bwrap_opts+=(--tmpfs /tmp)
+elif [[ $tmpdir ]]; then
+	[[ -d "$tmpdir" ]] || o mkdir -p "$tmpdir"
+
+	real_tmp=$(readlink -f /tmp)
+	real_tmpdir=$(readlink -f "$tmpdir")
+	if [[ "${real_tmpdir%/}"/ != "${real_tmp%/}"/* ]]; then
+		echo "--tmp $tmpdir must be under /tmp, exiting"
+		exit 1
+	fi
+
+	bwrap_opts+=(--bind "$tmpdir" /tmp)
 else
 	bwrap_opts+=(--bind /tmp{,})
 fi
@@ -70,6 +83,12 @@ if [[ $home_tmpfs ]]; then
 	)
 else
 	home=$(readlink -f "$home")
+
+	if [[ "${real_HOME%/}"/ == "${home%/}"/* ]]; then
+		echo "\$HOME under --home $home, would mount \$HOME read-write, exiting"
+		exit 1
+	fi
+
 	[[ -d "$home" ]] || o mkdir -p "$home"
 	export HOME="$home"
 	bwrap_opts+=(

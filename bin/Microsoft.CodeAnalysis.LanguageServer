@@ -13,7 +13,9 @@ done
 _LISKIN_DOTNET_BWRAP=: \
 exec bwrap-home \
 	--home ~/.dotnet-home \
+	--tmp /tmp/.dotnet-tmp \
 	--mount-rw "$(dirname "$bin")" \
 	--mount-rw ~/.local/state/nvim \
+	--mount-rw /tmp/nvim."$USER" \
 	-- \
 	"$bin" "$@"
