@@ -471,7 +471,7 @@ autocmd FileType cabal setlocal tw=78 et
 autocmd FileType cpp setlocal tw=78 path=.,/usr/include,,
 autocmd FileType dot setlocal ai
 autocmd FileType erlang setlocal formatoptions-=t formatoptions+=crql suffixesadd+=.erl path+=**
-autocmd FileType gitcommit setlocal tw=72 et fo=tcq spell spelllang=en
+autocmd FileType gitcommit setlocal ai et spell spelllang=en
 autocmd FileType happy setlocal tw=78 et
 autocmd FileType haskell setlocal tw=78 et
 autocmd FileType html setlocal indentkeys&
