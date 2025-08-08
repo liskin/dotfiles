@@ -31,6 +31,9 @@ githooks-liskin - Extra global git hooks
 : remote names (may be specified multiple times) where all branches must have
   a Jira reference in their name.
 
+**`liskin.gitLfsHooks`**
+: enable git-lfs hooks (they make everything a bit slower; disabled by default)
+
 # ENVIRONMENT VARIABLES
 
 **`_LISKIN_ENSUREBRANCHJIRA_SKIP`**

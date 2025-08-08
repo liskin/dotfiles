@@ -4,6 +4,7 @@ set -eu
 shopt -s nullglob
 
 hook_name=$(basename -- "$0")
+export _LISKIN_GIT_HOOK_NAME="$hook_name"
 
 # we need to read stdin and dispatch it to each hook separately
 stdin=()

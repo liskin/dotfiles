@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+if [[ $(git config get --type=bool --default false liskin.gitLfsHooks) == true ]]; then
+	exec git-lfs "$_LISKIN_GIT_HOOK_NAME" "$@"
+else
+	exit 0
+fi
