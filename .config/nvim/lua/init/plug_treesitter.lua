@@ -9,6 +9,7 @@ local ensure_installed = {
 	"css",
 	"diff",
 	"dockerfile",
+	"fsharp",
 	"git_config",
 	"go",
 	"graphql",
