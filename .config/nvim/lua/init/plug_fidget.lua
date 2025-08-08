@@ -12,6 +12,8 @@ require'fidget'.setup {
 			border = "rounded",
 			border_hl = "Normal",
 			winblend = 0,
+			x_padding = 0,
+			y_padding = 0,
 		},
 	},
 	progress = {

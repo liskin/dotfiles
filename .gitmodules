@@ -104,7 +104,8 @@
 	# url = https://github.com/liskin/lsp-format.nvim
 [submodule ".local/share/nvim/site/bundle/fidget.nvim"]
 	path = .local/share/nvim/site/bundle/fidget.nvim
-	url = https://github.com/j-hui/fidget.nvim
+	# url = https://github.com/j-hui/fidget.nvim
+	url = https://github.com/liskin/fidget.nvim
 [submodule ".local/share/nvim/site/bundle/none-ls.nvim"]
 	path = .local/share/nvim/site/bundle/none-ls.nvim
 	url = https://github.com/nvimtools/none-ls.nvim
