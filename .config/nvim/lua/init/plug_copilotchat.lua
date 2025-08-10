@@ -42,3 +42,4 @@ copilot_chat.setup {
 vim.keymap.set({'n', 'v'}, '<Leader>cc', function()
 	copilot_chat.select_prompt()
 end)
+vim.cmd("cabbrev cc CopilotChat")
