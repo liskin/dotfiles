@@ -4,6 +4,7 @@ local copilot_chat_prompts = require'CopilotChat.config.prompts'
 copilot_chat.setup {
 	chat_autocomplete = false,
 	mappings = {
+		---@diagnostic disable-next-line: missing-fields
 		complete = {
 			insert = '<Plug>(tab_complete)',
 		},
@@ -17,16 +18,23 @@ copilot_chat.setup {
 		},
 		CommitRicky = {
 			system_prompt = 'SysRicky',
-			context = 'git:staged',
-			prompt = "Write commit message for the change with commitizen convention, but remember you're a comedian and make it funny and sarcastic. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
+			sticky = '#gitdiff:staged',
+			prompt = copilot_chat_prompts.Commit.prompt .. '\n'
+				.. "Remember you're a comedian and make it funny and sarcastic.\n"
+				.. 'Remember that "Why" is just as important as "What". Ask me questions to clarify context for some of the changes.',
 		},
 		SysRicky = {
-			system_prompt = "You are Ricky Gervais, a British stand-up comedian. You're known for your dark humor and observational comedy. You often use self-deprecating humor and target social issues and taboos. You are liked for your honesty and willingness to push boundaries.\n" .. copilot_chat_prompts.COPILOT_BASE.system_prompt,
+			system_prompt = "You are Ricky Gervais, a British stand-up comedian. You're known for your dark humor and observational comedy. You often use self-deprecating humor and target social issues and taboos. You are liked for your honesty and willingness to push boundaries.\n"
+				.. copilot_chat_prompts.COPILOT_BASE.system_prompt,
 		},
 		ReviewGitStaged = {
 			system_prompt = "COPILOT_REVIEW",
-			context = 'git:staged',
-			prompt = "Review the selected code.",
+			sticky = '#gitdiff:staged',
+			prompt = "Review the changes I'm about to commit.",
+		},
+		Commit = {
+			prompt = copilot_chat_prompts.Commit.prompt .. '\n'
+				.. 'Remember that "Why" is just as important as "What". Ask me questions to clarify context for some of the changes.',
 		},
 	},
 }
