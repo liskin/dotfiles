@@ -26,6 +26,8 @@ exec \
 	--enable-easy-off-store-extension-install \
 	--disable-font-subpixel-positioning \
 	--disable-features="$(join "," \
+		ExtensionManifestV2Unsupported \
+		ExtensionManifestV2Disabled \
 	)" \
 	--enable-features="$(join "," \
 		BatterySaverModeAvailable \
@@ -39,5 +41,6 @@ exec \
 		Vulkan \
 		DefaultANGLEVulkan \
 		VulkanFromANGLE \
+		AllowLegacyMV2Extensions \
 	)" \
 	"$@"
