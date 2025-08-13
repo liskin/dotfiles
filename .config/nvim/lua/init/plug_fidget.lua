@@ -1,12 +1,16 @@
 require'fidget'.setup {
 	notification = {
 		configs = {
-			default = {
+			default = vim.tbl_extend("force", require('fidget.notification').default_config, {
+				name = false,
+				icon = false,
+				ttl = false,
 				icon_on_left = true,
-			},
+			}),
 		},
 		view = {
 			stack_upwards = false,
+			line_margin = 0,
 		},
 		window = {
 			border = "rounded",
