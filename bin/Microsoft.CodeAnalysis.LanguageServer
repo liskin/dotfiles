@@ -10,6 +10,8 @@ for bin in ~/.var/app/com.visualstudio.code/data/vscode/extensions/ms-dotnettool
 	break
 done
 
+ln -sfr /tmp/.dotnet-tmp/MetadataAsSource /tmp/MetadataAsSource
+
 _LISKIN_DOTNET_BWRAP=: \
 exec bwrap-home \
 	--home ~/.dotnet-home \
