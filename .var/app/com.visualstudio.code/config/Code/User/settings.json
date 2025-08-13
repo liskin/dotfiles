@@ -10,7 +10,7 @@
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
-    "vscode-neovim.neovimExecutablePaths.linux": "/home/tomi/.local/share/mise/installs/neovim/latest/nvim-linux-x86_64/bin/nvim",
+    "vscode-neovim.neovimExecutablePaths.linux": "/home/tomi/bin/nvim",
     "update.mode": "none",
     "window.restoreWindows": "none"
 }

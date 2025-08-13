@@ -2,6 +2,9 @@
 ##
 all:
 
+ARCH := $(shell uname -m)
+ARM64 := $(if $(filter aarch64,$(ARCH)),1)
+
 all: diff-highlight
 diff-highlight: $(wildcard /usr/share/doc/git/contrib/diff-highlight/*)
 ifneq "$(__bwrapped)" "1"
@@ -31,7 +34,7 @@ xrandr-smart: liskin-include-preproc.py .o
 
 all: nvim
 nvim:
-	ln -sfn ../.local/share/mise/installs/neovim/latest/nvim-linux-$(shell uname -m)/bin/nvim $@
+	ln -sfn ../.local/share/mise/installs/neovim/latest/nvim-linux-$(if $(ARM64),arm64,x86_64)/bin/nvim $@
 
 include ~/_gitignore.mk
 include ~/_help.mk
