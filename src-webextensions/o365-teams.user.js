@@ -11,15 +11,18 @@
 // ---
 // "safe" (actually just annoying) links
 // ---
-function dropClickEventListeners(el) {
-	const el2 = el.cloneNode(true);
-	el2.addEventListener('click', (e) => e.stopImmediatePropagation());
-	el2.xxxNoClick = true;
-	el.parentNode.replaceChild(el2, el);
-}
+function stopClickPropagation(event) {
+	// only left and middle click
+	if (event.button != 0 && event.button != 1)
+		return;
 
-document.arrive('a', function(link) {
-	if (!link.href || link.xxxNoClick)
+	// find the A tag that was clicked
+	let link = event.target;
+	while (link && link.tagName !== 'A') {
+		link = link.parentElement;
+	}
+
+	if (!link || !link.href)
 		return;
 
 	if (link.dataset?.testid != "atp-safelink")
@@ -29,11 +32,14 @@ document.arrive('a', function(link) {
 	if (link.href.startsWith("https://teams.microsoft.com/"))
 		return;
 
-	// Teams seems to choke if we mess with its weird malformed mailto: links (wtf)
-	if (!link.href.startsWith("http"))
-		return;
+	event.stopPropagation();
+}
 
-	dropClickEventListeners(link);
+document.arrive('a', function(link) {
+	if (link.parentNode) {
+		link.parentNode.addEventListener('click', stopClickPropagation, {capture: true});
+		link.parentNode.addEventListener('auxclick', stopClickPropagation, {capture: true});
+	}
 });
 
 // ---
