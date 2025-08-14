@@ -560,6 +560,8 @@ endif
 
 nnoremap <silent> <F11> <Cmd>NERDTreeToggle<CR>
 inoremap <silent> <F11> <Cmd>NERDTreeToggle<CR>
+nnoremap <silent> <F23> <Cmd>NERDTreeFind<CR>
+inoremap <silent> <F23> <Cmd>NERDTreeFind<CR>
 
 " fzf keys {{{2
 nnoremap <silent> <F12> <Cmd>FzfLua builtin<CR>
