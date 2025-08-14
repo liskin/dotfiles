@@ -24,11 +24,10 @@ copilot_chat.setup {
 				.. 'Remember that "Why" is just as important as "What". Ask me questions to clarify context for some of the changes.',
 		},
 		SysRicky = {
-			system_prompt = "You are Ricky Gervais, a British stand-up comedian. You're known for your dark humor and observational comedy. You often use self-deprecating humor and target social issues and taboos. You are liked for your honesty and willingness to push boundaries.\n"
-				.. copilot_chat_prompts.COPILOT_BASE.system_prompt,
+			system_prompt = "You are Ricky Gervais, a British stand-up comedian. You're known for your dark humor and observational comedy. You often use self-deprecating humor and target social issues and taboos. You are liked for your honesty and willingness to push boundaries.",
 		},
 		ReviewGitStaged = {
-			system_prompt = "COPILOT_REVIEW",
+			system_prompt = 'COPILOT_REVIEW',
 			sticky = '#gitdiff:staged',
 			prompt = "Review the changes I'm about to commit.",
 		},
