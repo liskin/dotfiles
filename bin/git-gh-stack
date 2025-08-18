@@ -212,7 +212,7 @@ def pp_branch_graph(
         click.echo("%s%s" % (pre, node.lines[-1]))
 
 
-def git_ref_remote(ref: str, ensure: bool = True) -> Optional[str]:
+def git_ref_remote(ref: str, ensure: bool = True, yes: bool = False) -> Optional[str]:
     """
     Given a local or remote-tracking branch ref, ensure it is pushed to 'origin' and return its
     remote-tracking ref.
@@ -245,11 +245,12 @@ def git_ref_remote(ref: str, ensure: bool = True) -> Optional[str]:
 
     if ensure:
         if remote_ref is None:
-            click.confirm(
-                f"Branch {ref} has no upstream. Push it to origin?",
-                abort=True,
-                default=True,
-            )
+            if not yes:
+                click.confirm(
+                    f"Branch {ref} has no upstream. Push it to origin?",
+                    abort=True,
+                    default=True,
+                )
             subprocess.run(["git", "push", "--set-upstream", "origin", ref], check=True)
             remote_ref = git_rev_parse_sym_full(ref.removeprefix("refs/heads/") + "@{push}")
         else:
@@ -260,18 +261,20 @@ def git_ref_remote(ref: str, ensure: bool = True) -> Optional[str]:
                     click.echo(f"Branch {ref} has unpulled commits.", err=True)
                     click.get_current_context().abort()
                 elif git_is_ancestor(commit_remote_ref, commit_ref):
-                    click.confirm(
-                        f"Branch {ref} has unpushed commits. Push?",
-                        abort=True,
-                        default=True,
-                    )
+                    if not yes:
+                        click.confirm(
+                            f"Branch {ref} has unpushed commits. Push?",
+                            abort=True,
+                            default=True,
+                        )
                     subprocess.run(["git", "push", "origin", ref], check=True)
                 else:
-                    click.confirm(
-                        f"Branch {ref} diverged from its upstream branch (push target). Force push?",
-                        abort=True,
-                        default=True,
-                    )
+                    if not yes:
+                        click.confirm(
+                            f"Branch {ref} diverged from its upstream branch (push target). Force push?",
+                            abort=True,
+                            default=True,
+                        )
                     subprocess.run(["git", "push", "--force-with-lease", "origin", ref], check=True)
 
     if remote_ref is not None and not remote_ref.startswith("refs/remotes/origin/"):
@@ -406,11 +409,13 @@ def cli() -> None:
 @click.option(
     "-c",
     "--chain/--no-chain",
+    default=True,
     help="Update PR descriptions with dependency chains",
 )
-@click.option("-l", "--list-commits/--no-list-commits")
+@click.option("-l", "--list-commits/--no-list-commits", default=True)
+@click.option("-y", "--yes/--no-yes", default=False)
 @click.argument("branches", nargs=-1, type=str)
-def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
+def cli_sync(debug, cache, base, draft, chain, list_commits, yes, branches):
     """
     Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
     """
@@ -433,16 +438,17 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
         pull_requests=pull_requests,
         list_commits=list_commits,
     )
-    click.confirm(
-        "Sync the above branch/PR layout?",
-        abort=True,
-        default=True,
-    )
+    if not yes:
+        click.confirm(
+            "Sync the above branch/PR layout?",
+            abort=True,
+            default=True,
+        )
 
     for ref, parent in ref_parents_topo.items():
-        ref_remote = git_ref_remote(ref)
+        ref_remote = git_ref_remote(ref, yes=yes)
         ref_remote_name = ref_remote.removeprefix("refs/remotes/origin/")
-        parent_remote = git_ref_remote(parent)
+        parent_remote = git_ref_remote(parent, yes=yes)
         parent_remote_name = parent_remote.removeprefix("refs/remotes/origin/")
         pull_request = pull_requests.get(ref_remote_name)
 
@@ -458,11 +464,12 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
             pr_num = pull_request["number"]
             pr_base = pull_request["baseRefName"]
             if pr_base != parent_remote_name:
-                click.confirm(
-                    f"Retarget PR #{pr_num} to {parent_remote_name} (was: {pr_base})?",
-                    abort=True,
-                    default=True,
-                )
+                if not yes:
+                    click.confirm(
+                        f"Retarget PR #{pr_num} to {parent_remote_name} (was: {pr_base})?",
+                        abort=True,
+                        default=True,
+                    )
                 DISK_CACHE.delete(gh_pr_list.__cache_key__())
                 subprocess.run(
                     ["gh", "pr", "edit", "--base", parent_remote_name, f"{pr_num}"], check=True
@@ -474,11 +481,12 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, branches):
                 ):
                     subprocess.run(["gh", "pr", "edit", f"{pr_num}"], check=True)
         else:
-            click.confirm(
-                f"Branch {ref} has no pull request. Create one targeting {parent_remote_name}?",
-                abort=True,
-                default=True,
-            )
+            if not yes:
+                click.confirm(
+                    f"Branch {ref} has no pull request. Create one targeting {parent_remote_name}?",
+                    abort=True,
+                    default=True,
+                )
             DISK_CACHE.delete(gh_pr_list.__cache_key__())
             subprocess.run(
                 [
