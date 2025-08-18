@@ -2,7 +2,8 @@
 
 set -eu
 
-export DOTNET_CLI_TELEMETRY_OPTOUT=${DOTNET_CLI_TELEMETRY_OPTOUT:-1}
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+if [[ ${_LISKIN_DOTNET_ROOT-} ]]; then DOTNET_ROOT=$_LISKIN_DOTNET_ROOT; fi
 export DOTNET_ROOT=${DOTNET_ROOT:-~/bin/.ext/.ext-dotnet}
 
 bin="$DOTNET_ROOT/$(basename "$0")"

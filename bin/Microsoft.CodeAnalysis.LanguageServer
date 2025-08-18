@@ -13,6 +13,7 @@ done
 ln -sfr /tmp/.dotnet-tmp/MetadataAsSource /tmp/MetadataAsSource
 
 _LISKIN_DOTNET_BWRAP=: \
+_LISKIN_DOTNET_ROOT="$DOTNET_ROOT" \
 exec bwrap-home \
 	--home ~/.dotnet-home \
 	--tmp /tmp/.dotnet-tmp \
