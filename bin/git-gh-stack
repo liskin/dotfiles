@@ -54,6 +54,15 @@ def git_log_oneline_rev(args: list[str]) -> list[str]:
     ).stdout.splitlines()
 
 
+def git_config_get(key: str, default: str) -> str:
+    return subprocess.run(
+        ["git", "config", "get", "--default", default, key],
+        stdout=subprocess.PIPE,
+        check=True,
+        text=True,
+    ).stdout.strip()
+
+
 def git_for_each_ref(patterns: list[str]) -> Iterable[tuple[str, str]]:
     for line in subprocess.run(
         ["git", "for-each-ref"] + patterns,
@@ -136,10 +145,20 @@ def git_branch_graph(branch_patterns: list[str], base: str) -> dict[str, str]:
 
                 if parent in commit_refs:
                     ref_parents[ref] = commit_refs[parent]
-                elif git_is_ancestor(parent, base):
-                    ref_parents[ref] = base
                 else:
-                    raise ValueError(f"Branch {ref} has an unresolved parent: {parent}")
+                    if gh_merge_base := git_config_get(
+                        f"branch.{ref.removeprefix("refs/heads/")}.gh-merge-base", default=""
+                    ):
+                        pr_base = f"refs/remotes/origin/{gh_merge_base.removeprefix("refs/heads/")}"
+                    else:
+                        pr_base = base
+
+                    if git_is_ancestor(parent, pr_base):
+                        ref_parents[ref] = base
+                    else:
+                        raise ValueError(
+                            f"Branch {ref} has an unresolved parent: {parent} (not an ancestor of {pr_base})"
+                        )
             case [commit, *parents] if len(parents) > 1:
                 if commit in commit_refs:
                     raise ValueError(
@@ -216,6 +235,7 @@ def git_ref_remote(ref: str, ensure: bool = True, yes: bool = False) -> Optional
     Args:
         ref (str): The git ref, e.g., 'refs/heads/branch' or 'refs/remotes/origin/branch'.
         ensure (bool): Whether to ensure the branch is pushed to 'origin' and up to date.
+        yes (bool): Don't ask for confirmation.
 
     Returns:
         Optional[str]:
