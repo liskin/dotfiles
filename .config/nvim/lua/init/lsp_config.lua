@@ -90,15 +90,6 @@ vim.g.lsp_autoformat_elixirls = true
 
 -- YAML
 vim.lsp.enable('yamlls')
-vim.lsp.config('yamlls', {
-	settings = {
-		yaml = {
-			format = {
-				enable = true,
-			},
-		},
-	},
-})
 
 -- none-ls/null-ls
 vim.g.lsp_null_enabled = {
