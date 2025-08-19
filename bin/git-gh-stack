@@ -169,13 +169,9 @@ def pp_branch_graph(
 
     def style_ref(ref):
         if ref.startswith("refs/remotes/"):
-            return click.style("R/", fg="yellow") + click.style(
-                ref.removeprefix("refs/remotes/"), fg="bright_white", bold=True
-            )
+            return click.style(ref.removeprefix("refs/remotes/"), fg="bright_white", bold=True)
         elif ref.startswith("refs/heads/"):
-            return click.style("H/", fg="yellow") + click.style(
-                ref.removeprefix("refs/heads/"), fg="bright_white", bold=True
-            )
+            return click.style(ref.removeprefix("refs/heads/"), fg="bright_white", bold=True)
         else:
             return ref
 
