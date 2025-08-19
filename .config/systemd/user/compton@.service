@@ -8,4 +8,4 @@ Slice=session.slice
 Restart=always
 
 EnvironmentFile=%t/xsession-env-%i
-ExecStart=compton
+ExecStart=picom
