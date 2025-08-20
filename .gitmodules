@@ -153,16 +153,16 @@
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
 [submodule ".local/share/nvim/site/bundle/presenting.nvim"]
 	path = .local/share/nvim/site/bundle/presenting.nvim
-	# url = https://github.com/sotte/presenting.nvim
-	url = https://github.com/liskin/presenting.nvim
+	url = https://github.com/sotte/presenting.nvim
+	# url = https://github.com/liskin/presenting.nvim
 [submodule ".local/share/nvim/site/bundle/iron.nvim"]
 	path = .local/share/nvim/site/bundle/iron.nvim
-	# url = https://github.com/Vigemus/iron.nvim
-	url = https://github.com/liskin/iron.nvim
+	url = https://github.com/Vigemus/iron.nvim
+	# url = https://github.com/liskin/iron.nvim
 [submodule ".local/share/nvim/site/bundle/dropbar.nvim"]
 	path = .local/share/nvim/site/bundle/dropbar.nvim
-	# url = https://github.com/Bekaboo/dropbar.nvim
-	url = https://github.com/liskin/dropbar.nvim
+	url = https://github.com/Bekaboo/dropbar.nvim
+	# url = https://github.com/liskin/dropbar.nvim
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter-textobjects"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
