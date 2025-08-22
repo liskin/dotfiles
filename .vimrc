@@ -451,7 +451,10 @@ colorscheme liskin " see ~/.vim/colors/liskin.vim
 " autocmds {{{1
 
 " open quickfix windows automatically {{{2
-autocmd QuickFixCmdPost [^l]* nested cwindow
+" (neotest invokes doautocmd without supplying the pattern, so vim uses the
+" full path to the current buffer, and that always starts with a slash —
+" ignore that so neotest doesn't auto-open quickfix windows)
+autocmd QuickFixCmdPost [^l]* nested if expand("<amatch>") !~ "^/" | cwindow | endif
 autocmd QuickFixCmdPost l* nested lwindow
 
 " autoclose preview windows {{{2
