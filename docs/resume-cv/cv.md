@@ -21,6 +21,7 @@ Tomáš is a polyglot programmer with almost two decades of experience in the in
 Languages
 : <!-- -->
 Bash,
+C#,
 C++,
 C,
 Elixir,
@@ -29,6 +30,7 @@ Haskell,
 JavaScript,
 Perl,
 Python,
+Rust,
 SQL,
 Scala,
 TeX
@@ -56,6 +58,24 @@ Docker,
 Ansible
 
 ### Experience
+
+::: {.entry}
+**Staff Software Engineer**
+[[Moody's Analytics](https://www.moodys.com/web/en/us/solutions/compliance-third-party-risk/maxsight.html) (London, UK)]{}
+**2022–**
+
+* Subject Matter Expert on Developer Experience (CI/CD, developer environments, git).
+
+* Moved local dev env to GitHub Codespaces, enhancing collaboration and freeing local resources.
+
+* Reduced dev env startup from over 1 hour to just 5 minutes, saving engineers 100+ hours monthly.
+
+* [Fixed docker-in-docker startup in the upstream devcontainers universal image](https://github.com/devcontainers/images/pull/1240).
+
+* Pioneered good git practices across the company. Educated others about advanced git workflows.
+
+* _Tech:_ Rust, Python, C#, Docker, Kubernetes, CircleCI
+:::
 
 ::: {.entry}
 _**sabbatical**_
@@ -247,6 +267,7 @@ _**sabbatical**_
 
 **[Technical blog](https://lisk.in/).**
 Popular articles:
+[Side by side git-range-diff](https://work.lisk.in/2023/10/19/side-by-side-git-range-diff.html){.ul};
 [Linux, media keys and multiple players](https://work.lisk.in/2020/05/06/linux-media-control.html){.ul};
 [Even faster bash startup](https://work.lisk.in/2020/11/20/even-faster-bash-startup.html){.ul}
 
