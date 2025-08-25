@@ -94,7 +94,7 @@ vim.lsp.enable('yamlls')
 -- none-ls/null-ls
 vim.g.lsp_null_enabled = {
 	hadolint = { 'diagnostics' },
-	buildifier = { 'diagnostics', 'formatting' },
+	buildifier = { 'diagnostics' },
 	proselint = { 'code_actions', 'diagnostics' },
 	shellcheck = { 'code_actions', 'diagnostics' },
 }

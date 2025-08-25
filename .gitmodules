@@ -98,10 +98,6 @@
 [submodule ".local/share/nvim/site/bundle/trouble.nvim"]
 	path = .local/share/nvim/site/bundle/trouble.nvim
 	url = https://github.com/folke/trouble.nvim
-[submodule ".local/share/nvim/site/bundle/lsp-format.nvim"]
-	path = .local/share/nvim/site/bundle/lsp-format.nvim
-	url = https://github.com/lukas-reineke/lsp-format.nvim
-	# url = https://github.com/liskin/lsp-format.nvim
 [submodule ".local/share/nvim/site/bundle/fidget.nvim"]
 	path = .local/share/nvim/site/bundle/fidget.nvim
 	url = https://github.com/j-hui/fidget.nvim
@@ -206,6 +202,9 @@
 	path = .local/share/nvim/site/bundle/neotest-vstest
 	url = https://github.com/Nsidorenco/neotest-vstest
 	# url = https://github.com/liskin/neotest-vstest
+[submodule ".local/share/nvim/site/bundle/conform.nvim"]
+	path = .local/share/nvim/site/bundle/conform.nvim
+	url = https://github.com/stevearc/conform.nvim
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
