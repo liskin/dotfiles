@@ -34,7 +34,7 @@
 	sign = commit --amend --no-edit --gpg-sign
 	# nicer git log
 	lg = log --color --graph --decorate
-	lgshort = log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'
+	lgshort = "log --color --graph --decorate --pretty=tformat:'%h\t%G? %aN\t%C(bold)%s%C(yellow)%d'"
 	# word diffing
 	lgwdiff = log --color --graph --decorate -p --word-diff=color -w
 	wdiff = -c pager.diff=less diff --word-diff=color -w
