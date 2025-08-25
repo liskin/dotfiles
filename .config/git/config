@@ -62,6 +62,7 @@
 [mergetool]
 	keepBackup = false
 [merge]
+	conflictStyle = zdiff3
 	tool = nvimdiff
 	guitool = kdiff3
 	suppressDest = master
