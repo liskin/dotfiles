@@ -17,12 +17,15 @@ vim.api.nvim_create_user_command('Present', function()
 	do
 		local guicursor = vim.o.guicursor
 		local cmdheight = vim.o.cmdheight
+		local winborder = vim.o.winborder
 		restore_opts = function()
 			vim.o.guicursor = guicursor
 			vim.o.cmdheight = cmdheight
+			vim.o.winborder = winborder
 		end
 		vim.o.guicursor = 'a:hor1'
 		vim.o.cmdheight = 0
+		vim.o.winborder = ''
 	end
 
 	if present_in_argv() then
