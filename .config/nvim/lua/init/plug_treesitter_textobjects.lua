@@ -35,20 +35,11 @@ vim.keymap.set({ "n", "x", "o" }, "[f", function()
 	to_move.goto_previous_start("@function.outer", "textobjects")
 end, { desc = "prev @function.outer start" })
 
--- move - repeatable
-local function do_repeat_move(repeat_move)
-	return function()
-		-- workaround for https://github.com/nvim-treesitter/nvim-treesitter-textobjects/issues/775
-		local cmd = repeat_move()
-		if cmd then
-			vim.cmd("normal! " .. vim.v.count1 .. cmd)
-		end
-	end
-end
-vim.keymap.set({ "n", "x", "o" }, ";", do_repeat_move(to_repeat.repeat_last_move), {
+-- -- move - repeatable
+vim.keymap.set({ "n", "x", "o" }, ";", to_repeat.repeat_last_move, {
 	desc = "repeat latest f, t, F, T or treesitter-textobjects move"
 })
-vim.keymap.set({ "n", "x", "o" }, "|", do_repeat_move(to_repeat.repeat_last_move_opposite), {
+vim.keymap.set({ "n", "x", "o" }, "|", to_repeat.repeat_last_move_opposite, {
 	desc = "repeat latest f, t, F, T or treesitter-textobjects move in opposite direction"
 })
 
