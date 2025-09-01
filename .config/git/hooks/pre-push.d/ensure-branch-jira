@@ -22,6 +22,13 @@ while read -r _local_ref local_oid remote_ref _remote_oid; do
 	if [[ $remote_ref == refs/heads/* && $remote_ref != "$remote_head" ]]; then
 		# check that branch name contains a jira reference
 		if ! grep -q -P -o '\b[A-Z][A-Z]+-\d+\b' <<<"${remote_ref#refs/heads/}"; then
+			if { : </dev/tty; } 2>/dev/null; then
+				read -e -r -p "$0: attempt to push jira-less branch ${remote_ref#refs/heads/}; proceed anyway? [yN] " answer </dev/tty >/dev/tty 2>/dev/tty
+				if [[ $answer == [yY] ]]; then
+					continue
+				fi
+			fi
+
 			echo "$0: preventing push of jira-less branch ${remote_ref#refs/heads/} (skip via _LISKIN_ENSUREBRANCHJIRA_SKIP)" >&2
 			exit 1
 		fi

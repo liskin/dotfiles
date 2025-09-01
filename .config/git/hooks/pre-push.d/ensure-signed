@@ -19,6 +19,13 @@ while read -r local_ref local_oid _remote_ref _remote_oid; do
 
 	unsigned_commits=$(git log --pretty="tformat:%H%x09%aN%x09%s%x09%G?" "$remote_head".."$local_oid" | grep $'\tN$' || :)
 	if [[ $unsigned_commits ]]; then
+		if { : </dev/tty; } 2>/dev/null; then
+			read -e -r -p "$0: attempt to push unsigned commits in $local_ref" answer </dev/tty >/dev/tty 2>/dev/tty
+			if [[ $answer == [yY] ]]; then
+				continue
+			fi
+		fi
+
 		echo "$0: preventing push of unsigned commits in $local_ref (skip via _LISKIN_ENSURESIGNEDPUSH_SKIP)" >&2
 		echo "$unsigned_commits" >&2
 		exit 1
