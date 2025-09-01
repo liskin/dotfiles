@@ -19,7 +19,6 @@ done
 
 # execute local hook, if any
 git_dir=$(git rev-parse --git-dir)
-local_hooks_path=$(git config --local --get --default "${git_dir}/hooks" core.hooksPath)
-if [[ -x "${local_hooks_path}/${hook_name}" ]]; then
-	"${local_hooks_path}/${hook_name}" "$@" < <(printf %s "${stdin[@]}")
+if [[ -x "${git_dir}/hooks/${hook_name}" ]]; then
+	"${git_dir}/hooks/${hook_name}" "$@" < <(printf %s "${stdin[@]}")
 fi
