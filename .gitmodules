@@ -315,3 +315,6 @@
 [submodule "src/docker-libgourou"]
 	path = src/docker-libgourou
 	url = https://github.com/bcliang/docker-libgourou
+[submodule "src-haskell/werge"]
+	path = src-haskell/werge
+	url = https://github.com/exaexa/werge
