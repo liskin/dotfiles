@@ -23,6 +23,7 @@ show_env = true
 "cargo:cargo-watch" = "8.5.3"
 "cargo:evcxr_repl" = "0.21.1"
 "cargo:fclones" = "0.35.0"
+"cargo:mergiraf" = "0.14.0"
 "cargo:ripgrep_all" = "0.10.9"
 "cargo:tokio-console" = "0.1.13"
 "npm:@google/gemini-cli" = "0.2.2"
