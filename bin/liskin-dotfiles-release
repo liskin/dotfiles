@@ -35,7 +35,7 @@ function mktree-add-file {
 function mktree-add-symlink {
 	: "${1:?target}"
 	: "${2:?linkname}"
-	local blob; blob=$(git hash-object -w --stdin <<<"$1")
+	local blob; blob=$(printf %s "$1" | git hash-object -w --stdin)
 	printf "120000 blob %s\t%s\n" "$blob" "$2"
 }
 
