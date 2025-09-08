@@ -186,6 +186,7 @@
 [submodule ".local/share/nvim/site/bundle/roslyn.nvim"]
 	path = .local/share/nvim/site/bundle/roslyn.nvim
 	url = https://github.com/seblyng/roslyn.nvim
+	# url = https://github.com/liskin/roslyn.nvim
 [submodule ".local/share/nvim/site/bundle/incr.nvim"]
 	path = .local/share/nvim/site/bundle/incr.nvim
 	url = https://github.com/daliusd/incr.nvim
