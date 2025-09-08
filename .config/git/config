@@ -193,6 +193,8 @@
 	gh-resolved = base
 
 # includes
+[include]
+	path = ~/.config/git/include/local
 [includeIf "gitdir:~/src-haskell/xmonad*/"]
 	path = ~/.config/git/include/xmonad
 [includeIf "gitdir:~/work/"]
