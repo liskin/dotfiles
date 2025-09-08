@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2317
 
 # Wrapper around xrandr which allows shell globs in --output and automatically
 # disables all other outputs.
@@ -11,7 +12,18 @@ export LC_ALL=C
 
 unset xrandr_query
 
-function o { printf -->&2 "%s:%s\\n" "${0##*/}" "$(printf " %q" "$@")"; "$@"; }
+## include .o
+#!bash
+# shellcheck disable=SC2239
+
+# shellcheck disable=SC2218,SC2120
+exec {_o_stderr}>&2
+function exec { if (( $# )); then builtin exec {_o_stderr}>&- "$@"; else builtin exec "$@"; fi; }
+
+if [[ -t $_o_stderr ]]; then _o_tput_bold=$(tput bold || :); _o_tput_reset=$(tput sgr0 || :); else _o_tput_bold=; _o_tput_reset=; fi
+function o { printf -->&$_o_stderr "%s%s:%s%s\\n" "$_o_tput_bold" "${0##*/}" "$_o_tput_reset" "$(printf " %q" "$@")"; "$@"; }
+function oo { printf -->&$_o_stderr "%s%s:%s %s\\n" "$_o_tput_bold" "${0##*/}" "$_o_tput_reset" "$*"; }
+## end include .o
 
 function get-xrandr-query {
 	[[ "${xrandr_query-}" ]] && return
@@ -33,6 +45,17 @@ function get-xrandr-outputs-except {
 
 function get-xrandr-custom-monitors {
 	xrandr --listmonitors | grep -P -o '^\s*\d+:\s+\K[^+]\S+' | sed -e 's/^[+*]*//'
+}
+
+function xrandr-delete-custom-monitors {
+	local -a args=()
+	for monitor in $(get-xrandr-custom-monitors); do
+		args+=(--delmonitor "$monitor")
+	done
+
+	if (( ${args[@]+${#args[@]}} )); then
+		o xrandr "${args[@]}"
+	fi
 }
 
 function find-one {
@@ -83,10 +106,7 @@ function xrandr-auto-off {
 		args+=(--output "$output" --off)
 	done
 
-	for monitor in $(get-xrandr-custom-monitors); do
-		o xrandr --delmonitor "$monitor"
-	done
-
+	xrandr-delete-custom-monitors
 	o xrandr "${args[@]}"
 }
 
