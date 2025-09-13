@@ -17,6 +17,7 @@ show_env = true
 "cargo:YodaEmbedding/frece" = "rev:d4071c6c852e68dda82b7ab0bfb0f141b39d4484"
 "cargo:cargo-audit" = "0.21.2"
 "cargo:cargo-cache" = "0.8.3"
+"cargo:cargo-deny" = "0.18.4"
 "cargo:cargo-edit" = "0.13.7"
 "cargo:cargo-machete" = "0.9.1"
 "cargo:cargo-semver-checks" = "0.43.0"
