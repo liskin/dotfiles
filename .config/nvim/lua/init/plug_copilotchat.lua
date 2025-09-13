@@ -18,7 +18,7 @@ copilot_chat.setup {
 		},
 		CommitRicky = {
 			system_prompt = 'SysRicky',
-			sticky = '#gitdiff:staged',
+			resources = { 'gitdiff:staged' },
 			prompt = copilot_chat_prompts.Commit.prompt .. '\n'
 				.. "Remember you're a comedian and make it funny and sarcastic.\n"
 				.. 'Remember that "Why" is just as important as "What". Ask me questions to clarify context for some of the changes.',
@@ -28,7 +28,7 @@ copilot_chat.setup {
 		},
 		ReviewGitStaged = {
 			system_prompt = 'COPILOT_REVIEW',
-			sticky = '#gitdiff:staged',
+			resources = { '#gitdiff:staged' },
 			prompt = "Review the changes I'm about to commit.",
 		},
 		Commit = {
