@@ -50,7 +50,7 @@ export MPD_HOST="$XDG_RUNTIME_DIR"/mpd/socket
 export JAVA_HOME=/usr/lib/jvm/default-java
 export JDKHOME="$JAVA_HOME"
 
-export ANDROID_HOME=/home/tomi/android/android-sdk-linux
+export ANDROID_HOME=~/android/android-sdk-linux
 
 export DEBFULLNAME="Tomas Janousek"
 export DEBEMAIL="tomi@nomi.cz"
