@@ -27,7 +27,9 @@ local ensure_installed = {
 	"query",
 	"regex",
 	"rust",
+	"scss",
 	"sql",
+	"starlark",
 	"vim",
 	"vimdoc",
 	"yaml",
@@ -39,6 +41,8 @@ local disabled_indent = {
 }
 local disabled_fold = {
 }
+
+vim.treesitter.language.register('starlark', { 'bzl.tiltfile' })
 
 vim.api.nvim_create_user_command("TSUpdateSync", function()
 	ts.install(ensure_installed):wait(300000)
