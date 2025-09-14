@@ -39,26 +39,39 @@ function save_gpx(data, filename) {
 }
 
 function download() {
+	const fleggz_tracks = FleggzData.getInstance().getCompoundObjects();
+	const fleggz_name = document.querySelectorAll('h3')[0]?.textContent.trim() ?? "Fleggz route";
+
 	const gpx = doc_gpx();
 	gpx.setAttribute('version', '1.1');
 	gpx.setAttribute('creator', 'fleggz-gpx');
 
-	for (const track of FleggzData.getInstance().getCompoundObjects()) {
-		const trk = el_gpx('trk');
+	for (const track of fleggz_tracks) {
+		const track_name = track[1];
+		const track_start = track[5][0];
 
-		trk.appendChild(el_gpx_text('name', track[1]));
+		const wpt = el_gpx('wpt');
+		wpt.setAttribute('lat', track_start[1]);
+		wpt.setAttribute('lon', track_start[0]);
+		wpt.appendChild(el_gpx_text('name', track_name));
+		wpt.appendChild(el_gpx_text('type', 'GENERIC'));
 
-		var trkseg = el_gpx('trkseg');
+		gpx.appendChild(wpt);
+	}
+
+	const trk = el_gpx('trk');
+	trk.appendChild(el_gpx_text('name', fleggz_name));
+	const trkseg = el_gpx('trkseg');
+	for (const track of fleggz_tracks) {
 		for (const point of track[5]) {
 			const trkpt = el_gpx('trkpt');
 			trkpt.setAttribute('lat', point[1]);
 			trkpt.setAttribute('lon', point[0]);
 			trkseg.appendChild(trkpt);
 		}
-		trk.appendChild(trkseg);
-
-		gpx.appendChild(trk);
 	}
+	trk.appendChild(trkseg);
+	gpx.appendChild(trk);
 
 	save_gpx(xml(gpx), 'fleggz_route.gpx');
 }
