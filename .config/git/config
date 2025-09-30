@@ -170,6 +170,13 @@
 	features = side-nonum
 	file-style = omit
 
+# difftastic
+[alias]
+	ddiff = -c diff.external='difft --display=inline' diff
+	dshow = -c diff.external='difft --display=inline' show --ext-diff
+	si-ddiff = -c diff.external=difft diff
+	si-dshow = -c diff.external=difft show --ext-diff
+
 # tig config
 [tig]
 	blame-options = -C -C -C
