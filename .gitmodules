@@ -149,8 +149,8 @@
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
 [submodule ".local/share/nvim/site/bundle/presenting.nvim"]
 	path = .local/share/nvim/site/bundle/presenting.nvim
-	url = https://github.com/sotte/presenting.nvim
-	# url = https://github.com/liskin/presenting.nvim
+	# url = https://github.com/sotte/presenting.nvim
+	url = https://github.com/liskin/presenting.nvim
 [submodule ".local/share/nvim/site/bundle/iron.nvim"]
 	path = .local/share/nvim/site/bundle/iron.nvim
 	url = https://github.com/Vigemus/iron.nvim
