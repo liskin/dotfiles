@@ -1,1 +1,1 @@
-../../bin/.ext/docker-buildx
+../../.local/share/mise/installs/docker-buildx/latest/docker-cli-plugin-docker-buildx

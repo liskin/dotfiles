@@ -8,8 +8,6 @@ ARM64 := $(if $(filter aarch64,$(ARCH)),1)
 
 CURL := curl -LSsf
 
-DOCKER_BUILDX_VERSION := v0.26.1
-DOCKER_COMPOSE_VERSION := v2.39.1
 FITSDK_VERSION := 21.84.00
 HLINT_VERSION := v3.8
 HLS_GHC_VERSION := 9.6.6
@@ -19,8 +17,6 @@ PANDOC_VERSION := 3.5
 DOTNET8_VERSION := 8.0.410
 DOTNET9_VERSION := 9.0.301
 
-DOCKER_BUILDX_GITHUB := docker/buildx
-DOCKER_COMPOSE_GITHUB := docker/compose
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
@@ -81,20 +77,6 @@ all: .ext-languagetool
 .INTERMEDIATE: .ext-languagetool-$(LANGUAGETOOL_VERSION).zip
 .ext-languagetool-$(LANGUAGETOOL_VERSION).zip:
 	$(CURL) -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION:v%=%).zip
-
-all: docker-buildx
-docker-buildx: | .ext-docker-buildx ; ln -fsT $| $@
-.ext-docker-buildx: .ext-docker-buildx-$(DOCKER_BUILDX_VERSION) ; ln -fsT $< $@
-.ext-docker-buildx-$(DOCKER_BUILDX_VERSION):
-	$(CURL) -o $@ https://github.com/$(DOCKER_BUILDX_GITHUB)/releases/download/$(DOCKER_BUILDX_VERSION)/buildx-$(DOCKER_BUILDX_VERSION).linux-$(if $(ARM64),arm64,amd64)
-	chmod +x $@
-
-all: docker-compose
-docker-compose: | .ext-docker-compose ; ln -fsT $| $@
-.ext-docker-compose: .ext-docker-compose-$(DOCKER_COMPOSE_VERSION) ; ln -fsT $< $@
-.ext-docker-compose-$(DOCKER_COMPOSE_VERSION):
-	$(CURL) -o $@ https://github.com/$(DOCKER_COMPOSE_GITHUB)/releases/download/$(DOCKER_COMPOSE_VERSION)/docker-compose-linux-$(if $(ARM64),aarch64,x86_64)
-	chmod +x $@
 
 all: .ext-fitsdk
 .SKIP_GITIGNORE: .ext-fitsdk
