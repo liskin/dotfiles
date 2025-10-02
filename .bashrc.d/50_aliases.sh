@@ -35,6 +35,9 @@ alias urxvt-setfont-monospace='urxvt-setfont monospace 10'
 alias urxvt-setfont-gohu-11='urxvt-setfont "GohuFont uni11 Nerd Font Mono" 11'
 alias urxvt-setfont-gohu-14='urxvt-setfont "GohuFont uni14 Nerd Font Mono" 14'
 
+export-alias alacritty-iosevka="alacritty -o 'font.normal.family=\"Iosevka Fixed\"' -o 'font.size=9'"
+export-alias alacritty-iosevka-big="alacritty -o 'font.normal.family=\"Iosevka Fixed\"' -o 'font.size=14'"
+
 export-alias nomi="ssh -C nomi.cz -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-https="ssh -C nomi.cz-https -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-mosh="MOSH_TITLE_NOPREFIX=1 mosh nomi.cz bin/atmux"

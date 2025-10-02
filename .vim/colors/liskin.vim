@@ -282,7 +282,7 @@ function! s:urxvt_hi(hl, ...) abort
 	let fg = synIDattr(hlID(a:hl), "fg", "cterm")
 	let bg = synIDattr(hlID(a:hl), "bg", "cterm")
 	let bold = synIDattr(hlID(a:hl), "bold", "cterm")
-	if bold && fg < 8
+	if bold && !empty(fg) && fg < 8
 		let fg += 8
 	endif
 	let guifg = empty(fg) ? "NONE" : s:urxvt[str2nr(fg)]
