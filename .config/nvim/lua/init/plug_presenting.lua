@@ -98,7 +98,7 @@ presenting.setup {
 		['<PageDown>'] = presenting.next,
 		['<CR>'] = follow_md_links.follow_link,
 		['<Tab>'] = function()
-			plug_hop_ts.text_objects({'markup.link.label'})
+			plug_hop_ts.text_objects({'markup.link.label', 'markup.link.url'})
 		end,
 		['q'] = quit,
 	},
