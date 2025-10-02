@@ -344,7 +344,7 @@ myUrgencyHook = deferUrgencyHook $ isDND <&&> windowTag =? Just "1"
 focusWiki :: X ()
 focusWiki = withWorkspace "1" $ focusQueryWin $ do
     t <- title
-    pure $ "VIM" `isSuffixOf` t && "~/taskwiki" `isInfixOf` t
+    pure $ "Nvim" `isSuffixOf` t && "~/taskwiki" `isInfixOf` t
 
 -- Status bars, tray(er)
 myStatusBars :: ScreenId -> StatusBarConfig
