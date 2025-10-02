@@ -354,6 +354,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU Special ctermfg=208
 		HiU SpecialKey ctermfg=239
 		HiU Statement ctermfg=11
+		HiU TabLine ctermfg=15 ctermbg=242
 		HiU Title ctermfg=13
 		HiU Type ctermfg=2
 		HiU Underlined ctermfg=81
