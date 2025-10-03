@@ -113,6 +113,7 @@
 	lg1-fixes = -c core.abbrev=12 log -1 --pretty=fixes
 	lg1-related = -c core.abbrev=12 log -1 --pretty=related
 	lgmarkdown = "log --reverse --pretty=format:'### %s%n%n%b'"
+	lgmarkdown-details = "log --reverse --pretty=format:'<details open><summary><strong>%s</strong></summary>%n%n%b%n</details>'"
 [pretty]
 	co-authored-by = Co-authored-by: %an <%ae>
 	fixes = "Fixes: %h (\"%s\")"

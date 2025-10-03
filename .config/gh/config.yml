@@ -11,3 +11,4 @@ pager:
 aliases:
     co: pr checkout
     fork: repo fork --remote --remote-name liskin --default-branch-only
+    prc: pr create --fill-verbose --editor
