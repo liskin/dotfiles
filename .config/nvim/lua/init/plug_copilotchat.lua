@@ -28,7 +28,7 @@ copilot_chat.setup {
 		},
 		ReviewGitStaged = {
 			system_prompt = 'COPILOT_REVIEW',
-			resources = { '#gitdiff:staged' },
+			resources = { 'gitdiff:staged' },
 			prompt = "Review the changes I'm about to commit.",
 		},
 		Commit = {
