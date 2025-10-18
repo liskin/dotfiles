@@ -15,8 +15,6 @@ if vim.fn.has('nvim-0.11') == 0 then
 end
 
 local function root_dir(bufnr, on_dir)
-	vim.print("ahoj")
-
 	-- attach to existing workspace if possible
 	local ws = lazydev.find_workspace(bufnr)
 	if ws ~= nil then
