@@ -201,8 +201,8 @@
 	url = https://github.com/nvim-neotest/neotest
 [submodule ".local/share/nvim/site/bundle/neotest-vstest"]
 	path = .local/share/nvim/site/bundle/neotest-vstest
-	# url = https://github.com/Nsidorenco/neotest-vstest
-	url = https://github.com/liskin/neotest-vstest
+	url = https://github.com/Nsidorenco/neotest-vstest
+	# url = https://github.com/liskin/neotest-vstest
 [submodule ".local/share/nvim/site/bundle/conform.nvim"]
 	path = .local/share/nvim/site/bundle/conform.nvim
 	url = https://github.com/stevearc/conform.nvim
