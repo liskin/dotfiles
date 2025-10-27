@@ -1,10 +1,5 @@
 local null_ls = require 'null-ls'
 
--- XXX: nvim-0.11 only
-if vim.fn.has('nvim-0.11') == 0 then
-	return
-end
-
 local function buf_filesize(bufnr)
 	local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
 	if ok and stats then

@@ -91,7 +91,7 @@ else " {{{3
 endif
 
 " rxvt background switching {{{3
-if &term == "rxvt-unicode-256color" && (has('nvim') || v:version >= 900) " {{{3
+if &term == "rxvt-unicode-256color" && has('nvim') " {{{3
 	function! s:rxvt_bg() abort
 		if &bg == "light"
 			let $COLORFGBG = '0;default;15'
@@ -160,9 +160,7 @@ set tabstop=4
 " line wrap {{{2
 set breakat=\ \	!@*-+;:,./?_
 set breakindent
-if has('nvim') || v:version >= 900
-	set breakindentopt=list:-1
-endif
+set breakindentopt=list:-1
 set linebreak
 set showbreak=↪\ 
 set wrap
@@ -203,15 +201,10 @@ set path=.,,
 set tags+=./tags;
 
 " completion {{{2
-set completeopt=menu,menuone,longest,popup
-if has('nvim-0.11') || has("patch-9.1.0463")
-	set completeopt+=fuzzy
-endif
+set completeopt=menu,menuone,longest,popup,fuzzy
 set wildmenu
 set wildmode=full:longest
-if has('nvim') || v:version >= 900
-	set wildoptions=pum,fuzzy
-endif
+set wildoptions=pum,fuzzy
 set wildignore+=*.o,*.d,*.hi,*.beam,*.p_o,*.p_hi,*.pyc
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 
@@ -443,9 +436,7 @@ filetype plugin indent on
 syntax on
 
 " detect background colour, load my colourscheme {{{2
-if has('nvim') || v:version >= 900
-	set bg&
-endif
+set bg&
 colorscheme liskin " see ~/.vim/colors/liskin.vim
 
 " autocmds {{{1

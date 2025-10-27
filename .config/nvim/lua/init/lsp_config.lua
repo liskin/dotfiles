@@ -1,10 +1,5 @@
 local null_ls = require 'null-ls'
 
--- XXX: nvim-0.11 only
-if vim.fn.has('nvim-0.11') == 0 then
-	return
-end
-
 local function has_file(path, filename)
 	return path and vim.fn.filereadable(vim.fs.joinpath(path, filename)) == 1
 end

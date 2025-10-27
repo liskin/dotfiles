@@ -76,6 +76,13 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
+-- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
+vim.lsp.config('*', {
+	flags = {
+		debounce_text_changes = vim.g.lsp_debounce,
+	},
+})
+
 -- force longer debounce for vim.lsp.semantic_tokens (not configurable otherwise)
 -- to avoid wasting too much CPU in the LSP
 local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
@@ -99,18 +106,6 @@ vim.lsp.start = (function(orig)
 		return orig(config, opts)
 	end
 end)(vim.lsp.start)
-
--- XXX: nvim-0.11 only
-if vim.fn.has('nvim-0.11') == 0 then
-	return
-end
-
--- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
-vim.lsp.config('*', {
-	flags = {
-		debounce_text_changes = vim.g.lsp_debounce,
-	},
-})
 
 -- see "lsp_config" and ~/.vim/projectrc for LSP config
 -- see "plug_none_ls" for null-ls/none-ls

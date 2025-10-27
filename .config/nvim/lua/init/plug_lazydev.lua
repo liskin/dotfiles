@@ -9,11 +9,6 @@ lazydev.setup {
 	},
 }
 
--- XXX: nvim-0.11 only
-if vim.fn.has('nvim-0.11') == 0 then
-	return
-end
-
 local function root_dir(bufnr, on_dir)
 	-- attach to existing workspace if possible
 	local ws = lazydev.find_workspace(bufnr)

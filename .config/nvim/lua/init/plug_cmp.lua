@@ -223,11 +223,6 @@ vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
 	end
 end, { expr = true })
 
--- XXX: nvim-0.11 only
-if vim.fn.has('nvim-0.11') == 0 then
-	return
-end
-
 -- disable nvim 0.11 default vim.snippet.jump mapping in Insert/Select mode
 vim.keymap.del({ 'i', 's' }, '<Tab>')
 vim.keymap.del({ 'i', 's' }, '<S-Tab>')
