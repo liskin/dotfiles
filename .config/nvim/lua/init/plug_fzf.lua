@@ -34,6 +34,7 @@ fzf_lua.setup {
 	lsp = {
 		symbols = {
 			symbol_style = 3,
+			parent_postfix = ".",
 		},
 	}
 }
