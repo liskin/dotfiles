@@ -182,7 +182,7 @@ myKeys XConfig{..} = M.fromList $
     , ((modMask              , xK_q     ), restart (myHome ++ "/bin/xmonad") True)
 
     -- the end
-    , ((modMask .|. altMask .|. ctrlMask, xK_q), io (exitWith ExitSuccess))
+    , ((modMask .|. altMask .|. ctrlMask, xK_q), saveWorkspaces >> io (exitWith ExitSuccess))
     ] ++
     -- focus changes
     [ ((modMask .|. m, k), P.defile (focusNth myLayout i swap) >> up)
@@ -316,7 +316,7 @@ myEventHook = mconcat
     ]
     where
         refocusLastEventHook = refocusLastWhen isFloatQ
-        myXmonadCtlHooks = [myCtlDnd]
+        myXmonadCtlHooks = [myCtlDnd, myCtlWorkspaceMetadata]
 
 -- | Invoke 'up' after (possibly) handling EWMH requests.
 ewmhUpdatePointerHook :: Event -> X All
@@ -345,6 +345,35 @@ focusWiki :: X ()
 focusWiki = withWorkspace "1" $ focusQueryWin $ do
     t <- title
     pure $ "Nvim" `isSuffixOf` t && "~/taskwiki" `isInfixOf` t
+
+-- Save/Load Workspace Metadata
+myCtlWorkspaceMetadata :: String -> X ()
+myCtlWorkspaceMetadata "save-workspaces" = saveWorkspaces
+myCtlWorkspaceMetadata "load-workspaces" = loadWorkspaces
+myCtlWorkspaceMetadata _ = mempty
+
+saveWorkspaces :: X ()
+saveWorkspaces = do
+    ws <- gets $ W.workspaces . windowset
+    getWName <- getWorkspaceNames'
+    saveWorkspaceMetadata
+        [ (t, meta)
+        | w <- ws, let t = W.tag w
+        , let name = [("name", n) | Just n <- [getWName t], n /= def]
+        , let dir = [("dir", d) | Just d <- [getWorkspaceDir myLayout w], d /= myHome]
+        , let meta = name ++ dir
+        , meta /= def
+        ]
+
+loadWorkspaces :: X ()
+loadWorkspaces = do
+    meta :: [(String, [(String, String)])] <- loadWorkspaceMetadata
+    forM_ meta $ \(t, meta') -> withWorkspace t $ \w -> do
+        forM_ meta' $ \case
+            ("name", n) -> setWorkspaceName t n
+            ("dir", d) -> sendMessageWithNoRefresh (Chdir d) w
+            _ -> mempty
+    refresh
 
 -- Status bars, tray(er)
 myStatusBars :: ScreenId -> StatusBarConfig
@@ -516,6 +545,7 @@ myStartupHook = do
     first <- isNothing <$> getWorkspaceName "1"
     when (primary && first) $ do
         mapM_ (uncurry setWorkspaceName) [("1", "irc"), ("2", "web"), ("12", "watch")]
+        loadWorkspaces
 
 -- Main.
 main = do

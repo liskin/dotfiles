@@ -1,4 +1,6 @@
 /.build/
-/prompt-history
 /xmobar-*-linux
 /xmonad-*-linux
+
+/prompt-history
+/workspace-metadata-*

@@ -82,6 +82,21 @@ changeDirRofiGit = do
         [sel] -> sendMessage (Chdir sel)
         _ -> pure ()
 
+workspaceMetadataFile :: X FilePath
+workspaceMetadataFile = do
+    dir <- asks (cacheDir . directories)
+    dsp <- displayString <$> asks display
+    pure $ dir ++ "/workspace-metadata-" ++ takeWhile isDigit (dropWhile (not . isDigit) dsp)
+
+saveWorkspaceMetadata :: Show a => a -> X ()
+saveWorkspaceMetadata meta = do
+    fp <- workspaceMetadataFile
+    userCodeDef def $ io $ writeFile fp (show meta)
+
+loadWorkspaceMetadata :: (Default a, Read a) => X a
+loadWorkspaceMetadata =
+    userCodeDef def $ io . readIO =<< io . readFile =<< workspaceMetadataFile
+
 isFloat :: Window -> X Bool
 isFloat w = gets $ M.member w . W.floating . windowset
 
