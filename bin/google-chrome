@@ -10,10 +10,6 @@ if [[ -x /usr/bin/google-chrome ]]; then
 	bin=/usr/bin/google-chrome
 elif [[ -x /usr/bin/chromium ]]; then
 	bin=/usr/bin/chromium
-	if [[ -e ~/.config/liskin-google-chrome/env ]]; then
-		# shellcheck disable=1090
-		. ~/.config/liskin-google-chrome/env
-	fi
 else
 	echo no chrome >&2
 	exit 1
