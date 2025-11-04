@@ -1,0 +1,4 @@
+# Debian-provided API keys no longer work as of 2025-10
+unset GOOGLE_API_KEY
+export GOOGLE_DEFAULT_CLIENT_ID="77185425430.apps.googleusercontent.com"
+export GOOGLE_DEFAULT_CLIENT_SECRET="OTJgUOQcT7lO7GsGZq2G4IlT"
