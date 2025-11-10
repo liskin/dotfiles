@@ -1,5 +1,6 @@
 local codecompanion = require'codecompanion'
 local codecompanion_config = require'codecompanion.config'
+local codecompanion_acp_helpers = require'codecompanion.adapters.acp.helpers'
 local fidget = require'fidget'
 
 codecompanion.setup {
@@ -55,6 +56,49 @@ codecompanion.setup {
 					opts = {
 						contains_code = true,
 					},
+				},
+			},
+		},
+	},
+	adapters = {
+		acp = {
+			opencode = {
+				name = "opencode",
+				formatted_name = "OpenCode",
+				type = "acp",
+				roles = {
+					llm = "assistant",
+					user = "user",
+				},
+				opts = {
+					vision = true,
+				},
+				commands = {
+					default = {
+						"opencode",
+						"acp",
+					},
+				},
+				defaults = {
+					timeout = 60000,
+				},
+				env = {},
+				parameters = {
+					protocolVersion = 1,
+					clientCapabilities = {
+						fs = { readTextFile = true, writeTextFile = true },
+					},
+					clientInfo = {
+						name = "CodeCompanion.nvim",
+						version = "1.0.0",
+					},
+				},
+				handlers = {
+					auth = function(_self) return true end,
+
+					form_messages = function(self, messages, capabilities)
+						return codecompanion_acp_helpers.form_messages(self, messages, capabilities)
+					end,
 				},
 			},
 		},

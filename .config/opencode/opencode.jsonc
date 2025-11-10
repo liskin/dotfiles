@@ -5,9 +5,11 @@
 
   // ask before doing anything
   "permission": {
-    "edit": "ask",
     "bash": "ask",
+    "edit": "ask",
+    "patch": "ask",
     "webfetch": "ask",
+    "write": "ask",
   },
 
   "model": "github-copilot/gpt-4.1",
