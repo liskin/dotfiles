@@ -126,6 +126,9 @@ cmp.setup {
 			border = { '', '', '', '│', '', '', '', ' ' },
 		},
 	},
+	formatting = {
+		fields = { 'abbr', 'kind', 'menu' },
+	},
 	sources = cmp.config.sources(
 		{
 			{ name = 'nvim_lsp' },
