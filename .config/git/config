@@ -194,6 +194,7 @@
 	generic = T !>git notes edit "%(commit)"
 	generic = <Ctrl-R> !>git commit --fixup=reword:"%(commit)"
 	generic = S !>git gh-stack branch create "%(commit)"
+	generic = <Ctrl-B> !>gh browse "%(commit)"
 
 # workaround for gh's "No default remote repository has been set for this directory."
 # NB: never run "gh repo fork" as that renames origin, use the "gh fork" alias
