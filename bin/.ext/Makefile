@@ -13,14 +13,12 @@ HLINT_VERSION := v3.8
 HLS_GHC_VERSION := 9.6.6
 HLS_VERSION := 2.9.0.1
 LANGUAGETOOL_VERSION := v6.4
-PANDOC_VERSION := 3.5
 DOTNET8_VERSION := 8.0.410
 DOTNET9_VERSION := 9.0.301
 
 HLINT_GITHUB := ndmitchell/hlint
 HLS_GITHUB := haskell/haskell-language-server
 LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
-PANDOC_GITHUB := jgm/pandoc
 
 .PHONY: update
 ## Check for updates
@@ -46,14 +44,6 @@ haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .e
 .INTERMEDIATE: .ext-hls-$(HLS_VERSION).tar.xz
 .ext-hls-$(HLS_VERSION).tar.xz:
 	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-$(if $(ARM64),aarch64-linux-ubuntu20,x86_64-linux-deb11).tar.xz
-
-all: pandoc
-pandoc: | .ext-pandoc ; ln -fsT $|/bin/$@ $@
-.ext-pandoc: .ext-pandoc-$(PANDOC_VERSION) ; ln -fsT $< $@
-.ext-pandoc-$(PANDOC_VERSION):
-	mkdir -p $@
-	$(CURL) https://github.com/$(PANDOC_GITHUB)/releases/download/$(PANDOC_VERSION)/pandoc-$(PANDOC_VERSION)-linux-$(if $(ARM64),arm64,amd64).tar.gz \
-		| tar -x -z -C $@ --strip-components=1
 
 ifeq "$(ARM64)" ""
 all: hlint
