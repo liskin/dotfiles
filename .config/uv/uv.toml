@@ -1,2 +1,4 @@
 python-downloads = "manual"
 python-preference = "system"
+
+exclude-newer = "1 week"

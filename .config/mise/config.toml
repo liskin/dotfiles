@@ -65,7 +65,7 @@ stylua = "2.3.1"
 taplo = "0.10.0"
 tilt = "0.35.2"
 usage = "2.16.1"
-uv = "0.9.8"
+uv = "0.9.30"
 watchexec = "2.3.2"
 
 [tool_alias]
