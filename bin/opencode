@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-OPENCODE_DISABLE_LSP_DOWNLOAD=true \
-exec -a opencode mise "$@"
