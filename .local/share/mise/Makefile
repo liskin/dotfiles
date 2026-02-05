@@ -33,11 +33,8 @@ update:
 	$(TOKEN_ENV) mise upgrade --bump --interactive
 
 .PHONY: gc
-## Delete unused versions of tools; hardlink duplicates in node_modules
+## Delete unused versions of tools
 gc:
 	mise prune
-ifneq "$(wildcard installs/npm-*/*/lib/node_modules)" ""
-	fclones group --no-ignore --hidden $(wildcard installs/npm-*/*/lib/node_modules) | fclones link
-endif
 
 include ~/_help.mk
