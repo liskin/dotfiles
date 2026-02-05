@@ -1,15 +1,16 @@
 [settings]
-experimental = true
 not_found_auto_install = false
 paranoid = true
 pin = true
-pipx_uvx = true
 trusted_config_paths = ['~/.config/mise/config.toml']
 idiomatic_version_file_enable_tools = []
 
 [settings.status]
 missing_tools = "always"
 show_env = true
+
+[settings.pipx]
+uvx = true
 
 [tools]
 "aqua:nextest-rs/nextest/cargo-nextest" = "0.9.111"
@@ -67,9 +68,9 @@ rust-analyzer = "2025-11-10"
 stylua = "2.3.1"
 taplo = "0.10.0"
 tilt = "0.35.2"
-usage = "2.6.0"
+usage = "2.16.1"
 uv = "0.9.8"
 watchexec = "2.3.2"
 
-[alias]
+[tool_alias]
 docker-buildx = "github:docker/buildx[bin=docker-cli-plugin-docker-buildx]"
