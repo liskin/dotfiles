@@ -27,7 +27,6 @@ uvx = true
 "cargo:mergiraf" = "0.16.1"
 "cargo:ripgrep_all" = "0.10.10"
 "cargo:tokio-console" = "0.1.14"
-"npm:@google/gemini-cli" = "0.3.4"
 "npm:@mermaid-js/mermaid-cli" = "11.9.0"
 "npm:prettier" = "3.6.2"
 "npm:typescript-language-server" = "4.4.0"

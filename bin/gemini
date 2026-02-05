@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-GEMINI_SANDBOX=podman \
-SANDBOX_FLAGS='--userns=keep-id' \
-exec -a gemini mise "$@"
