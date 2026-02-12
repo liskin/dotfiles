@@ -35,7 +35,7 @@ local ensure_installed = {
 	"yaml",
 }
 local disabled = {
-	-- "bash",
+	"bash", -- too buggy (but stays enabled in injections)
 }
 local disabled_indent = {
 }
