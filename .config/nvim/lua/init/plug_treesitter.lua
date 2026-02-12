@@ -18,7 +18,6 @@ local ensure_installed = {
 	"jsdoc",
 	"json",
 	"json5",
-	"jsonc",
 	"just",
 	"lua",
 	"markdown",
