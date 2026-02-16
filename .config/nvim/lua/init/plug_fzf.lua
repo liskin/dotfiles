@@ -8,6 +8,9 @@ fzf_lua.setup {
 		preview = {
 			horizontal = "right:60%,border-left",
 			vertical = "down:45%,border-top",
+
+			-- workaround for https://github.com/ibhagwan/fzf-lua/issues/2567
+			border = require'fzf-lua.profiles.border-fused'.winopts.preview.border,
 		},
 
 		width = 1,
