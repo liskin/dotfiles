@@ -87,6 +87,13 @@
 [submodule ".vim/bundle/jq.vim"]
 	path = .vim/bundle/jq.vim
 	url = https://github.com/vito-c/jq.vim
+[submodule ".vim/bundle/goyo.vim"]
+	path = .vim/bundle/goyo.vim
+	# url = https://github.com/junegunn/goyo.vim
+	url = https://github.com/liskin/goyo.vim
+[submodule ".vim/bundle/limelight.vim"]
+	path = .vim/bundle/limelight.vim
+	url = https://github.com/junegunn/limelight.vim
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
