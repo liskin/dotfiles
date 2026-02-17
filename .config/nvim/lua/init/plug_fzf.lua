@@ -6,7 +6,8 @@ fzf_lua.setup {
 
 	winopts = {
 		preview = {
-			horizontal = "right:60%,border-left",
+			flip_columns = 120,
+			horizontal = "right:67%,border-left",
 			vertical = "down:45%,border-top",
 		},
 
