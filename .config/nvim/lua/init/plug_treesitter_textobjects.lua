@@ -35,7 +35,7 @@ vim.keymap.set({ "n", "x", "o" }, "[f", function()
 	to_move.goto_previous_start("@function.outer", "textobjects")
 end, { desc = "prev @function.outer start" })
 
--- -- move - repeatable
+-- move - repeatable
 vim.keymap.set({ "n", "x", "o" }, ";", to_repeat.repeat_last_move, {
 	desc = "repeat latest f, t, F, T or treesitter-textobjects move"
 })
