@@ -125,7 +125,8 @@
 	url = https://github.com/liskin/cmp-nvim-lsp
 [submodule ".local/share/nvim/site/bundle/cmp-nvim-ultisnips"]
 	path = .local/share/nvim/site/bundle/cmp-nvim-ultisnips
-	url = https://github.com/quangnguyen30192/cmp-nvim-ultisnips
+	# url = https://github.com/quangnguyen30192/cmp-nvim-ultisnips
+	url = https://github.com/liskin/cmp-nvim-ultisnips
 [submodule ".local/share/nvim/site/bundle/cmp-path"]
 	path = .local/share/nvim/site/bundle/cmp-path
 	url = https://github.com/hrsh7th/cmp-path
