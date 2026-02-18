@@ -37,10 +37,10 @@ fzf_lua.setup {
 			symbol_style = 3,
 			parent_postfix = ".",
 		},
-	}
-}
+	},
 
-fzf_lua.register_ui_select()
+	ui_select = true,
+}
 
 vim.keymap.set('n', 'gX', fzf_lua.lsp_finder, { desc = "fzf lsp_finder" })
 vim.keymap.set('n', 'gT', fzf_lua.lsp_document_symbols, { desc = "fzf lsp_document_symbols" })
