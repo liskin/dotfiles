@@ -30,10 +30,8 @@ end
 local orig_vim_diagnostic_set = vim.diagnostic.set
 ---@diagnostic disable-next-line: duplicate-set-field
 function vim.diagnostic.set(namespace, bufnr, ...)
-	vim.validate({
-		namespace = { namespace, 'n' },
-		bufnr = { bufnr, 'n' },
-	})
+	vim.validate('namespace', namespace, 'number')
+	vim.validate('bufnr', bufnr, 'number')
 
 	bufnr = get_bufnr(bufnr)
 
@@ -47,10 +45,8 @@ end
 local orig_vim_diagnostic_reset = vim.diagnostic.reset
 ---@diagnostic disable-next-line: duplicate-set-field
 function vim.diagnostic.reset(namespace, bufnr)
-	vim.validate({
-		namespace = { namespace, 'n', true },
-		bufnr = { bufnr, 'n', true },
-	})
+	vim.validate('namespace', namespace, 'number', true)
+	vim.validate('bufnr', bufnr, 'number', true)
 
 	-- Remove all relevant entries from the queue so we don't replay them later
 	-- and then vim.diagnostic.reset
