@@ -1,5 +1,17 @@
 local fzf_lua = require'fzf-lua'
 
+-- fzf-lua.actions.ex_run_cr that doesn't hide output from commands like
+-- :version, :echo, etc.
+local function ex_run_cr(selected)
+	if not selected[1] then return end
+	local cmd = selected[1]
+	vim.cmd("stopinsert")
+	local keys = string.format("<Cmd>%s<CR>", cmd)
+	keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+	vim.api.nvim_feedkeys(keys, 'nt', false)
+	return cmd
+end
+
 fzf_lua.setup {
 	'fzf-native',
 	fzf_colors = true,
@@ -36,6 +48,12 @@ fzf_lua.setup {
 		symbols = {
 			symbol_style = 3,
 			parent_postfix = ".",
+		},
+	},
+
+	commands = {
+		actions = {
+			["ctrl-x"] = ex_run_cr,
 		},
 	},
 
