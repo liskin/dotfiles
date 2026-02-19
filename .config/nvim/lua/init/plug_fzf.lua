@@ -72,11 +72,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			return
 		end
 
-		if client.supports_method('textDocument/documentSymbol', { bufrn = args.buf }) then
+		if client:supports_method('textDocument/documentSymbol', args.buf) then
 			vim.keymap.set({'n'}, '<C-T>', fzf_lua.lsp_document_symbols, buf_local)
 		end
 
-		if client.supports_method('workspace/symbol') then
+		if client:supports_method('workspace/symbol') then
 			vim.keymap.set({'n'}, '<C-G>', fzf_lua.lsp_live_workspace_symbols, buf_local)
 		end
 	end,

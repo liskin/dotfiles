@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
 		if refhi_enabled then
 			local clients = vim.lsp.get_clients({ bufnr = 0 })
 			local supported = vim.iter(clients):any(function(client)
-				return client.supports_method('textDocument/documentHighlight')
+				return client:supports_method('textDocument/documentHighlight')
 			end)
 			if supported then
 				vim.lsp.buf.document_highlight()
