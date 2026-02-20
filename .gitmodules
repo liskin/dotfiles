@@ -87,10 +87,6 @@
 [submodule ".vim/bundle/jq.vim"]
 	path = .vim/bundle/jq.vim
 	url = https://github.com/vito-c/jq.vim
-[submodule ".vim/bundle/goyo.vim"]
-	path = .vim/bundle/goyo.vim
-	# url = https://github.com/junegunn/goyo.vim
-	url = https://github.com/liskin/goyo.vim
 [submodule ".vim/bundle/limelight.vim"]
 	path = .vim/bundle/limelight.vim
 	url = https://github.com/junegunn/limelight.vim
@@ -214,6 +210,9 @@
 [submodule ".local/share/nvim/site/bundle/conform.nvim"]
 	path = .local/share/nvim/site/bundle/conform.nvim
 	url = https://github.com/stevearc/conform.nvim
+[submodule ".local/share/nvim/site/bundle/zen-mode.nvim"]
+	path = .local/share/nvim/site/bundle/zen-mode.nvim
+	url = https://github.com/folke/zen-mode.nvim
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title

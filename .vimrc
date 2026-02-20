@@ -425,14 +425,10 @@ let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
 let g:snips_github = "https://github.com/liskin"
 
-" goyo, limelight (hyperfocus-writing) {{{2
-let g:goyo_height = '100%'
+" limelight (hyperfocus-writing) {{{2
+" see also ~/.nvim/init/plug_zenmode.lua
 let g:limelight_conceal_ctermfg = 242
 let g:limelight_priority = -1
-autocmd User GoyoEnter Limelight
-autocmd User GoyoLeave Limelight!
-autocmd User GoyoEnter TSContext disable
-autocmd User GoyoLeave TSContext enable
 
 " old-style debian vim addons {{{2
 set runtimepath+=/usr/share/vim/addons

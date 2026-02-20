@@ -29,5 +29,6 @@ require 'init.plug_lazydev'
 require 'init.plug_roslyn'
 require 'init.plug_incr'
 require 'init.plug_neotest'
+require 'init.plug_zenmode'
 
 -- see also 'init.after'
