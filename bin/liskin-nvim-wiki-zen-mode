@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+shopt -s nullglob
+
+if [[ ${1-} != @(open|close) ]]; then
+	exit 1
+fi
+
+for vim_server in /run/user/1000/vimwiki-d0.*; do
+	nvim --server "$vim_server" --remote-expr "v:lua.require'zen-mode'.$1()"
+done

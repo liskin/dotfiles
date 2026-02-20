@@ -23,3 +23,13 @@ augroup taskwikiRefresh
 augroup END
 
 call timer_start(0, {-> vimwiki#liskin#refresh()})
+
+lua <<END
+if vim.env.WINDOWID ~= nil then
+	local xprop = vim.system({'xprop', '-id', vim.env.WINDOWID, '-notype', '_NET_WM_DESKTOP'}, { text = true }):wait()
+	local desktop = xprop.stdout:match(" = (%d+)")
+	if desktop ~= nil then
+		vim.fn.serverstart("vimwiki-d" .. desktop)
+	end
+end
+END

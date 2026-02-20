@@ -332,19 +332,33 @@ myCtlDnd "dnd-on" = do
     withUrgents $ mapM_ myUrgencyHook
     jumpToLayout' "1" "tab"
     focusWiki
+    changeWikiFont True
+    spawnExec "liskin-nvim-wiki-zen-mode open"
 myCtlDnd "dnd-off" = do
     setDoNotDisturb Disturb
     replayDeferredUrgents
     jumpToLayout' "1" "tiled"
+    changeWikiFont False
+    spawnExec "liskin-nvim-wiki-zen-mode close"
 myCtlDnd _ = mempty
 
 myUrgencyHook :: Window -> X ()
 myUrgencyHook = deferUrgencyHook $ isDND <&&> windowTag =? Just "1"
 
-focusWiki :: X ()
-focusWiki = withWorkspace "1" $ focusQueryWin $ do
+isWiki :: Query Bool
+isWiki = do
     t <- title
     pure $ "Nvim" `isSuffixOf` t && "~/taskwiki" `isInfixOf` t
+
+focusWiki :: X ()
+focusWiki = withWorkspace "1" $ focusQueryWin isWiki
+
+changeWikiFont :: Bool -> X ()
+changeWikiFont big = withWorkspace "1" $ withQueryWin isWiki $ \case
+    w:_ -> spawnExec $ "xdotool key --clearmodifiers --window " ++ show w ++ " ctrl+alt+" ++ key
+    _ -> mempty
+  where
+    key = if big then "End" else "Home"
 
 -- Save/Load Workspace Metadata
 myCtlWorkspaceMetadata :: String -> X ()
