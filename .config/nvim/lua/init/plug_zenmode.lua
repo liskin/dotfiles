@@ -28,3 +28,9 @@ require"zen-mode.plugins".diagnostics = function(_state, disable)
 	-- fix deprecation warnings
 	vim.diagnostic.enable(not disable)
 end
+
+---@diagnostic disable-next-line: duplicate-set-field
+require"zen-mode.view".on_win_enter = function()
+	-- don't close on WinEnter into another window,
+	-- it's annoying and sometimes segfaults nvim
+end
