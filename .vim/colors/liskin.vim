@@ -322,6 +322,7 @@ if &t_Co >= 256 || has('gui_running')
 	hi link LspReferenceText UnderlinedOnly
 	hi link FloatBorder Pmenu
 	hi link Whitespace SpecialKey
+	hi link WinSeparator VertSplit
 
 	if &bg == "dark"
 		hi Normal ctermfg=15 guifg=white guibg=black
@@ -371,6 +372,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU Added ctermfg=14
 		HiU Removed ctermfg=9
 		HiU Changed ctermfg=81
+		HiU ZenFolded ctermfg=242 ctermbg=234
 
 		" cterm only:
 		hi SpellBad cterm=underline,bold ctermfg=9 ctermbg=NONE

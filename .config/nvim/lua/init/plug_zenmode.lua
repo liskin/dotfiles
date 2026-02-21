@@ -6,8 +6,9 @@ zen.setup {
 		height = 0.9,
 	},
 
-	on_open = function(_win)
+	on_open = function(win)
 		vim.cmd("Limelight")
+		vim.wo[win].winhighlight = vim.wo[win].winhighlight .. ",Folded:ZenFolded"
 	end,
 	on_close = function()
 		vim.cmd("Limelight!")
