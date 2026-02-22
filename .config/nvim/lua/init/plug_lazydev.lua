@@ -1,4 +1,6 @@
 local lazydev = require'lazydev'
+local lazydev_buf = require'lazydev.buf'
+local lazydev_workspace = require'lazydev.workspace'
 
 lazydev.setup {
 	enabled = function(root_dir)
@@ -34,3 +36,19 @@ vim.lsp.config('lua_ls', { root_dir = root_dir })
 vim.schedule(function()
 	vim.lsp.config('lua_ls', { root_dir = root_dir })
 end)
+
+lazydev_buf.on_file = (function(orig)
+	return function(buf)
+		-- add plugins being edited to the library
+		local buf_name = vim.api.nvim_buf_get_name(buf)
+		if vim.fs.relpath(vim.fn.stdpath("data"), buf_name) then
+			local lua = buf_name:find("/lua/", 1, true)
+			if lua then
+				local path = buf_name:sub(1, lua - 1)
+				lazydev_workspace.find({ buf = buf }):add(path)
+			end
+		end
+
+		return orig(buf)
+	end
+end)(lazydev_buf.on_file)
