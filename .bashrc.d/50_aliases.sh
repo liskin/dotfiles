@@ -122,6 +122,8 @@ alias vim='nvim'
 alias view='nvim -R'
 alias vimdiff='nvim -d'
 
+alias man='MANWIDTH=$((COLUMNS > 100 ? 100 : COLUMNS)) man'
+
 alias luajit='rlwrap luajit'
 
 alias taskw-timesheet='task timesheet "/^work /" or project:work'
