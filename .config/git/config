@@ -104,8 +104,6 @@
 	spellingdictionary = en_GB
 [notes]
 	rewriteRef = refs/notes/commits
-[url "ssh://git@github.com/"]
-	pushInsteadOf = https://github.com/
 
 # commit message helpers (see ~/.vim/ftplugin/gitcommit/liskin.vim)
 [alias]
@@ -200,6 +198,12 @@
 # NB: never run "gh repo fork" as that renames origin, use the "gh fork" alias
 [remote "origin"]
 	gh-resolved = base
+
+# push via ssh even if remote is https
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
+[url "ssh://git@codeberg.org/"]
+	pushInsteadOf = https://codeberg.org/
 
 # includes
 [include]
