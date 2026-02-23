@@ -212,7 +212,8 @@
 	url = https://github.com/stevearc/conform.nvim
 [submodule ".local/share/nvim/site/bundle/zen-mode.nvim"]
 	path = .local/share/nvim/site/bundle/zen-mode.nvim
-	url = https://github.com/folke/zen-mode.nvim
+	# url = https://github.com/folke/zen-mode.nvim
+	url = https://github.com/liskin/zen-mode.nvim
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
