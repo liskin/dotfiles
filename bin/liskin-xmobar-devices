@@ -154,8 +154,8 @@ function check-bt-battery {
 	local bt_addr
 	bt_battery=
 
-	[[ $(pactl info) =~ "Default Sink: bluez_output."([0-9A-F_]*)"."* ]] || return 1
-	bt_addr="${BASH_REMATCH[1]}"
+	[[ $(pactl info) =~ "Default Sink: bluez_output."([0-9A-F_:]*)"."* ]] || return 1
+	bt_addr="${BASH_REMATCH[1]//:/_}"
 	busctl get-property org.bluez /org/bluez/hci0/dev_"$bt_addr" org.bluez.Battery1 Percentage \
 		| read -r _ bt_battery
 	[[ ${bt_battery-} ]]
