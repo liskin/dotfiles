@@ -57,6 +57,11 @@ vim.api.nvim_create_autocmd("FileType", {
 			return
 		end
 
+		-- skip if treesitter disabled for buffer (see FileTypeEarly in ~/.vimrc)
+		if vim.b[bufnr].treesitter_disabled or vim.g.treesitter_disabled then
+			return
+		end
+
 		-- skip if a parser for this language is disabled
 		local parser_name = vim.treesitter.language.get_lang(filetype)
 		if not parser_name or vim.list_contains(disabled, parser_name) then
@@ -69,6 +74,11 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 
 		vim.treesitter.start(bufnr, parser_name)
+
+		-- optionally re-enable regex-based syntax (see FileTypeEarly in ~/.vimrc)
+		if vim.b[bufnr].treesitter_plus_regex then
+			vim.bo[bufnr].syntax = 'ON'
+		end
 
 		-- set indentexpr if indents are enabled and available
 		if

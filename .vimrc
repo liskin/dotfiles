@@ -440,6 +440,14 @@ runtime plugin/canon_filename.vim
 filetype plugin indent on
 syntax on
 
+" run autocmds in group FileTypeEarly before the FileType autocmd that
+" enables LSP or Treesitter; makes it possible to set b:lsp_disabled or
+" b:treesitter_disabled from projectrc
+augroup FileTypeEarly
+augroup END
+autocmd FileType * doautocmd <nomodeline> FileTypeEarly BufRead
+autocmd FileType * doautocmd <nomodeline> FileTypeEarly FileType
+
 " detect background colour, load my colourscheme {{{2
 set bg&
 colorscheme liskin " see ~/.vim/colors/liskin.vim

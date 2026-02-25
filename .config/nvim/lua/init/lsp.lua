@@ -99,6 +99,7 @@ vim.lsp.start = (function(orig)
 		opts = opts or {}
 		local bufnr = vim._resolve_bufnr(opts.bufnr)
 
+		-- to set this early enough, see FileTypeEarly in ~/.vimrc
 		if vim.b[bufnr].lsp_disabled or vim.g.lsp_disabled then
 			return
 		end

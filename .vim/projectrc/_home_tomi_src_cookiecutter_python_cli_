@@ -1,0 +1,3 @@
+augroup FileTypeEarly
+	autocmd BufNewFile,BufRead */*\{\{* let b:treesitter_disabled=1 | let b:lsp_disabled=1
+augroup END
