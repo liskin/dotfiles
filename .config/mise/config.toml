@@ -45,6 +45,7 @@ package_manager = "pnpm"
 "pipx:proselint" = "0.16.0"
 "pipx:pushl" = "0.4.0"
 "pipx:python-dxf" = "12.1.1"
+"pipx:ratarmount" = "1.2.1"
 "pipx:timezonefinder" = "8.0.0"
 "ubi:ankitpokhrel/jira-cli" = { version = "1.7.0", exe = "jira" }
 "ubi:chrishrb/go-grip" = "0.5.6"
