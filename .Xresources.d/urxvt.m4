@@ -1,6 +1,7 @@
 URxvt.cutchars: \\``"''&()*,;<=>?@[]{|}
 URxvt.geometry: 100x34
 URxvt.intensityStyles: true
+URxvt.internalBorder: 0
 URxvt.modifier: mod1
 URxvt.pastableTabs: false
 URxvt.perl-ext-common: default,-selection,-selection-popup,-option-popup,-confirm-paste,osc-xterm-clipboard
