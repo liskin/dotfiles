@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+
+# This script reduces the commit history of a Git branch by squashing all but
+# the most recent 30 days of commits into monthly "snapshot" commits.
+#
+# Run `git filter-repo --refs $branch` to bake the replace refs into the
+# permanent history.
+
+set -eu -o pipefail
+shopt -s lastpipe
+
+# shellcheck source-path=..
+. "$HOME"/bin/.o
+
+options=$(unset GETOPT_COMPATIBLE && getopt -o "hnb:" --long help,dry-run,branch: -- "$@")
+eval "set -- $options"
+
+dry_run=
+branch=
+while (( $# )); do
+	opt=$1; shift
+	case "$opt" in
+		-h|--help)
+			echo "Usage: $0 [(-b|--branch) BRANCH] "
+			exit
+			;;
+
+		-n|--dry-run) dry_run=: ;;
+		-b|--branch) branch=$1; shift ;;
+		--) break ;;
+	esac
+done
+if (( $# )); then
+	echo "No args expected"
+	exit 1
+fi
+
+[[ $branch ]] || {
+	echo "branch required"
+	exit 1
+}
+
+cutoff_ts=$(date -d "30 days ago" +%s)
+last_month=
+prev_snapshot=
+did_snapshot=
+
+git rev-list --reverse --first-parent "$branch" \
+| while read -r commit; do
+	commit_ts=$(git show -s --format=%ct "$commit")
+
+	if (( commit_ts < cutoff_ts )); then
+		# older commits - monthly squashing
+		commit_month=$(date -d @"$commit_ts" +%Y-%m)
+		if [[ "$commit_month" != "$last_month" ]]; then
+			# first commit of the month
+			last_month=$commit_month
+
+			commit_parents=$(git show -s --format=%P "$commit")
+			if [[ $prev_snapshot && $prev_snapshot != "$commit_parents" ]]; then
+				tree=$(git show -s --format=%T "$commit")
+				commit_author_date=$(git show -s --format=%aI "$commit")
+				commit_committer_date=$(git show -s --format=%cI "$commit")
+				replaced_commit=$(o${dry_run:+o} env \
+					GIT_AUTHOR_DATE="$commit_author_date" \
+					GIT_COMMITTER_DATE="$commit_committer_date" \
+					git commit-tree -m "Archive snapshot" -p "$prev_snapshot" "$tree")
+				if [[ $dry_run ]]; then replaced_commit=repl-$commit_month; fi
+				prev_snapshot=$replaced_commit
+				did_snapshot=:
+			else
+				# root (first) commit - keep as is
+				prev_snapshot=$commit
+			fi
+		fi
+	else
+		# first recent commit - stitch to squashed history
+		if [[ $did_snapshot ]]; then
+			commit_parents=$(git show -s --format=%P "$commit")
+			for parent in $commit_parents; do
+				o${dry_run:+o} git replace "$parent" "$prev_snapshot"
+			done
+		fi
+		break
+	fi
+done
