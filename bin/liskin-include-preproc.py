@@ -32,18 +32,19 @@ class Subst:
 @click.command(context_settings={"show_default": True})
 @click.option("--comment-start", type=str, default="## ")
 @click.option("--comment-end", type=str, default="")
-@click.argument("filename", type=click.Path(exists=True, allow_dash=True))
-def main(comment_start, comment_end, filename):
+@click.argument("filenames", nargs=-1, type=click.Path(exists=True, allow_dash=True))
+def main(comment_start, comment_end, filenames):
     """
     Simple preprocessor for including files in one another.
     Substitution is done in-place: the input file is modified and directives are retained so it can
     serve as an input again.
     """
-    with click.open_file(filename, "r") as f:
-        input = f.read()
-    output = Subst(comment_start=comment_start, comment_end=comment_end).includes(input)
-    with click.open_file(filename, "w", atomic=True) as f:
-        f.write(output)
+    for filename in filenames:
+        with click.open_file(filename, "r") as f:
+            input = f.read()
+        output = Subst(comment_start=comment_start, comment_end=comment_end).includes(input)
+        with click.open_file(filename, "w", atomic=True) as f:
+            f.write(output)
 
 
 if __name__ == "__main__":
