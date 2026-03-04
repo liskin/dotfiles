@@ -1,3 +1,5 @@
+*.cs	diff=csharp
+*.css	diff=css
 *.ex	diff=elixir
 *.html	diff=html
 *.java	diff=java
@@ -7,3 +9,4 @@
 *.pm	diff=perl
 *.py	diff=python
 *.rs	diff=rust
+*.sh	diff=bash
