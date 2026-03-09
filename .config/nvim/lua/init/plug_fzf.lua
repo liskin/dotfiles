@@ -63,9 +63,25 @@ fzf_lua.setup {
 
 vim.keymap.set('n', 'gX', fzf_lua.lsp_finder, { desc = "fzf lsp_finder" })
 
+local function treesitter_available()
+	local bufnr = vim.api.nvim_get_current_buf()
+	if not vim.treesitter.highlighter.active[bufnr] then
+		return false
+	end
+
+	local parser_name = vim.treesitter.language.get_lang(vim.bo[bufnr].filetype)
+	if not parser_name then
+		return false
+	end
+
+	return not vim.tbl_isempty(vim.treesitter.query.get_files(parser_name, "locals"))
+end
+
 vim.api.nvim_create_user_command("FzfLuaBTags", function()
 	if lib_lsp.any_supports_method('textDocument/documentSymbol') then
 		return fzf_lua.lsp_document_symbols()
+	elseif treesitter_available() then
+		return fzf_lua.treesitter()
 	else
 		return fzf_lua.btags()
 	end
