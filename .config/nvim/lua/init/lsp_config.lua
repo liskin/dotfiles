@@ -88,7 +88,6 @@ vim.lsp.enable('yamlls')
 
 -- Justfile
 vim.lsp.enable('just')
-vim.g.lsp_autoformat_just = true
 
 -- none-ls/null-ls
 vim.g.lsp_null_enabled = {
