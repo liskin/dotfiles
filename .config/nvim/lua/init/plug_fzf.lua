@@ -18,6 +18,7 @@ fzf_lua.setup {
 	fzf_colors = true,
 
 	winopts = {
+		---@diagnostic disable-next-line: missing-fields
 		preview = {
 			flip_columns = 120,
 			horizontal = "right:67%,border-left",
