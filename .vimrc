@@ -573,8 +573,8 @@ inoremap <silent> <F23> <Cmd>NERDTreeFind<CR>
 " fzf keys {{{2
 nnoremap <silent> <F12> <Cmd>FzfLua builtin<CR>
 nnoremap <silent> <C-B> <Cmd>FzfLua buffers<CR>
-nnoremap <silent> <C-G> <Cmd>FzfLua tags<CR>
-nnoremap <silent> <C-T> <Cmd>FzfLua btags<CR>
+nnoremap <silent> <C-G> <Cmd>FzfLuaTags<CR>
+nnoremap <silent> <C-T> <Cmd>FzfLuaBTags<CR>
 nnoremap <silent> <C-P> <Cmd>FzfLua files<CR>
 nnoremap <silent> <C-Y> <Cmd>FzfLua tabs<CR>
 nnoremap <silent> <C-J> <Cmd>FzfLua grep<CR>

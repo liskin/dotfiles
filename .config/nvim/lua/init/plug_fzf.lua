@@ -1,4 +1,5 @@
 local fzf_lua = require'fzf-lua'
+local lib_lsp = require'init.lib.lsp'
 
 -- fzf-lua.actions.ex_run_cr that doesn't hide output from commands like
 -- :version, :echo, etc.
@@ -61,23 +62,23 @@ fzf_lua.setup {
 }
 
 vim.keymap.set('n', 'gX', fzf_lua.lsp_finder, { desc = "fzf lsp_finder" })
-vim.keymap.set('n', 'gT', fzf_lua.lsp_document_symbols, { desc = "fzf lsp_document_symbols" })
-vim.keymap.set('n', 'gG', fzf_lua.lsp_live_workspace_symbols, { desc = "fzf lsp_live_workspace_symbols" })
 
-vim.api.nvim_create_autocmd("LspAttach", {
-	callback = function(args)
-		local buf_local = { buffer = args.buf }
-		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if not client then
-			return
-		end
+vim.api.nvim_create_user_command("FzfLuaBTags", function()
+	if lib_lsp.any_supports_method('textDocument/documentSymbol') then
+		return fzf_lua.lsp_document_symbols()
+	else
+		return fzf_lua.btags()
+	end
+end, {
+	desc = "Smart FzfLua btags - LSP, treesitter, buffer ctags fallback"
+})
 
-		if client:supports_method('textDocument/documentSymbol', args.buf) then
-			vim.keymap.set({'n'}, '<C-T>', fzf_lua.lsp_document_symbols, buf_local)
-		end
-
-		if client:supports_method('workspace/symbol') then
-			vim.keymap.set({'n'}, '<C-G>', fzf_lua.lsp_live_workspace_symbols, buf_local)
-		end
-	end,
+vim.api.nvim_create_user_command("FzfLuaTags", function()
+	if lib_lsp.any_supports_method('workspace/symbol') then
+		return fzf_lua.lsp_live_workspace_symbols()
+	else
+		return fzf_lua.tags()
+	end
+end, {
+	desc = "Smart FzfLua tags - LSP, ctags fallback"
 })
