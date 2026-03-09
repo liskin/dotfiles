@@ -67,9 +67,6 @@
 	guitool = kdiff3
 	suppressDest = master
 	suppressDest = main
-[merge "mergiraf"]
-	name = mergiraf
-	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
 [diff]
 	tool = meld
 	algorithm = histogram
