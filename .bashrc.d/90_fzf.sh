@@ -29,3 +29,11 @@ function fopen {
 	# shellcheck disable=SC2048
 	fzf --bind="enter:execute:xdg-open {}" --bind="change:reload: sh -c 'locate -i {q}'" ${*+--bind="start:reload: sh -c 'locate -i {q}'" --query="$*"} </dev/null
 }
+
+function fzf-file-widget-locate {
+	local FZF_CTRL_T_COMMAND=true
+	local FZF_CTRL_T_OPTS="--bind=\"change:reload: sh -c 'locate -i {q}'\""
+	fzf-file-widget "$@"
+}
+
+bind -m emacs-standard -x '"\C-x\C-t": fzf-file-widget-locate'
