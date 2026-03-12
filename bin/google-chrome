@@ -15,28 +15,42 @@ else
 	exit 1
 fi
 
+flags=()
+enable_features=()
+disable_features=()
+
+# fixed large cache size
+flags+=(--disk-cache-size=2147483648)
+
+# enable subpixel positioning (yeah it says disable but it does the opposite)
+flags+=(--disable-font-subpixel-positioning)
+
+# enable MV2 and easy install
+flags+=(--enable-easy-off-store-extension-install)
+enable_features+=(AllowLegacyMV2Extensions)
+disable_features+=(ExtensionManifestV2Unsupported ExtensionManifestV2Disabled)
+
+# enable video acceleration
+enable_features+=(
+	VaapiVideoEncoder
+	VaapiVideoDecodeLinuxGL
+	AcceleratedVideoEncoder
+	AcceleratedVideoDecodeLinuxGL
+	AcceleratedVideoDecodeLinuxZeroCopyGL
+)
+
+# enable Vulkan
+enable_features+=(
+	Vulkan
+	DefaultANGLEVulkan
+	VulkanFromANGLE
+)
+
+# enable overlay scrollbars
+enable_features+=(OverlayScrollbar)
+
 exec \
-	"$bin" \
-	--disable-smooth-scrolling \
-	--disk-cache-size=2000000000 \
-	--enable-easy-off-store-extension-install \
-	--disable-font-subpixel-positioning \
-	--disable-features="$(join "," \
-		ExtensionManifestV2Unsupported \
-		ExtensionManifestV2Disabled \
-	)" \
-	--enable-features="$(join "," \
-		BatterySaverModeAvailable \
-		HighEfficiencyModeAvailable \
-		VaapiVideoEncoder \
-		VaapiVideoDecodeLinuxGL \
-		AcceleratedVideoEncoder \
-		AcceleratedVideoDecodeLinuxGL \
-		AcceleratedVideoDecodeLinuxZeroCopyGL \
-		FluentOverlayScrollbar \
-		Vulkan \
-		DefaultANGLEVulkan \
-		VulkanFromANGLE \
-		AllowLegacyMV2Extensions \
-	)" \
+	"$bin" "${flags[@]}" \
+	--disable-features="$(join "," "${disable_features[@]}")" \
+	--enable-features="$(join "," "${enable_features[@]}")" \
 	"$@"
