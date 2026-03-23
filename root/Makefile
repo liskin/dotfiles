@@ -20,6 +20,7 @@ endef
 define HOMEFILES
 $(strip
 	.config/git/config
+	.config/nvim/lua/init/vimrc.lua
 	.config/tig/config
 	.tmux.conf
 	.vim/colors/liskin.vim
