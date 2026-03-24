@@ -19,6 +19,9 @@ flags=()
 enable_features=()
 disable_features=()
 
+# scroll instantly on PageUp/Down
+flags+=(--disable-smooth-scrolling)
+
 # fixed large cache size
 flags+=(--disk-cache-size=2147483648)
 
