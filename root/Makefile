@@ -19,9 +19,14 @@ endef
 
 define HOMEFILES
 $(strip
+	.bashrc
+	.bashrc.d/20_history.sh
+	.bashrc.d/30_completion_git.sh
+	.bashrc.d/31_completion.sh
 	.config/git/config
 	.config/nvim/lua/init/vimrc.lua
 	.config/tig/config
+	.dircolors
 	.tmux.conf
 	.vim/colors/liskin.vim
 	.vimrc

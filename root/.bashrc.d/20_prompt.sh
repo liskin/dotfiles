@@ -3,12 +3,12 @@
 
 # newline if not in first column
 function __col1_ps1 {
-	[[ $MC_SID ]] && return
+	[[ ${MC_SID-} || ${POETRY_ACTIVE-} ]] && return
 
 	local termios cur_y
 	# ask the terminal for any pending (line buffered) input
 	termios=$(stty --save) && stty -icanon && stty "$termios"
-	# if there's pending input, assume it's been echoed and we're not in first column
+	# if there's pending input, assume it might've been echoed and we're not in first column
 	# otherwise ask the terminal for current column and read it from input
 	if read -t 0 || { IFS='[;' read -s -r -d'R' -p$'\033[6n' _ _ cur_y && [[ $cur_y != 1 ]]; }; then
 		echo $'\001\033[41m↵\033[m\002\n\001\r\002'

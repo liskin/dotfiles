@@ -3,7 +3,7 @@
 
 # enable color support of some commands and also add handy aliases
 if [ "$TERM" != "dumb" ]; then
-	eval "$(dircolors)"
+	eval "$(dircolors -b ~/.dircolors)"
 	alias ls='ls --color=auto --group-directories-first'
 	alias dir='ls --color=auto --format=vertical'
 	alias vdir='ls --color=auto --format=long'
@@ -14,6 +14,7 @@ fi
 # some more ls aliases
 alias ll='ls -l'
 alias la='ls -A'
+alias lla='ls -lA'
 alias l='ls -CF'
 
 # Some more alias to avoid making mistakes:
@@ -22,3 +23,11 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
+
+alias bel='echo -en "\007"'
+
+alias vim='nvim'
+alias view='nvim -R'
+alias vimdiff='nvim -d'
+
+alias man='MANWIDTH=$((COLUMNS > 100 ? 100 : COLUMNS)) man'

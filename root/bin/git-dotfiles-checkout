@@ -15,6 +15,9 @@ case "$mode" in
 		chmod "${mode#100}" "$tmp"
 		mv "$tmp" "$path"
 		;;
+	120000)
+		ln -sf -T "$(git-dotfiles show "$treeish":"$path")" "$path"
+		;;
 	*)
 		echo "unexpected mode $mode" >&2
 		exit 1
