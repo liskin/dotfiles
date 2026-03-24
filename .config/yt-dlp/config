@@ -1,0 +1,2 @@
+# https://github.com/yt-dlp/yt-dlp/wiki/EJS
+--remote-components ejs:npm

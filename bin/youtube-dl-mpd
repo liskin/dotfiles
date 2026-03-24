@@ -23,7 +23,7 @@ from sys import argv
 import taglib
 
 f = taglib.File(argv[1])
-f.tags["ALBUM"] = [f"""{f.tags["ARTIST"][0]} - {f.tags["ALBUM"][0]}"""]
+f.tags["ALBUM"] = [f"""{f.tags["ARTIST"][0]} - {f.tags["ALBUM"][0]}"""] if "ALBUM" in f.tags else [f.tags["ARTIST"][0]]
 f.tags["ALBUMARTIST"] = ["_youtube_dl_mpd"]
 f.save()
 	' "$1"
@@ -47,6 +47,7 @@ function player {
 
 	(( $# )) || { printf '%s\n' 'urls expected'; exit 1; }
 	o youtube-dl \
+		--extract-audio \
 		-f 'bestaudio[abr <= 320]/bestaudio/best' \
 		--add-metadata \
 		--no-mtime \

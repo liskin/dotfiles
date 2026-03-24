@@ -114,6 +114,9 @@ export-alias rfkill=/usr/sbin/rfkill
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=940511
 export-alias yarn=yarnpkg
 
+# old habits …
+export-alias youtube-dl=yt-dlp
+
 alias urldecode='python3 -c "import sys; from urllib.parse import unquote; sys.stdout.writelines(unquote(l.rstrip(\"\n\")) + \"\n\" for l in sys.stdin)"'
 alias urlencode='python3 -c "import sys; from urllib.parse import quote; sys.stdout.writelines(quote(l.rstrip(\"\n\")) + \"\n\" for l in sys.stdin)"'
 
