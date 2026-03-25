@@ -2,9 +2,6 @@
 ##
 all:
 
-ARCH := $(shell uname -m)
-ARM64 := $(if $(filter aarch64,$(ARCH)),1)
-
 all: diff-highlight
 diff-highlight: $(wildcard /usr/share/doc/git/contrib/diff-highlight/*)
 ifneq "$(__bwrapped)" "1"
