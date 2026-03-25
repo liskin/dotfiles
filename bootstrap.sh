@@ -12,6 +12,9 @@
 set -eu -o pipefail
 shopt -s lastpipe
 
+# ignore user gitconfig (we may not have delta/less yet)
+export GIT_CONFIG_GLOBAL=/dev/null
+
 ## include bin/.o
 #!bash
 # shellcheck disable=SC2239
