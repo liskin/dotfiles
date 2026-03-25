@@ -5,6 +5,7 @@ cmds_required=(
 	fzf
 	getcap
 	jq
+	nvim
 	setcap
 )
 files_required=(
@@ -16,6 +17,7 @@ pkgs_required=(
 	fzf
 	jq
 	libcap2-bin
+	neovim
 )
 if ! has-cmds "${cmds_required[@]}" || ! has-files "${files_required[@]}"; then
 	oo "# apt update" # sources.list may have changed
