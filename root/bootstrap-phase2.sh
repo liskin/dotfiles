@@ -18,7 +18,8 @@ pkgs_required=(
 	libcap2-bin
 )
 if ! has-cmds "${cmds_required[@]}" || ! has-files "${files_required[@]}"; then
+	oo "# apt update" # sources.list may have changed
 	oo "# apt install ${pkgs_required[*]}"
 fi
 
-oo "# bash -l -c make"
+oo "# bash -l -c 'make -B'"
