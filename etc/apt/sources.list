@@ -1,5 +1,7 @@
 deb https://deb.debian.org/debian stable main contrib non-free non-free-firmware
 deb-src https://deb.debian.org/debian stable main contrib non-free non-free-firmware
+deb https://deb.debian.org/debian stable-updates main contrib non-free non-free-firmware
+deb-src https://deb.debian.org/debian stable-updates main contrib non-free non-free-firmware
 deb https://deb.debian.org/debian-security stable-security main contrib non-free non-free-firmware
 deb-src https://deb.debian.org/debian-security stable-security main contrib non-free non-free-firmware
 deb https://deb.debian.org/debian-debug stable-debug main contrib non-free non-free-firmware
