@@ -3,11 +3,9 @@
 # (in uv, mise itself seems fine)
 undefine GIT_DIR
 
-TOKEN_ENV := GITHUB_API_TOKEN=$$(keyring get gh:github.com '')
-
 .PHONY: all
 all:
-	$(TOKEN_ENV) mise install
+	mise install
 	$(MAKE) fixup
 
 .PHONY: fixup
@@ -30,7 +28,7 @@ fixup-tilt:
 .PHONY: update
 ## Check for updates
 update:
-	$(TOKEN_ENV) mise upgrade --bump --interactive
+	mise upgrade --bump --interactive
 
 .PHONY: gc
 ## Delete unused versions of tools
