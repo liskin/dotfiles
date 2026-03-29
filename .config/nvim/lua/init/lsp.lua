@@ -9,26 +9,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- :LspCodeLensToggle
-local codelens_enabled = false
-vim.api.nvim_create_autocmd('BufWritePost', {
-	group = vim.api.nvim_create_augroup('LspCodeLensRefresh', {}),
-	callback = function()
-		if codelens_enabled then
-			vim.lsp.codelens.refresh()
-		end
-	end
-})
-vim.api.nvim_create_user_command("LspCodeLensToggle", function()
-	codelens_enabled = not codelens_enabled
-	vim.notify("LSP code lenses " .. (codelens_enabled and "enabled" or "disabled"))
-	if codelens_enabled then
-		vim.lsp.codelens.refresh()
-	else
-		vim.lsp.codelens.clear(nil, nil)
-	end
-end, {
-	desc = "Toggle LSP code lenses"
-})
+if vim.fn.has('nvim-0.12') == 1 then
+	vim.api.nvim_create_user_command("LspCodeLensToggle", function()
+		local codelens_enabled = not vim.lsp.codelens.is_enabled()
+		vim.notify("LSP code lenses " .. (codelens_enabled and "enabled" or "disabled"))
+		vim.lsp.codelens.enable(codelens_enabled)
+	end, {
+		desc = "Toggle LSP code lenses"
+	})
+end
 
 -- :LspInlayToggle
 vim.api.nvim_create_user_command("LspInlayToggle", function()
@@ -85,12 +74,29 @@ vim.lsp.config('*', {
 
 -- force longer debounce for vim.lsp.semantic_tokens (not configurable otherwise)
 -- to avoid wasting too much CPU in the LSP
-local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
----@diagnostic disable-next-line: duplicate-set-field
-function vim.lsp.semantic_tokens.start(bufnr, client_id, opts)
-	opts = opts or {}
-	opts.debounce = vim.g.lsp_debounce
-	return orig_vim_lsp_semantic_tokens_start(bufnr, client_id, opts)
+if vim.fn.has('nvim-0.12') == 1 then
+	require("vim.lsp.semantic_tokens")
+	vim.lsp._capability.all.semantic_tokens.new = (function(orig)
+		return function(...)
+			local ret = orig(...)
+			ret.debounce = vim.g.lsp_debounce
+			return ret
+		end
+	end)(vim.lsp._capability.all.semantic_tokens.new)
+else
+	local orig_vim_lsp_semantic_tokens_start = vim.lsp.semantic_tokens.start
+	---@diagnostic disable-next-line: duplicate-set-field
+	function vim.lsp.semantic_tokens.start(bufnr, client_id, opts)
+		opts = opts or {}
+		opts.debounce = vim.g.lsp_debounce
+		return orig_vim_lsp_semantic_tokens_start(bufnr, client_id, opts)
+	end
+end
+
+-- disable vim.lsp.document_color because it only sets gui colors and has no
+-- debounce at all, forcing the send of didChange to LSPs on every keystroke
+if vim.fn.has('nvim-0.12') == 1 then
+	require("vim.lsp.document_color").enable(false)
 end
 
 -- implement "should_attach" for vim.lsp.start
