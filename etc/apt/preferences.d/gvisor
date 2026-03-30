@@ -1,0 +1,3 @@
+Package: runsc
+Pin: origin "storage.googleapis.com"
+Pin-Priority: 990

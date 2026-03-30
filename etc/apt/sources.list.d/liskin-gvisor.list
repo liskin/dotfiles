@@ -1,0 +1,1 @@
+deb [signed-by=/etc/apt/keyrings/gvisor.gpg] https://storage.googleapis.com/gvisor/releases release main
