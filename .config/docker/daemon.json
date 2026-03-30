@@ -1,0 +1,10 @@
+{
+	"runtimes": {
+		"runsc": {
+			"path": "/usr/bin/runsc",
+			"runtimeArgs": [
+				"--ignore-cgroups"
+			]
+		}
+	}
+}
