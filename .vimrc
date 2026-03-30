@@ -200,8 +200,10 @@ autocmd VimResized * call s:equal_windows()
 
 " search {{{2
 set hlsearch
+set ignorecase
 set incsearch
 set shortmess-=S " show number of matches
+set smartcase
 
 " location of tags, includes {{{2
 set path=.,,
