@@ -320,7 +320,7 @@ if &t_Co >= 256 || has('gui_running')
 	hi Removed cterm=bold gui=bold
 	hi Changed cterm=bold gui=bold
 	hi link LspReferenceText UnderlinedOnly
-	hi link FloatBorder Pmenu
+	hi link FloatBorder PmenuBorder
 	hi link Whitespace SpecialKey
 	hi link WinSeparator VertSplit
 
@@ -347,6 +347,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU MoreMsg ctermfg=121
 		HiU NonText ctermfg=59
 		HiU Pmenu ctermbg=236 ctermfg=15
+		HiU PmenuBorder ctermbg=236 ctermfg=242
 		HiU PmenuSel ctermbg=236 ctermfg=15
 		HiU PreProc ctermfg=81
 		HiU Question ctermfg=121

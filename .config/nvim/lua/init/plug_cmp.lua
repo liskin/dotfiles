@@ -121,9 +121,11 @@ cmp.setup {
 		completion = {
 			scrollbar = false,
 			border = { '', '', '', '│' },
+			winhighlight = 'Normal:Pmenu,FloatBorder:PmenuBorder,CursorLine:PmenuSel,Search:None',
 		},
 		documentation = {
 			border = { '', '', '', '│', '', '', '', ' ' },
+			winhighlight = '',
 		},
 	},
 	formatting = {

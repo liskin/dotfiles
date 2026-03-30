@@ -56,15 +56,6 @@ end, {
 	desc = "Toggle LSP reference highlights"
 })
 
--- borders of LSP floating windows
-local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
----@diagnostic disable-next-line: duplicate-set-field
-function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-	opts = opts or {}
-	opts.border = opts.border or { '', '', '', '│' }
-	return orig_util_open_floating_preview(contents, syntax, opts, ...)
-end
-
 -- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 vim.lsp.config('*', {
 	flags = {

@@ -183,6 +183,9 @@ set signcolumn=no
 if exists('&winborder')
 	set winborder=rounded
 endif
+if exists('&pumborder')
+	let &pumborder = has('nvim') ? 'rounded' : 'round'
+endif
 
 " keep windows equally tiled {{{2
 set equalalways
