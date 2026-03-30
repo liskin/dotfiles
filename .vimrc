@@ -457,10 +457,12 @@ endif
 " run autocmds in group FileTypeEarly before the FileType autocmd that
 " enables LSP or Treesitter; makes it possible to set b:lsp_disabled or
 " b:treesitter_disabled from projectrc
-augroup FileTypeEarly
-augroup END
-autocmd FileType * doautocmd <nomodeline> FileTypeEarly BufRead
-autocmd FileType * doautocmd <nomodeline> FileTypeEarly FileType
+if has('nvim')
+	augroup FileTypeEarly
+	augroup END
+	autocmd FileType * doautocmd <nomodeline> FileTypeEarly BufRead
+	autocmd FileType * doautocmd <nomodeline> FileTypeEarly FileType
+endif
 
 " detect background colour, load my colourscheme {{{2
 set bg&
