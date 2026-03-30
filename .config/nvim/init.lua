@@ -27,7 +27,6 @@ require 'init.plug_codecompanion'
 require 'init.plug_ferris'
 require 'init.plug_lazydev'
 require 'init.plug_roslyn'
-require 'init.plug_incr'
 require 'init.plug_neotest'
 require 'init.plug_zenmode'
 
