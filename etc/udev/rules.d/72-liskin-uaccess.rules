@@ -1,0 +1,6 @@
+ACTION=="remove", GOTO="liskin-uaccess-end"
+
+# allow unprivileged systemd-vmspawn and libvirt to create vsocks
+KERNEL=="vhost-vsock", TAG+="uaccess"
+
+LABEL="liskin-uaccess-end"
