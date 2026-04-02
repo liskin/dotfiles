@@ -26,3 +26,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+vim.api.nvim_create_user_command("Conform", function()
+	conform.format()
+end, {})
