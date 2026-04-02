@@ -1,4 +1,4 @@
-#!bash
+#!  bash
 # shellcheck disable=SC2239
 
 if ! declare -F __git_complete >/dev/null; then

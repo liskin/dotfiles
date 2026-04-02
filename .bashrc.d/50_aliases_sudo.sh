@@ -1,4 +1,4 @@
-#!bash
+#!  bash
 # shellcheck disable=SC2239
 
 alias reboot='sudo reboot'

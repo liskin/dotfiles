@@ -1,4 +1,4 @@
-#!sh
+#!  sh
 # ^ sourced from /etc/X11/Xsession via ~/.xsessionrc
 # shellcheck disable=SC2239
 

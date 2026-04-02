@@ -16,7 +16,7 @@ shopt -s lastpipe
 export GIT_CONFIG_GLOBAL=/dev/null
 
 ## include bin/.o
-#!bash
+#!  bash
 # shellcheck disable=SC2239
 
 # shellcheck disable=SC2218,SC2120

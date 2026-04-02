@@ -1,4 +1,4 @@
-#!bash
+#!  bash
 # shellcheck disable=SC2239
 
 # don't put duplicate lines or lines starting with space in the history.
