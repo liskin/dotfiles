@@ -1,4 +1,4 @@
-#!bash
+#!  bash
 
 cmds_required=(
 	bwrap

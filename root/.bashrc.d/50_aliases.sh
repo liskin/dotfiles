@@ -1,4 +1,4 @@
-#!bash
+#!  bash
 # shellcheck disable=SC2239
 
 # enable color support of some commands and also add handy aliases
