@@ -1,0 +1,59 @@
+help:
+    @just --list --unsorted
+
+# ----------------------------------------------------------------------
+
+[group('download')]
+download-debian-13:
+    wget --no-clobber https://cloud.debian.org/images/cloud/trixie/latest/debian-13-nocloud-amd64.qcow2
+
+[group('download')]
+download-debian-14:
+    wget --no-clobber https://cloud.debian.org/images/cloud/forky/daily/latest/debian-14-nocloud-amd64-daily.qcow2
+
+[group('download')]
+download-debian-sid:
+    wget --no-clobber https://cloud.debian.org/images/cloud/sid/daily/latest/debian-sid-nocloud-amd64-daily.qcow2
+
+# ----------------------------------------------------------------------
+
+[group('prep')]
+img-create base img size='20G':
+    qemu-img create -f qcow2 -F qcow2 -b '{{ base }}' '{{ img }}' '{{ size }}'
+
+[group('prep')]
+img-customize img:
+    virt-customize \
+        -a '{{ img }}' \
+        --firstboot-install openssh-server,systemd-repart \
+        --firstboot-command 'systemctl start systemd-repart.service' \
+        --firstboot-command 'systemctl restart systemd-growfs-root.service' \
+        --ssh-inject root:file:'{{ home_directory() }}'/.ssh/id_rsa_vagrant.pub \
+        --mkdir /usr/lib/repart.d \
+        --append-line '/usr/lib/repart.d/50-root.conf:[Partition]' \
+        --append-line '/usr/lib/repart.d/50-root.conf:Type=root' \
+        --timezone Europe/London \
+        --hostname '{{ file_stem(img) }}' \
+        --root-password password:root
+
+[arg('mem', long)]
+[arg('os', long)]
+[arg('vcpus', long)]
+[group('prep')]
+vm-create img os='debianunstable' mem='8192' vcpus=shell('nproc'):
+    virt-install \
+        --name '{{ file_stem(img) }}' \
+        --osinfo '{{ os }}' \
+        --boot uefi \
+        --vcpus '{{ vcpus }}' \
+        --memory '{{ mem }}' \
+        --import --disk '{{ img }}' \
+        --network bridge=virbr0 \
+        --graphics listen=none,gl.enable=yes \
+        --vsock cid.auto=yes \
+        --noautoconsole \
+        --noreboot
+
+[group('prep')]
+x-osinfo-list:
+    virt-install --osinfo list
