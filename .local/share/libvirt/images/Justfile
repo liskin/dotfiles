@@ -15,6 +15,14 @@ download-debian-14:
 download-debian-sid:
     wget --no-clobber https://cloud.debian.org/images/cloud/sid/daily/latest/debian-sid-nocloud-amd64-daily.qcow2
 
+[group('download')]
+download-fedora-43:
+    wget --no-clobber https://download.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2
+
+[group('download')]
+download-fedora-44:
+    wget --no-clobber https://download.fedoraproject.org/pub/fedora/linux/releases/test/44_Beta/Cloud/x86_64/images/Fedora-Cloud-Base-UEFI-UKI-44_Beta-1.2.x86_64.qcow2
+
 # ----------------------------------------------------------------------
 
 [group('prep')]
