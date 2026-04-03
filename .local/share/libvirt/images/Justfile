@@ -34,7 +34,7 @@ img-customize img:
         --append-line '/usr/lib/repart.d/50-root.conf:Type=root' \
         --timezone Europe/London \
         --hostname '{{ file_stem(img) }}' \
-        --root-password password:root
+        --root-password password:
 
 [arg('mem', long)]
 [arg('os', long)]
