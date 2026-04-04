@@ -8,7 +8,7 @@ WINIT_X11_SCALE_FACTOR = "1"
 [font]
 size = 9.38
 normal = { family = 'Misc Fixed' }
-# normal = { family = 'Iosevka Fixed' }
+# normal = { family = 'Iosevka Fixed SS18' }
 
 [colors]
 draw_bold_text_with_bright_colors = true

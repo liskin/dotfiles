@@ -45,13 +45,13 @@ define(mono_boldItalicFont, `mono(oblique,bold)')dnl
 dnl
 define(iosevka_nerdfont, `xft:IosevkaTerm Nerd Font Mono')dnl
 dnl
-define(iosevka_hidpi, `xft:Iosevka Fixed:pixelsize=20:slant=$1:weight=$2')dnl
+define(iosevka_hidpi, `xft:Iosevka Fixed SS18:pixelsize=20:slant=$1:weight=$2')dnl
 define(iosevka_hidpi_font, `iosevka_hidpi(roman,regular),iosevka_nerdfont')dnl
 define(iosevka_hidpi_boldFont, `iosevka_hidpi(roman,bold),iosevka_nerdfont')dnl
 define(iosevka_hidpi_italicFont, `iosevka_hidpi(oblique,regular),iosevka_nerdfont')dnl
 define(iosevka_hidpi_boldItalicFont, `iosevka_hidpi(oblique,bold),iosevka_nerdfont')dnl
 dnl
-define(iosevka, `xft:Iosevka Fixed:pixelsize=25:slant=$1:weight=$2')dnl
+define(iosevka, `xft:Iosevka Fixed SS18:pixelsize=25:slant=$1:weight=$2')dnl
 define(iosevka_font, `iosevka(roman,regular),iosevka_nerdfont')dnl
 define(iosevka_boldFont, `iosevka(roman,bold),iosevka_nerdfont')dnl
 define(iosevka_italicFont, `iosevka(oblique,regular),iosevka_nerdfont')dnl
