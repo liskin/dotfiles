@@ -32,6 +32,7 @@ fzf_lua.setup {
 
 	defaults = {
 		file_icons = false,
+		no_hide = true,
 	},
 
 	files = {
