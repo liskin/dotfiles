@@ -66,6 +66,7 @@ import XMonad.Prompt
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Hacks
 import XMonad.Util.NamedWindows
+import XMonad.Util.WindowProperties (getProp32s)
 import qualified XMonad.Util.PureX as P
 
 import XMonad.Actions.DoNotDisturb
@@ -285,6 +286,7 @@ myManageHook = composeAll
     , appName =? "kronometer" --> doFloat <> hasBorder False
     , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
     , ("_NET_WM_STATE" `isInProperty` "_NET_WM_STATE_ABOVE" <&&> title $? "is sharing your screen.") --> doHideIgnore
+    , (className =? "ghidra-Ghidra" <&&> (ask >>= liftX . getProp32s "_MOTIF_WM_HINTS") =? Just [0x3, 0x0, 0x0, 0x0, 0x0]) --> doIgnore
     , isDialog --> doFloat
     , transience'
     , stringProperty "WM_WINDOW_ROLE" =? "browser" --> ewmhDesktopsManageHook
