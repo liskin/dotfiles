@@ -38,6 +38,7 @@ credential_command = "gh auth token"
 "github:ankitpokhrel/jira-cli" = { version = "1.7.0" }
 "github:chrishrb/go-grip" = "0.9.0"
 "github:oz/tz" = { version = "0.8.0", bin_path = "usr/local/bin" }
+"github:ulyssa/iamb" = "0.0.11"
 "npm:@mermaid-js/mermaid-cli" = "11.9.0"
 "npm:prettier" = "3.6.2"
 "npm:typescript-language-server" = "4.4.0"
