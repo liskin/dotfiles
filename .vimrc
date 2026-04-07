@@ -85,9 +85,13 @@ else " {{{3
 	" cursor shape {{{4
 	set guicursor=n-v-c-sm:block-Cursor,i-ci-ve:ver25-blinkoff500-blinkon500-Cursor,r-cr-o:hor20-blinkoff500-blinkon500-Cursor
 
-	" ctrl+pgup/down to switch tabs {{{4
-	nmap <silent> <F25> <C-PageUp>
-	nmap <silent> <F26> <C-PageDown>
+	if &term == "rxvt-unicode-256color" " {{{3
+		" ctrl+pgup/down to switch tabs {{{4
+		nmap <silent> <F25> <C-PageUp>
+		nmap <silent> <F26> <C-PageDown>
+		tmap <silent> <F25> <C-PageUp>
+		tmap <silent> <F26> <C-PageDown>
+	endif
 endif
 
 " rxvt background switching {{{3
@@ -670,6 +674,10 @@ xnoremap <silent> j gj
 xnoremap <silent> k gk
 inoremap <silent> <expr> <Down> pumvisible() ? "\<Down>" : "\<C-O>gj"
 inoremap <silent> <expr> <Up> pumvisible() ? "\<Up>" : "\<C-O>gk"
+
+" allow switching tabs in Terminal-mode
+tnoremap <silent> <C-PageUp> <C-\><C-N><C-PageUp>
+tnoremap <silent> <C-PageDown> <C-\><C-N><C-PageUp>
 
 " hop keys {{{2
 if has('nvim')
