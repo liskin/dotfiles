@@ -2,9 +2,15 @@
 
 set -eu
 
-[[ -t 0 && $DISPLAY ]] || _WAIT_FOR_WM=: exec x-terminal-emulator ${_XTERM_HOLD:+-hold} ${_XTERM_FLOAT:+-xrm 'URxvt.transient-for: 0x11111111'} -e "$0" "$@"
+if [[ $DISPLAY && ! -t 0 ]]; then
+	if [[ ${_XTERM_ALACRITTY-} ]]; then
+		_WAIT_FOR_WM=: exec alacritty ${_XTERM_HOLD:+--hold} -e "$@"
+	else
+		_WAIT_FOR_WM=: exec x-terminal-emulator ${_XTERM_HOLD:+-hold} ${_XTERM_FLOAT:+-xrm 'URxvt.transient-for: 0x11111111'} -e "$0" "$@"
+	fi
+fi
 [[ ${_WAIT_FOR_WM-} ]] && { xwaitforwindow || :; }
-unset _WAIT_FOR_WM _XTERM_HOLD _XTERM_FLOAT
+unset _WAIT_FOR_WM _XTERM_HOLD _XTERM_FLOAT _XTERM_ALACRITTY
 
 clear
 echo -ne "\033]0;$1\007"

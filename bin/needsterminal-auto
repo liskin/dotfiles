@@ -10,6 +10,7 @@ case "$1" in
 	arbtt*) set -- needsterminal "$@"; export _XTERM_HOLD=: _XTERM_FLOAT=: ;;
 	kinit*) set -- needsterminal "$@"; export _XTERM_HOLD=: _XTERM_FLOAT=: ;;
 	liskin-slack-status) set -- needsterminal "$@" ;;
+	iamb) set -- needsterminal "$@"; export _XTERM_ALACRITTY=: ;;
 esac
 
 exec "$@"
