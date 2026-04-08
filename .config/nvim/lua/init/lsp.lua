@@ -56,6 +56,14 @@ end, {
 	desc = "Toggle LSP reference highlights"
 })
 
+-- :LspWorkspaceDiagnostics
+vim.api.nvim_create_user_command("LspWorkspaceDiagnostics", function()
+	vim.lsp.buf.workspace_diagnostics()
+	vim.notify("LSP - pulling workspace diagnostics")
+end, {
+	desc = "Pull LSP workspace diagnostics"
+})
+
 -- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 vim.lsp.config('*', {
 	flags = {

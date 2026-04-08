@@ -14,6 +14,25 @@ vim.g.lsp_maximum_file_size = 131072 -- none-ls/null-ls only for now
 
 -- Lua
 vim.lsp.enable('lua_ls')
+vim.lsp.config('lua_ls', {
+	-- textDocument/diagnostics handler not registered without --preview=true
+	cmd = { 'lua-language-server', '--preview=true' },
+
+	settings = {
+		Lua = {
+			diagnostics = {
+				-- do not automatically refresh workspace diagnostics
+				workspaceEvent = "None",
+			},
+		},
+	},
+
+	on_init = function(client, init_result)
+		-- allow pulling workspace diagnostics explicitly
+		-- (lua_ls doesn't declare this capability itself for whatever reason)
+		client.server_capabilities.diagnosticProvider.workspaceDiagnostics = true
+	end,
+})
 
 -- Rust
 vim.lsp.config('rust_analyzer', {
