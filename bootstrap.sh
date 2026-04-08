@@ -19,8 +19,9 @@ export GIT_CONFIG_GLOBAL=/dev/null
 #!  bash
 # shellcheck disable=SC2239
 
-# shellcheck disable=SC2218,SC2120
+# shellcheck disable=SC2218
 exec {_o_stderr}>&2
+# shellcheck disable=SC2120
 function exec { if (( $# )); then builtin exec {_o_stderr}>&- "$@"; else builtin exec "$@"; fi; }
 
 if [[ -t $_o_stderr ]]; then _o_tput_bold=$(tput bold || :); _o_tput_reset=$(tput sgr0 || :); else _o_tput_bold=; _o_tput_reset=; fi
