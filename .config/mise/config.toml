@@ -81,6 +81,10 @@ tilt = "0.37.0"
 usage = "3.2.0"
 uv = "0.11.3"
 watchexec = "2.5.1"
+weave = "0.2.6"
+weave-driver = "0.2.6"
 
 [tool_alias]
 docker-buildx = "github:docker/buildx[bin=docker-cli-plugin-docker-buildx]"
+weave = "cargo:weave-cli"
+weave-driver = "cargo:weave-driver"

@@ -124,6 +124,13 @@
 	process = git-lfs filter-process
 	required = true
 
+# weave merge driver
+[alias]
+	merge-weave = -c core.attributesFile=~/.config/git/attributes-weave merge
+[merge "weave"]
+	name = weave
+	driver = weave-driver %O %A %B %L %P
+
 # delta config
 [interactive]
 	diffFilter = delta
