@@ -62,7 +62,7 @@ Ansible
 ::: {.entry}
 **Staff Software Engineer**
 [[Moody's Analytics](https://www.moodys.com/web/en/us/solutions/compliance-third-party-risk/maxsight.html) (London, UK)]{}
-**2022–**
+**2022–2025**
 
 * Subject Matter Expert on Developer Experience (CI/CD, developer environments, git).
 
@@ -293,6 +293,14 @@ Built several cycling-related tools:
 * [strava-gear](https://github.com/liskin/strava-gear){.ul} is a rule-based tracker of gear and component wear.
 
 * [locus-rflkt-addon](https://github.com/liskin/locus-rflkt-addon){.ul} connects Locus Map (Android app) with Wahoo RLFKT (cycling computer).
+:::
+
+::: {}
+**Inline speed skating.**
+
+* Focus on ultra-endurance events: [British 6Hours Endurance Challenge](https://inlinespeed.co.uk/events/event/2026-british-6hour-endurance-challenge/), [24h Rollers du Mans](https://www.24rollers.com/en).
+
+* Marshal of the [London Friday Night Skate](https://londonstreetskates.com/) and [LondonSkate](https://www.londonskate.com/) since 2025.
 :::
 
 <footer><p>%footer%</p></footer>
