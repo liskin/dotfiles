@@ -300,7 +300,7 @@ Built several cycling-related tools:
 
 * Focus on ultra-endurance events: [British 6Hours Endurance Challenge](https://inlinespeed.co.uk/events/event/2026-british-6hour-endurance-challenge/), [24h Rollers du Mans](https://www.24rollers.com/en).
 
-* Marshal of the [London Friday Night Skate](https://londonstreetskates.com/) and [LondonSkate](https://www.londonskate.com/) since 2025.
+* Volunteering as a marshal of the [London Friday Night Skate](https://londonstreetskates.com/) and [LondonSkate](https://www.londonskate.com/) since 2025.
 :::
 
 <footer><p>%footer%</p></footer>
