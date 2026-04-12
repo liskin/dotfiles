@@ -1,2 +1,9 @@
 [profiles.matrix-org]
 user_id = "@liskin:matrix.org"
+
+[settings]
+user_gutter_width = 20
+username_display = "displayname"
+
+[settings.notifications]
+enabled = true
