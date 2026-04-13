@@ -105,6 +105,9 @@ vim.g.lsp_autoformat_elixirls = true
 -- YAML
 vim.lsp.enable('yamlls')
 
+-- Zizmor (GitHub Actions YAML)
+vim.lsp.enable('zizmor')
+
 -- Justfile
 vim.lsp.enable('just')
 
