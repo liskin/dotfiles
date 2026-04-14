@@ -23,7 +23,7 @@ disable_features=()
 flags+=(--disable-smooth-scrolling)
 
 # fixed large cache size
-flags+=(--disk-cache-size=2147483648)
+flags+=(--disk-cache-size=2147483647)
 
 # enable subpixel positioning (yeah it says disable but it does the opposite)
 flags+=(--disable-font-subpixel-positioning)
