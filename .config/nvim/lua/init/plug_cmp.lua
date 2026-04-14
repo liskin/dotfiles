@@ -11,6 +11,11 @@ function cmp_nvim_ultisnips_source:execute(completion_item, callback)
 	callback(completion_item)
 end
 
+-- disable nvim 0.11 default vim.snippet.jump mapping in Insert/Select mode
+-- (see also imap <Tab> in ~/.vimrc)
+vim.keymap.del({ 's' }, '<Tab>')
+vim.keymap.del({ 'i', 's' }, '<S-Tab>')
+
 local function has_words_before()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(1, col):match("%S") ~= nil
@@ -227,10 +232,6 @@ vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
 		return '<S-Tab>'
 	end
 end, { expr = true })
-
--- disable nvim 0.11 default vim.snippet.jump mapping in Insert/Select mode
-vim.keymap.del({ 'i', 's' }, '<Tab>')
-vim.keymap.del({ 'i', 's' }, '<S-Tab>')
 
 vim.lsp.config('*', {
 	capabilities = cmp_nvim_lsp.default_capabilities(),
