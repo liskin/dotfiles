@@ -19,8 +19,10 @@ conform.setup {
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-		if client.name == "null-ls" or vim.g['lsp_autoformat_' .. client.name] then
-			vim.b[args.buf].autoformat = true
+		if client:supports_method('textDocument/formatting') then
+			if client.name == "null-ls" or vim.g['lsp_autoformat_' .. client.name] then
+				vim.b[args.buf].autoformat = true
+			end
 		end
 	end,
 })
