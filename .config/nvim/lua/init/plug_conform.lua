@@ -13,6 +13,7 @@ conform.setup {
 
 	formatters_by_ft = {
 		bzl = { 'buildifier' },
+		sh = { 'shfmt' },
 	},
 }
 
