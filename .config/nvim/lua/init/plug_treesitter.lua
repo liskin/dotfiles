@@ -38,6 +38,7 @@ local disabled = {
 	"bash", -- too buggy (but stays enabled in injections)
 }
 local disabled_indent = {
+	"yaml",
 }
 local disabled_fold = {
 }
