@@ -30,6 +30,7 @@ local ensure_installed = {
 	"scss",
 	"sql",
 	"starlark",
+	"toml",
 	"vim",
 	"vimdoc",
 	"yaml",
