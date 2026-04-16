@@ -25,6 +25,7 @@ $(strip
 	.bashrc.d/31_completion.sh
 	.config/git/config
 	.config/nvim/lua/init/vimrc.lua
+	.config/ripgreprc
 	.config/tig/config
 	.dircolors
 	.tmux.conf
@@ -32,6 +33,7 @@ $(strip
 	.vimrc
 	_gitignore.mk
 	_help.mk
+	bin/bat
 	bin/git-repo-name
 	bin/liskin-make-gitignore
 	bootstrap.sh
