@@ -1,0 +1,13 @@
+# reportbug preferences file
+# character encoding: UTF-8
+# Version of reportbug this preferences file was written by
+reportbug_version "13.2.0"
+# default operating mode: one of: novice, standard, advanced, expert
+mode advanced
+# default user interface
+ui urwid
+# offline disables querying information over the network
+#offline
+mutt
+no-cc
+list-cc-me

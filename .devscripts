@@ -1,0 +1,1 @@
+BTS_SENDMAIL_COMMAND='/usr/bin/msmtp -t'
