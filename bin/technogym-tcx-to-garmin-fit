@@ -30,7 +30,6 @@ ureg = UnitRegistry()
 Q = ureg.Quantity
 jpype.startJVM(classpath=[
     os.path.expanduser('~/bin/.ext/.ext-fitsdk/fit.jar'),
-    '/usr/share/java/org.jpype.jar',  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1017761
 ])
 
 from com.garmin import fit  # noqa: E402
