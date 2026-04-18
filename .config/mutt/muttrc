@@ -88,6 +88,7 @@ set pgp_default_key=2BC64B95062BE9AAB043A011639DFD7BBFF09178
 set imap_check_subscribed=yes
 set imap_idle=yes
 set imap_keepalive=30
+set mail_check_stats=yes
 set timeout=30
 bind index <Esc><Space> imap-fetch-mail
 
@@ -98,6 +99,7 @@ hdr_order message-id date from to cc subject
 
 # sidebar
 set sidebar_divider_char='│'
+set sidebar_format = "%B%*  %?N?%N?"
 set sidebar_sort_method=alpha
 unset sidebar_visible
 macro index \eb '<enter-command>toggle sidebar_visible<enter><refresh>'
