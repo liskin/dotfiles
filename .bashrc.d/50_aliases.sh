@@ -45,8 +45,10 @@ export-alias nomi-mosh="MOSH_TITLE_NOPREFIX=1 mosh nomi.cz bin/atmux"
 
 export-alias mutt-nomi='mutt -F ~/.config/mutt/muttrc-nomi'
 export-alias neomutt-nomi='neomutt -F ~/.config/mutt/muttrc-nomi'
+export-alias mutt-fastmail='mutt -F ~/.config/mutt/muttrc-fastmail'
+export-alias neomutt-fastmail='neomutt -F ~/.config/mutt/muttrc-fastmail'
 
-export-alias m='mutt-nomi'
+export-alias m='mutt-fastmail'
 export-alias m-tmux='tmuxp load m'
 
 export-alias mutt-news-gmane='neomutt -g news.gmane.io'

@@ -28,6 +28,7 @@ alternates '^liskni\.si@gmail\.com$'
 alternates '^liskni\.si\+.*@gmail\.com$'
 alternates '@tomi\.nomi\.cz$'
 alternates '@lisk\.in$'
+alternates '@e17\.beer$'
 alternates '^(207561|pivnik)@mail\.muni\.cz'
 
 # aliases

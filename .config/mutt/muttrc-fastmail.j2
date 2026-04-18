@@ -1,0 +1,14 @@
+source ~/.config/mutt/muttrc-nomi
+
+# IMAP connection
+set folder=imaps://imap.fastmail.com/
+set imap_user={{user}}
+set imap_pass={{password}}
+
+# IMAP folders
+set spoolfile="=INBOX"
+set mbox="=Archive"
+set postponed="=Drafts"
+set trash="=Trash"
+set move=yes
+set record='!'
