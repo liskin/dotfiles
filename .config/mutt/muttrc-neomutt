@@ -1,3 +1,12 @@
+# debian defaults, repeated here to avoid surprises
+set bounce_delivered=no
+set crypt_use_gpgme=yes
+set use_threads=threads
+
+# look & feel
+set sort=last-date-received
+
+# nntp
 set catchup_newsgroup=no
 set newsrc="~/.newsrc-%s"
 set nntp_context=30000

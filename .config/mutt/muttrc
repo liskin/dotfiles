@@ -5,11 +5,6 @@ source ~/.config/mutt/muttrc-lists
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt traditional ~/.config/mutt/muttrc-traditional |"
 source "~/.config/mutt/muttrc-source-if.sh $my_mutt neomutt ~/.config/mutt/muttrc-neomutt |"
 
-# debian defaults, repeated here to avoid surprises
-set bounce_delivered=no
-set sort=threads
-set crypt_use_gpgme=yes
-
 # cache
 set header_cache="~/Mail-headercache"
 set message_cache_clean=yes
@@ -87,6 +82,7 @@ set pgp_default_key=2BC64B95062BE9AAB043A011639DFD7BBFF09178
 
 # imap
 set imap_check_subscribed=yes
+set imap_deflate=yes
 set imap_idle=yes
 set imap_keepalive=30
 set mail_check_stats=yes

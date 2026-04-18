@@ -1,4 +1,9 @@
-set imap_deflate=yes
+# debian defaults, repeated here to avoid surprises
+set bounce_delivered=no
+set sort=threads
+set crypt_use_gpgme=yes
+
+# look & feel
 set sort_browser_mailboxes=alpha
 
 # background compose in screen/tmux
