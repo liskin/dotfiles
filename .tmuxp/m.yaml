@@ -8,6 +8,3 @@ windows:
   - window_name: local
     panes:
       - 'mutt'
-  - window_name: gmane
-    panes:
-      - 'mutt-news-gmane'
