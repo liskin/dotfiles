@@ -34,6 +34,7 @@ $desktop == ["1:irc", "2:web"] || $desktop =~ m|^W?\d+$| ==> {
 		current window $title =~ m!:: https?://app\.slack\.com/! ==> tag Activity:Chat,
 		current window $title =~ m!:: https?://web.whatsapp.com/! ==> tag Activity:Chat,
 		current window $title =~ m!(Chat|Teams and Channels) \| .* :: https?://teams\.microsoft! ==> tag Activity:Chat,
+		current window $title =~ m!:: https?://app\.fastmail\.com/! ==> tag Activity:Mail,
 		current window $title =~ m!:: https?://mail\.google\.com/! ==> tag Activity:Mail,
 		current window $title =~ m!:: https?://calendar\.google\.com/! ==> tag Activity:Org,
 		current window $title =~ m!:: https?://outlook\.office\.com/mail/! ==> tag Activity:Mail,
