@@ -1,0 +1,12 @@
+defaults
+tls on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+
+account fastmail
+host smtp.fastmail.com
+port 587
+auth login
+user {{user}}
+password {{password}}
+
+account default : fastmail
