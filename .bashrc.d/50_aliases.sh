@@ -43,8 +43,6 @@ export-alias nomi="ssh -C nomi.cz -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-https="ssh -C nomi.cz-https -t 'bash -l -c ~/bin/atmux'"
 export-alias nomi-mosh="MOSH_TITLE_NOPREFIX=1 mosh nomi.cz bin/atmux"
 
-export-alias mutt-nomi='mutt -F ~/.config/mutt/muttrc-nomi'
-export-alias neomutt-nomi='neomutt -F ~/.config/mutt/muttrc-nomi'
 export-alias mutt-fastmail='mutt -F ~/.config/mutt/muttrc-fastmail'
 export-alias neomutt-fastmail='neomutt -F ~/.config/mutt/muttrc-fastmail'
 

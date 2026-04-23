@@ -1,4 +1,8 @@
-source ~/.config/mutt/muttrc-nomi
+set my_ts_prefix='m[N] '
+source ~/.config/mutt/muttrc
+unmailboxes *
+
+source "~/.config/mutt/muttrc-source-if.sh $my_mutt traditional ~/.config/mutt/muttrc-fastmail-traditional |"
 
 # IMAP connection
 set folder=imaps://imap.fastmail.com/
@@ -12,3 +16,21 @@ set postponed="=Drafts"
 set trash="=Trash"
 set move=yes
 set record='!'
+
+# don't record when sending to myself
+fcc-hook ^tomi@nomi\\.cz$ /dev/null
+
+# folder defaults/overrides
+folder-hook . "set from='tomi@nomi.cz'"
+folder-hook . "reset signature"
+folder-hook . "set hostname='nomi.cz'"
+folder-hook . "set record='^'"
+folder-hook INBOX/mail-muni-cz "set from='pivnik@mail.muni.cz'"
+folder-hook INBOX/mail-muni-cz "set signature='~/.signature-muni'"
+folder-hook INBOX/mail-muni-cz "set hostname='mail.muni.cz'"
+
+# message-hook defaults/overrides
+message-hook . "unalternative_order *"
+message-hook . "alternative_order text/plain"
+message-hook '~s "mBank – Email Push"' "unalternative_order *"
+message-hook '~s "mBank – Email Push"' "alternative_order text/html"
