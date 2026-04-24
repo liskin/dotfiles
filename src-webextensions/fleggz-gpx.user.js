@@ -8,23 +8,42 @@
 // ==/UserScript==
 
 function decode_coordinates(e) {
-	try {
-		const t = [6, 5, 9], i = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", ".", ",", "[", "]"];
-		let r = e.toLowerCase(), n = "";
-		const o = t.length, a = i.length;
-		let s = [];
-		for (let e = 0; e < r.length; e++)
-			s.push(r.slice(e, 1));
-		return Array.from(r).forEach((e, r) => {
-			let s = i.indexOf(e);
-			if (-1 !== s) {
-				let e = (s - t[r % o] + a) % a;
-				n += i[e]
-			}
-		}), n;
-	} catch (error) {
-		return ""
-	}
+	const tt = new Map([ [ 144, "slice" ], [ 165, "abcdefghijklmnopqrstuvwxyz0123456789-.,[]" ], [ 183, "map" ], [ 201, "toLowerCase" ], [ 215, "forEach" ], [ 251, "YmfPN" ], [ 255, "hOwNW" ], [ 259, "from" ], [ 263, "437" ], [ 265, "length" ], [ 273, "jPuzm" ], [ 280, "push" ], [ 309, "split" ], [ 154, "indexOf" ] ]);
+	const t = (x) => tt.get(x);
+	const i = {};
+    i[t(251)] = function(e, t) {
+        return e !== t
+    }
+    ,
+    i[t(255)] = function(e, t) {
+        return e - t
+    }
+    ,
+    i[t(273)] = t(263);
+    const r = i;
+    try {
+        const i = r[t(273)][t(309)]("")[t(183)](Number)
+          , n = t(165)[t(309)]("");
+        let o = e[t(201)]()
+          , a = "";
+        const s = i[t(265)]
+          , l = n[t(265)];
+        let c = [];
+        for (let e = 0; e < o[t(265)]; e++)
+            c[t(280)](o[t(144)](e, 1));
+        return Array.from(o).forEach( (e, o) => {
+            const c = t;
+            let u = n[c(154)](e);
+            if (r[c(251)](u, -1)) {
+                let e = (r[c(255)](u, i[o % s]) + l) % l;
+                a += n[e]
+            }
+        }
+        ),
+        a
+    } catch (n) {
+        return ""
+    }
 }
 
 function doc_gpx() {
@@ -109,8 +128,8 @@ async function download_gpx(refno) {
 }
 
 function download() {
-	const refno = document.querySelector('a[href*="/gl/"]')?.href?.match(/^https:\/\/account\.fleggz\.com\/gl\/(.*)$/)?.[1];
-	if (refno)
+	const refno = document.location.pathname.replace(/^\//, "");
+	if (refno.length >= 12)
 		download_gpx(refno);
 }
 
