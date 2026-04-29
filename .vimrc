@@ -528,6 +528,9 @@ autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal ft=gitcommit
 autocmd BufNewFile,BufRead /dev/shm/pass.* set viminfo= noswapfile noundofile et
 autocmd BufNewFile,BufRead Jenkinsfile setf groovy
 autocmd BufNewFile,BufRead */.config/git/include/* setf gitconfig
+augroup FileTypeEarly
+	autocmd FileType html.jinja let b:treesitter_plus_regex=1
+augroup END
 
 " fix for `gh pr merge` subject edit
 autocmd BufNewFile,BufRead /tmp/[0-9]\+.md setlocal nofixeol
