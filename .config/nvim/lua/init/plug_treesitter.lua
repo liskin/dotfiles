@@ -77,6 +77,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 
 		vim.treesitter.start(bufnr, parser_name)
+		vim.b[bufnr].undo_ftplugin = (vim.b[bufnr].undo_ftplugin or '') .. '\n call v:lua.vim.treesitter.stop()'
 
 		-- optionally re-enable regex-based syntax (see FileTypeEarly in ~/.vimrc)
 		if vim.b[bufnr].treesitter_plus_regex then
@@ -89,6 +90,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			and not vim.tbl_isempty(vim.treesitter.query.get_files(parser_name, "indents"))
 		then
 			vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+			vim.b[bufnr].undo_ftplugin = (vim.b[bufnr].undo_ftplugin or '') .. '\n setl indentexpr<'
 		end
 
 		-- set foldexpr if folds are enabled and available
@@ -98,6 +100,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		then
 			vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 			vim.wo.foldmethod = "expr"
+			vim.b[bufnr].undo_ftplugin = (vim.b[bufnr].undo_ftplugin or '') .. '\n setl foldexpr< foldmethod<'
 
 			-- refresh folds
 			local winnr = vim.api.nvim_get_current_win()
