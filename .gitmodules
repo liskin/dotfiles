@@ -296,8 +296,8 @@
 	url = https://github.com/pandoc-ext/diagram
 [submodule "src/tig-colors-neonwolf"]
 	path = src/tig-colors-neonwolf
-	# url = https://codeberg.org/h3xx/tig-colors-neonwolf
-	url = https://codeberg.org/liskin/tig-colors-neonwolf
+	url = https://codeberg.org/h3xx/tig-colors-neonwolf
+	# url = https://codeberg.org/liskin/tig-colors-neonwolf
 [submodule "src/emoji-rofi-menu"]
 	path = src/emoji-rofi-menu
 	url = https://github.com/liskin/emoji-rofi-menu
