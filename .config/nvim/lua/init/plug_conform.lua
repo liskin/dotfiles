@@ -7,7 +7,11 @@ conform.setup {
 
 	format_after_save = function(bufnr)
 		if (vim.g.autoformat == nil or vim.g.autoformat) and vim.b[bufnr].autoformat then
-			return {}
+			if vim.b[bufnr].conform_opts then
+				return vim.b[bufnr].conform_opts
+			else
+				return {}
+			end
 		end
 	end,
 
@@ -25,6 +29,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 			if client.name == "null-ls" or vim.g['lsp_autoformat_' .. client.name] then
 				vim.b[args.buf].autoformat = true
 			end
+
+			if vim.g['lsp_conform_opts_' .. client.name] then
+				vim.b[args.buf].conform_opts = vim.g['lsp_conform_opts_' .. client.name]
+			end
 		end
 	end,
 })
@@ -38,6 +46,9 @@ vim.api.nvim_create_autocmd('FileType', {
 
 		if vim.g['ft_autoformat_' .. filetype] then
 			vim.b[args.buf].autoformat = true
+		end
+		if vim.g['ft_conform_opts_' .. filetype] then
+			vim.b[args.buf].conform_opts = vim.g['ft_conform_opts_' .. filetype]
 		end
 	end,
 })

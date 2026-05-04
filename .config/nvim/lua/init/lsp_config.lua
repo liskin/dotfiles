@@ -78,6 +78,16 @@ vim.lsp.config('pylsp', {
 		},
 	},
 })
+vim.lsp.config('ruff', {
+	init_options = {
+		settings = {
+			configurationPreference = "filesystemFirst",
+
+			-- defaults
+			lineLength = 120,
+		},
+	},
+})
 vim.lsp.enable('pylsp')
 
 -- Tilt (Starlark)
