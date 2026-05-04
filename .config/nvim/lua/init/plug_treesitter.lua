@@ -44,7 +44,7 @@ local disabled_indent = {
 local disabled_fold = {
 }
 
-vim.treesitter.language.register('starlark', { 'bzl.tiltfile' })
+vim.treesitter.language.register('starlark', { 'tiltfile' })
 
 vim.api.nvim_create_user_command("TSUpdateSync", function()
 	ts.install(ensure_installed):wait(300000)

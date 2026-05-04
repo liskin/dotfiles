@@ -82,7 +82,7 @@ vim.lsp.enable('pylsp')
 
 -- Tilt (Starlark)
 vim.lsp.enable('tilt_ls')
-vim.lsp.config('tilt_ls', { filetypes = { 'bzl.tiltfile' } })
+vim.g.ft_autoformat_tiltfile = true
 
 -- TOML
 vim.lsp.enable('taplo')

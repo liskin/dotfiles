@@ -13,6 +13,7 @@ conform.setup {
 
 	formatters_by_ft = {
 		bzl = { 'buildifier' },
+		tiltfile = { 'buildifier' },
 		sh = { 'shfmt' },
 	},
 }
@@ -24,6 +25,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
 			if client.name == "null-ls" or vim.g['lsp_autoformat_' .. client.name] then
 				vim.b[args.buf].autoformat = true
 			end
+		end
+	end,
+})
+vim.api.nvim_create_autocmd('FileType', {
+	callback = function(args)
+		local bufnr = args.buf
+		local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+		if not filetype or filetype == '' then
+			return
+		end
+
+		if vim.g['ft_autoformat_' .. filetype] then
+			vim.b[args.buf].autoformat = true
 		end
 	end,
 })
