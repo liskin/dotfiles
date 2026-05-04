@@ -16,7 +16,6 @@ vim.lsp.config('pylsp', {
 
 vim.lsp.enable('ruff')
 
-require("conform").formatters_by_ft.python = { 'ruff_organize_imports' }
+require("conform").formatters_by_ft.python = { 'ruff_format', 'ruff_organize_imports' }
 vim.g.ft_autoformat_python = true
-vim.g.ft_conform_opts_python = { lsp_format = 'first' }
 END
