@@ -8,6 +8,30 @@ local function has_dir(path, dirname)
 	return path and vim.fn.isdirectory(vim.fs.joinpath(path, dirname)) == 1
 end
 
+local function lsp_config_set_cwd_from_root_dir(name)
+	local orig_config = vim.lsp.config[name]
+	if not orig_config then
+		error("no vim.lsp.config for " .. name)
+	end
+
+	local cmd = orig_config.cmd
+	vim.validate('cmd', cmd, 'table')
+	---@cast cmd string[]
+
+	vim.lsp.config(name, {
+		cmd = function(dispatchers, config)
+			if config and config.root_dir then
+				config.cmd_cwd = config.root_dir
+			end
+			return vim.lsp.rpc.start(cmd, dispatchers, {
+				cwd = config.cmd_cwd,
+				env = config.cmd_env,
+				detached = config.detached,
+			})
+		end,
+	})
+end
+
 -- global
 vim.g.lsp_debounce = 5000 -- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
 vim.g.lsp_maximum_file_size = 131072 -- none-ls/null-ls only for now
@@ -77,20 +101,8 @@ vim.lsp.config('pylsp', {
 			},
 		},
 	},
-
-	-- set cwd to root_dir
-	cmd = function(dispatchers, config)
-		local cmd = { 'pylsp' }
-		if config and config.root_dir then
-			config.cmd_cwd = config.root_dir
-		end
-		return vim.lsp.rpc.start(cmd, dispatchers, {
-			cwd = config.cmd_cwd,
-			env = config.cmd_env,
-			detached = config.detached,
-		})
-	end,
 })
+lsp_config_set_cwd_from_root_dir('pylsp')
 vim.lsp.enable('pylsp')
 
 -- Tilt (Starlark)
