@@ -37,7 +37,7 @@ credential_command = "gh auth token"
 "cargo:mergiraf" = "0.16.3"
 "cargo:ripgrep_all" = "0.10.10"
 "cargo:tokio-console" = "0.1.14"
-"github:ankitpokhrel/jira-cli" = { version = "1.7.0" }
+"github:ankitpokhrel/jira-cli" = "1.7.0"
 "github:chrishrb/go-grip" = "0.9.1"
 "github:oz/tz" = { version = "0.8.0", bin_path = "usr/local/bin" }
 "github:ulyssa/iamb" = "0.0.11"
