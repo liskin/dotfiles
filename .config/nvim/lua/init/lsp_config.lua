@@ -77,6 +77,19 @@ vim.lsp.config('pylsp', {
 			},
 		},
 	},
+
+	-- set cwd to root_dir
+	cmd = function(dispatchers, config)
+		local cmd = { 'pylsp' }
+		if config and config.root_dir then
+			config.cmd_cwd = config.root_dir
+		end
+		return vim.lsp.rpc.start(cmd, dispatchers, {
+			cwd = config.cmd_cwd,
+			env = config.cmd_env,
+			detached = config.detached,
+		})
+	end,
 })
 vim.lsp.enable('pylsp')
 
