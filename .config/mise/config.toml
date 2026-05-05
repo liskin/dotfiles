@@ -86,11 +86,11 @@ tilt = "0.37.2"
 usage = "3.2.1"
 uv = "0.11.8"
 watchexec = "2.5.1"
-weave = "0.2.8"
-weave-driver = "0.2.8"
+weave = { version = "0.3.2", asset_pattern = "weave-cli-{{ arch(x64='x86_64', arm64='aarch64') }}-unknown-linux-gnu.*" }
+weave-driver = { version = "0.3.2", asset_pattern = "weave-driver-{{ arch(x64='x86_64', arm64='aarch64') }}-unknown-linux-gnu.*" }
 zizmor = "1.24.1"
 
 [tool_alias]
 docker-buildx = "github:docker/buildx[bin=docker-cli-plugin-docker-buildx]"
-weave = "cargo:weave-cli"
-weave-driver = "cargo:weave-driver"
+weave = "github:Ataraxy-Labs/weave"
+weave-driver = "github:Ataraxy-Labs/weave"
