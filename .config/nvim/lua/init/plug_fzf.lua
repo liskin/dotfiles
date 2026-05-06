@@ -38,13 +38,13 @@ fzf_lua.setup {
 	files = {
 		hidden = true,
 		follow = true,
-		fd_opts = '--no-require-git ' .. fzf_lua.config.defaults.files.fd_opts,
+		fd_opts = '--no-require-git --no-ignore-parent ' .. fzf_lua.config.defaults.files.fd_opts,
 	},
 
 	grep = {
 		hidden = true,
 		follow = true,
-		rg_opts = '--glob=!.git --no-require-git ' .. fzf_lua.config.defaults.grep.rg_opts,
+		rg_opts = '--glob=!.git --no-require-git --no-ignore-parent ' .. fzf_lua.config.defaults.grep.rg_opts,
 	},
 
 	lsp = {
