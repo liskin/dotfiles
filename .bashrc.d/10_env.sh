@@ -70,3 +70,10 @@ fi
 if [ "$COLORTERM" = "rxvt-xpm" ]; then
 	unset COLORTERM
 fi
+
+# if tmux runs in urxvt, use 256 color palette instead of truecolor
+if [ -n "$TMUX" ] && [ "$COLORTERM" = "truecolor" ]; then
+	if [ "$(tmux display-message -p '#{client_termname}' 2>/dev/null)" = rxvt-unicode-256color ]; then
+		unset COLORTERM
+	fi
+fi
