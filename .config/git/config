@@ -126,7 +126,10 @@
 
 # weave merge driver
 [alias]
-	merge-weave = -c core.attributesFile=~/.config/git/attributes-weave merge
+	weave-cherry-pick = -c core.attributesFile=~/.config/git/attributes-weave cherry-pick
+	weave-merge = -c core.attributesFile=~/.config/git/attributes-weave merge
+	weave-rebase = -c core.attributesFile=~/.config/git/attributes-weave rebase
+	weave-revert = -c core.attributesFile=~/.config/git/attributes-weave revert
 [merge "weave"]
 	name = weave
 	driver = weave-driver %O %A %B %L %P
