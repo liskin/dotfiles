@@ -7,6 +7,7 @@ export PATH="$HOME"/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bi
 export PATH="$HOME"/.cargo/bin:"$PATH"
 export PATH="$HOME"/.cabal/bin:"$PATH"
 export PATH="$HOME"/.local/share/mise/shims:"$PATH"
+export PATH="$HOME"/bin/.mise-shims-fast:"$PATH"
 export PATH="$HOME"/.local/bin:"$PATH"
 export PATH="$HOME"/bin/.ext:"$PATH"
 export PATH="$HOME"/bin/.untracked:"$PATH"
