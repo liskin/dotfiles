@@ -68,7 +68,9 @@ function rg {
 
 function mise {
 	unset GIT_DIR  # prevent git-dotfiles-export messing up stuff
-	command mise "$@"
+
+	GITHUB_API_TOKEN=$(keyring get gh:github.com '') \
+		command mise "$@"
 }
 function uv {
 	unset GIT_DIR  # prevent git-dotfiles-export messing up stuff

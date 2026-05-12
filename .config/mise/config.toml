@@ -16,9 +16,6 @@ uvx = true
 [settings.npm]
 package_manager = "pnpm"
 
-[settings.github]
-credential_command = "gh auth token"
-
 [tools]
 "aqua:asciinema/asciinema" = "3.2.0"
 "aqua:nextest-rs/nextest/cargo-nextest" = "0.9.133"
