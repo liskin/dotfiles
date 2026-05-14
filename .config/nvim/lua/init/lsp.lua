@@ -74,7 +74,7 @@ vim.lsp.config('*', {
 -- force longer debounce for vim.lsp.semantic_tokens (not configurable otherwise)
 -- to avoid wasting too much CPU in the LSP
 if vim.fn.has('nvim-0.12') == 1 then
-	require("vim.lsp.semantic_tokens")
+	vim.lsp.semantic_tokens.is_enabled()
 	vim.lsp._capability.all.semantic_tokens.new = (function(orig)
 		return function(...)
 			local ret = orig(...)
@@ -95,8 +95,18 @@ end
 -- disable vim.lsp.document_color because it only sets gui colors and has no
 -- debounce at all, forcing the send of didChange to LSPs on every keystroke
 if vim.fn.has('nvim-0.12') == 1 then
-	require("vim.lsp.document_color").enable(false)
+	vim.lsp.document_color.enable(false)
 end
+
+-- force sending didChange on save to servers that don't ask for didSave
+vim.api.nvim_create_autocmd('BufWritePost', {
+	group = vim.api.nvim_create_augroup('DidChangeFlush', {}),
+	callback = function(ev)
+		for _, client in pairs(vim.lsp.get_clients({ bufnr = ev.buf })) do
+			require("vim.lsp._changetracking").flush(client, ev.buf)
+		end
+	end,
+})
 
 -- implement "should_attach" for vim.lsp.start
 vim.lsp.start = (function(orig)
