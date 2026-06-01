@@ -16,7 +16,7 @@ export PATH="$HOME"/bin:"$PATH"
 
 # manpath only
 for manpath in "$HOME"/.local/share/man/.manpath/*; do
-	[ -e "$manpath" ] && export PATH="$manpath":"$PATH"
+	[ -d "$manpath" ] && export PATH="$manpath":"$PATH"
 done
 
 export MAIL=/var/mail/tomi
