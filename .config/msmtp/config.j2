@@ -5,6 +5,7 @@ tls_trust_file /etc/ssl/certs/ca-certificates.crt
 account fastmail
 host smtp.fastmail.com
 port 587
+from {{mail}}
 auth login
 user {{user}}
 password {{password}}
