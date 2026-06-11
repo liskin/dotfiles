@@ -298,7 +298,7 @@ Built several cycling-related tools:
 ::: {}
 **Inline speed skating.**
 
-* Focus on ultra-endurance events: [British 6Hours Endurance Challenge](https://inlinespeed.co.uk/events/event/2026-british-6hour-endurance-challenge/), [24h Rollers du Mans](https://www.24rollers.com/en).
+* Focus on ultra-endurance events: 🥉 [British 6Hours Endurance Challenge](https://inlinespeed.co.uk/events/event/2026-british-6hour-endurance-challenge/), [24h Rollers du Mans](https://www.24rollers.com/en).
 
 * Volunteering as a marshal of the [London Friday Night Skate](https://londonstreetskates.com/) and [LondonSkate](https://www.londonskate.com/) since 2025.
 :::
