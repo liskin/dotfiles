@@ -62,7 +62,7 @@ Ansible
 ::: {.entry}
 **Staff Software Engineer**
 [[Moody's Analytics](https://www.moodys.com/web/en/us/solutions/compliance-third-party-risk/maxsight.html) (London, UK)]{}
-**2022–2025**
+**04/2022–12/2025**
 
 * Subject Matter Expert on Developer Experience (CI/CD, developer environments, git).
 
@@ -80,7 +80,7 @@ Ansible
 ::: {.entry}
 _**sabbatical**_
 [(Guildford, UK)]{}
-**2020–2021**
+**04/2020–03/2021**
 
 * Joined the [XMonad](https://xmonad.org/) project as a core maintainer. Contributed fixes, features. Reviewed pull requests and helped 2 other people join the project. Directed a release. Launched crowdfunding.
 
@@ -94,7 +94,7 @@ _**sabbatical**_
 ::: {.entry}
 **Software Engineer**
 [[Altworx](https://www.altworx.com/) (Brno, CZ)]{}
-**2019–2020**
+**04/2019–03/2020** <!-- technically 12/2020 -->
 
 * Collaborated on a real-time event processing system with physical and cyber security applications.
 
@@ -110,7 +110,7 @@ _**sabbatical**_
 ::: {.entry}
 **Principal Software Engineer**
 [[GoodData](https://www.gooddata.com/) (Brno, CZ)]{}
-**2017–2019**
+**08/2017–03/2019**
 
 * Ran continuous integration and deployment infrastructure and build tooling for 100 engineers.
 
@@ -148,7 +148,7 @@ _**sabbatical**_
 ::: {.entry}
 **Backend Software Engineer**
 [[SQLdep](https://sqldep.com/) (Brno, CZ)]{}
-**2015–2016**
+**05/2015–04/2016**
 
 * Collaborated on a multi-dialect SQL parser and visual data flow (lineage) analyzer.
 
@@ -166,7 +166,7 @@ _**sabbatical**_
 ::: {.entry}
 **Technical Co-founder**
 [[Briskat](https://www.briskat.com/) (Brno, CZ)]{}
-**2014–2014**
+**04/2014–09/2014**
 
 * Developed a prototype of a high-performance interactive database primarily for Online Analytical Processing, capable of processing millions of rows in milliseconds on commodity hardware.
 
@@ -180,7 +180,7 @@ _**sabbatical**_
 ::: {.entry}
 **Senior Software Engineer**
 [[GoodData](https://www.gooddata.com/) (Brno, CZ)]{}
-**2011–2014**
+**07/2011–04/2014**
 
 * Developed a second-generation Extensible Analytics Engine (XAE), the core of GoodData platform.
 
@@ -202,7 +202,7 @@ _**sabbatical**_
 ::: {.entry}
 **Software Engineer**
 [[Red Hat](https://www.redhat.com/en) (Brno, CZ)]{}
-**2006–2008**
+**12/2006–04/2008**
 
 * Maintained RHEL and Fedora packages for Bash, Dovecot, Cyrus IMAP, BRLTTY.
 
@@ -220,7 +220,7 @@ _**sabbatical**_
 ::: {.entry}
 **Programmer**
 [QNet CZ (Brno, CZ)]{}
-**2002–2006**
+**11/2002–11/2006** <!-- technically 03/2007 -->
 
 * Built an Internet Service Provider portal backend which configured iptables and traffic control (shaping) and showed live per-customer traffic statistics.
 
