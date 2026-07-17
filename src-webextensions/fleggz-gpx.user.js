@@ -8,26 +8,6 @@
 // @require     https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js
 // ==/UserScript==
 
-function decode_coordinates(e) {
-	try {
-		const t = "726", i = "abcdefghijklmnopqrstuvwxyz0123456789-.,[]";
-		let r = e.toLowerCase(), n = "";
-		const o = t.length, a = i.length;
-		let s = [];
-		for (let e = 0; e < r.length; e++)
-			s.push(r.slice(e, 1));
-		return Array.from(r).forEach((e, r) => {
-			let s = i.indexOf(e);
-			if (-1 !== s) {
-				let e = (s - t[r % o] + a) % a;
-				n += i[e]
-			}
-		}), n;
-	} catch (error) {
-		return ""
-	}
-}
-
 function doc_gpx() {
 	const doc = document.implementation.createDocument('http://www.topografix.com/GPX/1/1', 'gpx', null);
 	const gpx = doc.children[0];
@@ -68,9 +48,6 @@ function download() {
 	}
 
 	const fleggz_name = `${event.e.start_date} - ${event.e.name}`;
-	const fleggz_tracks = event.s.flatMap(t =>
-		t.type == 'R' ? [{name: t.name, coordinates: JSON.parse(decode_coordinates(t.coordinates))}] : []
-	);
 
 	const gpx = doc_gpx();
 	gpx.setAttribute('version', '1.1');
@@ -80,9 +57,12 @@ function download() {
 	metadata.appendChild(el_gpx_text('name', fleggz_name));
 	gpx.appendChild(metadata);
 
-	for (const track of fleggz_tracks) {
+	for (const track of event.s) {
 		const track_name = track.name;
-		const track_start = track.coordinates[0];
+		const track_start = track.type == "R" ? track.coordinates?.[0] : track.coordinates;
+		if (!track_start) {
+			continue;
+		}
 
 		const wpt = el_gpx('wpt');
 		wpt.setAttribute('lat', track_start[1]);
@@ -96,11 +76,11 @@ function download() {
 	const trk = el_gpx('trk');
 	trk.appendChild(el_gpx_text('name', fleggz_name));
 	const trkseg = el_gpx('trkseg');
-	for (const track of fleggz_tracks) {
-		for (const point of track.coordinates) {
+	for (const points of event.elpoints.points) {
+		for (const point of points) {
 			const trkpt = el_gpx('trkpt');
-			trkpt.setAttribute('lat', point[1]);
-			trkpt.setAttribute('lon', point[0]);
+			trkpt.setAttribute('lat', point[0]);
+			trkpt.setAttribute('lon', point[1]);
 			trkseg.appendChild(trkpt);
 		}
 	}
