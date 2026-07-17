@@ -95,23 +95,19 @@ else " {{{3
 endif
 
 " rxvt background switching {{{3
-if &term == "rxvt-unicode-256color" && has('nvim') " {{{3
+if &term == "rxvt-unicode-256color" " {{{3
 	function! s:rxvt_bg() abort
 		if &bg == "light"
 			let $COLORFGBG = '0;default;15'
-			if has('nvim-0.12')
+			if has('nvim')
 				call v:lua.vim.api.nvim_ui_send("\33]10;black\7\33]11;white\7\33]12;black\7\33]708;white\7")
-			elseif has('nvim')
-				call chansend(v:stderr, "\33]10;black\7\33]11;white\7\33]12;black\7\33]708;white\7")
 			else
 				call echoraw("\33]10;black\7\33]11;white\7\33]708;white\7")
 			endif
 		else
 			let $COLORFGBG = '15;default;0'
-			if has('nvim-0.12')
+			if has('nvim')
 				call v:lua.vim.api.nvim_ui_send("\33]10;white\7\33]11;black\7\33]12;white\7\33]708;black\7")
-			elseif has('nvim')
-				call chansend(v:stderr, "\33]10;white\7\33]11;black\7\33]12;white\7\33]708;black\7")
 			else
 				call echoraw("\33]10;white\7\33]11;black\7\33]708;black\7")
 			endif
@@ -454,7 +450,7 @@ filetype plugin indent on
 syntax on
 
 " optional builtin plugins
-if has('nvim-0.12')
+if has('nvim')
 	packadd nvim.difftool
 	packadd nvim.tohtml
 	packadd nvim.undotree

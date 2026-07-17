@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# workaround for https://github.com/neovim/neovim/issues/38987#issuecomment-5004636437
+if [[ -t 1 ]]; then
+	function reset-cursor { printf %s $'\e[2 q'; }
+	trap 'reset-cursor' EXIT
+fi
+
+~/bin/.mise-shims-fast/nvim "$@"

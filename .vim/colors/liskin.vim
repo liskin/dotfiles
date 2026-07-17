@@ -6,7 +6,7 @@ if exists("syntax_on")
 	syntax reset
 endif
 
-if has('nvim-0.10')
+if has('nvim')
 	source $VIMRUNTIME/colors/vim.lua
 endif
 
