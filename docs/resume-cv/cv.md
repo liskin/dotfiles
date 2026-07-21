@@ -75,12 +75,15 @@ Ansible
 * Pioneered good git practices across the company. Educated others about advanced git workflows.
 
 * _Tech:_ Rust, Python, C#, Docker, Kubernetes, CircleCI
+<!--
+* Maintained platform-wide Rust libraries (abstractions for observability, error handling, …).
+-->
 :::
 
 ::: {.entry}
 _**sabbatical**_
 [(Guildford, UK)]{}
-**04/2020–03/2021**
+**04/2020–03/2022**
 
 * Joined the [XMonad](https://xmonad.org/) project as a core maintainer. Contributed fixes, features. Reviewed pull requests and helped 2 other people join the project. Directed a release. Launched crowdfunding.
 

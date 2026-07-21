@@ -34,5 +34,7 @@ o cp "${filename_pdf}" "${pub_dir}/${dest_filename_pdf}"
 o cp "${filename_html}" "${pub_dir}/${dest_filename_html}"
 o rsync "${pub_dir}/${dest_filename_pdf}" "${pub_dir}/${dest_filename_html}" "store.lisk.in:wwwtmp/${purpose_hmac}/"
 
+realpath "${pub_dir}/${dest_filename_pdf}"
+realpath "${pub_dir}/${dest_filename_html}"
 echo "$url_pdf"
 echo "$url_html"
