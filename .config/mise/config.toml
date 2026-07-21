@@ -11,6 +11,9 @@ disable_backends = ['vfox', 'asdf']
 missing_tools = "always"
 show_env = true
 
+[settings.cargo]
+binstall_quickinstall = true
+
 [settings.pipx]
 uvx = true
 
