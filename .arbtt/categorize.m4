@@ -66,6 +66,7 @@ current window $program == "ferdium" ==> {
 	current window $title =~ m!genserver\.social! ==> tag Activity:Web-Social,
 	tag Activity:Chat,
 },
+current window $program == "GeForceNOW" ==> tag Activity:Games,
 any window $active && $desktop =~ /^W?\d+:steam$/ ==> tag Activity:Games,
 any window $active && $desktop =~ /^W?\d+$/ && any window ($desktop == $wdesktop && $program == ["Steam", "lutris"]) ==> tag Activity:Games,
 
