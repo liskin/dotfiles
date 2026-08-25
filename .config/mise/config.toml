@@ -41,6 +41,8 @@ credential_command = "gh auth token"
 "cargo:mergiraf" = "0.17.0"
 "cargo:ripgrep_all" = "0.10.10"
 "cargo:tokio-console" = "0.1.14"
+"cargo:weave-cli" = "0.5.2"
+"cargo:weave-driver" = "0.5.2"
 "github:ankitpokhrel/jira-cli" = "1.7.0"
 "github:chrishrb/go-grip" = "0.9.2"
 "github:cli/cli" = { version = "2.92.0" }
@@ -90,8 +92,6 @@ tilt = "0.37.2"
 usage = "3.2.1"
 uv = "0.11.19"
 watchexec = "2.5.1"
-weave-cli = { version = "0.3.2", asset_pattern = "weave-cli-{{ arch(x64='x86_64', arm64='aarch64') }}-unknown-linux-gnu.*" }
-weave-driver = { version = "0.3.2", asset_pattern = "weave-driver-{{ arch(x64='x86_64', arm64='aarch64') }}-unknown-linux-gnu.*" }
 zizmor = "1.24.1"
 
 [tool_alias]
