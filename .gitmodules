@@ -217,6 +217,9 @@
 	path = .local/share/nvim/site/bundle/zeal.nvim
 	# url = https://github.com/paradoxical-dev/zeal.nvim
 	url = https://github.com/liskin/zeal.nvim
+[submodule ".local/share/nvim/site/bundle/nvim-surround"]
+	path = .local/share/nvim/site/bundle/nvim-surround
+	url = https://github.com/kylechui/nvim-surround
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
