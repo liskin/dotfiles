@@ -173,8 +173,8 @@
 	url = https://github.com/liskin/cmp-conventionalcommits/
 [submodule ".local/share/nvim/site/bundle/CopilotChat.nvim"]
 	path = .local/share/nvim/site/bundle/CopilotChat.nvim
-	# url = https://github.com/CopilotC-Nvim/CopilotChat.nvim
-	url = https://github.com/liskin/CopilotChat.nvim
+	url = https://github.com/CopilotC-Nvim/CopilotChat.nvim
+	# url = https://github.com/liskin/CopilotChat.nvim
 [submodule ".local/share/nvim/site/bundle/codecompanion.nvim"]
 	path = .local/share/nvim/site/bundle/codecompanion.nvim
 	url = https://github.com/olimorris/codecompanion.nvim
