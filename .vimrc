@@ -505,7 +505,7 @@ autocmd FileType markdown setlocal ai et tw=78
 autocmd FileType meson setlocal et
 autocmd FileType perl setlocal isfname-=- formatoptions-=t formatoptions+=crql
 autocmd FileType php setlocal indentkeys&
-autocmd FileType python setlocal tw=100 et
+autocmd FileType python setlocal tw=100 formatoptions-=t formatoptions+=l
 autocmd FileType rst setlocal tw=78
 autocmd FileType sgml setlocal indentkeys&
 autocmd FileType svn setlocal tw=78 et
