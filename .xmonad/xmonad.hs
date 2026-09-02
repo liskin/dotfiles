@@ -37,6 +37,7 @@ import XMonad.Actions.WorkspaceNames hiding (renameWorkspace)
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FloatConfigureReq
 import XMonad.Hooks.FloatNext
+import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers hiding (pid, Side(..))
 import XMonad.Hooks.Place (placeHook, fixed)
@@ -284,7 +285,7 @@ myManageHook = composeAll
     , appName =? "zenity" --> doFloat
     , appName =? "peek" --> doFloat <> hasBorder False
     , appName =? "kronometer" --> doFloat <> hasBorder False
-    , "_NET_WM_WINDOW_TYPE" `isInProperty` "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE" --> doIgnore <> doRaise
+    , (className =? "flameshot" <&&> "_NET_WM_STATE" `isInProperty` "_NET_WM_STATE_STAYS_ON_TOP") --> insertPosition Master Newer
     , ("_NET_WM_STATE" `isInProperty` "_NET_WM_STATE_ABOVE" <&&> title $? "is sharing your screen.") --> doHideIgnore
     , (className =? "ghidra-Ghidra" <&&> (ask >>= liftX . getProp32s "_MOTIF_WM_HINTS") =? Just [0x3, 0x0, 0x0, 0x0, 0x0]) --> doIgnore
     , isDialog --> doFloat
