@@ -27,6 +27,7 @@ download-fedora-44:
 
 [group('prep')]
 img-create base img size='20G':
+    [ ! -e '{{ img }}' ]
     qemu-img create -f qcow2 -F qcow2 -b '{{ base }}' '{{ img }}' '{{ size }}'
 
 [group('prep')]
