@@ -2,7 +2,6 @@ SHELL := bash
 
 define BINS
 	gh
-	just
 	nvim
 	ruff
 	usage
