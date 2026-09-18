@@ -571,6 +571,7 @@ main = do
         keepLayoutHistory $
         addAfterRescreenHook repositionStatusBars $
         addAfterRescreenHook (spawnExec "~/bin/.xlayout/post.sh") $
+        addAfterRescreenHook up $
         addRandrChangeHook (spawnExec "if-session-unlocked layout-auto") $
         setRescreenWorkspacesHook (rescreen def) $
         setRescreenDelay 250000 $
