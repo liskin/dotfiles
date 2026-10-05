@@ -1,0 +1,10 @@
+[Unit]
+Description=geoclue-agent
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/libexec/geoclue-2.0/demos/agent
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
