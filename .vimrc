@@ -671,8 +671,8 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 xnoremap <silent> j gj
 xnoremap <silent> k gk
-inoremap <silent> <expr> <Down> pumvisible() ? "\<Down>" : "\<C-O>gj"
-inoremap <silent> <expr> <Up> pumvisible() ? "\<Up>" : "\<C-O>gk"
+inoremap <silent> <expr> <Down> pumvisible() ? "\<Down>" : "\<C-\>\<C-O>gj"
+inoremap <silent> <expr> <Up> pumvisible() ? "\<Up>" : "\<C-\>\<C-O>gk"
 
 " allow switching tabs in Terminal-mode
 tnoremap <silent> <C-PageUp> <C-\><C-N><C-PageUp>
