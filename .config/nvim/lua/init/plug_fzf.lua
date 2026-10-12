@@ -60,7 +60,7 @@ fzf_lua.setup {
 		},
 	},
 
-	ui_select = true,
+	ui_select = {},
 }
 
 vim.keymap.set('n', 'gX', fzf_lua.lsp_finder, { desc = "fzf lsp_finder" })
