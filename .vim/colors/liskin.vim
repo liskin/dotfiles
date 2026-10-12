@@ -307,6 +307,7 @@ if &t_Co >= 256 || has('gui_running')
 	hi PreProc cterm=bold gui=bold
 	hi Question gui=NONE
 	hi Search cterm=underline gui=underline
+	hi SnippetTabstop cterm=underline gui=underline
 	hi Special cterm=bold gui=bold
 	hi SpecialKey cterm=bold gui=bold
 	hi Statement cterm=bold gui=bold

@@ -1,13 +1,13 @@
 local cmp = require'cmp'
 local cmp_nvim_lsp = require'cmp_nvim_lsp'
 local cmp_nvim_ultisnips_source = require'cmp_nvim_ultisnips.source'
-local snippet_noselectmode = require'init.lib.snippet_noselect'.snippet_noselectmode
+local snippet_noselect = require'init.lib.snippet_noselect'
 
 -- avoid Select mode after snippet expansion
 ---@diagnostic disable-next-line: duplicate-set-field
 function cmp_nvim_ultisnips_source:execute(completion_item, callback)
 	vim.call("UltiSnips#ExpandSnippet")
-	snippet_noselectmode()
+	snippet_noselect.snippet_noselectmode()
 	callback(completion_item)
 end
 
@@ -107,7 +107,7 @@ local function cmp_complete_ultisnips()
 			snippet = {
 				expand = function(args)
 					vim.fn["UltiSnips#Anon"](args.body)
-					snippet_noselectmode()
+					snippet_noselect.snippet_noselectmode()
 				end,
 			},
 		},
@@ -202,7 +202,8 @@ cmp.setup {
 	snippet = {
 		expand = function(args)
 			vim.snippet.expand(args.body)
-			snippet_noselectmode()
+			snippet_noselect.snippet_keepsession()
+			snippet_noselect.snippet_noselectmode()
 		end,
 	},
 }
