@@ -603,6 +603,11 @@ nnoremap <silent> <C-X> <Cmd>FzfLua commands<CR>
 
 " free: <C-K>, <C-H>
 
+" C-L also stops snippet session {{{2
+if has('nvim')
+	nnoremap <silent> <C-L> <Cmd>call v:lua.vim.snippet.stop()<Bar>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>
+endif
+
 " smart Tab completion (vim only) {{{2
 if !has('nvim')
 	function! LiskinTabComplete() abort
