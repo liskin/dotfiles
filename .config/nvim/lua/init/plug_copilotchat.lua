@@ -6,7 +6,7 @@ copilot_chat.setup {
 	mappings = {
 		---@diagnostic disable-next-line: missing-fields
 		complete = {
-			insert = '<Plug>(tab_complete)',
+			insert = '<Plug>(tab-complete)',
 		},
 	},
 	prompts = {

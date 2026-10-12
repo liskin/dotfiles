@@ -151,8 +151,8 @@ cmp.setup {
 		['<Tab>'] = function(fallback)
 			if vim.fn.pumvisible() ~= 0 then
 				fallback()
-			elseif vim.fn.maparg('<Plug>(tab_complete)', 'i') ~= '' then
-				local keys = vim.api.nvim_replace_termcodes('<Plug>(tab_complete)', true, false, true)
+			elseif vim.fn.maparg('<Plug>(tab-complete)', 'i') ~= '' then
+				local keys = vim.api.nvim_replace_termcodes('<Plug>(tab-complete)', true, false, true)
 				vim.api.nvim_feedkeys(keys, 'im', false)
 			elseif cmp.visible() then
 				if #cmp.get_entries() == 1 then
@@ -217,18 +217,18 @@ end)
 -- smart Tab - snippet placeholders if any
 vim.keymap.set({ 'n', 'v' }, '<Tab>', function()
 	if vim.snippet.active({ direction = 1 }) then
-		return '<Plug>(vim_snippet_next_noselectmode)'
+		return '<Plug>(vim-snippet-next-noselectmode)'
 	elseif vim.fn['UltiSnips#CanJumpForwards']() ~= 0 then
-		return '<Plug>(ultisnip_next_noselectmode)'
+		return '<Plug>(ultisnip-next-noselectmode)'
 	else
 		return '<Tab>'
 	end
 end, { expr = true })
 vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
 	if vim.snippet.active({ direction = -1 }) then
-		return '<Plug>(vim_snippet_prev_noselectmode)'
+		return '<Plug>(vim-snippet-prev-noselectmode)'
 	elseif vim.fn['UltiSnips#CanJumpBackwards']() ~= 0 then
-		return '<Plug>(ultisnip_prev_noselectmode)'
+		return '<Plug>(ultisnip-prev-noselectmode)'
 	else
 		return '<S-Tab>'
 	end
