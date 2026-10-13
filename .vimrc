@@ -368,30 +368,6 @@ function! s:AirlineAfterTheme()
 endfunction
 autocmd User AirlineAfterTheme call s:AirlineAfterTheme()
 
-" fzf {{{2
-if exists('$TMUX')
-	let g:fzf_layout = { 'tmux': '-p90%,60%' }
-else
-	let g:fzf_layout = { 'down': '60%' }
-endif
-let g:fzf_colors = {
-	\ 'fg':      ['fg', 'Normal'],
-	\ 'bg':      ['bg', 'Normal'],
-	\ 'hl':      ['fg', 'Special'],
-	\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-	\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-	\ 'hl+':     ['fg', 'Special'],
-	\ 'info':    ['fg', 'PreProc'],
-	\ 'border':  ['fg', 'SpecialKey'],
-	\ 'prompt':  ['fg', 'Conditional'],
-	\ 'pointer': ['fg', 'Exception'],
-	\ 'marker':  ['fg', 'Keyword'],
-	\ 'spinner': ['fg', 'Label'],
-	\ 'header':  ['fg', 'Comment']
-\ }
-let g:fzf_vim = {}
-let g:fzf_vim.command_prefix = 'Fzf'
-
 " vimwiki {{{2
 let g:taskwiki_disable_concealcursor = 1
 let g:taskwiki_sort_order = 'status+,end+,due+,priority-'

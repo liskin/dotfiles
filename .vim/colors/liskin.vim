@@ -441,7 +441,7 @@ if &t_Co >= 256 || has('gui_running')
 
 	" fzf-lua colors
 	hi link FzfLuaFzfBorder SpecialKey
-	hi link FzfLuaFzfCursorLine CursorColumn
+	hi link FzfLuaFzfCursorLine Visual
 	hi link FzfLuaFzfHeader Comment
 	hi link FzfLuaFzfInfo PreProc
 	hi link FzfLuaFzfPointer Exception
