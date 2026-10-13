@@ -45,16 +45,9 @@ vim.keymap.set({ 'n', 'v' }, '<Plug>(vim-snippet-prev-noselectmode)', function()
 	snippet_keepsession()
 	snippet_noselectmode()
 end)
-vim.keymap.set({ 'n', 'v' }, '<Plug>(ultisnip-next-noselectmode)', function()
-	vim.fn['UltiSnips#JumpForwards']()
-	snippet_noselectmode()
-end)
-vim.keymap.set({ 'n', 'v' }, '<Plug>(ultisnip-prev-noselectmode)', function()
-	vim.fn['UltiSnips#JumpBackwards']()
-	snippet_noselectmode()
-end)
 
 return {
 	snippet_noselectmode = snippet_noselectmode,
+	snippet_exitvisualmode = snippet_exitvisualmode,
 	snippet_keepsession = snippet_keepsession,
 }

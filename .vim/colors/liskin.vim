@@ -307,7 +307,6 @@ if &t_Co >= 256 || has('gui_running')
 	hi PreProc cterm=bold gui=bold
 	hi Question gui=NONE
 	hi Search cterm=underline gui=underline
-	hi SnippetTabstop cterm=underline gui=underline
 	hi Special cterm=bold gui=bold
 	hi SpecialKey cterm=bold gui=bold
 	hi Statement cterm=bold gui=bold
@@ -324,6 +323,8 @@ if &t_Co >= 256 || has('gui_running')
 	hi link FloatBorder PmenuBorder
 	hi link Whitespace SpecialKey
 	hi link WinSeparator VertSplit
+	hi link SnippetTabstop UnderlinedOnly
+	hi link SnippyPlaceholder SnippetTabstop
 
 	if &bg == "dark"
 		hi Normal ctermfg=15 guifg=white guibg=black
@@ -375,6 +376,7 @@ if &t_Co >= 256 || has('gui_running')
 		HiU Removed ctermfg=9
 		HiU Changed ctermfg=81
 		HiU ZenFolded ctermfg=242 ctermbg=234
+		HiU SnippyMarker ctermfg=245
 
 		" cterm only:
 		hi SpellBad cterm=underline,bold ctermfg=9 ctermbg=NONE

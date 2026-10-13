@@ -423,12 +423,7 @@ let g:VM_mouse_mappings = 1
 " vim-sleuth {{{2
 let g:sleuth_gitcommit_heuristics = 0
 
-" ultisnips {{{2
-let g:UltiSnipsEditSplit = 'context'
-let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand_ignore)'
-let g:UltiSnipsListSnippets = '<Plug>(ultisnips_list_ignore)'
-let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jumpf_ignore)'
-let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jumpb_ignore)'
+" snippets {{{2
 let g:snips_name = 'Tomáš Janoušek'
 let g:snips_email = 'tomi@nomi.cz'
 let g:snips_author = 'liskin'
@@ -603,9 +598,12 @@ nnoremap <silent> <C-X> <Cmd>FzfLua commands<CR>
 
 " free: <C-K>, <C-H>
 
-" C-L also stops snippet session {{{2
+" snippets extras {{{2
 if has('nvim')
-	nnoremap <silent> <C-L> <Cmd>call v:lua.vim.snippet.stop()<Bar>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>
+	" C-L also stops snippet session
+	nnoremap <silent> <C-L> <Cmd>call v:lua.vim.snippet.stop()<Bar>call v:lua.require'snippy'.finish()<Bar>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>
+
+	xmap <silent> <C-X> <Plug>(snippy-cut-text)
 endif
 
 " smart Tab completion (vim only) {{{2

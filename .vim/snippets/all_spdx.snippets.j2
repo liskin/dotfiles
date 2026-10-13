@@ -2,6 +2,5 @@
 # vim:set ft=snippets:
 {% for license in licenses %}
 snippet spdx-{{license}} "{{license}}" b
-`!v printf(&commentstring, "SPDX-License-Identifier: {{license}}")`
-endsnippet
+	`!v printf(&commentstring, "SPDX-License-Identifier: {{license}}")`
 {% endfor %}

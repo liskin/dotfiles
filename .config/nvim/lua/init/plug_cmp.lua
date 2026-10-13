@@ -1,15 +1,7 @@
 local cmp = require'cmp'
 local cmp_nvim_lsp = require'cmp_nvim_lsp'
-local cmp_nvim_ultisnips_source = require'cmp_nvim_ultisnips.source'
 local snippet_noselect = require'init.lib.snippet_noselect'
-
--- avoid Select mode after snippet expansion
----@diagnostic disable-next-line: duplicate-set-field
-function cmp_nvim_ultisnips_source:execute(completion_item, callback)
-	vim.call("UltiSnips#ExpandSnippet")
-	snippet_noselect.snippet_noselectmode()
-	callback(completion_item)
-end
+local snippy = require'snippy'
 
 -- disable nvim 0.11 default vim.snippet.jump mapping in Insert/Select mode
 -- (see also imap <Tab> in ~/.vimrc)
@@ -98,17 +90,11 @@ local function cmp_complete_omni()
 	}
 end
 
-local function cmp_complete_ultisnips()
+local function cmp_complete_snippy()
 	cmp.complete {
 		config = {
 			sources = {
-				{ name = 'ultisnips' },
-			},
-			snippet = {
-				expand = function(args)
-					vim.fn["UltiSnips#Anon"](args.body)
-					snippet_noselect.snippet_noselectmode()
-				end,
+				{ name = 'snippy' },
 			},
 		},
 	}
@@ -182,7 +168,7 @@ cmp.setup {
 		['<C-X><C-N>'] = cmp_or(cmp_select_next, cmp_complete_buffer_current),
 		['<C-X><C-P>'] = cmp_or(cmp_select_prev, cmp_complete_buffer_current),
 		['<C-X><C-O>'] = cmp_or(cmp_select_next, cmp_complete_omni),
-		['<C-_>'] = cmp_or(cmp_select_next, cmp_complete_ultisnips),
+		['<C-_>'] = cmp_or(cmp_select_next, cmp_complete_snippy),
 		['<LeftMouse>'] = cmp_or(function() end),
 	},
 	---@diagnostic disable-next-line: missing-fields
@@ -201,6 +187,7 @@ cmp.setup {
 	},
 	snippet = {
 		expand = function(args)
+			-- XXX: consider snippy.expand_snippet(args.body)
 			vim.snippet.expand(args.body)
 			snippet_noselect.snippet_keepsession()
 			snippet_noselect.snippet_noselectmode()
@@ -218,8 +205,8 @@ end)
 vim.keymap.set({ 'n', 'v' }, '<Tab>', function()
 	if vim.snippet.active({ direction = 1 }) then
 		return '<Plug>(vim-snippet-next-noselectmode)'
-	elseif vim.fn['UltiSnips#CanJumpForwards']() ~= 0 then
-		return '<Plug>(ultisnip-next-noselectmode)'
+	elseif snippy.can_jump(1) then
+		return '<Plug>(snippy-next)'
 	else
 		return '<Tab>'
 	end
@@ -227,8 +214,8 @@ end, { expr = true })
 vim.keymap.set({ 'n', 'v' }, '<S-Tab>', function()
 	if vim.snippet.active({ direction = -1 }) then
 		return '<Plug>(vim-snippet-prev-noselectmode)'
-	elseif vim.fn['UltiSnips#CanJumpBackwards']() ~= 0 then
-		return '<Plug>(ultisnip-prev-noselectmode)'
+	elseif snippy.can_jump(-1) then
+		return '<Plug>(snippy-previous)'
 	else
 		return '<S-Tab>'
 	end
