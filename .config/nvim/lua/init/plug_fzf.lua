@@ -28,6 +28,11 @@ fzf_lua.setup {
 		width = 1,
 		height = 0.80,
 		row = 1,
+
+		treesitter = {
+			-- too buggy (and slow) with fzf-native's preview
+			enabled = false,
+		},
 	},
 
 	defaults = {
