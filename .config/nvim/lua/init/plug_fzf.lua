@@ -79,8 +79,34 @@ local function treesitter_available()
 	return not vim.tbl_isempty(vim.treesitter.query.get_files(parser_name, "locals"))
 end
 
+local function outline_available()
+	local gO = vim.fn.maparg("gO", "n")
+	if gO:find("/ftplugin/") then
+		return true
+	elseif not gO:find("/defaults:") then
+		print("[FzfLuaBTags] Unexpected gO mapping: ", gO)
+	end
+	return false
+end
+
+local function outline()
+	vim.cmd.normal("gO")
+
+	-- if this opened a loclist window, open it in fzf instead
+	if vim.fn.getloclist(0, { winid = 0 }) ~= 0 then
+		vim.cmd.lclose()
+		fzf_lua.loclist({
+			fzf_opts = {
+				["--with-nth"] = "3..", -- hide file names (they're all the same)
+			},
+		})
+	end
+end
+
 vim.api.nvim_create_user_command("FzfLuaBTags", function()
-	if lib_lsp.any_supports_method('textDocument/documentSymbol') then
+	if outline_available() then
+		return outline()
+	elseif lib_lsp.any_supports_method('textDocument/documentSymbol') then
 		return fzf_lua.lsp_document_symbols()
 	elseif treesitter_available() then
 		return fzf_lua.treesitter()
@@ -88,7 +114,7 @@ vim.api.nvim_create_user_command("FzfLuaBTags", function()
 		return fzf_lua.btags()
 	end
 end, {
-	desc = "Smart FzfLua btags - LSP, treesitter, buffer ctags fallback"
+	desc = "Smart FzfLua btags - gO (outline), LSP, treesitter, buffer ctags fallback"
 })
 
 vim.api.nvim_create_user_command("FzfLuaTags", function()
