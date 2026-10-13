@@ -102,13 +102,15 @@ vim.api.nvim_create_autocmd("FileType", {
 			vim.wo.foldmethod = "expr"
 			vim.b[bufnr].undo_ftplugin = (vim.b[bufnr].undo_ftplugin or '') .. '\n setl foldexpr< foldmethod<'
 
-			-- refresh folds
+			-- refresh folds (large files need this)
 			local winnr = vim.api.nvim_get_current_win()
 			vim.defer_fn(function()
 				pcall(vim.api.nvim_win_call, winnr, function()
+					local cursor = vim.api.nvim_win_get_cursor(winnr)
 					vim.cmd("normal! zx")
+					vim.api.nvim_win_set_cursor(winnr, cursor)
 				end)
-			end, 500)
+			end, 1000)
 		end
 	end,
 })
