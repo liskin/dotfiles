@@ -1,4 +1,5 @@
 local fzf_lua = require'fzf-lua'
+local fzf_lua_actions = require'fzf-lua.actions'
 local lib_lsp = require'init.lib.lsp'
 
 fzf_lua.setup {
@@ -49,7 +50,16 @@ fzf_lua.setup {
 
 	commands = {
 		actions = {
-			["ctrl-x"] = require'fzf-lua.actions'.ex_run_cr,
+			["ctrl-x"] = fzf_lua_actions.ex_run_cr,
+		},
+	},
+
+	command_history = {
+		actions     = {
+			["enter"] = fzf_lua_actions.ex_run,
+			["ctrl-x"] = fzf_lua_actions.ex_run_cr,
+			["ctrl-d"] = { fn = fzf_lua_actions.ex_del, field_index = "{+n}", reload = true },
+			["ctrl-e"] = false,
 		},
 	},
 

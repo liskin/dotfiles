@@ -571,6 +571,7 @@ nnoremap <silent> <C-P> <Cmd>FzfLua files<CR>
 nnoremap <silent> <C-Y> <Cmd>FzfLua tabs<CR>
 nnoremap <silent> <C-J> <Cmd>FzfLua grep<CR>
 nnoremap <silent> <C-X> <Cmd>FzfLua commands<CR>
+cnoremap <silent> <C-X> <Esc><Cmd>FzfLua command_history<CR>
 
 " free: <C-K>, <C-H>
 
