@@ -59,11 +59,11 @@ non-goals: eye candy
 [X.L.ResizableTile]: https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Layout-ResizableTile.html
 [X.L.SubLayouts]: https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Layout-SubLayouts.html
 [rofi]: https://github.com/davatorium/rofi
-[linux-media-control]: https://work.lisk.in/2020/05/06/linux-media-control.html
+[linux-media-control]: https://lisk.in/2020/05/06/linux-media-control.html
 [xmobar]: https://github.com/jaor/xmobar
 [xss-lock]: https://salsa.debian.org/liskin/xss-lock
 [xsecurelock]: https://github.com/google/xsecurelock
-[xrandr-smart]: https://work.lisk.in/2020/10/11/xrandr-ux.html
+[xrandr-smart]: https://lisk.in/2020/10/11/xrandr-ux.html
 [trayer]: https://github.com/sargon/trayer-srg
 [arbtt]: http://arbtt.nomeata.de/
 [arbtt-chart]: https://github.com/liskin/arbtt-chart
@@ -147,7 +147,7 @@ Details:
 * there may be other interesting (but likely undocumented) bits in [my
   dotfiles](https://github.com/liskin/dotfiles/)
 
-* my mostly technical [blog/web](https://work.lisk.in/);
+* my mostly technical [blog/web](https://lisk.in/);
   [@Liskni\_si twitter](https://twitter.com/Liskni_si)
 
 * [support my free software activities via GitHub

@@ -13,10 +13,10 @@ name="tomas-janousek"
 dest_filename_pdf="${name}-cv-resume.pdf"
 dest_filename_html="${name}-cv-resume.html"
 
-url_pdf="https://work.lisk.in/cv/${dest_filename_pdf}"
-url_html="https://work.lisk.in/cv/${dest_filename_html}"
+url_pdf="https://lisk.in/cv/${dest_filename_pdf}"
+url_html="https://lisk.in/cv/${dest_filename_html}"
 
-pub_dir=~/src/work.lisk.in/cv
+pub_dir=~/src/lisk.in/cv
 
 o mkdir -p "${pub_dir}"
 cat >"${pub_dir}/meta.yaml" <<-END

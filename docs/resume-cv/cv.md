@@ -270,12 +270,12 @@ _**sabbatical**_
 
 **[Technical blog](https://lisk.in/).**
 Popular articles:
-[Side by side git-range-diff](https://work.lisk.in/2023/10/19/side-by-side-git-range-diff.html){.ul};
-[Linux, media keys and multiple players](https://work.lisk.in/2020/05/06/linux-media-control.html){.ul};
-[Even faster bash startup](https://work.lisk.in/2020/11/20/even-faster-bash-startup.html){.ul}
+[Side by side git-range-diff](https://lisk.in/2023/10/19/side-by-side-git-range-diff.html){.ul};
+[Linux, media keys and multiple players](https://lisk.in/2020/05/06/linux-media-control.html){.ul};
+[Even faster bash startup](https://lisk.in/2020/11/20/even-faster-bash-startup.html){.ul}
 
 ::: {}
-**[Free and open-source software](https://work.lisk.in/about/#my-foss-contributions).**
+**[Free and open-source software](https://lisk.in/about/#my-foss-contributions).**
 Contributed hundreds of patches, released dozens of small projects, joined
 several mid-sized projects as a (co-)maintainer.
 

@@ -71,7 +71,7 @@ them:
 
 `xrandr`(1)
 
-<https://work.lisk.in/2020/10/11/xrandr-ux.html>
+<https://lisk.in/2020/10/11/xrandr-ux.html>
 
 # COPYRIGHT
 
