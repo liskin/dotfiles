@@ -143,7 +143,7 @@ vim.lsp.enable('just')
 vim.g.lsp_null_enabled = {
 	hadolint = { 'diagnostics' },
 	buildifier = { 'diagnostics' },
-	proselint = { 'code_actions', 'diagnostics' },
+	-- proselint = { 'code_actions', 'diagnostics' },
 	shellcheck = { 'code_actions', 'diagnostics' },
 }
 vim.g.lsp_null_settings = {
