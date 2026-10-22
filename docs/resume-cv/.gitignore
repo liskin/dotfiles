@@ -1,5 +1,6 @@
 /*.html
 /*.pdf
-/.chrometmp/
+/.home/
 /.pub-*/
 /meta-private.yaml
+/x-cv-*.md
