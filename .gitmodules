@@ -53,7 +53,7 @@
 	path = .vim/bundle/vader.vim
 	url = https://github.com/junegunn/vader.vim
 [submodule ".vim/bundle/vimwiki"]
-	path = .vim/bundle/vimwiki
+	path = .vim/optbundle/vimwiki
 	url = https://github.com/vimwiki/vimwiki/
 	#url = https://github.com/liskin/vimwiki/
 [submodule ".vim/bundle/taskwiki"]
