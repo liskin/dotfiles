@@ -160,11 +160,11 @@
 	# url = https://github.com/cultab/cmp-conventionalcommits/
 	url = https://github.com/liskin/cmp-conventionalcommits/
 [submodule ".local/share/nvim/site/bundle/CopilotChat.nvim"]
-	path = .local/share/nvim/site/bundle/CopilotChat.nvim
+	path = .local/share/nvim/site/optbundle/CopilotChat.nvim
 	url = https://github.com/CopilotC-Nvim/CopilotChat.nvim
 	# url = https://github.com/liskin/CopilotChat.nvim
 [submodule ".local/share/nvim/site/bundle/codecompanion.nvim"]
-	path = .local/share/nvim/site/bundle/codecompanion.nvim
+	path = .local/share/nvim/site/optbundle/codecompanion.nvim
 	url = https://github.com/olimorris/codecompanion.nvim
 [submodule ".local/share/nvim/site/bundle/ferris.nvim"]
 	path = .local/share/nvim/site/bundle/ferris.nvim

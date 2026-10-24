@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_codecompanion'
+
 local codecompanion = require'codecompanion'
 local codecompanion_config = require'codecompanion.config'
 local fidget = require'fidget'
@@ -96,5 +98,8 @@ do
 	})
 end
 
-vim.keymap.set({'n', 'v'}, '<Leader>CC', "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-vim.cmd("cabbrev CC CodeCompanion")
+vim.keymap.set({'n', 'v'}, '<Leader>CC', "<cmd>CodeCompanionActions<cr>", {
+	noremap = true,
+	silent = true,
+	desc = "codecompanion.nvim actions",
+})

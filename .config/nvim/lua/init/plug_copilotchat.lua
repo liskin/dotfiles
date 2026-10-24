@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_copilotchat'
+
 local copilot_chat = require'CopilotChat'
 local copilot_chat_prompts = require'CopilotChat.config.prompts'
 
@@ -40,5 +42,6 @@ copilot_chat.setup {
 
 vim.keymap.set({'n', 'v'}, '<Leader>cc', function()
 	copilot_chat.select_prompt()
-end)
-vim.cmd("cabbrev cc CopilotChat")
+end, {
+	desc = "CopilotChat.nvim actions",
+})
