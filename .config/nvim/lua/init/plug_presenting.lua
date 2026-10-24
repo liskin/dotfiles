@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_presenting'
+
 local presenting = require'presenting'
 local lspconfig = require'lspconfig'
 local follow_md_links = require'init.lib.follow_md_links'
