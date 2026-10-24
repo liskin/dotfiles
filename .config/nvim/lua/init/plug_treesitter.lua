@@ -71,8 +71,8 @@ vim.api.nvim_create_autocmd("FileType", {
 		end
 
 		-- skip if a parser for this language isn't available
-		local parser_ok, parser = pcall(vim.treesitter.get_parser, bufnr, parser_name)
-		if not parser_ok or not parser then
+		local parser = vim.treesitter.get_parser(bufnr, parser_name)
+		if not parser then
 			return
 		end
 

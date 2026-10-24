@@ -3,8 +3,8 @@ local ts = vim.treesitter
 local M = {}
 
 function M.parse()
-	local ok, parser = pcall(ts.get_parser)
-	if ok and parser then
+	local parser = ts.get_parser()
+	if parser then
 		local syntax_trees = parser:parse(true)
 		if syntax_trees then
 			return parser, syntax_trees[1]:root()
