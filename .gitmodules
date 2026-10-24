@@ -183,7 +183,7 @@
 	path = .local/share/nvim/site/bundle/nvim-nio
 	url = https://github.com/nvim-neotest/nvim-nio
 [submodule ".local/share/nvim/site/bundle/neotest"]
-	path = .local/share/nvim/site/bundle/neotest
+	path = .local/share/nvim/site/optbundle/neotest
 	url = https://github.com/nvim-neotest/neotest
 [submodule ".local/share/nvim/site/bundle/neotest-vstest"]
 	path = .local/share/nvim/site/bundle/neotest-vstest
