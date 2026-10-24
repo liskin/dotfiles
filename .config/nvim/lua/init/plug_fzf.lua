@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_fzf'
+
 local fzf_lua = require'fzf-lua'
 local fzf_lua_actions = require'fzf-lua.actions'
 local lib_lsp = require'init.lib.lsp'
