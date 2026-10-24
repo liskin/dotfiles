@@ -172,10 +172,6 @@
 [submodule ".local/share/nvim/site/bundle/lazydev.nvim"]
 	path = .local/share/nvim/site/bundle/lazydev.nvim
 	url = https://github.com/folke/lazydev.nvim
-[submodule ".local/share/nvim/site/bundle/roslyn.nvim"]
-	path = .local/share/nvim/site/bundle/roslyn.nvim
-	url = https://github.com/seblyng/roslyn.nvim
-	# url = https://github.com/liskin/roslyn.nvim
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter-context"]
 	path = .local/share/nvim/site/bundle/nvim-treesitter-context
 	url = https://github.com/nvim-treesitter/nvim-treesitter-context
@@ -185,10 +181,6 @@
 [submodule ".local/share/nvim/site/bundle/neotest"]
 	path = .local/share/nvim/site/optbundle/neotest
 	url = https://github.com/nvim-neotest/neotest
-[submodule ".local/share/nvim/site/bundle/neotest-vstest"]
-	path = .local/share/nvim/site/bundle/neotest-vstest
-	url = https://github.com/Nsidorenco/neotest-vstest
-	# url = https://github.com/liskin/neotest-vstest
 [submodule ".local/share/nvim/site/bundle/conform.nvim"]
 	path = .local/share/nvim/site/bundle/conform.nvim
 	# url = https://github.com/stevearc/conform.nvim
