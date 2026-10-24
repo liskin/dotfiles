@@ -144,7 +144,7 @@
 	# url = https://github.com/sotte/presenting.nvim
 	url = https://github.com/liskin/presenting.nvim
 [submodule ".local/share/nvim/site/bundle/iron.nvim"]
-	path = .local/share/nvim/site/bundle/iron.nvim
+	path = .local/share/nvim/site/optbundle/iron.nvim
 	url = https://github.com/Vigemus/iron.nvim
 	# url = https://github.com/liskin/iron.nvim
 [submodule ".local/share/nvim/site/bundle/dropbar.nvim"]

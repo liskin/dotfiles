@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_iron'
+
 require'iron.core'.setup {
 	highlight = {
 		default = true,
