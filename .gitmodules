@@ -166,10 +166,6 @@
 [submodule ".local/share/nvim/site/bundle/codecompanion.nvim"]
 	path = .local/share/nvim/site/bundle/codecompanion.nvim
 	url = https://github.com/olimorris/codecompanion.nvim
-[submodule ".local/share/nvim/site/optbundle/copilot.lua"]
-	path = .local/share/nvim/site/optbundle/copilot.lua
-	url = https://github.com/zbirenbaum/copilot.lua
-	# url = https://github.com/liskin/copilot.lua
 [submodule ".local/share/nvim/site/bundle/ferris.nvim"]
 	path = .local/share/nvim/site/bundle/ferris.nvim
 	url = https://github.com/vxpm/ferris.nvim
