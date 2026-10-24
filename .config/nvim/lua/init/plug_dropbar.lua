@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_dropbar'
+
 local dropbar = require'dropbar'
 local dropbar_configs = require'dropbar.configs'
 local dropbar_utils = require'dropbar.utils'

@@ -148,7 +148,7 @@
 	url = https://github.com/Vigemus/iron.nvim
 	# url = https://github.com/liskin/iron.nvim
 [submodule ".local/share/nvim/site/bundle/dropbar.nvim"]
-	path = .local/share/nvim/site/bundle/dropbar.nvim
+	path = .local/share/nvim/site/optbundle/dropbar.nvim
 	url = https://github.com/Bekaboo/dropbar.nvim
 	# url = https://github.com/liskin/dropbar.nvim
 [submodule ".local/share/nvim/site/bundle/nvim-treesitter-textobjects"]
@@ -214,6 +214,9 @@
 [submodule ".local/share/nvim/site/bundle/nvim-snippy"]
 	path = .local/share/nvim/site/bundle/nvim-snippy
 	url = https://github.com/dcampos/nvim-snippy
+[submodule ".local/share/nvim/site/bundle/lz.n"]
+	path = .local/share/nvim/site/bundle/lz.n
+	url = https://github.com/lumen-oss/lz.n
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
