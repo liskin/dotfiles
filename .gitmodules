@@ -91,7 +91,7 @@
 	path = .local/share/nvim/site/bundle/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
 [submodule ".local/share/nvim/site/bundle/trouble.nvim"]
-	path = .local/share/nvim/site/bundle/trouble.nvim
+	path = .local/share/nvim/site/optbundle/trouble.nvim
 	url = https://github.com/folke/trouble.nvim
 [submodule ".local/share/nvim/site/bundle/fidget.nvim"]
 	path = .local/share/nvim/site/bundle/fidget.nvim

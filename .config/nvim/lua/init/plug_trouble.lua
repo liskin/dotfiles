@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_trouble'
+
 local trouble = require 'trouble'
 
 trouble.setup {
