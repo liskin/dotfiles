@@ -1,3 +1,5 @@
+-- see also 'init.lazy.plug_indent_blankline'
+
 require'ibl'.setup {
 	indent = {
 		char = '│',

@@ -137,7 +137,7 @@
 	url = https://github.com/ibhagwan/fzf-lua
 	# url = https://github.com/liskin/fzf-lua
 [submodule ".local/share/nvim/site/bundle/indent-blankline.nvim"]
-	path = .local/share/nvim/site/bundle/indent-blankline.nvim
+	path = .local/share/nvim/site/optbundle/indent-blankline.nvim
 	url = https://github.com/lukas-reineke/indent-blankline.nvim
 [submodule ".local/share/nvim/site/bundle/presenting.nvim"]
 	path = .local/share/nvim/site/bundle/presenting.nvim
