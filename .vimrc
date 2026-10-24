@@ -662,23 +662,23 @@ tnoremap <silent> <C-PageDown> <C-\><C-N><C-PageUp>
 
 " hop keys {{{2
 if has('nvim')
-	noremap <silent> s <Cmd>HopChar1<CR>
-	noremap <silent> Sw <Cmd>HopWord<CR>
-	noremap <silent> Sl <Cmd>HopLineStart<CR>
-	noremap <silent> SL <Cmd>HopLine<CR>
-	noremap <silent> St <Cmd>HopNodes<CR>
-	noremap <silent> Sn <Cmd>HopNodesNamed<CR>
-	noremap <silent> S/ <Cmd>HopPattern<CR>
-	noremap <silent> SS <Cmd>HopAnywhere<CR>
-	noremap <silent> S. <Cmd>HopTextObjects<CR>
-	noremap <silent> S_ <Cmd>HopTextObjects markup.link.label<CR>
+	noremap <silent> s <Cmd>Hop Char1<CR>
+	noremap <silent> Sw <Cmd>Hop Word<CR>
+	noremap <silent> Sl <Cmd>Hop LineStart<CR>
+	noremap <silent> SL <Cmd>Hop Line<CR>
+	noremap <silent> St <Cmd>Hop Nodes<CR>
+	noremap <silent> Sn <Cmd>Hop NodesNamed<CR>
+	noremap <silent> S/ <Cmd>Hop Pattern<CR>
+	noremap <silent> SS <Cmd>Hop Anywhere<CR>
+	noremap <silent> S. <Cmd>Hop TextObjects<CR>
+	noremap <silent> S_ <Cmd>Hop TextObjects markup.link.label<CR>
 
-	noremap <silent> Hs <Cmd>HopChar1MW<CR>
-	noremap <silent> Hw <Cmd>HopWordMW<CR>
-	noremap <silent> Hl <Cmd>HopLineStartMW<CR>
-	noremap <silent> HL <Cmd>HopLineMW<CR>
-	noremap <silent> H/ <Cmd>HopPatternMW<CR>
-	noremap <silent> HH <Cmd>HopAnywhereMW<CR>
+	noremap <silent> Hs <Cmd>Hop Char1MW<CR>
+	noremap <silent> Hw <Cmd>Hop WordMW<CR>
+	noremap <silent> Hl <Cmd>Hop LineStartMW<CR>
+	noremap <silent> HL <Cmd>Hop LineMW<CR>
+	noremap <silent> H/ <Cmd>Hop PatternMW<CR>
+	noremap <silent> HH <Cmd>Hop AnywhereMW<CR>
 endif
 
 " vim:set foldenable foldmethod=marker: {{{1

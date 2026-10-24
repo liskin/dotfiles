@@ -124,7 +124,7 @@
 	path = .local/share/nvim/site/bundle/cmp-spell
 	url = https://github.com/f3fora/cmp-spell
 [submodule ".local/share/nvim/site/bundle/hop.nvim"]
-	path = .local/share/nvim/site/bundle/hop.nvim
+	path = .local/share/nvim/site/optbundle/hop.nvim
 	url = https://github.com/smoka7/hop.nvim
 [submodule ".local/share/nvim/site/bundle/none-ls-extras.nvim"]
 	path = .local/share/nvim/site/bundle/none-ls-extras.nvim
