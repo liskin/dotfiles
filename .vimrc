@@ -255,6 +255,7 @@ set viewoptions-=options
 let mapleader = ","
 let maplocalleader = "\\"
 
+let g:NERDTreeHijackNetrw = 0
 let g:PHP_default_indenting = 1
 let g:fugitive_gitlab_domains = ['https://gitlab.freedesktop.org', 'https://salsa.debian.org']
 let g:fugitive_legacy_commands = 0

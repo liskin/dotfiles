@@ -5,7 +5,7 @@
 	path = .vim/bundle/vim-windowswap
 	url = https://github.com/wesQ3/vim-windowswap.git
 [submodule ".vim/bundle/nerdtree"]
-	path = .vim/bundle/nerdtree
+	path = .vim/optbundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/bundle/tagbar
