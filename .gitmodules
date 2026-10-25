@@ -33,25 +33,15 @@
 [submodule ".vim/bundle/vim-puppet"]
 	path = .vim/bundle/vim-puppet
 	url = https://github.com/rodjek/vim-puppet.git
-[submodule ".vim/bundle/vim-scala"]
-	path = .vim/bundle/vim-scala
-	url = https://github.com/derekwyatt/vim-scala.git
 [submodule ".vim/bundle/vim-rhubarb"]
 	path = .vim/bundle/vim-rhubarb
 	url = https://github.com/tpope/vim-rhubarb.git
-[submodule ".vim/bundle/vim-fubitive"]
-	path = .vim/bundle/vim-fubitive
-	url = https://github.com/liskin/vim-fubitive.git
-	#url = https://github.com/tommcdo/vim-fubitive.git
 [submodule ".vim/bundle/fugitive-gitlab.vim"]
 	path = .vim/bundle/fugitive-gitlab.vim
 	url = https://github.com/shumphrey/fugitive-gitlab.vim.git
 [submodule ".vim/bundle/vim-boxdraw"]
 	path = .vim/bundle/vim-boxdraw
 	url = https://github.com/gyim/vim-boxdraw.git
-[submodule ".vim/bundle/vader.vim"]
-	path = .vim/bundle/vader.vim
-	url = https://github.com/junegunn/vader.vim
 [submodule ".vim/bundle/vimwiki"]
 	path = .vim/optbundle/vimwiki
 	url = https://github.com/vimwiki/vimwiki/
