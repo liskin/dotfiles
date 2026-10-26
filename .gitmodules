@@ -47,7 +47,7 @@
 	url = https://github.com/vimwiki/vimwiki/
 	#url = https://github.com/liskin/vimwiki/
 [submodule ".vim/bundle/taskwiki"]
-	path = .vim/bundle/taskwiki
+	path = .vim/optbundle/taskwiki
 	#url = https://github.com/tbabej/taskwiki
 	url = https://github.com/liskin/taskwiki
 [submodule ".vim/bundle/vim-characterize"]
