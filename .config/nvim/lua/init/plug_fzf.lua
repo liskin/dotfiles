@@ -86,7 +86,7 @@ end
 
 local function outline_available()
 	local gO = vim.fn.maparg("gO", "n")
-	if gO:find("/ftplugin/") then
+	if gO:find("/ftplugin/", nil, true) or gO:find(".show_toc(", nil, true) then
 		return true
 	elseif not gO:find("/defaults:") then
 		print("[FzfLuaBTags] Unexpected gO mapping: ", gO)
