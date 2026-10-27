@@ -30,9 +30,6 @@
 [submodule ".vim/bundle/vim-openscad"]
 	path = .vim/bundle/vim-openscad
 	url = https://github.com/sirtaj/vim-openscad.git
-[submodule ".vim/bundle/vim-puppet"]
-	path = .vim/bundle/vim-puppet
-	url = https://github.com/rodjek/vim-puppet.git
 [submodule ".vim/bundle/vim-rhubarb"]
 	path = .vim/bundle/vim-rhubarb
 	url = https://github.com/tpope/vim-rhubarb.git
