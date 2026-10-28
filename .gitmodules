@@ -192,6 +192,9 @@
 [submodule ".local/share/nvim/site/bundle/lz.n"]
 	path = .local/share/nvim/site/bundle/lz.n
 	url = https://github.com/lumen-oss/lz.n
+[submodule ".local/share/nvim/site/bundle/nvim-tree.lua"]
+	path = .local/share/nvim/site/bundle/nvim-tree.lua
+	url = https://github.com/nvim-tree/nvim-tree.lua
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title

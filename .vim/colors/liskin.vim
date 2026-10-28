@@ -325,6 +325,7 @@ if &t_Co >= 256 || has('gui_running')
 	hi link WinSeparator VertSplit
 	hi link SnippetTabstop UnderlinedOnly
 	hi link SnippyPlaceholder SnippetTabstop
+	hi link NvimTreeHiddenDisplay Whitespace
 
 	if &bg == "dark"
 		hi Normal ctermfg=15 guifg=white guibg=black

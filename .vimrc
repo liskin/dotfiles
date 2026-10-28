@@ -339,6 +339,9 @@ let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#fugitiveline#enabled = 0
 let g:airline#extensions#searchcount#enabled = 0
+let g:airline_filetype_overrides = #{
+	\ NvimTree: [ 'tree', '' ],
+\ }
 function! VimrcAirlineFileshorten()
 	" other airline parts have their own width heuristics and usually all fit within 35 columns…
 	let width_available = airline#util#winwidth() - 35
@@ -560,10 +563,10 @@ elseif has('nvim')
 	nnoremap <silent> <F22> <Cmd>DropbarToggle<CR>
 endif
 
-nnoremap <silent> <F11> <Cmd>NERDTreeToggle<CR>
-inoremap <silent> <F11> <Cmd>NERDTreeToggle<CR>
-nnoremap <silent> <F23> <Cmd>NERDTreeFind<CR>
-inoremap <silent> <F23> <Cmd>NERDTreeFind<CR>
+nnoremap <silent> <F11> <Cmd>NvimTreeToggle<CR>
+inoremap <silent> <F11> <Cmd>NvimTreeToggle<CR>
+nnoremap <silent> <F23> <Cmd>NvimTreeFindFileToggle<CR>
+inoremap <silent> <F23> <Cmd>NvimTreeFindFileToggle<CR>
 
 " fzf keys {{{2
 nnoremap <silent> <F12> <Cmd>FzfLua builtin<CR>
