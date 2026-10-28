@@ -20,6 +20,7 @@ require 'init.plug_lazydev'
 require 'init.plug_zenmode'
 require 'init.plug_zeal'
 require 'init.plug_nvim_tree'
+require 'init.plug_nvim_file_operations'
 require 'lz.n'.load 'init.lazy'
 
 -- see also 'init.after'

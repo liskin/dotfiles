@@ -195,6 +195,9 @@
 [submodule ".local/share/nvim/site/bundle/nvim-tree.lua"]
 	path = .local/share/nvim/site/bundle/nvim-tree.lua
 	url = https://github.com/nvim-tree/nvim-tree.lua
+[submodule ".local/share/nvim/site/bundle/nvim-file-operations"]
+	path = .local/share/nvim/site/bundle/nvim-file-operations
+	url = https://github.com/Crysthamus/nvim-file-operations
 [submodule "src-webextensions/add-url-to-window-title"]
 	path = src-webextensions/add-url-to-window-title
 	#url = https://github.com/erichgoldman/add-url-to-window-title
