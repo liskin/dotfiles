@@ -14,8 +14,8 @@ all: $(strip $(BINS))
 
 $(strip $(BINS)):
 	which=$$(mise which $@) && \
-	latest=$$(sed -e 's|\(mise/installs/[^/]*/\)[0-9.]*|\1latest|' <<<"$$which") && \
-	relative=$$(realpath --no-symlinks --relative-to=. "$$latest") && \
+	global=$$(sed -e 's|\(mise/installs/[^/]*/\)[0-9.]*|\1global|' <<<"$$which") && \
+	relative=$$(realpath --no-symlinks --relative-to=. "$$global") && \
 	ln -fns "$$relative" $@
 
 include ~/_gitignore.mk

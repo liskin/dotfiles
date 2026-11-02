@@ -1,6 +1,6 @@
 [settings]
 idiomatic_version_file_enable_tools = []
-install_before = "7d"
+minimum_release_age = "7d"
 not_found_auto_install = false
 paranoid = true
 pin = true
@@ -14,7 +14,7 @@ show_env = true
 [settings.cargo]
 binstall_quickinstall = true
 
-[settings.pipx]
+[settings.pypi]
 uvx = true
 
 [settings.npm]
@@ -53,19 +53,19 @@ credential_command = "gh auth token"
 "npm:release-please" = "17.3.0"
 "npm:typescript-language-server" = "4.4.0"
 "npm:yaml-language-server" = "1.21.0"
-"pipx:gdbgui" = "0.15.3.0"
-"pipx:git-when-merged" = "1.2.1"
-"pipx:liskin/foursquare-swarm-ical" = "v1.1.0"
-"pipx:liskin/liscopridge" = "a9c2debe41d045ef184c87bbad331ee6fa20b13c"
-"pipx:liskin/strava-gear" = "6883fefc8a8f0a2e5144f271480e406a33540417"
-"pipx:liskin/strava-offline" = "v1.1.1"
-"pipx:markdown2ctags" = "0.3.3"
-"pipx:pandoc-plantuml-filter" = "0.1.5"
-"pipx:proselint" = "0.16.0"
-"pipx:pushl" = "0.4.1"
-"pipx:python-dxf" = "12.1.1"
-"pipx:ratarmount" = "1.2.2"
-"pipx:timezonefinder" = "8.2.2"
+"pypi:gdbgui" = "0.15.3.0"
+"pypi:git-when-merged" = "1.2.1"
+"pypi:liskin/foursquare-swarm-ical" = "v1.1.0"
+"pypi:liskin/liscopridge" = "a9c2debe41d045ef184c87bbad331ee6fa20b13c"
+"pypi:liskin/strava-gear" = "6883fefc8a8f0a2e5144f271480e406a33540417"
+"pypi:liskin/strava-offline" = "v1.1.1"
+"pypi:markdown2ctags" = "0.3.3"
+"pypi:pandoc-plantuml-filter" = "0.1.5"
+"pypi:proselint" = "0.16.0"
+"pypi:pushl" = "0.4.1"
+"pypi:python-dxf" = "12.1.1"
+"pypi:ratarmount" = "1.2.2"
+"pypi:timezonefinder" = "8.2.2"
 ast-grep = "0.42.1"
 buildifier = "8.5.1"
 cargo-binstall = "1.26.0"
@@ -87,7 +87,7 @@ rust-analyzer = "2026-10-19"
 shfmt = "3.13.1"
 stylua = "2.5.2"
 taplo = "0.10.0"
-tilt = "0.37.2"
+tilt = { version = "0.37.2", postinstall = "needsterminal sh -x -c 'which tilt | xargs -r sudo setcap cap_net_bind_service+ep'" }
 usage = "5.1.0"
 uv = "0.13.1"
 watchexec = "2.7.0"
