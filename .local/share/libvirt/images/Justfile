@@ -27,8 +27,13 @@ download-fedora-44: (_download "https://download.fedoraproject.org/pub/fedora/li
 
 # ----------------------------------------------------------------------
 
+default_size := '20G'
+default_os := 'debianunstable'
+default_mem := '8192'
+default_vcpus := shell('nproc')
+
 [group('prep')]
-img-create base img size='20G':
+img-create base img size=default_size:
     [ ! -e '{{ img }}' ]
     qemu-img create -f qcow2 -F qcow2 -b '{{ base }}' '{{ img }}' '{{ size }}'
 
@@ -51,7 +56,7 @@ img-customize img:
 [arg('os', long)]
 [arg('vcpus', long)]
 [group('prep')]
-vm-create img os='debianunstable' mem='8192' vcpus=shell('nproc'):
+vm-define img os=default_os mem=default_mem vcpus=default_vcpus:
     virt-install \
         --name '{{ file_stem(img) }}' \
         --osinfo '{{ os }}' \
@@ -64,6 +69,16 @@ vm-create img os='debianunstable' mem='8192' vcpus=shell('nproc'):
         --vsock cid.auto=yes \
         --noautoconsole \
         --noreboot
+
+[arg('size', long)]
+[arg('os', long)]
+[arg('mem', long)]
+[arg('vcpus', long)]
+[group('prep')]
+vm-create name base size=default_size os=default_os mem=default_mem vcpus=default_vcpus:
+    just img-create '{{ base }}' '{{ name }}.qcow2' '{{ size }}'
+    just img-customize '{{ name }}.qcow2'
+    just vm-define '{{ name }}.qcow2' --os '{{ os }}' --mem '{{ mem }}' --vcpus '{{ vcpus }}'
 
 [group('prep')]
 x-osinfo-list:
