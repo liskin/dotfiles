@@ -3,25 +3,27 @@ help:
 
 # ----------------------------------------------------------------------
 
-[group('download')]
-download-debian-13:
-    wget --no-clobber https://cloud.debian.org/images/cloud/trixie/latest/debian-13-nocloud-amd64.qcow2
+_download url:
+    wcurl \
+        --curl-options --skip-existing \
+        --curl-options --remove-on-error \
+        '{{ url }}' \
+        -O '{{ file_stem(url) }}-{{ datetime('%Y-%m-%d') }}.{{ extension(url) }}'
 
 [group('download')]
-download-debian-14:
-    wget --no-clobber https://cloud.debian.org/images/cloud/forky/daily/latest/debian-14-nocloud-amd64-daily.qcow2
+download-debian-13: (_download "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-nocloud-amd64.qcow2")
 
 [group('download')]
-download-debian-sid:
-    wget --no-clobber https://cloud.debian.org/images/cloud/sid/daily/latest/debian-sid-nocloud-amd64-daily.qcow2
+download-debian-14: (_download "https://cloud.debian.org/images/cloud/forky/daily/latest/debian-14-nocloud-amd64-daily.qcow2")
 
 [group('download')]
-download-fedora-43:
-    wget --no-clobber https://download.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2
+download-debian-sid: (_download "https://cloud.debian.org/images/cloud/sid/daily/latest/debian-sid-nocloud-amd64-daily.qcow2")
 
 [group('download')]
-download-fedora-44:
-    wget --no-clobber https://download.fedoraproject.org/pub/fedora/linux/releases/test/44_Beta/Cloud/x86_64/images/Fedora-Cloud-Base-UEFI-UKI-44_Beta-1.2.x86_64.qcow2
+download-fedora-43: (_download "https://download.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-43-1.6.x86_64.qcow2")
+
+[group('download')]
+download-fedora-44: (_download "https://download.fedoraproject.org/pub/fedora/linux/releases/test/44_Beta/Cloud/x86_64/images/Fedora-Cloud-Base-UEFI-UKI-44_Beta-1.2.x86_64.qcow2")
 
 # ----------------------------------------------------------------------
 
