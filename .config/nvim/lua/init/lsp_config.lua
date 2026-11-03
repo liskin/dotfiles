@@ -139,6 +139,11 @@ vim.lsp.enable('zizmor')
 -- Justfile
 vim.lsp.enable('just')
 
+-- Copilot
+vim.lsp.config('copilot', {
+	cmd = { "bwrap-copilot-language-server", "--stdio" },
+})
+
 -- none-ls/null-ls
 vim.g.lsp_null_enabled = {
 	hadolint = { 'diagnostics' },

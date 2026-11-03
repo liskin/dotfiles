@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+if [[ "${HOME%/}"/ == "${PWD%/}"/* ]]; then
+	mkdir -p "${XDG_RUNTIME_DIR:?}"/bwrap-node-copilot
+	cd "${XDG_RUNTIME_DIR:?}"/bwrap-node-copilot
+fi
+
+copilot_language_server=$(mise which copilot-language-server)
+
+exec bwrap-home \
+	--home-tmpfs --tmpfs \
+	--mount-rw ~/.config/github-copilot \
+	-- \
+	"$copilot_language_server" "$@"

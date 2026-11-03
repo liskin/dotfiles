@@ -1,10 +1,28 @@
 vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-	callback = function(ev)
+	callback = function(args)
 		vim.keymap.set({ 'n', 'v', 'i' }, '<C-F>', vim.lsp.buf.code_action, {
-			buffer = ev.buf,
+			buffer = args.buf,
 			desc = "LSP code action",
 		})
+
+		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+		if client.name == "copilot" and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, args.buf) then
+			vim.lsp.inline_completion.enable(true, { bufnr = args.buf })
+
+			vim.keymap.set('i', '<C-Space>', vim.lsp.inline_completion.get, {
+				buffer = args.buf,
+				desc = "LSP: accept inline completion",
+			})
+			vim.keymap.set('i', '<C-X>]', function() vim.lsp.inline_completion.select({ count = 1 }) end, {
+				buffer = args.buf,
+				desc = "LSP: next inline completion",
+			})
+			vim.keymap.set('i', '<C-X>[', function() vim.lsp.inline_completion.select({ count = -1 }) end, {
+				buffer = args.buf,
+				desc = "LSP: prev inline completion",
+			})
+		end
 	end,
 })
 
