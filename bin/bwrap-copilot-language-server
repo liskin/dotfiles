@@ -11,6 +11,8 @@ copilot_language_server=$(mise which copilot-language-server)
 
 exec bwrap-home \
 	--home-tmpfs --tmpfs \
+	--mount-rw ~/.cache/Microsoft/DeveloperTools \
 	--mount-rw ~/.config/github-copilot \
+	--mount-rw ~/.copilot \
 	-- \
 	"$copilot_language_server" "$@"
