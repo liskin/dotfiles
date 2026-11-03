@@ -16,7 +16,14 @@ codecompanion.setup {
 	interactions = {
 		inline = {
 			adapter = {
-				model = "auto",
+				name = "copilot",
+				model = "gpt-6-luna",
+			},
+		},
+		chat = {
+			adapter = {
+				name = "copilot",
+				model = "gpt-6-luna",
 			},
 		},
 	},
