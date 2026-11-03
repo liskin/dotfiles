@@ -97,7 +97,7 @@ else
 	)
 fi
 
-if [[ "$HOME" != "$orig_HOME" ]]; then
+if [[ $home_tmpfs || "$HOME" != "$orig_HOME" ]]; then
 	bwrap_opts+=(
 		--ro-bind {"$orig_HOME","$HOME"}/.config/mise
 		--ro-bind {"$orig_HOME","$HOME"}/.local/share/mise
