@@ -535,10 +535,11 @@ if has('nvim')
 endif
 
 if has('nvim')
-	noremap <silent> <F7> <Cmd>CopilotChatToggle<CR>
-	noremap <silent> <F19> <Cmd>CodeCompanionChat Toggle<CR>
-	cabbrev cc CopilotChat
-	cabbrev CC CodeCompanion
+	nnoremap <silent> <F7> <Cmd>CodeCompanionChat Toggle<CR>
+	vnoremap <silent> <F7> <Cmd>CodeCompanionChat Add<CR>
+	noremap <silent> <F19> <Cmd>CopilotChatToggle<CR>
+	cabbrev cc CodeCompanion
+	cabbrev CC CopilotChat
 endif
 
 nnoremap <silent> <F8> <Cmd>TagbarToggle<CR>

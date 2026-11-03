@@ -5,7 +5,7 @@ return {
 		'CopilotChatToggle',
 	},
 	keys = {
-		{ '<Leader>cc', desc = "CopilotChat.nvim actions" },
+		{ '<Leader>CC', desc = "CopilotChat.nvim actions" },
 	},
 	after = function()
 		require 'init.plug_copilotchat'

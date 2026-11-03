@@ -5,7 +5,7 @@ return {
 		'CodeCompanionChat',
 	},
 	keys = {
-		{ '<Leader>CC', desc = "codecompanion.nvim actions" },
+		{ '<Leader>cc', desc = "codecompanion.nvim actions" },
 	},
 	after = function()
 		require 'init.plug_codecompanion'

@@ -40,7 +40,7 @@ copilot_chat.setup {
 	},
 }
 
-vim.keymap.set({'n', 'v'}, '<Leader>cc', function()
+vim.keymap.set({'n', 'v'}, '<Leader>CC', function()
 	copilot_chat.select_prompt()
 end, {
 	desc = "CopilotChat.nvim actions",
