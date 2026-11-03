@@ -111,7 +111,7 @@ end
 vim.api.nvim_create_user_command("FzfLuaBTags", function()
 	if outline_available() then
 		return outline()
-	elseif lib_lsp.any_supports_method('textDocument/documentSymbol') then
+	elseif lib_lsp.any_supports_method(vim.lsp.protocol.Methods.textDocument_documentSymbol) then
 		return fzf_lua.lsp_document_symbols()
 	elseif treesitter_available() then
 		return fzf_lua.treesitter()
@@ -123,7 +123,7 @@ end, {
 })
 
 vim.api.nvim_create_user_command("FzfLuaTags", function()
-	if lib_lsp.any_supports_method('workspace/symbol') then
+	if lib_lsp.any_supports_method(vim.lsp.protocol.Methods.workspace_symbol) then
 		return fzf_lua.lsp_live_workspace_symbols()
 	else
 		return fzf_lua.tags()
