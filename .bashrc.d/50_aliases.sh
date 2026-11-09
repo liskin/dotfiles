@@ -59,6 +59,7 @@ export-alias wiki='"$EDITOR" ~/taskwiki/index.wiki'
 # shellcheck disable=SC2016
 export-alias git-dotfiles='git --git-dir="$HOME/src/dotfiles.git"'
 alias git-dotfiles-export='export GIT_DIR="$HOME/src/dotfiles.git"'
+alias gde=git-dotfiles-export
 
 export-alias livereload-make="python3 -c 'from livereload import Server, shell; server = Server(); server.watch(\".\", shell(\"make\")); server.serve();'"
 
