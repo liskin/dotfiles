@@ -5,7 +5,10 @@ set -eu
 save_dir=~/.cache/mpd/save
 profile="${save_dir}/${1:-.current}"
 profile="$(readlink -f "${profile}")"
-[[ -f "${profile:?}" ]]
+
+if [[ ! -f "${profile:?}" ]]; then
+	echo '{playlist=>[], repeat=>0, random=>0}' > "${profile}"
+fi
 
 mpload <"${profile}"
 
