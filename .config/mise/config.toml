@@ -2,7 +2,11 @@
 idiomatic_version_file_enable_tools = []
 minimum_release_age = "7d"
 not_found_auto_install = false
-paranoid = true
+paranoid = [
+	'config',
+	'env_files',
+	'plugins',
+]
 pin = true
 trusted_config_paths = ['~/.config/mise/config.toml']
 disable_backends = ['vfox', 'asdf']
@@ -48,7 +52,7 @@ credential_command = "gh auth token"
 "github:cli/cli" = "2.103.2"
 "github:oz/tz" = { version = "0.8.0", bin_path = "usr/local/bin" }
 "github:ulyssa/iamb" = "0.13.1"
-"npm:@github/copilot-language-server" = "1.565.3"
+"npm:@github/copilot-language-server" = "1.568.0"
 "npm:@mermaid-js/mermaid-cli" = "11.12.0"
 "npm:prettier" = "3.9.10"
 "npm:release-please" = "17.11.2"
@@ -81,7 +85,7 @@ lua-language-server = "3.19.1"
 mprocs = "0.9.2"
 neovim = "0.12.6"
 pandoc = "3.5"
-pnpm = "12.15.0"
+pnpm = "12.18.0"
 regctl = "0.11.7"
 ruff = "0.17.2"
 rust-analyzer = "2026-10-26"
