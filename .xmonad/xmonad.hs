@@ -252,7 +252,7 @@ myLayout = dir . refocusLastLayoutHook . focusTracking $
      sub = addTabs CustomShrink decoTheme . subLayout [] Simplest
      decoTheme = def{
          decoHeight = 4,
-         activeColor = "#ff0000", inactiveColor = "#dddddd", urgentColor = "#ffff00",
+         activeColor = "#ff0000", inactiveColor = "#888888", urgentColor = "#ffff00",
          activeBorderWidth = 0, inactiveBorderWidth = 1, urgentBorderWidth = 1,
          activeBorderColor = "#000000", inactiveBorderColor = "#000000", urgentBorderColor = "#ff0000"
      }
@@ -588,7 +588,7 @@ main = do
             , borderWidth        = 2
             , modMask            = mod4Mask
             , workspaces         = map show [(1 :: Int)..12] ++ map (('W' :) . show) [(1 :: Int)..12]
-            , normalBorderColor  = "#dddddd"
+            , normalBorderColor  = "#888888"
             , focusedBorderColor = "#ff0000"
 
             , keys               = myKeys
