@@ -28,11 +28,6 @@ flags+=(--disk-cache-size=2147483647)
 # enable subpixel positioning (yeah it says disable but it does the opposite)
 flags+=(--disable-font-subpixel-positioning)
 
-# enable MV2 and easy install
-flags+=(--enable-easy-off-store-extension-install)
-enable_features+=(AllowLegacyMV2Extensions)
-disable_features+=(ExtensionManifestV2Unsupported ExtensionManifestV2Disabled)
-
 # enable video acceleration
 enable_features+=(
 	VaapiVideoEncoder
