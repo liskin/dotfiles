@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+case "$(gsettings get org.gnome.desktop.interface color-scheme)" in
+	*dark*)
+		gsettings reset org.gnome.desktop.interface color-scheme
+		;;
+	*)
+		gsettings set org.gnome.desktop.interface color-scheme "'prefer-dark'"
+		;;
+esac
