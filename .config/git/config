@@ -130,6 +130,7 @@
 	weave-merge = -c core.attributesFile=~/.config/git/attributes-weave merge
 	weave-rebase = -c core.attributesFile=~/.config/git/attributes-weave rebase
 	weave-revert = -c core.attributesFile=~/.config/git/attributes-weave revert
+	weave-checkout-recreate = -c core.attributesFile=~/.config/git/attributes-weave checkout --merge --
 [merge "weave"]
 	name = weave
 	driver = weave-driver %O %A %B %L %P
