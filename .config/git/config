@@ -135,6 +135,17 @@
 	name = weave
 	driver = weave-driver %O %A %B %L %P
 
+# mergiraf merge driver
+[alias]
+	mergiraf-cherry-pick = -c core.attributesFile=~/.config/git/attributes-mergiraf cherry-pick
+	mergiraf-merge = -c core.attributesFile=~/.config/git/attributes-mergiraf merge
+	mergiraf-rebase = -c core.attributesFile=~/.config/git/attributes-mergiraf rebase
+	mergiraf-revert = -c core.attributesFile=~/.config/git/attributes-mergiraf revert
+	mergiraf-checkout-recreate = -c core.attributesFile=~/.config/git/attributes-mergiraf checkout --merge --
+[merge "mergiraf"]
+	name = mergiraf
+	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
+
 # delta config
 [interactive]
 	diffFilter = delta
