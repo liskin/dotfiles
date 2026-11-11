@@ -686,4 +686,7 @@ if has('nvim')
 	noremap <silent> HH <Cmd>Hop AnywhereMW<CR>
 endif
 
+" copilot shortcuts {{{2
+nnoremap <silent> <Leader>co <Cmd>LspCopilotToggle<CR>
+
 " vim:set foldenable foldmethod=marker: {{{1

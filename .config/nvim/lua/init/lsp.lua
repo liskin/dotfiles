@@ -32,7 +32,7 @@ vim.api.nvim_create_user_command("LspCodeLensToggle", function()
 	vim.notify("LSP code lenses " .. (codelens_enabled and "enabled" or "disabled"))
 	vim.lsp.codelens.enable(codelens_enabled)
 end, {
-	desc = "Toggle LSP code lenses"
+	desc = "Toggle LSP code lenses",
 })
 
 -- :LspInlayToggle
@@ -41,7 +41,7 @@ vim.api.nvim_create_user_command("LspInlayToggle", function()
 	vim.lsp.inlay_hint.enable(enable)
 	vim.notify("LSP inlay hints " .. (enable and "enabled" or "disabled"))
 end, {
-	desc = "Toggle LSP inlay hints"
+	desc = "Toggle LSP inlay hints",
 })
 
 -- :LspReferenceHighlightsToggle
@@ -69,7 +69,16 @@ vim.api.nvim_create_user_command("LspReferenceHighlightsToggle", function()
 	refhi_enabled = not refhi_enabled
 	vim.notify("LSP reference highlights " .. (refhi_enabled and "enabled" or "disabled"))
 end, {
-	desc = "Toggle LSP reference highlights"
+	desc = "Toggle LSP reference highlights",
+})
+
+-- :LspCopilotToggle
+vim.api.nvim_create_user_command("LspCopilotToggle", function()
+	local enabled = not vim.lsp.is_enabled("copilot")
+	vim.lsp.enable("copilot", enabled)
+	vim.notify("LSP copilot " .. (enabled and "enabled" or "disabled"))
+end, {
+	desc = "Toggle copilot-language-server",
 })
 
 -- :LspWorkspaceDiagnostics
@@ -77,7 +86,7 @@ vim.api.nvim_create_user_command("LspWorkspaceDiagnostics", function()
 	vim.lsp.buf.workspace_diagnostics()
 	vim.notify("LSP - pulling workspace diagnostics")
 end, {
-	desc = "Pull LSP workspace diagnostics"
+	desc = "Pull LSP workspace diagnostics",
 })
 
 -- don't waste CPU sending didChange too often, we won't see the diagnostics before save anyway
