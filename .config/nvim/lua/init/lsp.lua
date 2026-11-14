@@ -125,6 +125,8 @@ vim.lsp.start = (function(orig)
 end)(vim.lsp.start)
 
 -- wrap inline completion (copilot) text to textwidth for text/markdown files
+-- see https://github.com/neovim/neovim/issues/42841
+-- see https://github.com/neovim/neovim/issues/41369
 local function wrap_text(str, width)
 	local regex_space = vim.regex("^.*\\%<" .. tostring(width + 2) .. "v\\zs ")
 	local regex_width = vim.regex("\\%" .. tostring(width + 1) .. "v")
