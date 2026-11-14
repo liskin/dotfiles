@@ -79,25 +79,40 @@ end
 
 local group_diag_delay = vim.api.nvim_create_augroup('LiskinDiagDelay', { clear = true })
 
+local function au_buf_wipeout(info)
+	local bufnr = info.buf
+	assert(bufnr > 0, 'Invalid buffer number')
+	diag_delay_locked[bufnr] = nil
+	diag_delay_queue[bufnr] = nil
+end
+
 vim.api.nvim_create_autocmd('BufWipeout', {
 	group = group_diag_delay,
-	callback = function(info)
-		local bufnr = info.buf
-		assert(bufnr > 0, 'Invalid buffer number')
-		diag_delay_locked[bufnr] = nil
-		diag_delay_queue[bufnr] = nil
-	end,
+	callback = au_buf_wipeout,
 })
 
-vim.api.nvim_create_autocmd('BufModifiedSet', {
-	group = group_diag_delay,
-	callback = function(info)
-		local bufnr = info.buf
-		assert(bufnr > 0, 'Invalid buffer number')
-		if vim.bo[bufnr].modified then
-			diag_delay_lock(bufnr)
-		else
-			diag_delay_unlock(bufnr)
-		end
-	end,
-})
+local function au_buf_modified_set(info)
+	local bufnr = info.buf
+	if bufnr == 0 then
+		bufnr = vim.api.nvim_get_current_buf()
+	end
+	assert(bufnr > 0, 'Invalid buffer number')
+	if vim.bo[bufnr].modified then
+		diag_delay_lock(bufnr)
+	else
+		diag_delay_unlock(bufnr)
+	end
+end
+
+if vim.fn.has("nvim-0.13") == 1 then
+	vim.api.nvim_create_autocmd('OptionSet', {
+		group = group_diag_delay,
+		pattern = 'modified',
+		callback = au_buf_modified_set,
+	})
+else
+	vim.api.nvim_create_autocmd('BufModifiedSet', {
+		group = group_diag_delay,
+		callback = au_buf_modified_set,
+	})
+end
