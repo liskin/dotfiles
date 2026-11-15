@@ -5,8 +5,7 @@
 
 import sys
 
-from ruamel.yaml import SafeConstructor
-from ruamel.yaml import YAML
+from ruamel.yaml import YAML, SafeConstructor
 
 yaml = YAML()
 

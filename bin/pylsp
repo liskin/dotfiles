@@ -2,9 +2,6 @@
 
 # workaround to make pylsp see modules in virtualenvs
 #
-# (mypy would need this too had it not been for its mypy.python_executable
-# option in setup.cfg)
-#
 # See: https://github.com/python-lsp/python-lsp-server/pull/643/files
 
 set -eu
@@ -12,7 +9,10 @@ set -eu
 # TODO: pipenv/poetry support - https://github.com/python-lsp/python-lsp-server/pull/68#issuecomment-894650876
 # TODO: use uv instead (do we need this?) - uv run --with python-lsp-server,pylsp-mypy pylsp
 
-if [[ -x .venv/bin/python3 ]]; then
+# tell the mypy wrapper it's us
+export _LISKIN_PYLSP=1
+
+if [[ ! ${VIRTUAL_ENV-} && -x .venv/bin/python3 ]]; then
 	if .venv/bin/python3 -m pylsp --version &>/dev/null; then
 		# venv has pylsp (either its own or through system-site-packages venv)
 		exec .venv/bin/python3 -m pylsp "$@"

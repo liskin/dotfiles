@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# workaround to make mypy see modules in virtualenvs
+
+set -eu
+
+if [[ ${_LISKIN_PYLSP-} && ${VIRTUAL_ENV-} && -x "$VIRTUAL_ENV/bin/python3" ]]; then
+	set -- --python-executable "$VIRTUAL_ENV/bin/python3" "$@"
+fi
+
+exec /usr/bin/mypy "$@"

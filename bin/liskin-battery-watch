@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-from dataclasses import dataclass
 import os
 import time
+from dataclasses import dataclass
 from typing import Any
-from typing import List
 
 import notify2  # type: ignore [import]
 
@@ -15,7 +14,7 @@ def slurp(filename: str) -> str:
 
 
 @dataclass
-class SysAttrs():
+class SysAttrs:
     path: str
 
     def _read_attr(self, attr: str) -> str:
@@ -29,9 +28,9 @@ class Battery(SysAttrs):
 
     def refresh(self) -> None:
         try:
-            self.capacity = int(self._read_attr('capacity'))
-            self.present = bool(int(self._read_attr('present')))
-        except Exception:
+            self.capacity = int(self._read_attr("capacity"))
+            self.present = bool(int(self._read_attr("present")))
+        except Exception:  # noqa: BLE001
             self.capacity = 0
             self.present = False
 
@@ -42,27 +41,23 @@ class AC(SysAttrs):
 
     def refresh(self) -> None:
         try:
-            self.online = bool(int(self._read_attr('online')))
-        except Exception:
+            self.online = bool(int(self._read_attr("online")))
+        except Exception:  # noqa: BLE001
             self.online = False
 
 
-class Main():
+class Main:
     num_batteries: int = 2
-    batteries: List[Battery]
+    batteries: list[Battery]
     ac: AC
     notification: Any
 
     def __init__(self) -> None:
-        sys_paths = [
-            '/sys/class/power_supply/BAT%d' % n
-            for n in range(self.num_batteries)
-        ]
+        sys_paths = [f"/sys/class/power_supply/BAT{n}" for n in range(self.num_batteries)]
         self.batteries = [Battery(path=p) for p in sys_paths]
-        self.ac = AC(path='/sys/class/power_supply/AC')
+        self.ac = AC(path="/sys/class/power_supply/AC")
 
-        self.notification = notify2.Notification(
-            summary='Low battery', icon='battery-low')
+        self.notification = notify2.Notification(summary="Low battery", icon="battery-low")
         self.notification.set_urgency(notify2.URGENCY_CRITICAL)
 
     def refresh(self) -> None:
@@ -87,6 +82,6 @@ class Main():
             time.sleep(30)
 
 
-if __name__ == '__main__':
-    notify2.init('liskin-battery-watch')
+if __name__ == "__main__":
+    notify2.init("liskin-battery-watch")
     Main().loop()

@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 
-from collections import defaultdict
 import itertools
 import json
 import re
 import subprocess
 import sys
 import tempfile
-from typing import Iterable
-from typing import Optional
+from collections import defaultdict
+from collections.abc import Callable, Iterable
+from typing import NoReturn, cast
 
-import anytree
+import anytree  # type: ignore [import]
 import click
-import diskcache
-from icecream import ic
+import diskcache  # type: ignore [import]
 import platformdirs
+from icecream import ic  # type: ignore [import]
 
 DISK_CACHE = diskcache.Cache(platformdirs.user_cache_dir("liskin-gh-stack"))
 
 
 def git_is_ancestor(ancestor: str, descendant: str) -> bool:
-    p = subprocess.run(["git", "merge-base", "--is-ancestor", ancestor, descendant])
+    p = subprocess.run(["git", "merge-base", "--is-ancestor", ancestor, descendant], check=False)
     if p.returncode in [0, 1]:
         return p.returncode == 0
     else:
-        p.check_returncode()
+        cast(Callable[[], NoReturn], p.check_returncode)()
 
 
 def git_rev_parse(rev: str) -> str:
@@ -87,16 +87,13 @@ def git_expand_refs(branch_patterns: list[str]) -> dict[str, str]:
     if a commit hash is associated with multiple refs, a ValueError is raised.
     """
 
-    branch_patterns = [
-        branch if branch.startswith("refs/") else f"refs/heads/{branch}"
-        for branch in branch_patterns
-    ]
+    branch_patterns = [branch if branch.startswith("refs/") else f"refs/heads/{branch}" for branch in branch_patterns]
 
     commit_refs_all: dict[str, list] = defaultdict(list)
     for commit, ref in git_for_each_ref(branch_patterns):
         commit_refs_all[commit].append(ref)
 
-    commit_refs: dict[str, str] = dict()
+    commit_refs: dict[str, str] = {}
     for commit, refs in commit_refs_all.items():
         match refs:
             case [ref]:
@@ -147,9 +144,9 @@ def git_branch_graph(branch_patterns: list[str], base: str) -> dict[str, str]:
                     ref_parents[ref] = commit_refs[parent]
                 else:
                     if gh_merge_base := git_config_get(
-                        f"branch.{ref.removeprefix("refs/heads/")}.gh-merge-base", default=""
+                        f"branch.{ref.removeprefix('refs/heads/')}.gh-merge-base", default=""
                     ):
-                        pr_base = f"refs/remotes/origin/{gh_merge_base.removeprefix("refs/heads/")}"
+                        pr_base = f"refs/remotes/origin/{gh_merge_base.removeprefix('refs/heads/')}"
                     else:
                         pr_base = base
 
@@ -161,9 +158,7 @@ def git_branch_graph(branch_patterns: list[str], base: str) -> dict[str, str]:
                         )
             case [commit, *parents] if len(parents) > 1:
                 if commit in commit_refs:
-                    raise ValueError(
-                        f"Branch {commit_refs[commit]} has multiple parents: {parents}"
-                    )
+                    raise ValueError(f"Branch {commit_refs[commit]} has multiple parents: {parents}")
                 else:
                     raise ValueError(f"Commit {commit} has multiple parents: {parents}")
             case _:
@@ -172,9 +167,7 @@ def git_branch_graph(branch_patterns: list[str], base: str) -> dict[str, str]:
     return ref_parents
 
 
-def pp_branch_graph(
-    ref_parents_topo: dict[str, str], base: str, pull_requests: dict[str, dict], list_commits: bool
-):
+def pp_branch_graph(ref_parents_topo: dict[str, str], base: str, pull_requests: dict[str, dict], list_commits: bool):
     """
     Pretty-prints the branch graph using anytree.
     If a branch has an associated pull request, its URL is appended to the label.
@@ -202,7 +195,7 @@ def pp_branch_graph(
         if ref_remote := git_ref_remote(ref, ensure=False):
             ref_remote_name = ref_remote.removeprefix("refs/remotes/origin/")
             if pull_request := pull_requests.get(ref_remote_name):
-                label = f"{label}\t({pull_request["url"]})"
+                label = f"{label}\t({pull_request['url']})"
 
         commits = []
         if list_commits:
@@ -223,11 +216,11 @@ def pp_branch_graph(
             fill = fill[: -len(style.vertical)] + style.vertical
 
         for line in node.lines[:-1]:
-            click.echo("%s%s" % (fill, line))
-        click.echo("%s%s" % (pre, node.lines[-1]))
+            click.echo(f"{fill}{line}")
+        click.echo(f"{pre}{node.lines[-1]}")
 
 
-def git_ref_remote(ref: str, ensure: bool = True, yes: bool = False) -> Optional[str]:
+def git_ref_remote(ref: str, ensure: bool = True, yes: bool = False) -> str | None:
     """
     Given a local or remote-tracking branch ref, ensure it is pushed to 'origin' and return its
     remote-tracking ref.
@@ -349,9 +342,7 @@ def gh_pr_get(pr: str, fields: str = "number,headRefName,baseRefName,url") -> di
 
 DEPS_START_MARKER = "<!-- gh-stack:deps:start -->"
 DEPS_END_MARKER = "<!-- gh-stack:deps:end -->"
-DEPS_PATTERN = re.compile(
-    rf"{re.escape(DEPS_START_MARKER)}.*?{re.escape(DEPS_END_MARKER)}", re.DOTALL
-)
+DEPS_PATTERN = re.compile(rf"{re.escape(DEPS_START_MARKER)}.*?{re.escape(DEPS_END_MARKER)}", re.DOTALL)
 
 
 def gh_pr_describe_deps(pr: str, deps: list[str]):
@@ -380,7 +371,7 @@ def gh_pr_describe_deps(pr: str, deps: list[str]):
             ]
         )
     else:
-        deps_block = "\n".join([DEPS_START_MARKER, DEPS_END_MARKER])
+        deps_block = f"{DEPS_START_MARKER}\n{DEPS_END_MARKER}"
 
     gh_pr_get_fields = "body"
     body = gh_pr_get(pr, fields=gh_pr_get_fields)["body"]
@@ -431,7 +422,7 @@ def cli() -> None:
 @click.option("-l", "--list-commits/--no-list-commits", default=True)
 @click.option("-y", "--yes/--no-yes", default=False)
 @click.argument("branches", nargs=-1, type=str)
-def cli_sync(debug, cache, base, draft, chain, list_commits, yes, branches):
+def cli_sync(debug, cache, base, draft, chain, list_commits, yes, branches) -> None:
     """
     Sync branches (given as patterns) with GitHub PRs. Create new ones, retarget existing ones.
     """
@@ -463,8 +454,10 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, yes, branches):
 
     for ref, parent in ref_parents_topo.items():
         ref_remote = git_ref_remote(ref, yes=yes)
+        assert ref_remote
         ref_remote_name = ref_remote.removeprefix("refs/remotes/origin/")
         parent_remote = git_ref_remote(parent, yes=yes)
+        assert parent_remote
         parent_remote_name = parent_remote.removeprefix("refs/remotes/origin/")
         pull_request = pull_requests.get(ref_remote_name)
 
@@ -474,7 +467,7 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, yes, branches):
             ic(parent)
             ic(parent_remote)
             ic(pull_request)
-            print("", flush=True)
+            print(flush=True)
 
         if pull_request:
             pr_num = pull_request["number"]
@@ -487,9 +480,7 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, yes, branches):
                         default=True,
                     )
                 DISK_CACHE.delete(gh_pr_list.__cache_key__())
-                subprocess.run(
-                    ["gh", "pr", "edit", "--base", parent_remote_name, f"{pr_num}"], check=True
-                )
+                subprocess.run(["gh", "pr", "edit", "--base", parent_remote_name, f"{pr_num}"], check=True)
                 pull_request = gh_pr_get(f"{pr_num}")
                 if click.confirm(
                     f"Edit PR #{pr_num} after retargeting? (title/description might be outdated)",
@@ -537,9 +528,7 @@ def cli_sync(debug, cache, base, draft, chain, list_commits, yes, branches):
     )
 
     if chain:
-        with click.progressbar(
-            pull_request_deps.items(), label="Updating PR descriptions (deps chains)"
-        ) as bar:
+        with click.progressbar(pull_request_deps.items(), label="Updating PR descriptions (deps chains)") as bar:
             for ref_remote_name, deps in bar:
                 gh_pr_describe_deps(ref_remote_name, deps)
 
@@ -589,18 +578,14 @@ def cli_branch_create(start_point):
         click.get_current_context().abort()
 
     # Find the first(-ish) available --ghstack-- branch name
-    conflicting_new_branches = set(
-        ref for _commit, ref in git_for_each_ref([f"{best_branch}--ghstack--*"])
-    )
+    conflicting_new_branches = {ref for _commit, ref in git_for_each_ref([f"{best_branch}--ghstack--*"])}
     for i in itertools.count(len(conflicting_new_branches) + 1):
         new_branch = f"{best_branch}--ghstack--{i:04d}"
         if new_branch not in conflicting_new_branches:
             break
 
     # Create the branch
-    subprocess.run(
-        ["git", "branch", new_branch.removeprefix("refs/heads/"), start_point], check=True
-    )
+    subprocess.run(["git", "branch", new_branch.removeprefix("refs/heads/"), start_point], check=True)
 
 
 if __name__ == "__main__":
